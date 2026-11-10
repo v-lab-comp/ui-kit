@@ -1,0 +1,77 @@
+/* pdf-preview: 8-битный вид поверх corporate/components/pdf-preview.css — раскладка приходит оттуда, здесь только оформление.
+   Подложка «бумага» в рамке; страница — панель с жёсткой тенью; ярлык имени и счётчик — чернильные плашки. */
+:where([data-vl-skin~='pixel']) {
+  .vl-pdf-preview {
+    margin: var(--pixel-unit);
+    border: none;
+    background-color: var(--bg-weak-50);
+    box-shadow: var(--pixel-frame);
+  }
+
+  .vl-pdf-preview__nav-button {
+    margin: var(--pixel-unit-sm);
+    background-color: var(--bg-white-0);
+    color: var(--icon-strong-950);
+    box-shadow: var(--pixel-frame-sm), var(--pixel-bevel-panel);
+  }
+
+  .vl-pdf-preview__nav-button:hover:not(:disabled) {
+    background-color: var(--bg-soft-200);
+  }
+
+  .vl-pdf-preview__nav-button:active:not(:disabled) {
+    transform: var(--pixel-press-shift);
+    box-shadow:
+      var(--pixel-frame-sm),
+      inset var(--pixel-unit) var(--pixel-unit) 0 var(--pixel-shade);
+  }
+
+  .vl-pdf-preview__nav-button:disabled {
+    opacity: 1;
+    background: var(--pixel-dither);
+    color: var(--icon-disabled-300);
+    --pixel-frame-color: var(--pixel-disabled-frame-color);
+    box-shadow: var(--pixel-frame-sm);
+  }
+
+  :where(.vl-pdf-preview__nav-button, .vl-pdf-preview__filename-badge):focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: 4px;
+  }
+
+  .vl-pdf-preview__canvas {
+    background-color: var(--bg-white-0);
+    box-shadow: var(--pixel-frame), var(--pixel-drop);
+    image-rendering: pixelated;
+  }
+
+  .vl-pdf-preview__filename-badge {
+    padding: 8px 10px 8px 8px;
+    border: none;
+    background-color: var(--bg-strong-950);
+    color: var(--text-white-0);
+    font-family: var(--font-display);
+    font-size: 8px;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  .vl-pdf-preview__filename-badge:hover {
+    background-color: var(--bg-surface-800);
+  }
+
+  .vl-pdf-preview__filename-badge-icon {
+    color: var(--text-white-0);
+  }
+
+  .vl-pdf-preview__page-counter {
+    padding: 6px 8px;
+    background-color: var(--bg-strong-950);
+    color: var(--text-white-0);
+    font-family: var(--font-display);
+    font-size: 8px;
+    line-height: 1;
+    box-shadow: var(--pixel-frame-sm);
+    --pixel-frame-color: var(--bg-white-0);
+  }
+}

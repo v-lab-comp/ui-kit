@@ -1,0 +1,63 @@
+/**
+ * Hover-ореол corporate (halo.css) в pixel выключен.
+ *
+ * Мягкое кольцо со свечением — не 8-битный приём. В pixel наведение показывает сам элемент:
+ * у цветной заливки — filter: brightness(1.15), у прозрачных кнопок (ghost, иконочные) —
+ * шахматка var(--pixel-dither-hover); это пишут файлы components/*.css.
+ *
+ * Псевдоэлемент `::after` у кнопок из списка corporate остаётся (он прозрачный и не ловит
+ * клики), гасится только его тень и переход. Список и вес селекторов — как в corporate/halo.css:
+ * при равном весе правило pixel идёт позже и побеждает. Новый элемент в списке corporate —
+ * добавить и сюда.
+ *
+ * Здесь, как и в corporate, нельзя объявлять `--halo-*` в базовом правиле `:is(…)` —
+ * это проверяет scripts/check-dist-css.mjs.
+ */
+
+:where([data-vl-skin~='pixel']) {
+  :is(
+    .vl-password-input__eye-btn,
+    .vl-share-link-input__copy-button,
+    .vl-date-input__calendar-btn,
+    .vl-rich-input__tool-button,
+    .vl-tag__dismiss,
+    .vl-select-input__clear-btn,
+    .vl-sidebar-trigger,
+    .vl-calendar-header__nav-btn,
+    .vl-modal-header__close,
+    .vl-toast__close,
+    .vl-comment-rich-input__icon-button,
+    .vl-comment-rich-input__align-button,
+    .vl-comment-rich-input__send-button,
+    .vl-comments-section__menu-trigger,
+    .vl-button,
+    .vl-file-upload__file-item-action,
+    .vl-pdf-preview__nav-button,
+    .vl-table__page-btn,
+    .vl-app-switcher__trigger-grid
+  )::after,
+  :is(
+      .vl-password-input__eye-btn,
+      .vl-share-link-input__copy-button,
+      .vl-date-input__calendar-btn,
+      .vl-rich-input__tool-button,
+      .vl-tag__dismiss,
+      .vl-select-input__clear-btn,
+      .vl-sidebar-trigger,
+      .vl-calendar-header__nav-btn,
+      .vl-modal-header__close,
+      .vl-toast__close,
+      .vl-comment-rich-input__icon-button,
+      .vl-comment-rich-input__align-button,
+      .vl-comment-rich-input__send-button,
+      .vl-comments-section__menu-trigger,
+      .vl-button,
+      .vl-file-upload__file-item-action,
+      .vl-pdf-preview__nav-button,
+      .vl-table__page-btn,
+      .vl-app-switcher__trigger-grid
+    ):active:not(:disabled)::after {
+    box-shadow: none;
+    transition: none;
+  }
+}

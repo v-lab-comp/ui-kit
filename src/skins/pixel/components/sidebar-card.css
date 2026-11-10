@@ -1,0 +1,53 @@
+/* sidebar-card: 8-битный вид поверх corporate/components/sidebar-card.css — раскладка приходит оттуда, здесь только оформление.
+   Карточка в панели (профиль, шапка-переключатель): ступенчатая рамка вместо границы
+   (unbordered — без неё), hover — шахматка поверх фона, фокус — жёлтый пунктир.
+   Рамка рисуется снаружи: у шапки и подвала панели паддинг 12px, ей хватает места. */
+:where([data-vl-skin~='pixel']) {
+  .vl-sidebar-card {
+    border: 0;
+    border-radius: 0;
+    background: var(--bg-white-0);
+    color: var(--text-strong-950);
+    font-family: var(--font-sans);
+    box-shadow: var(--pixel-frame);
+    transition: none;
+  }
+  .vl-sidebar-card[data-unbordered] {
+    box-shadow: none;
+  }
+  .vl-sidebar-card:hover {
+    background: var(--pixel-dither-hover), var(--bg-white-0);
+  }
+  .vl-sidebar-card:active {
+    transform: var(--pixel-press-shift);
+  }
+  .vl-sidebar-card:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: var(--pixel-focus-offset);
+  }
+  .vl-sidebar-card[data-unbordered]:focus-visible {
+    outline-offset: 2px;
+  }
+
+  .vl-sidebar-card__left-slot {
+    border-radius: 0;
+  }
+
+  .vl-sidebar-card__title {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0;
+    color: var(--text-strong-950);
+  }
+  .vl-sidebar-card__subtitle {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 16px;
+    color: var(--text-sub-600);
+  }
+  .vl-sidebar-card__right {
+    color: var(--icon-sub-600);
+  }
+}

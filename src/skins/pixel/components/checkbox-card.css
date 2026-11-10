@@ -1,0 +1,67 @@
+/*
+ * checkbox-card: 8-битный вид поверх corporate/components/checkbox-card.css — раскладка приходит
+ * оттуда, здесь только оформление.
+ *
+ * Карточка — панель со ступенчатой рамкой 4px (снаружи, отсюда margin). Выбрана — рамка и
+ * лёгкая заливка primary плюс жёсткая цветная тень; заголовок — Press Start 2P 9px.
+ */
+:where([data-vl-skin~='pixel']) {
+  .vl-checkbox-card {
+    margin: var(--pixel-unit);
+    border: 0;
+    border-radius: 0;
+    background-color: var(--bg-white-0);
+    box-shadow: var(--pixel-frame);
+    transition: none;
+  }
+
+  /* Наведение на невыбранную — шахматка поверх панели */
+  .vl-checkbox-card:hover:not(:has(input:checked)):not(:has(input:disabled)) {
+    background: var(--pixel-dither-hover), var(--bg-white-0);
+  }
+
+  /* Выбрана — рамка primary, заливка primary-alpha, жёсткая тень цвета primary */
+  .vl-checkbox-card:has(input:checked):not(:has(input:disabled)) {
+    --pixel-frame-color: var(--primary-base);
+    --pixel-shadow-color: var(--shadow-primary-4);
+    background-color: var(--primary-alpha-10);
+    box-shadow: var(--pixel-frame), var(--pixel-drop);
+  }
+
+  .vl-checkbox-card:hover:has(input:checked):not(:has(input:disabled)) {
+    background-color: var(--primary-alpha-16);
+  }
+
+  /* Нажатие — сдвиг на «пиксель» */
+  .vl-checkbox-card:active:not(:has(input:disabled)) {
+    transform: var(--pixel-press-shift);
+  }
+
+  /* Фокус с клавиатуры — пунктир вокруг всей карточки, у самого чекбокса — без второго */
+  .vl-checkbox-card:has(input:focus-visible) {
+    outline: var(--pixel-focus-outline);
+    outline-offset: var(--pixel-focus-offset);
+  }
+
+  .vl-checkbox-card .vl-base-checkbox:focus-visible {
+    outline: none;
+  }
+
+  /* Отключена — дизеринг, серая рамка, текст приглушён, но читаем */
+  .vl-checkbox-card:has(input:disabled) {
+    --pixel-frame-color: var(--pixel-disabled-frame-color);
+    --_checkbox-disabled-color: var(--text-sub-600);
+    background: var(--pixel-dither);
+  }
+
+  /* Заголовок карточки — Press Start 2P, как в макете («ТАРИФ PRO») */
+  .vl-checkbox-card .vl-checkbox-label-row__label-text {
+    font-family: var(--font-display);
+    font-size: 9px;
+    line-height: 1.6;
+  }
+
+  .vl-checkbox-card__card-content {
+    gap: 6px;
+  }
+}

@@ -1,0 +1,67 @@
+/**
+ * Тени скина pixel: жёсткие, со сдвигом и без размытия — поверх мягких теней corporate.
+ *
+ * Имена те же, что в corporate/shadows.css, поэтому компоненты, которые читают `--shadow-*`,
+ * получают пиксельную тень без правки их CSS. Внутренние тени (`*-inner`) — ступенька 2px снизу.
+ *
+ * Цвет — `--pixel-shadow-color` из tokens.css, он свой у светлой и тёмной схемы. Поэтому,
+ * в отличие от corporate, тени объявлены на всех ветках схемы, включая вложенный тёмный
+ * контейнер: значение `var()` вычисляется там, где объявлено.
+ *
+ * Тени не рисуют контур: у элемента со ступенчатой рамкой тень ставят ПОСЛЕ рамки —
+ * `box-shadow: var(--pixel-frame), var(--pixel-drop)` (разнос `--pixel-drop` повторяет рамку).
+ */
+[data-vl-skin~='pixel'],
+:where([data-vl-skin~='pixel']) [data-theme='light'],
+:where([data-vl-skin~='pixel']) [data-theme='dark'] {
+  /* ----- Regular Shadow -----
+     x-small — едва заметный «подъём» полей, кнопок-переключателей, строк таблицы. В 8-бит его
+     нет (объём даёт рамка и --pixel-bevel), а жёсткая тень у вложенных полей рисовала бы
+     полосы внутри составных инпутов. Поэтому тень пустая — именно `0 0 0 0 transparent`,
+     а не none: токен бывает в списке теней (calendar-day.css), и none сделал бы весь список
+     недействительным. */
+  --shadow-regular-x-small: 0 0 0 0 transparent;
+  --shadow-regular-small: 4px 4px 0 0 var(--pixel-shadow-color);
+  --shadow-regular-medium: 8px 8px 0 0 var(--pixel-shadow-color);
+  --shadow-regular-x-small-soft: 0 0 0 0 transparent;
+  --shadow-dropdown: 8px 8px 0 0 var(--pixel-shadow-color);
+
+  /* ----- Custom Shadow ----- */
+  --shadow-x-small: 0 0 0 0 transparent;
+  --shadow-x-small-inner: inset 0 -2px 0 0 var(--pixel-shadow-color);
+  --shadow-small: 4px 4px 0 0 var(--pixel-shadow-color);
+  --shadow-small-inner: inset 0 -2px 0 0 var(--pixel-shadow-color);
+  --shadow-medium: 6px 6px 0 0 var(--pixel-shadow-color);
+  --shadow-medium-inner: inset 0 -2px 0 0 var(--pixel-shadow-color);
+  --shadow-large: 10px 10px 0 0 var(--pixel-shadow-strong-color);
+  --shadow-large-inner: inset 0 -2px 0 0 var(--pixel-shadow-color);
+
+  /* ----- Colored shadow base: сплошные слои вместо полупрозрачных разводов ----- */
+  --shadow-gray-4: var(--pixel-shadow-color);
+  --shadow-gray-6: var(--pixel-shadow-color);
+  --shadow-gray-8: var(--pixel-shadow-color);
+  --shadow-primary-4: rgba(43, 79, 217, 0.25);
+  --shadow-primary-6: rgba(43, 79, 217, 0.3);
+  --shadow-blue-4: rgba(43, 79, 217, 0.25);
+  --shadow-purple-4: rgba(106, 63, 212, 0.25);
+  --shadow-orange-4: rgba(242, 179, 26, 0.35);
+  --shadow-green-4: rgba(30, 125, 56, 0.25);
+
+  /* ----- Colored Shadows ----- */
+  --shadow-colored-gray: 6px 6px 0 0 var(--shadow-gray-4);
+  --shadow-colored-gray-inner: inset 0 -2px 0 0 var(--shadow-gray-6);
+  --shadow-colored-primary: 6px 6px 0 0 var(--shadow-primary-4);
+  --shadow-colored-primary-inner: inset 0 -2px 0 0 var(--shadow-primary-4);
+  --shadow-colored-blue: 6px 6px 0 0 var(--shadow-blue-4);
+  --shadow-colored-blue-inner: inset 0 -2px 0 0 var(--shadow-blue-4);
+  --shadow-colored-purple: 6px 6px 0 0 var(--shadow-purple-4);
+  --shadow-colored-purple-inner: inset 0 -2px 0 0 var(--shadow-purple-4);
+  --shadow-colored-orange: 6px 6px 0 0 var(--shadow-orange-4);
+  --shadow-colored-orange-inner: inset 0 -2px 0 0 var(--shadow-orange-4);
+  --shadow-colored-green: 6px 6px 0 0 var(--shadow-green-4);
+  --shadow-colored-green-inner: inset 0 -2px 0 0 var(--shadow-green-4);
+
+  /* ----- Card Shadow ----- */
+  --shadow-card-large: 8px 8px 0 0 var(--pixel-shadow-color);
+  --shadow-card-large-inner: inset 0 -2px 0 0 var(--pixel-shadow-color);
+}

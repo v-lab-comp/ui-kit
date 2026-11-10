@@ -1,0 +1,55 @@
+/* calendar-header: 8-битный вид поверх corporate/components/calendar-header.css — раскладка приходит оттуда, здесь только оформление.
+   Заголовок месяца пиксельным шрифтом, под ним чернильная линия; кнопки-стрелки с объёмом. */
+:where([data-vl-skin~='pixel']) {
+  .vl-calendar-header {
+    height: auto;
+    min-height: 44px;
+    padding: 4px 4px 10px;
+    background-color: transparent;
+    border-bottom: var(--pixel-unit) solid var(--stroke-strong-950);
+  }
+
+  .vl-calendar-header__nav-btn {
+    width: 30px;
+    height: 30px;
+    background-color: var(--bg-soft-200);
+    color: var(--icon-strong-950);
+    box-shadow: inset -3px -3px 0 var(--pixel-divider-color);
+    transition: none;
+  }
+
+  .vl-calendar-header__nav-btn:hover {
+    background-color: var(--bg-sub-300);
+    box-shadow: inset -3px -3px 0 var(--pixel-divider-color);
+  }
+
+  .vl-calendar-header__nav-btn:active {
+    transform: var(--pixel-press-shift);
+    background-color: var(--bg-sub-300);
+    box-shadow: inset 3px 3px 0 var(--pixel-divider-color);
+  }
+
+  .vl-calendar-header__nav-btn:focus-visible,
+  :where(.vl-calendar-header__label)[data-clickable]:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: 2px;
+  }
+
+  .vl-calendar-header__label {
+    height: auto;
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  :where(.vl-calendar-header__label)[data-clickable] {
+    height: 30px;
+  }
+
+  :where(.vl-calendar-header__label)[data-clickable]:hover {
+    background: var(--pixel-dither-hover);
+  }
+}

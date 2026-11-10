@@ -1,0 +1,27 @@
+/* modal-footer: 8-битный вид поверх corporate/components/modal-footer.css — раскладка приходит оттуда, здесь только оформление.
+   Пунктирный разделитель вместо тонкой линии; зазор между кнопками шире на толщину их рамок
+   (рамка кнопки рисуется снаружи и съедает 4px с каждой стороны). */
+:where([data-vl-skin~='pixel']) {
+  .vl-modal-footer {
+    gap: 16px;
+    border-top: var(--pixel-divider);
+    background: var(--bg-white-0);
+  }
+
+  .vl-modal-footer__actions {
+    gap: 16px;
+  }
+  .vl-modal-footer__actions[data-full-width] {
+    gap: 20px;
+  }
+
+  .vl-modal-footer__start {
+    font-size: 16px;
+    letter-spacing: 0;
+  }
+
+  /* Спиннер крутится «кадрами», как спрайт */
+  .vl-modal-footer__spinning {
+    animation-timing-function: steps(8, end);
+  }
+}

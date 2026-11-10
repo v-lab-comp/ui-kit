@@ -1,0 +1,18 @@
+/* tooltip: 8-битный вид поверх corporate/components/tooltip.css — раскладка приходит оттуда, здесь только оформление.
+   Чернильная табличка: рамка того же цвета, что фон, даёт ступенчатые углы. Хвостика нет —
+   у Tooltip нет атрибута стороны (placement), без него хвост не направить. */
+:where([data-vl-skin~='pixel']) {
+  .vl-tooltip {
+    --pixel-frame-color: var(--bg-strong-950);
+    border-radius: 0;
+    padding: 6px 10px;
+    max-width: 240px;
+    background-color: var(--bg-strong-950);
+    color: var(--text-white-0);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.35;
+    box-shadow: var(--pixel-frame);
+    animation-timing-function: steps(3, end);
+  }
+}

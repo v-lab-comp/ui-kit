@@ -1,0 +1,186 @@
+/* button: 8-битный вид поверх corporate/components/button.css — раскладка приходит оттуда,
+   здесь только оформление (макет: Buttons.dc.html).
+
+   Приёмы:
+   - рамка — ступенчатая тень var(--pixel-frame) снаружи кнопки, места под неё — margin;
+   - filled — объём var(--pixel-bevel), hover — brightness(1.15);
+   - нажатие (:active) — сдвиг на 2px и перевёрнутый объём, как у кнопки картриджа;
+   - disabled — дизеринг и серая рамка;
+   - фокус с клавиатуры — жёлтый пунктир (только :focus-visible).
+
+   Цвета — только из --pal-* (palettes.css или инлайн у customColor). У customColor нет
+   --pal-text / --pal-on-base, поэтому везде стоят запасные значения. */
+:where([data-vl-skin~='pixel']) {
+  .vl-button {
+    /* Высота как у corporate (40 / 36 / 32 / 28): border снят, паддинг больше на 1px */
+    --_px-btn-bg: transparent;
+    --_px-btn-fg: var(--pal-text, var(--pal-base));
+    --_px-btn-shadow: none;
+    --_px-btn-hover-bg: var(--_px-btn-bg);
+
+    padding: 10px 14px;
+    gap: 8px;
+    border: 0;
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0;
+    background: var(--_px-btn-bg);
+    color: var(--_px-btn-fg);
+    box-shadow: var(--_px-btn-shadow);
+    /* В 8-бит нет плавности: смена состояния — мгновенная */
+    transition: none;
+  }
+
+  :where(.vl-button)[data-size='small'] {
+    padding: 8px 12px;
+    gap: 6px;
+    font-size: 9px;
+  }
+
+  :where(.vl-button)[data-size='x-small'] {
+    padding: 6px 10px;
+    gap: 6px;
+    font-size: 8px;
+  }
+
+  :where(.vl-button)[data-size='2x-small'] {
+    padding: 4px 7px;
+    gap: 4px;
+    font-size: 8px;
+  }
+
+  /* Иконки — без сглаживания краёв */
+  .vl-button svg {
+    flex-shrink: 0;
+    shape-rendering: crispEdges;
+  }
+
+  /* Место под внешнюю рамку. Вес (0,2,0) — выше сброса margin в ui-kit-root (0,1,1). */
+  .vl-button[data-variant] {
+    margin: var(--pixel-unit);
+  }
+
+  /* ---------- Варианты ---------- */
+
+  /* Filled: заливка палитры, чернильная рамка, объём */
+  :where(.vl-button)[data-variant='filled'] {
+    --_px-btn-bg: var(--pal-base);
+    --_px-btn-fg: var(--pal-on-base, var(--static-white));
+    --_px-btn-shadow: var(--pixel-frame), var(--pixel-bevel);
+  }
+
+  /* Stroke: панель, рамка и текст цвета палитры (у neutral — чернила, а не серая кромка corporate) */
+  :where(.vl-button)[data-variant='stroke'] {
+    --pixel-frame-color: var(--pal-text, var(--pal-base));
+    --_px-btn-bg: var(--bg-white-0);
+    --_px-btn-fg: var(--pal-text, var(--pal-base));
+    --_px-btn-hover-bg: var(--pal-bg-hover);
+    --_px-btn-shadow: var(--pixel-frame);
+  }
+
+  /* corporate красит neutral + stroke в серый (0,2,0) — возвращаем чернила тем же весом */
+  :where(.vl-button)[data-color='neutral'][data-variant='stroke'] {
+    color: var(--_px-btn-fg);
+  }
+
+  /* Lighter: светлая заливка, рамка в цвет заливки и «тень дна» снизу */
+  :where(.vl-button)[data-variant='lighter'] {
+    --pixel-frame-color: var(--pal-bg-hover);
+    --_px-btn-bg: var(--pal-bg-hover);
+    --_px-btn-fg: var(--pal-text, var(--pal-base));
+    --_px-btn-shadow:
+      var(--pixel-frame), inset 0 calc(-1 * var(--pixel-unit)) 0 var(--pixel-bevel-dark);
+  }
+
+  /* Ghost: без рамки и фона; наведение — шахматка */
+  :where(.vl-button)[data-variant='ghost'] {
+    --_px-btn-bg: transparent;
+    --_px-btn-fg: var(--pal-text, var(--pal-base));
+    --_px-btn-shadow: none;
+  }
+
+  /* ---------- Hover ---------- */
+
+  /* Вес как у corporate (0,3,0): тот же селектор, файл идёт позже */
+  :where(.vl-button)[data-variant='filled']:hover:not(:disabled) {
+    background-color: var(--pal-base);
+    border-color: transparent;
+    filter: brightness(1.15);
+  }
+
+  :where(.vl-button)[data-variant='stroke']:hover:not(:disabled) {
+    background-color: var(--pal-bg-hover);
+    border-color: transparent;
+  }
+
+  :where(.vl-button)[data-variant='lighter']:hover:not(:disabled) {
+    --pixel-frame-color: var(--pal-bg-active);
+    background-color: var(--pal-bg-active);
+    border-color: transparent;
+  }
+
+  :where(.vl-button)[data-variant='ghost']:hover:not(:disabled) {
+    background: var(--pixel-dither-hover);
+  }
+
+  /* ---------- Нажатие: кнопка «вдавлена» ---------- */
+
+  :where(.vl-button)[data-variant='filled']:active:not(:disabled) {
+    background-color: var(--pal-base);
+    border-color: transparent;
+    filter: none;
+    transform: var(--pixel-press-shift);
+    box-shadow: var(--pixel-frame), var(--pixel-bevel-pressed);
+  }
+
+  :where(.vl-button)[data-variant='stroke']:active:not(:disabled) {
+    background-color: var(--pal-bg-active);
+    border-color: transparent;
+    transform: var(--pixel-press-shift);
+    box-shadow: var(--pixel-frame), var(--pixel-bevel-pressed);
+  }
+
+  :where(.vl-button)[data-variant='lighter']:active:not(:disabled) {
+    --pixel-frame-color: var(--pal-bg-active);
+    background-color: var(--pal-bg-active);
+    border-color: transparent;
+    transform: var(--pixel-press-shift);
+    box-shadow: var(--pixel-frame), var(--pixel-bevel-pressed);
+  }
+
+  :where(.vl-button)[data-variant='ghost']:active:not(:disabled) {
+    background: var(--pal-bg-hover);
+    transform: var(--pixel-press-shift);
+  }
+
+  /* ---------- Фокус с клавиатуры ---------- */
+
+  .vl-button:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: var(--pixel-focus-offset);
+  }
+
+  /* У ghost нет рамки — пунктир ближе к краю */
+  :where(.vl-button)[data-variant='ghost']:focus-visible {
+    outline-offset: 2px;
+  }
+
+  /* ---------- Disabled: дизеринг, серая рамка, без объёма ---------- */
+
+  .vl-button:disabled {
+    background: var(--pixel-dither);
+    color: var(--text-sub-600);
+    box-shadow: var(--pixel-frame-disabled);
+    filter: none;
+    transform: none;
+  }
+
+  /* Ghost без рамки остаётся без неё: только приглушённый текст */
+  :where(.vl-button)[data-variant='ghost']:disabled {
+    background: transparent;
+    color: var(--text-disabled-300);
+    box-shadow: none;
+  }
+}

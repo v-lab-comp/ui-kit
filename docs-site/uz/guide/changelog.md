@@ -26,6 +26,7 @@ Format [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) ga asoslangan, v
 - **`themeHtmlAttributes(skin, scheme)`** — SSR da serverdagi `<html>` uchun skin va sxema atributlari: skin stillari birinchi kadrdanoq, gidratsiyadan oldin ishlaydi. Next.js App Router uchun misol — [O‘rnatish → SSR va Next.js](./installation#ssr).
 - **Kiritish maydonlari uchun foydalanish qulayligi.** `InputField` maydonni maslahat va xato matni bilan bog‘laydi (`aria-describedby`) hamda xato va majburiylikni bildiradi (`aria-invalid`, `aria-required`) — kitdagi barcha maydonlarda. `InputField` asosidagi o‘z maydonlaringiz uchun render-funksiya shu atributlar bilan ikkinchi `control` argumentini oladi; `inputFieldLabelId(id)` — `aria-labelledby` uchun label id, `splitInputFieldProps(props)` — maydon va kontrol prop’larini ajratish.
 - **`ThemeProvider onSkinLoadError`** — skin CSS ni yuklash (`load`) xatosi endi yo‘qolmaydi: oldingi skin qoladi, xato ishlov beruvchiga yoki `console.error` ga boradi.
+- **`pixel` skini (8-bit)** — retro ko‘rinish: zinapoya burchakli ramkalar, qattiq soyalar, piksel shriftlar, yorug‘ va qorong‘i sxema. `corporate` ni meros oladi (`extends`): `@v-lab/ui-kit/skins/corporate.css`, so‘ng `@v-lab/ui-kit/skins/pixel.css` ni ulang va `ThemeProvider skins={[corporateSkin, pixelSkin]}`. Shriftlarni (Press Start 2P, Tiny5) ilova ulaydi.
 
 ### Changed
 
@@ -34,6 +35,8 @@ Format [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) ga asoslangan, v
 - **React 19.** Kit React 19.3 da ishlab chiqiladi va sinovdan o‘tkaziladi. `react` / `react-dom` peer diapazoni — `^18.2.0 || ^19.0.0` (avval `>=17` edi, lekin kit React 17 da ishlamagan: komponentlar React 18 dagi `useId` dan foydalanadi). React 18.2+ dagi ilovalar o‘zgarishsiz ishlayveradi.
 - **`Button` sukut bo‘yicha `type="button"`** — `<form>` ichidagi tugma endi formani yubormaydi. Yuborish uchun `type="submit"` bering.
 - **Faqat ikonkali tugmalarga ochiq nom kerak:** `children` siz `Button`, `ToggleButton` va `SegmentedControl.Item` uchun TypeScript `aria-label` yoki `aria-labelledby` talab qiladi; dev rejimida nomsiz tugma ogohlantirish chiqaradi. O‘ramlar uchun bu qoidasiz turlar: `ButtonBaseProps`, `ToggleButtonBaseProps`, `SegmentedControlItemBaseProps`.
+- **`SelectInput`, `AsyncSearchSelect`, `LanguageSwitcher`: yangi API.** `onChange` soxta hodisa o‘rniga qiymatni oladi — `(value, option)`, `multiple` rejimida `(values, options)`; `ref` yashirin `<select>` emas, trigger-tugmani ko‘rsatadi; `triggerAriaLabel` o‘rniga standart `aria-label` / `aria-labelledby` — `compact`, `compact-label`, `inline` variantlarida va `label` siz `AsyncSearchSelect` da majburiy. Forma qiymatni yashirin `<input name>` orqali oladi. Ishlatilmagan `multipleDisplay` prop’i olib tashlandi. Batafsil — migratsiya qo‘llanmasida.
+- **Ochiladigan ro‘yxatlarda klaviatura WAI-ARIA combobox naqshi bo‘yicha:** ochilganda qidiruv maydoni fokus oladi, Escape faqat ro‘yxatni yopadi (atrofdagi modalni emas), Tab va tashqariga bosish yopadi, birinchi harflar bo‘yicha qidiruv, Home / End / PageUp / PageDown, Delete / Backspace qiymatni tozalaydi, «Hech narsa topilmadi» va yuklanish ekran o‘quvchiga e’lon qilinadi. `TagInput`: Enter ajratilgan taklifni qo‘shadi.
 
 ### Fixed
 

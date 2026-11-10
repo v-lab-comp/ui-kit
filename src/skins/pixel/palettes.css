@@ -1,0 +1,135 @@
+/* ============================================================
+   Палитры скина pixel — поверх corporate/palettes.css (тот же вес (0,1,0), файл идёт позже).
+   Все значения — семантические токены pixel, поэтому тёмная схема подхватывается сама.
+
+   Переменные corporate (их читают Button, Badge, Tag, Toast):
+   --pal-base        заливка filled, рамка stroke
+   --pal-hover       темнее (hover у filled в corporate; в pixel hover — brightness, см. ниже)
+   --pal-active      ещё темнее
+   --pal-bg-hover    фон lighter, hover у stroke / ghost
+   --pal-bg-active   фон active у stroke / ghost
+
+   Свои переменные pixel (corporate их не знает, читают файлы components/*.css этого скина):
+   --pal-text        читаемый текст цвета палитры на панели и на --pal-bg-hover (≥ 4,5:1):
+                     текст и рамка stroke, текст lighter и ghost. Нужен, потому что у warning
+                     и away заливка жёлтая и как текст не читается.
+   --pal-on-base     текст на заливке filled: белый, у warning / away — чернила.
+
+   8-битный hover у filled — filter: brightness(1.15) на той же заливке, нажатие — сдвиг
+   и перевёрнутый объём (--pixel-bevel-pressed); --pal-hover / --pal-active оставлены
+   для правил corporate, которые pixel не переопределил.
+   ============================================================ */
+
+:where([data-vl-skin~='pixel']) {
+  [data-color='primary'] {
+    --pal-base: var(--primary-base);
+    --pal-hover: var(--primary-dark);
+    --pal-active: var(--primary-darker);
+    --pal-bg-hover: var(--primary-alpha-16);
+    --pal-bg-active: var(--pixel-primary-light);
+    --pal-text: var(--primary-dark);
+    --pal-on-base: var(--static-white);
+  }
+
+  /* Нейтральная заливка — чернила (в тёмной схеме — светлая, текст на ней тёмный) */
+  [data-color='neutral'] {
+    --pal-base: var(--bg-strong-950);
+    --pal-hover: var(--bg-surface-800);
+    --pal-active: var(--bg-surface-800);
+    --pal-bg-hover: var(--bg-soft-200);
+    --pal-bg-active: var(--bg-sub-300);
+    --pal-text: var(--text-strong-950);
+    --pal-on-base: var(--text-white-0);
+  }
+
+  [data-color='error'] {
+    --pal-base: var(--error-base);
+    --pal-hover: var(--error-dark);
+    --pal-active: var(--error-dark);
+    --pal-bg-hover: var(--error-lighter);
+    --pal-bg-active: var(--error-light);
+    --pal-text: var(--error-dark);
+    --pal-on-base: var(--static-white);
+  }
+
+  [data-color='information'] {
+    --pal-base: var(--information-base);
+    --pal-hover: var(--information-dark);
+    --pal-active: var(--information-dark);
+    --pal-bg-hover: var(--information-lighter);
+    --pal-bg-active: var(--information-light);
+    --pal-text: var(--information-dark);
+    --pal-on-base: var(--static-white);
+  }
+
+  /* Жёлтая заливка: текст на ней — чернила, текст цвета палитры — тёмно-охристый */
+  [data-color='warning'] {
+    --pal-base: var(--warning-base);
+    --pal-hover: var(--warning-dark);
+    --pal-active: var(--warning-dark);
+    --pal-bg-hover: var(--warning-lighter);
+    --pal-bg-active: var(--warning-light);
+    --pal-text: var(--warning-dark);
+    --pal-on-base: var(--static-black);
+  }
+
+  [data-color='success'] {
+    --pal-base: var(--success-base);
+    --pal-hover: var(--success-dark);
+    --pal-active: var(--success-dark);
+    --pal-bg-hover: var(--success-lighter);
+    --pal-bg-active: var(--success-light);
+    --pal-text: var(--success-dark);
+    --pal-on-base: var(--static-white);
+  }
+
+  [data-color='away'] {
+    --pal-base: var(--away-base);
+    --pal-hover: var(--away-dark);
+    --pal-active: var(--away-dark);
+    --pal-bg-hover: var(--away-lighter);
+    --pal-bg-active: var(--away-light);
+    --pal-text: var(--away-dark);
+    --pal-on-base: var(--static-black);
+  }
+
+  [data-color='feature'] {
+    --pal-base: var(--feature-base);
+    --pal-hover: var(--feature-dark);
+    --pal-active: var(--feature-dark);
+    --pal-bg-hover: var(--feature-lighter);
+    --pal-bg-active: var(--feature-light);
+    --pal-text: var(--feature-dark);
+    --pal-on-base: var(--static-white);
+  }
+
+  [data-color='verified'] {
+    --pal-base: var(--verified-base);
+    --pal-hover: var(--verified-dark);
+    --pal-active: var(--verified-dark);
+    --pal-bg-hover: var(--verified-lighter);
+    --pal-bg-active: var(--verified-light);
+    --pal-text: var(--verified-dark);
+    --pal-on-base: var(--static-white);
+  }
+
+  [data-color='highlighted'] {
+    --pal-base: var(--highlighted-base);
+    --pal-hover: var(--highlighted-dark);
+    --pal-active: var(--highlighted-dark);
+    --pal-bg-hover: var(--highlighted-lighter);
+    --pal-bg-active: var(--highlighted-light);
+    --pal-text: var(--highlighted-dark);
+    --pal-on-base: var(--static-white);
+  }
+
+  [data-color='stable'] {
+    --pal-base: var(--stable-base);
+    --pal-hover: var(--stable-dark);
+    --pal-active: var(--stable-dark);
+    --pal-bg-hover: var(--stable-lighter);
+    --pal-bg-active: var(--stable-light);
+    --pal-text: var(--stable-dark);
+    --pal-on-base: var(--static-white);
+  }
+}

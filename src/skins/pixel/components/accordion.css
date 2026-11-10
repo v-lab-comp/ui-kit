@@ -1,0 +1,70 @@
+/* accordion: 8-битный вид поверх corporate/components/accordion.css — раскладка приходит оттуда, здесь только оформление.
+   Каждый пункт — панель со ступенчатой рамкой; открытый получает жёсткую тень. */
+:where([data-vl-skin~='pixel']) {
+  .vl-accordion {
+    margin: var(--pixel-unit);
+    border: none;
+    background: var(--bg-white-0);
+    box-shadow: var(--pixel-frame);
+  }
+
+  .vl-accordion:hover {
+    box-shadow: var(--pixel-frame);
+  }
+
+  .vl-accordion[data-open] {
+    box-shadow: var(--pixel-frame), var(--pixel-drop);
+  }
+
+  .vl-accordion[data-disabled] {
+    opacity: 1;
+    background: var(--pixel-dither);
+    box-shadow: var(--pixel-frame-disabled);
+  }
+
+  .vl-accordion[data-disabled] .vl-accordion__trigger,
+  .vl-accordion[data-disabled] :where(.vl-accordion__left-icon, .vl-accordion__right-icon) {
+    color: var(--text-disabled-300);
+  }
+
+  .vl-accordion__trigger {
+    padding: 14px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 22px;
+    letter-spacing: 0;
+  }
+
+  .vl-accordion:not([data-disabled]) .vl-accordion__trigger:hover {
+    background: var(--pixel-dither-hover);
+  }
+
+  /* Фокус внутри рамки — снаружи его перекрыли бы соседние пункты */
+  .vl-accordion__trigger:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: calc(-2 * var(--pixel-unit));
+  }
+
+  .vl-accordion__left-icon,
+  :where(.vl-accordion__left-icon)[data-toggle],
+  :where(.vl-accordion__right-icon)[data-toggle],
+  .vl-accordion__toggle-icon {
+    color: var(--icon-strong-950);
+  }
+
+  .vl-accordion[data-open] .vl-accordion__content-inner {
+    border-top: var(--pixel-divider);
+    border-top-color: var(--stroke-soft-200);
+  }
+
+  .vl-accordion__content-inner {
+    padding: 12px 16px 16px;
+    font-size: 15px;
+    line-height: 1.5;
+    letter-spacing: 0;
+  }
+
+  .vl-accordion[data-has-left-icon] .vl-accordion__content-inner {
+    padding-left: 44px;
+  }
+}

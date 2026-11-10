@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>8-bit — экран приложения</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=Tiny5&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.r{font-family:'Tiny5',monospace;color:#1b1b2f;background:#f4f1e6}
+.d{font-family:'Press Start 2P',monospace;line-height:1.6}
+.box{background:#fffdf5;margin:4px;box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f}
+.sh{box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f,8px 8px 0 4px rgba(27,27,47,.28)}
+.side{width:264px;flex:none;background:#1b1b2f;color:#ecead9;display:flex;flex-direction:column;padding:16px 12px;gap:6px;box-sizing:border-box}
+.sec{font-family:'Press Start 2P',monospace;font-size:7px;color:#a9a7bd;padding:16px 12px 8px}
+.it{all:unset;cursor:pointer;display:flex;align-items:center;gap:12px;padding:10px 12px 10px 30px;font-size:16px;position:relative;color:#ecead9}
+.it.on{background:#2b4fd9;color:#fff;box-shadow:inset -3px -3px 0 rgba(0,0,0,.3),inset 3px 3px 0 rgba(255,255,255,.25)}
+.it.on::before{content:'';position:absolute;left:10px;top:50%;margin-top:-7px;width:8px;height:14px;background:#fff;clip-path:polygon(0 0,2px 0,2px 2px,4px 2px,4px 4px,6px 4px,6px 6px,8px 6px,8px 8px,6px 8px,6px 10px,4px 10px,4px 12px,2px 12px,2px 14px,0 14px)}
+.it .n{margin-left:auto;font-family:'Press Start 2P',monospace;font-size:7px;padding:4px 6px;background:#c42b2b;color:#fff}
+.btn{font-family:'Press Start 2P',monospace;font-size:9px;line-height:1;padding:11px 14px;border:0;margin:4px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;color:#fff;background:var(--c,#2b4fd9);box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f,inset -4px -4px 0 rgba(0,0,0,.3),inset 4px 4px 0 rgba(255,255,255,.3)}
+.fld{display:flex;align-items:center;gap:10px;background:#fffdf5;margin:4px;padding:0 12px;height:36px;width:240px;font-size:15px;color:#6e6b82;box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f,inset 4px 4px 0 #e6e1cf}
+.lang{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Press Start 2P',monospace;font-size:8px;padding:10px 12px;margin:4px;background:#fffdf5;box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f,inset -4px -4px 0 #e0dbc8}
+.stat{padding:18px;display:flex;flex-direction:column;gap:10px}
+.app{display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 4px;font-size:14px;text-align:center;cursor:pointer}
+.app.on{background:#eef1ff;box-shadow:inset 0 0 0 3px #2b4fd9}
+.ai{width:40px;height:40px;display:flex;align-items:center;justify-content:center;color:#fff;background:var(--c);box-shadow:inset -3px -3px 0 rgba(0,0,0,.3),inset 3px 3px 0 rgba(255,255,255,.3)}
+.row{display:flex;align-items:center;gap:14px;padding:12px 16px;border-top:4px dotted #d9d5c3;font-size:16px}
+.bar{height:12px;background:repeating-linear-gradient(90deg,var(--c) 0 10px,transparent 10px 12px)}
+</style>
+</helmet>
+<div class="r" style="width: 1440px; height: 980px; display: flex; position: relative; overflow: hidden">
+  <nav class="side" aria-label="Основное меню">
+    <button class="it" style="padding-left: 12px; gap: 10px; margin-bottom: 6px" aria-haspopup="menu" aria-expanded="true">
+      <span class="ai" style="--c: #2b4fd9; width: 32px; height: 32px"><svg width="14" height="14" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M3 0h1v2H3zM0 2h7v1H0zM1 3h5v1H1zM2 4h3v1H2zM1 5h2v1H1zM4 5h2v1H4zM0 6h2v1H0zM5 6h2v1H5z"/></svg></span>
+      <span style="display: flex; flex-direction: column; gap: 2px"><span class="d" style="font-size: 9px">V-LAB</span><span style="font-size: 13px; color: #a9a7bd">Студия</span></span>
+      <svg width="12" height="8" viewBox="0 0 7 4" shape-rendering="crispEdges" fill="currentColor" style="margin-left: auto" aria-hidden="true"><path d="M0 0h2v1H0zM5 0h2v1H5zM1 1h2v1H1zM4 1h2v1H4zM2 2h3v1H2zM3 3h1v1H3z"/></svg>
+    </button>
+    <div class="sec">РАБОТА</div>
+    <a class="it" href="#"><svg width="14" height="14" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M3 0h1v1H3zM2 1h3v1H2zM1 2h5v1H1zM0 3h7v1H0zM1 4h1v3H1zM5 4h1v3H5zM2 6h3v1H2z"/></svg>Главная</a>
+    <a class="it on" href="#" aria-current="page"><svg width="16" height="14" viewBox="0 0 8 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h3v1H0zM0 1h8v1H0zM0 2h1v5H0zM7 2h1v5H7zM1 6h6v1H1z"/></svg>Проекты<span class="n">4</span></a>
+    <a class="it" href="#"><svg width="14" height="14" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 6h7v1H0zM1 3h1v3H1zM3 1h1v5H3zM5 4h1v2H5z"/></svg>Отчёты</a>
+    <a class="it" href="#"><svg width="16" height="14" viewBox="0 0 8 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M1 0h2v2H1zM0 3h4v1H0zM0 4h1v2H0zM3 4h1v2H3zM5 1h2v2H5zM4 4h4v1H4zM7 5h1v1H7z"/></svg>Команда</a>
+    <div class="sec">СИСТЕМА</div>
+    <a class="it" href="#"><svg width="14" height="14" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" fill-rule="evenodd" aria-hidden="true"><path d="M3 0h1v1H3zM3 6h1v1H3zM0 3h1v1H0zM6 3h1v1H6zM1 1h5v5H1zM3 3h1v1H3z"/></svg>Настройки</a>
+    <a class="it" href="#"><svg width="14" height="14" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M3 0h1v1H3zM2 1h3v1H2zM1 2h5v3H1zM0 5h7v1H0zM3 6h1v1H3z"/></svg>Уведомления<span class="n">12</span></a>
+    <div style="margin-top: auto; display: flex; gap: 12px; align-items: center; padding: 12px; border-top: 4px dotted #3a3a52">
+      <svg width="36" height="36" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true"><rect width="8" height="8" fill="#2b4fd9"/><path fill="#f2c9a0" d="M2 2h4v4H2zM3 6h2v2H3z"/><path fill="#1b1b2f" d="M2 1h4v1H2zM1 2h1v3H1zM6 2h1v3H6zM3 3h1v1H3zM5 3h1v1H5z"/><path fill="#c42b2b" d="M3 5h2v1H3z"/></svg>
+      <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px">Анна Петрова</span><span style="font-size: 13px; color: #a9a7bd">anna@pixel.dev</span></span>
+    </div>
+  </nav>
+
+  <div style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+    <header style="display: flex; align-items: center; gap: 16px; padding: 18px 32px; border-bottom: 4px solid #1b1b2f; background: #fffdf5">
+      <div style="display: flex; flex-direction: column; gap: 8px; flex: 1">
+        <nav aria-label="Навигация" style="font-size: 15px; display: flex; gap: 10px; color: #55536a"><a href="#" style="color: #1b3bb3">Главная</a><span aria-hidden="true">›</span><span aria-current="page">Проекты</span></nav>
+        <h1 class="d" style="margin: 0; font-size: 18px; font-weight: 400">ПРОЕКТЫ</h1>
+      </div>
+      <div class="fld"><svg width="16" height="16" viewBox="0 0 8 8" shape-rendering="crispEdges" fill="#1b1b2f" aria-hidden="true"><path d="M1 0h4v1H1zM0 1h1v4H0zM5 1h1v4H5zM1 5h4v1H1zM5 5h1v1H5zM6 6h1v1H6zM7 7h1v1H7z"/></svg>Найти проект</div>
+      <button class="lang" aria-label="Язык интерфейса">RU<svg width="10" height="6" viewBox="0 0 7 4" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h2v1H0zM5 0h2v1H5zM1 1h2v1H1zM4 1h2v1H4zM2 2h3v1H2zM3 3h1v1H3z"/></svg></button>
+      <button class="btn"><svg width="12" height="12" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M3 0h1v7H3zM0 3h7v1H0z"/></svg>Новый проект</button>
+    </header>
+
+    <main style="flex: 1; padding: 32px; display: flex; flex-direction: column; gap: 28px; overflow: hidden">
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+        <div class="box sh stat"><span class="d" style="font-size: 8px; color: #55536a">АКТИВНЫХ ПРОЕКТОВ</span><span class="d" style="font-size: 26px">04</span><div class="bar" style="--c: #2b4fd9; width: 60%" aria-hidden="true"></div></div>
+        <div class="box sh stat"><span class="d" style="font-size: 8px; color: #55536a">УРОВНЕЙ ГОТОВО</span><span class="d" style="font-size: 26px">23/32</span><div class="bar" style="--c: #1e7d38; width: 72%" aria-hidden="true"></div></div>
+        <div class="box sh stat"><span class="d" style="font-size: 8px; color: #55536a">ОШИБОК СБОРКИ</span><span class="d" style="font-size: 26px; color: #c42b2b">01</span><div class="bar" style="--c: #c42b2b; width: 12%" aria-hidden="true"></div></div>
+      </div>
+      <div class="box" style="display: flex; flex-direction: column">
+        <div class="d" style="font-size: 9px; padding: 16px; background: #1b1b2f; color: #f4f1e6">ПОСЛЕДНИЕ ИЗМЕНЕНИЯ</div>
+        <div class="row" style="border-top: 0"><span class="d" style="font-size: 8px; padding: 5px 7px; background: #1e7d38; color: #fff">ГОТОВО</span>Уровень 3 «Подземелье» собран<span style="margin-left: auto; color: #55536a; font-size: 14px">5 мин назад</span></div>
+        <div class="row"><span class="d" style="font-size: 8px; padding: 5px 7px; background: #f2b31a">РЕВЬЮ</span>Тайлсет «Лес» ждёт проверки<span style="margin-left: auto; color: #55536a; font-size: 14px">1 ч назад</span></div>
+        <div class="row"><span class="d" style="font-size: 8px; padding: 5px 7px; background: #c42b2b; color: #fff">ОШИБКА</span>Не собран спрайт босса<span style="margin-left: auto; color: #55536a; font-size: 14px">вчера</span></div>
+        <div class="row"><span class="d" style="font-size: 8px; padding: 5px 7px; background: #2b4fd9; color: #fff">НОВОЕ</span>Лейла присоединилась к проекту<span style="margin-left: auto; color: #55536a; font-size: 14px">вчера</span></div>
+      </div>
+    </main>
+  </div>
+
+  <div class="box sh" role="menu" aria-label="Приложения" style="position: absolute; left: 20px; top: 76px; width: 360px">
+    <div style="padding: 16px; background: #6a3fd4; color: #fff; border-bottom: 4px solid #1b1b2f; display: flex; flex-direction: column; gap: 6px"><span class="d" style="font-size: 9px">НОВЫЙ РЕДАКТОР КАРТ</span><span style="font-size: 14px">Рисуйте уровни прямо в браузере</span></div>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 12px">
+      <a class="app on" role="menuitem" href="#" aria-current="true" style="color: inherit; text-decoration: none"><span class="ai" style="--c: #2b4fd9"><svg width="16" height="16" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M3 0h1v2H3zM0 2h7v1H0zM1 3h5v1H1zM2 4h3v1H2zM1 5h2v1H1zM4 5h2v1H4zM0 6h2v1H0zM5 6h2v1H5z"/></svg></span>Студия</a>
+      <a class="app" role="menuitem" href="#" style="color: inherit; text-decoration: none"><span class="ai" style="--c: #1e7d38"><svg width="16" height="16" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 6h7v1H0zM1 3h1v3H1zM3 1h1v5H3zM5 4h1v2H5z"/></svg></span>Аналитика</a>
+      <a class="app" role="menuitem" href="#" style="color: inherit; text-decoration: none"><span class="ai" style="--c: #c42b2b"><svg width="16" height="16" viewBox="0 0 8 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M1 0h2v2H1zM0 3h4v1H0zM0 4h1v2H0zM3 4h1v2H3zM5 1h2v2H5zM4 4h4v1H4zM7 5h1v1H7z"/></svg></span>Команды</a>
+      <a class="app" role="menuitem" href="#" style="color: inherit; text-decoration: none"><span class="ai" style="--c: #f2b31a; color: #1b1b2f"><svg width="16" height="16" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M1 0h1v1H1zM5 0h1v1H5zM0 1h7v2H0zM0 3h1v4H0zM6 3h1v4H6zM1 6h5v1H1zM2 4h1v1H2zM4 4h1v1H4z"/></svg></span>Календарь</a>
+      <a class="app" role="menuitem" href="#" style="color: inherit; text-decoration: none"><span class="ai" style="--c: #16729a"><svg width="16" height="12" viewBox="0 0 8 6" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h8v1H0zM0 1h1v5H0zM7 1h1v5H7zM1 5h6v1H1zM1 1h1v1H1zM6 1h1v1H6zM2 2h1v1H2zM5 2h1v1H5zM3 3h2v1H3z"/></svg></span>Почта</a>
+      <span class="app" role="menuitem" aria-disabled="true" style="color: #6e6b82"><span class="ai" style="--c: #8d8a9c"><svg width="14" height="16" viewBox="0 0 7 8" shape-rendering="crispEdges" fill="currentColor" fill-rule="evenodd" aria-hidden="true"><path d="M2 0h3v1H2zM1 1h1v2H1zM5 1h1v2H5zM0 3h7v5H0zM3 5h1v1H3z"/></svg></span>Скоро</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":980}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

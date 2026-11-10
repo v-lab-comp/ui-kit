@@ -1,0 +1,126 @@
+/* badge: 8-битный вид поверх corporate/components/badge.css (макет: Data.dc.html, «Badge»).
+
+   Мелкий Press Start 2P, тонкая ступенчатая рамка 2px снаружи (место под неё — margin),
+   квадратная точка статуса. Filled — в чернильной рамке, light / lighter — рамка в цвет
+   фона, stroke — рамка и текст цвета палитры. Размеры (высоты 14/16/20/24) — как у corporate,
+   --badge-* из style по-прежнему работают. */
+:where([data-vl-skin~='pixel']) {
+  .vl-badge {
+    --pixel-unit: var(--pixel-unit-sm);
+    --_px-badge-bg: var(--pal-base);
+    --_px-badge-fg: var(--pal-on-base, var(--static-white));
+
+    --_badge-fs: 7px;
+    gap: 6px;
+    border: 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: 0;
+    transition: none;
+  }
+
+  /* Вес (0,2,0): перекрывает и варианты corporate, и их neutral-исключения (тот же вес, раньше) */
+  .vl-badge[data-variant] {
+    margin: var(--pixel-unit);
+    background: var(--_px-badge-bg);
+    color: var(--_px-badge-fg);
+    box-shadow: var(--pixel-frame-sm);
+  }
+
+  button.vl-badge {
+    font-family: var(--font-display);
+    font-weight: 400;
+  }
+
+  :where(.vl-badge)[data-size='xsmall'] {
+    --_badge-fs: 6px;
+    --_badge-px: 5px;
+  }
+  :where(.vl-badge)[data-size='small'] {
+    --_badge-fs: 6px;
+    --_badge-px: 6px;
+  }
+  :where(.vl-badge)[data-size='medium'] {
+    --_badge-fs: 7px;
+    --_badge-px: 8px;
+  }
+  :where(.vl-badge)[data-size='large'] {
+    --_badge-fs: 8px;
+    --_badge-px: 10px;
+  }
+
+  /* Точка статуса — квадратный пиксель */
+  .vl-badge__dot {
+    border-radius: 0;
+  }
+
+  .vl-badge svg {
+    shape-rendering: crispEdges;
+  }
+
+  /* ---------- Варианты ---------- */
+
+  :where(.vl-badge)[data-variant='filled'] {
+    --_px-badge-bg: var(--pal-base);
+    --_px-badge-fg: var(--pal-on-base, var(--static-white));
+  }
+
+  /* neutral filled: corporate подменяет --pal-base на faded-base — текст светлый в обеих схемах */
+  :where(.vl-badge)[data-color='neutral'][data-variant='filled'] {
+    --_px-badge-fg: var(--text-white-0);
+  }
+
+  :where(.vl-badge)[data-variant='light'] {
+    --pixel-frame-color: var(--pal-bg-active);
+    --_px-badge-bg: var(--pal-bg-active);
+    --_px-badge-fg: var(--pal-text, var(--pal-hover));
+  }
+
+  :where(.vl-badge)[data-variant='lighter'] {
+    --pixel-frame-color: var(--pal-bg-hover);
+    --_px-badge-bg: var(--pal-bg-hover);
+    --_px-badge-fg: var(--pal-text, var(--pal-base));
+  }
+
+  :where(.vl-badge)[data-variant='stroke'] {
+    --pixel-frame-color: var(--pal-text, var(--pal-base));
+    --_px-badge-bg: var(--bg-white-0);
+    --_px-badge-fg: var(--pal-text, var(--pal-base));
+  }
+
+  /* ---------- Кликабельный бейдж ---------- */
+
+  :where(.vl-badge)[data-interactive][data-variant='filled']:hover {
+    background-color: var(--_px-badge-bg);
+    filter: brightness(1.15);
+  }
+
+  :where(.vl-badge)[data-interactive][data-variant='light']:hover,
+  :where(.vl-badge)[data-interactive][data-variant='lighter']:hover,
+  :where(.vl-badge)[data-interactive][data-variant='stroke']:hover {
+    background: var(--pixel-dither-hover), var(--_px-badge-bg);
+  }
+
+  :where(.vl-badge)[data-interactive][data-variant='filled']:active,
+  :where(.vl-badge)[data-interactive][data-variant='light']:active,
+  :where(.vl-badge)[data-interactive][data-variant='lighter']:active,
+  :where(.vl-badge)[data-interactive][data-variant='stroke']:active {
+    filter: none;
+    transform: var(--pixel-press-shift);
+  }
+
+  :where(.vl-badge)[data-interactive]:focus-visible {
+    outline: var(--pixel-unit-sm) dashed var(--pixel-focus-color);
+    outline-offset: 4px;
+  }
+
+  /* ---------- Disabled: дизеринг и серая рамка ---------- */
+
+  .vl-badge[data-disabled] {
+    --pixel-frame-color: var(--pixel-disabled-frame-color);
+    background: var(--pixel-dither);
+    color: var(--text-sub-600);
+    filter: none;
+    transform: none;
+  }
+}

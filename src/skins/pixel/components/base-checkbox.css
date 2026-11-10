@@ -1,0 +1,101 @@
+/*
+ * base-checkbox: 8-битный вид поверх corporate/components/base-checkbox.css — раскладка приходит
+ * оттуда, здесь только оформление.
+ *
+ * Квадрат с тонкой ступенчатой рамкой 2px (--pixel-frame-sm, снаружи — отсюда margin 2px) и
+ * «утопленным» краем. Отмечен — заливка primary, объём снизу-справа и пиксельная галочка.
+ * Иконки — SVG в data-URI (как у corporate): цвет внутри data-URI токеном не задать, поэтому
+ * белый для заливки primary и серый (#6e6b82 — читается и на светлом, и на тёмном дизеринге)
+ * для отключённого состояния.
+ */
+:where([data-vl-skin~='pixel']) {
+  .vl-base-checkbox {
+    /* Галочка 8×6 «пикселей» в масштабе 1.5 (у small — 1), штрих 10×3 */
+    --icon-size: 12px 9px;
+    --dash-size: 10px 3px;
+    --_cb-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 6' shape-rendering='crispEdges' fill='white'%3E%3Cpath d='M6 0h2v2H6zM5 2h2v1H5zM4 3h2v1H4zM0 2h2v1H0zM1 3h2v1H1zM2 4h3v1H2zM3 5h1v1H3z'/%3E%3C/svg%3E");
+    --_cb-dash: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 3' shape-rendering='crispEdges' fill='white'%3E%3Crect width='10' height='3'/%3E%3C/svg%3E");
+    --_cb-check-off: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 6' shape-rendering='crispEdges' fill='%236e6b82'%3E%3Cpath d='M6 0h2v2H6zM5 2h2v1H5zM4 3h2v1H4zM0 2h2v1H0zM1 3h2v1H1zM2 4h3v1H2zM3 5h1v1H3z'/%3E%3C/svg%3E");
+    --_cb-dash-off: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 3' shape-rendering='crispEdges' fill='%236e6b82'%3E%3Crect width='10' height='3'/%3E%3C/svg%3E");
+
+    margin: var(--pixel-unit-sm);
+    border: 0;
+    border-radius: 0;
+    background-color: var(--bg-white-0);
+    box-shadow:
+      var(--pixel-frame-sm),
+      inset var(--pixel-unit-sm) var(--pixel-unit-sm) 0 var(--pixel-inset-color);
+    transition: none;
+  }
+
+  :where(.vl-base-checkbox)[data-size='small'] {
+    --icon-size: 8px 6px;
+    --dash-size: 8px 2px;
+    border-radius: 0;
+  }
+
+  /* Наведение — рамка цвета primary (как у corporate) */
+  .vl-base-checkbox:hover:not(:disabled) {
+    --pixel-frame-color: var(--pixel-input-accent);
+  }
+
+  /* Фокус с клавиатуры — жёлтый пунктир; отступ = рамка 2px + зазор 2px */
+  .vl-base-checkbox:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: 4px;
+  }
+
+  .vl-base-checkbox:checked,
+  .vl-base-checkbox:indeterminate {
+    background-color: var(--primary-base);
+    box-shadow:
+      var(--pixel-frame-sm),
+      inset calc(-1 * var(--pixel-unit-sm)) calc(-1 * var(--pixel-unit-sm)) 0
+        var(--pixel-bevel-dark);
+  }
+
+  /* Отмеченный — рамка остаётся чернильной, наведение — светлее */
+  .vl-base-checkbox:checked:hover:not(:disabled),
+  .vl-base-checkbox:indeterminate:hover:not(:disabled) {
+    --pixel-frame-color: var(--stroke-strong-950);
+    filter: brightness(1.15);
+  }
+
+  .vl-base-checkbox:checked {
+    background-image: var(--_cb-check);
+  }
+
+  .vl-base-checkbox:indeterminate {
+    background-image: var(--_cb-dash);
+  }
+
+  /* Отключено — дизеринг и серая рамка; отмеченный — серая галочка поверх дизеринга */
+  .vl-base-checkbox:disabled {
+    --pixel-frame-color: var(--pixel-disabled-frame-color);
+    background: var(--pixel-dither);
+    box-shadow: var(--pixel-frame-sm);
+  }
+
+  .vl-base-checkbox:checked:disabled,
+  .vl-base-checkbox:indeterminate:disabled {
+    box-shadow: var(--pixel-frame-sm);
+  }
+
+  .vl-base-checkbox:checked:disabled {
+    background:
+      var(--_cb-check-off) center / var(--icon-size) no-repeat,
+      var(--pixel-dither);
+  }
+
+  .vl-base-checkbox:indeterminate:disabled {
+    background:
+      var(--_cb-dash-off) center / var(--dash-size) no-repeat,
+      var(--pixel-dither);
+  }
+
+  /* Ошибка: у самого чекбокса атрибута нет — CheckboxField выставляет его по наличию текста
+     ошибки (см. checkbox-field.css), aria-invalid — на случай отдельного использования */
+  .vl-base-checkbox[aria-invalid='true']:not(:disabled) {
+    --pixel-frame-color: var(--pixel-input-error);
+  }
+}

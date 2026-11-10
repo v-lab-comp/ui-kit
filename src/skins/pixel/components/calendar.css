@@ -1,0 +1,37 @@
+/* calendar: 8-битный вид поверх corporate/components/calendar.css — раскладка приходит оттуда, здесь только оформление.
+   Панель со ступенчатой рамкой и жёсткой тенью; сетка месяцев/лет — как дни. */
+:where([data-vl-skin~='pixel']) {
+  .vl-calendar {
+    margin: var(--pixel-unit);
+    border: none;
+    background-color: var(--bg-white-0);
+    box-shadow: var(--pixel-frame), var(--pixel-drop);
+  }
+
+  .vl-calendar__option {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text-strong-950);
+    transition: none;
+  }
+
+  .vl-calendar__option:hover {
+    background-color: var(--bg-soft-200);
+    color: var(--text-strong-950);
+  }
+
+  .vl-calendar__option:active {
+    transform: var(--pixel-press-shift);
+  }
+
+  .vl-calendar__option:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: 2px;
+  }
+
+  .vl-calendar__option[data-active] {
+    background-color: var(--primary-base);
+    color: var(--static-white);
+    box-shadow: var(--pixel-bevel-sm);
+  }
+}

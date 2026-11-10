@@ -1,0 +1,112 @@
+/* segmented-control: 8-битный вид поверх corporate/components/segmented-control.css
+   (макеты: Buttons.dc.html — светлая схема, Dark.dc.html — тёмная).
+
+   Подложка — утопленный лоток в чернильной рамке. Ползунок (thumb) — сегмент,
+   «приподнятый» над лотком, как вкладка картриджа: в светлой схеме — светлая панель
+   в рамке с тенью дна, в тёмной — синяя кнопка с объёмом. Ползунок едет ступеньками. */
+:where([data-vl-skin~='pixel']) {
+  .vl-segmented-control {
+    /* Ползунок светлой схемы */
+    --_px-seg-thumb-bg: var(--bg-white-0);
+    --_px-seg-thumb-shadow: var(--pixel-frame), var(--pixel-bevel-panel);
+    --_px-seg-on-fg: var(--text-strong-950);
+
+    gap: var(--pixel-unit);
+    padding: 8px;
+    margin: var(--pixel-unit);
+    border: 0;
+    background-color: var(--bg-soft-200);
+    box-shadow: var(--pixel-frame);
+  }
+
+  /* Тёмная схема (корень или вложенный контейнер): синий ползунок, как в Dark.dc.html */
+  &[data-vl-scheme='dark'] .vl-segmented-control,
+  &[data-theme='dark'] .vl-segmented-control,
+  [data-theme='dark'] .vl-segmented-control {
+    --_px-seg-thumb-bg: var(--primary-base);
+    --_px-seg-thumb-shadow: var(--pixel-bevel);
+    --_px-seg-on-fg: var(--static-white);
+  }
+
+  /* Вложенный светлый контейнер внутри тёмного — снова светлый ползунок */
+  [data-theme='light'] .vl-segmented-control {
+    --_px-seg-thumb-bg: var(--bg-white-0);
+    --_px-seg-thumb-shadow: var(--pixel-frame), var(--pixel-bevel-panel);
+    --_px-seg-on-fg: var(--text-strong-950);
+  }
+
+  .vl-segmented-control__thumb {
+    top: 8px;
+    bottom: 8px;
+    background-color: var(--_px-seg-thumb-bg);
+    box-shadow: var(--_px-seg-thumb-shadow);
+    /* Движение «по пикселям» — ступеньками, без плавности */
+    transition:
+      left 0.16s steps(4, end),
+      width 0.16s steps(4, end),
+      opacity 0s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vl-segmented-control__thumb {
+      transition: none;
+    }
+  }
+
+  .vl-segmented-control__item {
+    padding: 6px 14px;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0;
+    transition: none;
+  }
+
+  .vl-segmented-control__item svg {
+    shape-rendering: crispEdges;
+  }
+
+  .vl-segmented-control__item:hover:not(:disabled):not([data-selected='true']) {
+    background: var(--pixel-dither-hover);
+  }
+
+  .vl-segmented-control__item[data-selected='true'] {
+    color: var(--_px-seg-on-fg);
+    font-weight: 600;
+  }
+
+  .vl-segmented-control__item:disabled {
+    color: var(--text-disabled-300);
+  }
+
+  .vl-segmented-control__item:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: 2px;
+  }
+
+  :where(.vl-segmented-control)[data-size='small'] .vl-segmented-control__item {
+    padding: 4px 10px;
+    font-size: 15px;
+  }
+
+  :where(.vl-segmented-control)[data-size='x-small'] .vl-segmented-control__item {
+    padding: 2px 8px;
+    font-size: 14px;
+  }
+
+  /* Отключённый контрол: дизеринг вместо полупрозрачности */
+  :where(.vl-segmented-control)[data-disabled] {
+    opacity: 1;
+    background: var(--pixel-dither);
+    box-shadow: var(--pixel-frame-disabled);
+  }
+
+  :where(.vl-segmented-control)[data-disabled] .vl-segmented-control__item {
+    color: var(--text-sub-600);
+  }
+
+  :where(.vl-segmented-control)[data-disabled] .vl-segmented-control__thumb {
+    --pixel-frame-color: var(--pixel-disabled-frame-color);
+    background-color: var(--bg-soft-200);
+    box-shadow: var(--pixel-frame);
+  }
+}

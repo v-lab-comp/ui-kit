@@ -1,0 +1,44 @@
+/* modal: 8-битный вид поверх corporate/components/modal.css — раскладка приходит оттуда, здесь только оформление.
+   Подложка — дизеринг (шахматка 4×4) вместо полупрозрачной заливки; окно — ступенчатая рамка
+   и жёсткая тень без размытия. Анимации corporate остаются, но идут «кадрами» (steps). */
+:where([data-vl-skin~='pixel']) {
+  .vl-modal__backdrop {
+    background: var(--pixel-scrim);
+    animation-timing-function: steps(4, end);
+  }
+
+  .vl-modal__panel {
+    /* Цвет полосы заголовка; ConfirmModal / ModalStatus меняют его ниже по цвету действия */
+    --pixel-modal-bar-bg: var(--primary-base);
+    --pixel-modal-bar-text: var(--static-white);
+    border: 0;
+    border-radius: 0;
+    background: var(--bg-white-0);
+    color: var(--text-strong-950);
+    font-family: var(--font-sans);
+    /* Рамка рисуется снаружи панели: overflow: hidden у панели собственные тени не режет */
+    box-shadow: var(--pixel-frame), var(--pixel-drop-lg);
+    animation-timing-function: steps(5, end);
+  }
+
+  /* Цвет полосы по смыслу окна. Отдельного атрибута у Modal нет, поэтому смысл берётся из
+     содержимого: цвет кнопки подтверждения в футере (ConfirmModal) или иконки статуса
+     (ModalStatus, вариант виден только по инлайн-стилю фона иконки). */
+  .vl-modal__panel:has(.vl-modal-footer [data-color='error']),
+  .vl-modal__panel:has(.vl-modal-status__status-icon[style*='error']) {
+    --pixel-modal-bar-bg: var(--error-base);
+  }
+  .vl-modal__panel:has(.vl-modal-footer [data-color='success']),
+  .vl-modal__panel:has(.vl-modal-status__status-icon[style*='success']) {
+    --pixel-modal-bar-bg: var(--success-base);
+  }
+  .vl-modal__panel:has(.vl-modal-status__status-icon[style*='information']) {
+    --pixel-modal-bar-bg: var(--information-base);
+  }
+  /* На жёлтом — чернила: белый текст на warning-base не читается */
+  .vl-modal__panel:has(.vl-modal-footer [data-color='warning']),
+  .vl-modal__panel:has(.vl-modal-status__status-icon[style*='warning']) {
+    --pixel-modal-bar-bg: var(--warning-base);
+    --pixel-modal-bar-text: var(--static-black);
+  }
+}

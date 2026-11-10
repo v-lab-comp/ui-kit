@@ -1,0 +1,9 @@
+/* confirm-modal: 8-битный вид поверх corporate/components/confirm-modal.css — раскладка приходит оттуда, здесь только оформление.
+   Текст подтверждения — чернилами и крупнее: Tiny5 на 14px читается плохо. */
+:where([data-vl-skin~='pixel']) {
+  .vl-confirm-modal__content {
+    color: var(--text-strong-950);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+}

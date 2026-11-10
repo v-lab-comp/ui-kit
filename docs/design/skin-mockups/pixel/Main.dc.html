@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>8-bit скин — обзор</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=Tiny5&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.r{font-family:'Tiny5',monospace;color:#1b1b2f;background:#f4f1e6}
+.d{font-family:'Press Start 2P',monospace;line-height:1.6}
+.box{background:#fffdf5;margin:4px;box-shadow:0 -4px 0 var(--b,#1b1b2f),0 4px 0 var(--b,#1b1b2f),-4px 0 0 var(--b,#1b1b2f),4px 0 0 var(--b,#1b1b2f)}
+.sh{box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f,8px 8px 0 4px rgba(27,27,47,.28)}
+.btn{font-family:'Press Start 2P',monospace;font-size:10px;line-height:1;padding:12px 16px;border:0;margin:4px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;color:#fff;background:var(--c,#2b4fd9);box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f,inset -4px -4px 0 rgba(0,0,0,.3),inset 4px 4px 0 rgba(255,255,255,.3)}
+.btn.pressed{transform:translate(2px,2px);box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f,inset 4px 4px 0 rgba(0,0,0,.3)}
+.btn.stroke{color:var(--c,#2b4fd9);background:#fffdf5;box-shadow:0 -4px 0 var(--c,#2b4fd9),0 4px 0 var(--c,#2b4fd9),-4px 0 0 var(--c,#2b4fd9),4px 0 0 var(--c,#2b4fd9)}
+.dither{background:repeating-conic-gradient(#d9d5c3 0 25%,#f4f1e6 0 50%) 0 0/4px 4px}
+.focus{outline:4px dashed #e0a100;outline-offset:6px}
+.cap{font-size:14px;color:#55536a}
+.sw{display:flex;flex-direction:column;gap:8px}
+.chip{height:72px;margin:4px;box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f;display:flex;align-items:flex-end;padding:8px;font-family:'Press Start 2P',monospace;font-size:8px}
+.ic{display:flex;flex-direction:column;align-items:center;gap:10px;font-size:13px;color:#55536a}
+.ic svg{color:#1b1b2f}
+h2{margin:0}
+</style>
+</helmet>
+<div class="r" style="width: 1200px; height: 1040px; box-sizing: border-box; padding: 56px; display: flex; flex-direction: column; gap: 44px">
+
+  <div style="display: flex; gap: 48px; align-items: flex-start">
+    <div style="flex: 1; display: flex; flex-direction: column; gap: 18px">
+      <div class="d" style="font-size: 36px; line-height: 1.3">8-BIT</div>
+      <div class="d" style="font-size: 12px">Скин для V-Lab UI Kit</div>
+      <p style="margin: 0; font-size: 18px; line-height: 1.5; max-width: 560px">Ретро-интерфейс в духе 8-битных консолей: рамки со ступенчатыми углами, жёсткие тени без размытия, ограниченная палитра, пиксельные шрифты и иконки. Компоненты те же — меняется только CSS скина.</p>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap">
+        <span class="box d" style="font-size: 8px; padding: 8px 10px">LIGHT + DARK</span>
+        <span class="box d" style="font-size: 8px; padding: 8px 10px">КОНТРАСТ ≥ 4,5:1</span>
+        <span class="box d" style="font-size: 8px; padding: 8px 10px">КИРИЛЛИЦА</span>
+      </div>
+    </div>
+    <div class="box sh" style="width: 420px">
+      <div style="background: #2b4fd9; color: #fff; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #1b1b2f">
+        <span class="d" style="font-size: 10px">НОВЫЙ ПРОЕКТ</span>
+        <button class="btn" style="--c: #c42b2b; padding: 6px; margin: 0 4px 0 0" aria-label="Закрыть"><svg width="14" height="14" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h1v1H0zM1 1h1v1H1zM2 2h1v1H2zM3 3h1v1H3zM4 4h1v1H4zM5 5h1v1H5zM6 6h1v1H6zM6 0h1v1H6zM5 1h1v1H5zM4 2h1v1H4zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z"/></svg></button>
+      </div>
+      <div style="padding: 20px; display: flex; flex-direction: column; gap: 16px">
+        <p style="margin: 0; font-size: 16px; line-height: 1.5">Создать проект «Пиксель» и пригласить команду?</p>
+        <div style="display: flex; gap: 12px; justify-content: flex-end">
+          <button class="btn stroke" style="--c: #1b1b2f">Отмена</button>
+          <button class="btn">Создать</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 16px">
+    <div class="d" style="font-size: 12px">Палитра</div>
+    <div style="display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 16px">
+      <div class="sw"><div class="chip" style="background: #1b1b2f; color: #f4f1e6">INK</div><span class="cap">#1b1b2f · текст, рамки</span></div>
+      <div class="sw"><div class="chip" style="background: #f4f1e6">PAPER</div><span class="cap">#f4f1e6 · фон</span></div>
+      <div class="sw"><div class="chip" style="background: #fffdf5">PANEL</div><span class="cap">#fffdf5 · поверхности</span></div>
+      <div class="sw"><div class="chip" style="background: #2b4fd9; color: #fff">PRIMARY</div><span class="cap">#2b4fd9 · 6,5:1</span></div>
+      <div class="sw"><div class="chip" style="background: #1e7d38; color: #fff">SUCCESS</div><span class="cap">#1e7d38 · 5,2:1</span></div>
+      <div class="sw"><div class="chip" style="background: #c42b2b; color: #fff">ERROR</div><span class="cap">#c42b2b · 5,6:1</span></div>
+      <div class="sw"><div class="chip" style="background: #f2b31a">WARNING</div><span class="cap">#f2b31a · с INK 9:1</span></div>
+      <div class="sw"><div class="chip" style="background: #6a3fd4; color: #fff">FEATURE</div><span class="cap">#6a3fd4 · 6,4:1</span></div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px">
+    <div style="display: flex; flex-direction: column; gap: 14px">
+      <div class="d" style="font-size: 12px">Шрифты</div>
+      <div class="d" style="font-size: 20px">Press Start 2P</div>
+      <div class="d" style="font-size: 10px">Заголовки, кнопки, бейджи — 8–24 px</div>
+      <div style="font-size: 26px; font-weight: 600">Tiny5</div>
+      <div style="font-size: 16px; line-height: 1.5">Текст, поля ввода, подсказки — 13–20 px. Съешь же ещё этих мягких французских булок.</div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 14px">
+      <div class="d" style="font-size: 12px">Приёмы</div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: end">
+        <div class="sw"><div class="box" style="height: 56px"></div><span class="cap">Ступенчатые углы</span></div>
+        <div class="sw"><div class="box sh" style="height: 56px"></div><span class="cap">Жёсткая тень</span></div>
+        <div class="sw"><div class="box dither" style="height: 56px"></div><span class="cap">Дизеринг: disabled, затемнение</span></div>
+        <div class="sw" style="align-items: flex-start"><button class="btn">Кнопка</button><span class="cap">Объём: свет и тень</span></div>
+        <div class="sw" style="align-items: flex-start"><button class="btn pressed">Нажата</button><span class="cap">Нажатие: сдвиг 2px</span></div>
+        <div class="sw" style="align-items: flex-start"><button class="btn focus">Фокус</button><span class="cap">Фокус: жёлтый пунктир</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 18px">
+    <div class="d" style="font-size: 12px">Иконки — сетка 7×7, без сглаживания</div>
+    <div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 18px">
+      <div class="ic"><svg width="28" height="28" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h1v1H0zM1 1h1v1H1zM2 2h1v1H2zM3 3h1v1H3zM4 4h1v1H4zM5 5h1v1H5zM6 6h1v1H6zM6 0h1v1H6zM5 1h1v1H5zM4 2h1v1H4zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z"/></svg>close</div>
+      <div class="ic"><svg width="28" height="16" viewBox="0 0 7 4" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h2v1H0zM5 0h2v1H5zM1 1h2v1H1zM4 1h2v1H4zM2 2h3v1H2zM3 3h1v1H3z"/></svg>chevron</div>
+      <div class="ic"><svg width="32" height="24" viewBox="0 0 8 6" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M6 0h2v2H6zM5 2h2v1H5zM4 3h2v1H4zM0 2h2v1H0zM1 3h2v1H1zM2 4h3v1H2zM3 5h1v1H3z"/></svg>check</div>
+      <div class="ic"><svg width="28" height="28" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M3 0h1v7H3zM0 3h7v1H0z"/></svg>plus</div>
+      <div class="ic"><svg width="32" height="32" viewBox="0 0 8 8" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M1 0h4v1H1zM0 1h1v4H0zM5 1h1v4H5zM1 5h4v1H1zM5 5h1v1H5zM6 6h1v1H6zM7 7h1v1H7z"/></svg>search</div>
+      <div class="ic"><svg width="36" height="20" viewBox="0 0 9 5" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M2 0h5v1H2zM1 1h1v1H1zM7 1h1v1H7zM0 2h1v1H0zM8 2h1v1H8zM1 3h1v1H1zM7 3h1v1H7zM2 4h5v1H2zM4 1h1v3H4zM3 2h3v1H3z"/></svg>eye</div>
+      <div class="ic"><svg width="28" height="28" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M1 0h1v1H1zM5 0h1v1H5zM0 1h7v2H0zM0 3h1v4H0zM6 3h1v4H6zM1 6h5v1H1zM2 4h1v1H2zM4 4h1v1H4z"/></svg>calendar</div>
+      <div class="ic"><svg width="28" height="28" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M2 0h3v1H2zM1 1h1v1H1zM5 1h1v1H5zM0 2h1v3H0zM6 2h1v3H6zM1 5h1v1H1zM5 5h1v1H5zM2 6h3v1H2zM3 1h1v1H3zM3 3h1v2H3z"/></svg>info</div>
+      <div class="ic"><svg width="28" height="32" viewBox="0 0 7 8" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M3 0h1v6H3zM2 1h3v1H2zM1 2h1v1H1zM5 2h1v1H5zM0 7h7v1H0z"/></svg>upload</div>
+      <div class="ic"><svg width="28" height="28" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M3 0h1v1H3zM2 1h3v1H2zM1 2h5v1H1zM0 3h7v1H0zM1 4h1v3H1zM5 4h1v3H5zM2 6h3v1H2z"/></svg>home</div>
+      <div class="ic"><svg width="28" height="28" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M3 0h1v2H3zM0 2h7v1H0zM1 3h5v1H1zM2 4h3v1H2zM1 5h2v1H1zM4 5h2v1H4zM0 6h2v1H0zM5 6h2v1H5z"/></svg>star</div>
+      <div class="ic"><svg width="28" height="28" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" fill-rule="evenodd" aria-hidden="true"><path d="M3 0h1v1H3zM3 6h1v1H3zM0 3h1v1H0zM6 3h1v1H6zM1 1h5v5H1zM3 3h1v1H3z"/></svg>settings</div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":1040}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

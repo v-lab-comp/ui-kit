@@ -1,0 +1,26 @@
+/* modal-body: 8-битный вид поверх corporate/components/modal-body.css — раскладка приходит оттуда, здесь только оформление.
+   Квадратная полоса прокрутки: чернильный ползунок на шахматном жёлобе. */
+:where([data-vl-skin~='pixel']) {
+  .vl-modal-body {
+    color: var(--text-strong-950);
+    font-size: 16px;
+    line-height: 1.5;
+    scrollbar-color: var(--stroke-sub-300) var(--bg-soft-200);
+  }
+  .vl-modal-body::-webkit-scrollbar {
+    width: 12px;
+  }
+  .vl-modal-body::-webkit-scrollbar-track {
+    background: var(--pixel-dither);
+  }
+  .vl-modal-body::-webkit-scrollbar-thumb {
+    border: 0;
+    border-radius: 0;
+    background-color: var(--stroke-sub-300);
+    background-clip: border-box;
+  }
+  .vl-modal-body::-webkit-scrollbar-thumb:hover,
+  .vl-modal-body::-webkit-scrollbar-thumb:active {
+    background-color: var(--stroke-strong-950);
+  }
+}

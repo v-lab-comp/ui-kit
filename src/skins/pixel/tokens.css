@@ -1,0 +1,435 @@
+/**
+ * Семантические токены скина pixel (8-бит).
+ *
+ * Скин расширяет corporate: на `<html>` стоит `data-vl-skin="corporate pixel"`, и сначала
+ * применяются токены corporate, а этот файл переопределяет их поверх. Селекторы те же, что
+ * у corporate, все ветки весят (0,1,0) — поэтому `pixel.css` обязан подключаться ПОСЛЕ
+ * `corporate.css`: при равном весе побеждает правило, которое идёт позже.
+ *
+ * Здесь переопределяется только то, что меняется: шрифты, радиусы, цвета, затемнение.
+ * Шкала `--z-*` и `--motion-*` приходят из corporate как есть.
+ *
+ * Собственные токены скина (их нет в corporate) — `--font-display` и `--pixel-*`:
+ * приёмы пиксельной графики для файлов `components/*.css` (рамка, объём, дизеринг, фокус,
+ * курсор ▶). Цвета приёмов — в блоках схем, составные `--pixel-*` — в двух последних блоках.
+ */
+
+/* ============================================================
+   Светлая схема: корень скина и вложенный светлый контейнер
+   ============================================================ */
+[data-vl-skin~='pixel'],
+:where([data-vl-skin~='pixel']) [data-theme='light'] {
+  /* Типографика. Press Start 2P — заголовки, кнопки, бейджи, шапки таблиц, вкладки, лейблы
+     (мелкие кегли 7–12px); Tiny5 — основной текст и поля ввода.
+     Шрифты подключает приложение (@fontsource или Google Fonts) — см. README. */
+  --font-sans: 'Tiny5', monospace;
+  --font-display: 'Press Start 2P', monospace;
+  font-family: var(--font-sans);
+  /* Пиксельный шрифт без сглаживания — чёткие края (работает на macOS; на других ОС игнорируется). */
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: auto;
+
+  /* Радиусы: в 8-бит углов нет — «скругление» рисует ступенчатая рамка (--pixel-frame). */
+  --radius-0: 0;
+  --radius-2: 0;
+  --radius-4: 0;
+  --radius-6: 0;
+  --radius-8: 0;
+  --radius-10: 0;
+  --radius-12: 0;
+  --radius-16: 0;
+  --radius-20: 0;
+  --radius-24: 0;
+  --radius-28: 0;
+  --radius-full: 0;
+
+  /* Static: чернила и белый текст на цветных заливках */
+  --static-black: #1b1b2f;
+  --static-white: #ffffff;
+
+  /* Primary. dark — цвет ссылок и текста на светлом фоне primary (8,9:1 на панели) */
+  --primary-base: #2b4fd9;
+  --primary-darker: #142c8a;
+  --primary-dark: #1b3bb3;
+  /* Сплошные заливки вместо полупрозрачных: в 8-бит цвета не смешиваются */
+  --primary-alpha-16: #dfe6ff;
+  --primary-alpha-10: #eef1ff;
+
+  /* Background. white-0 — панель (карточки, поля, модалки), weak-50 — «бумага» (фон страницы) */
+  --bg-strong-950: #1b1b2f;
+  --bg-surface-800: #3a3a52;
+  --bg-sub-300: #cfc9b3;
+  --bg-soft-200: #e6e1cf;
+  --bg-weak-50: #f4f1e6;
+  --bg-white-0: #fffdf5;
+
+  /* Text. sub-600 — 7,3:1 на панели; soft-400 (плейсхолдеры) — 5:1 на панели, 4,5:1 на бумаге.
+     disabled-300 — только для неактивных элементов (WCAG 1.4.3 их не нормирует). */
+  --text-strong-950: #1b1b2f;
+  --text-sub-600: #55536a;
+  --text-soft-400: #6e6b82;
+  --text-disabled-300: #8d8a9c;
+  --text-white-0: #fffdf5;
+
+  /* Stroke. strong-950 — чернила рамок; sub-300 — граница элемента (3,3:1);
+     soft-200 — мягкие разделители */
+  --stroke-strong-950: #1b1b2f;
+  --stroke-sub-300: #8d8a9c;
+  --stroke-soft-200: #d9d5c3;
+  --stroke-white-0: #fffdf5;
+
+  /* Icon */
+  --icon-strong-950: #1b1b2f;
+  --icon-sub-600: #55536a;
+  --icon-soft-400: #6e6b82;
+  --icon-disabled-300: #8d8a9c;
+  --icon-white-0: #fffdf5;
+
+  /* Цвета состояний: base — заливка, dark — текст на светлом фоне (lighter / панель),
+     light / lighter — фоны. Белый текст на base — от 4,5:1, кроме warning и away:
+     на их жёлтом base пишут чернилами (--static-black). */
+
+  /* State: Warning */
+  --warning-dark: #7a5300;
+  --warning-base: #f2b31a;
+  --warning-light: #f9dc8c;
+  --warning-lighter: #fdf0c9;
+
+  /* State: Error */
+  --error-dark: #a32121;
+  --error-base: #c42b2b;
+  --error-light: #f5c2c2;
+  --error-lighter: #fbe0e0;
+
+  /* State: Faded */
+  --faded-dark: #3a3a52;
+  --faded-base: #63607a;
+  --faded-light: #e0dbc8;
+  --faded-lighter: #ece8d8;
+
+  /* State: Information */
+  --information-dark: #0f4f6b;
+  --information-base: #16729a;
+  --information-light: #bfe3f2;
+  --information-lighter: #e0f2fa;
+
+  /* State: Success */
+  --success-dark: #18692f;
+  --success-base: #1e7d38;
+  --success-light: #b5e3c1;
+  --success-lighter: #dcf2e1;
+
+  /* State: Away */
+  --away-dark: #6b5a00;
+  --away-base: #e0c21a;
+  --away-light: #f3e38a;
+  --away-lighter: #fbf5cc;
+
+  /* State: Feature */
+  --feature-dark: #5a33c0;
+  --feature-base: #6a3fd4;
+  --feature-light: #d3c4f7;
+  --feature-lighter: #ebe3ff;
+
+  /* State: Verified */
+  --verified-dark: #135a87;
+  --verified-base: #176fa8;
+  --verified-light: #c5e4f7;
+  --verified-lighter: #e3f2fb;
+
+  /* State: Highlighted */
+  --highlighted-dark: #8a1f55;
+  --highlighted-base: #c2307a;
+  --highlighted-light: #f6c6dd;
+  --highlighted-lighter: #fbe3ef;
+
+  /* State: Stable */
+  --stable-dark: #125a52;
+  --stable-base: #1a7f73;
+  --stable-light: #bfe6e0;
+  --stable-lighter: #e0f3f0;
+
+  /* Затемнение под модалкой и шторкой. Сплошной цвет — запасной вариант; 8-битный
+     вид даёт дизеринг --pixel-scrim (фон-узор, его ставит components/modal.css). */
+  --overlay-overlay-gray: rgba(27, 27, 47, 0.45);
+
+  /* ----- Собственные токены pixel (цвета приёмов) ----- */
+
+  /* Толщина «пикселя» рамки: 4px — панели, кнопки, поля; 2px — мелочь (бейджи, чекбоксы, теги) */
+  --pixel-unit: 4px;
+  --pixel-unit-sm: 2px;
+  /* Рамка отключённого элемента */
+  --pixel-disabled-frame-color: #8d8a9c;
+  /* Тень объёма у светлых «панельных» кнопок (ButtonGroup, SegmentedControl, компактный Select) */
+  --pixel-shade: #e0dbc8;
+  /* Внутренняя тень поля ввода (утопленный край сверху-слева) */
+  --pixel-inset-color: #e6e1cf;
+  /* Свет и тень объёма у цветных кнопок */
+  --pixel-bevel-light: rgba(255, 255, 255, 0.3);
+  --pixel-bevel-dark: rgba(0, 0, 0, 0.3);
+  /* Жёсткая тень без размытия */
+  --pixel-shadow-color: rgba(27, 27, 47, 0.28);
+  --pixel-shadow-strong-color: rgba(27, 27, 47, 0.45);
+  /* Клетки дизеринга: disabled-фон, hover у ghost, затемнение */
+  --pixel-dither-a: #d9d5c3;
+  --pixel-dither-b: #ece8d8;
+  --pixel-dither-hover-color: #dcd7c4;
+  --pixel-scrim-a: rgba(27, 27, 47, 0.72);
+  --pixel-scrim-b: rgba(27, 27, 47, 0.18);
+  /* Пунктирные разделители строк и пунктов меню */
+  --pixel-divider-color: #b9b4a0;
+  /* Фокус с клавиатуры — пунктир. Чернила, а не жёлтый: #e0a100 давал ~2:1 к бумаге, WCAG 1.4.11 требует ≥ 3:1 */
+  --pixel-focus-color: #1b1b2f;
+  /* Подсветка выбранной строки таблицы */
+  --pixel-selected-row: #fff3c4;
+  /* Фон primary на нажатии у lighter / stroke / ghost — на ступень темнее --primary-alpha-16 */
+  --pixel-primary-light: #c9d4ff;
+}
+
+/* ============================================================
+   Тёмная схема. Те же ветки, что у corporate (все (0,1,0)): корень со схемой dark и вложенный
+   тёмный контейнер. Блок полный: перекрывает и тёмный блок corporate, и светлый блок pixel,
+   который в файле стоит позже corporate.
+   ============================================================ */
+:where([data-vl-skin~='pixel'])[data-vl-scheme='dark'],
+:where([data-vl-skin~='pixel'])[data-theme='dark'],
+:where([data-vl-skin~='pixel']) [data-theme='dark'] {
+  --static-black: #14141f;
+  --static-white: #ffffff;
+
+  /* Primary. dark / darker — светлее base: текст и ссылки на тёмной панели (7:1) */
+  --primary-base: #3a5bef;
+  --primary-darker: #b8c6ff;
+  --primary-dark: #8fa6ff;
+  --primary-alpha-16: #2a3366;
+  --primary-alpha-10: #232a4d;
+
+  /* Background. white-0 — панель, weak-50 — фон страницы (темнее панели) */
+  --bg-strong-950: #ecead9;
+  --bg-surface-800: #a9a7bd;
+  --bg-sub-300: #3a3a52;
+  --bg-soft-200: #2a2a3c;
+  --bg-weak-50: #14141f;
+  --bg-white-0: #1f1f2e;
+
+  /* Text. sub-600 — 6,9:1 на панели; soft-400 — 5,6:1 на панели */
+  --text-strong-950: #ecead9;
+  --text-sub-600: #a9a7bd;
+  --text-soft-400: #9896ae;
+  --text-disabled-300: #5c5a72;
+  --text-white-0: #14141f;
+
+  /* Stroke */
+  --stroke-strong-950: #ecead9;
+  --stroke-sub-300: #6f6d88;
+  --stroke-soft-200: #3a3a52;
+  --stroke-white-0: #14141f;
+
+  /* Icon */
+  --icon-strong-950: #ecead9;
+  --icon-sub-600: #a9a7bd;
+  --icon-soft-400: #9896ae;
+  --icon-disabled-300: #5c5a72;
+  --icon-white-0: #14141f;
+
+  /* Цвета состояний: base — заливка (та же, что в светлой схеме), dark — светлый оттенок
+     для текста на тёмной панели (от 5,8:1), light / lighter — тёмные фоны. */
+
+  /* State: Warning */
+  --warning-dark: #f2b31a;
+  --warning-base: #f2b31a;
+  --warning-light: #4d3d14;
+  --warning-lighter: #33291a;
+
+  /* State: Error */
+  --error-dark: #ff6b6b;
+  --error-base: #c42b2b;
+  --error-light: #4a1f2a;
+  --error-lighter: #3a1f2a;
+
+  /* State: Faded */
+  --faded-dark: #c9c7d6;
+  --faded-base: #8f8da6;
+  --faded-light: #3a3a52;
+  --faded-lighter: #2a2a3c;
+
+  /* State: Information */
+  --information-dark: #5fc0e8;
+  --information-base: #16729a;
+  --information-light: #173f52;
+  --information-lighter: #162d3a;
+
+  /* State: Success */
+  --success-dark: #5fd47f;
+  --success-base: #1e7d38;
+  --success-light: #1f4a2e;
+  --success-lighter: #1a3324;
+
+  /* State: Away */
+  --away-dark: #f0d75a;
+  --away-base: #e0c21a;
+  --away-light: #4a4216;
+  --away-lighter: #2f2b17;
+
+  /* State: Feature */
+  --feature-dark: #b59cff;
+  --feature-base: #6a3fd4;
+  --feature-light: #3b2a6b;
+  --feature-lighter: #2a2147;
+
+  /* State: Verified */
+  --verified-dark: #6cc0f0;
+  --verified-base: #176fa8;
+  --verified-light: #183f5a;
+  --verified-lighter: #162c3d;
+
+  /* State: Highlighted */
+  --highlighted-dark: #ff8fc4;
+  --highlighted-base: #c2307a;
+  --highlighted-light: #5a1f3d;
+  --highlighted-lighter: #3a1a2c;
+
+  /* State: Stable */
+  --stable-dark: #5fd1c1;
+  --stable-base: #1a7f73;
+  --stable-light: #17463f;
+  --stable-lighter: #152f2c;
+
+  --overlay-overlay-gray: rgba(0, 0, 0, 0.6);
+
+  /* ----- Собственные токены pixel ----- */
+  --pixel-disabled-frame-color: #5c5a72;
+  --pixel-shade: #14141f;
+  --pixel-inset-color: #2a2a3c;
+  --pixel-bevel-light: rgba(255, 255, 255, 0.25);
+  --pixel-bevel-dark: rgba(0, 0, 0, 0.35);
+  --pixel-shadow-color: rgba(0, 0, 0, 0.55);
+  --pixel-shadow-strong-color: rgba(0, 0, 0, 0.7);
+  --pixel-dither-a: #2a2a3c;
+  --pixel-dither-b: #1f1f2e;
+  --pixel-dither-hover-color: #3a3a52;
+  --pixel-scrim-a: rgba(0, 0, 0, 0.8);
+  --pixel-scrim-b: rgba(0, 0, 0, 0.35);
+  --pixel-divider-color: #3a3a52;
+  --pixel-focus-color: #f2b31a;
+  --pixel-selected-row: #3d3415;
+  --pixel-primary-light: #2e3870;
+}
+
+/* ============================================================
+   Составные токены pixel — собраны из цветов выше.
+   Значение `var()` вычисляется там, где переменная объявлена, а потомкам наследуется уже
+   готовым. Поэтому составные токены объявлены на каждой ветке схемы (корень, вложенный
+   светлый и тёмный контейнер) — иначе во вложенном `[data-theme='dark']` остались бы
+   светлые цвета.
+   ============================================================ */
+[data-vl-skin~='pixel'],
+:where([data-vl-skin~='pixel']) [data-theme='light'],
+:where([data-vl-skin~='pixel']) [data-theme='dark'] {
+  --overlay-bg: var(--overlay-overlay-gray);
+
+  /* Цвет рамки по умолчанию — чернила. Компонент меняет его у себя:
+     .vl-x[data-error] { --pixel-frame-color: var(--error-base); } — см. блок ниже. */
+  --pixel-frame-color: var(--stroke-strong-950);
+
+  /* Объём цветной кнопки: свет сверху-слева, тень снизу-справа */
+  --pixel-bevel:
+    inset calc(-1 * var(--pixel-unit)) calc(-1 * var(--pixel-unit)) 0 var(--pixel-bevel-dark),
+    inset var(--pixel-unit) var(--pixel-unit) 0 var(--pixel-bevel-light);
+  --pixel-bevel-sm:
+    inset calc(-1 * var(--pixel-unit-sm)) calc(-1 * var(--pixel-unit-sm)) 0 var(--pixel-bevel-dark),
+    inset var(--pixel-unit-sm) var(--pixel-unit-sm) 0 var(--pixel-bevel-light);
+  /* Нажатие: тень переворачивается внутрь, кнопка сдвигается (transform: var(--pixel-press-shift)) */
+  --pixel-bevel-pressed: inset var(--pixel-unit) var(--pixel-unit) 0 var(--pixel-bevel-dark);
+  --pixel-press-shift: translate(2px, 2px);
+  /* Объём светлой «панельной» кнопки (без цветной заливки) */
+  --pixel-bevel-panel: inset calc(-1 * var(--pixel-unit)) calc(-1 * var(--pixel-unit)) 0
+    var(--pixel-shade);
+  /* Утопленное поле ввода: внутренняя тень сверху-слева */
+  --pixel-inset: inset var(--pixel-unit) var(--pixel-unit) 0 var(--pixel-inset-color);
+
+  /* Дизеринг — шахматка 4×4, фон-шорткат: background: var(--pixel-dither); */
+  --pixel-dither: repeating-conic-gradient(var(--pixel-dither-a) 0 25%, var(--pixel-dither-b) 0 50%)
+    0 0 / 4px 4px;
+  /* Hover у прозрачных кнопок (ghost, иконочные): шахматка с прозрачными клетками */
+  --pixel-dither-hover: repeating-conic-gradient(
+      var(--pixel-dither-hover-color) 0 25%,
+      transparent 0 50%
+    )
+    0 0 / 4px 4px;
+  /* Затемнение под модалкой / шторкой */
+  --pixel-scrim: repeating-conic-gradient(var(--pixel-scrim-a) 0 25%, var(--pixel-scrim-b) 0 50%) 0
+    0 / 4px 4px;
+
+  /* Пунктирный разделитель: border-top: var(--pixel-divider); */
+  --pixel-divider: var(--pixel-unit) dotted var(--pixel-divider-color);
+
+  /* Фокус с клавиатуры: outline: var(--pixel-focus-outline); outline-offset: var(--pixel-focus-offset);
+     Отступ 6px = рамка 4px снаружи элемента + зазор 2px. */
+  --pixel-focus-outline: var(--pixel-unit) dashed var(--pixel-focus-color);
+  --pixel-focus-offset: 6px;
+
+  /* Курсор «▶», как в старых RPG, — на подсвеченной опции, пункте меню, активном пункте навигации:
+     ::before { width: var(--pixel-cursor-width); height: var(--pixel-cursor-height);
+     background: currentColor; clip-path: var(--pixel-cursor-shape); } */
+  --pixel-cursor-width: 8px;
+  --pixel-cursor-height: 14px;
+  --pixel-cursor-shape: polygon(
+    0 0,
+    2px 0,
+    2px 2px,
+    4px 2px,
+    4px 4px,
+    6px 4px,
+    6px 6px,
+    8px 6px,
+    8px 8px,
+    6px 8px,
+    6px 10px,
+    4px 10px,
+    4px 12px,
+    2px 12px,
+    2px 14px,
+    0 14px
+  );
+}
+
+/* ============================================================
+   Рамка и жёсткая тень — вычисляются заново на каждом элементе кита (`[class*='vl-']`, вес 0),
+   поэтому цвет и толщину можно менять прямо на элементе:
+     .vl-select-input__trigger[aria-expanded='true'] { --pixel-frame-color: var(--primary-base); }
+     .vl-badge { --pixel-unit: 2px; }
+   и `box-shadow: var(--pixel-frame)` подхватит их без перечисления четырёх теней.
+   ============================================================ */
+[data-vl-skin~='pixel'],
+:where([data-vl-skin~='pixel']) [data-theme],
+:where([data-vl-skin~='pixel'] [class*='vl-']) {
+  /* Ступенчатая рамка: четыре тени без размытия вместо border + border-radius — углы
+     остаются пустыми, получается «пиксельный» угол. Рамка рисуется СНАРУЖИ элемента
+     и места в раскладке не занимает: элементу нужен отступ margin: var(--pixel-unit)
+     (или зазор у соседей), иначе рамку обрежет overflow родителя.
+     Пример: box-shadow: var(--pixel-frame), var(--pixel-bevel); */
+  --pixel-frame:
+    0 calc(-1 * var(--pixel-unit)) 0 var(--pixel-frame-color),
+    0 var(--pixel-unit) 0 var(--pixel-frame-color),
+    calc(-1 * var(--pixel-unit)) 0 0 var(--pixel-frame-color),
+    var(--pixel-unit) 0 0 var(--pixel-frame-color);
+  /* Тонкая рамка 2px — бейджи, теги, чекбоксы */
+  --pixel-frame-sm:
+    0 calc(-1 * var(--pixel-unit-sm)) 0 var(--pixel-frame-color),
+    0 var(--pixel-unit-sm) 0 var(--pixel-frame-color),
+    calc(-1 * var(--pixel-unit-sm)) 0 0 var(--pixel-frame-color),
+    var(--pixel-unit-sm) 0 0 var(--pixel-frame-color);
+  /* Рамка отключённого элемента (вместе с background: var(--pixel-dither)) */
+  --pixel-frame-disabled:
+    0 calc(-1 * var(--pixel-unit)) 0 var(--pixel-disabled-frame-color),
+    0 var(--pixel-unit) 0 var(--pixel-disabled-frame-color),
+    calc(-1 * var(--pixel-unit)) 0 0 var(--pixel-disabled-frame-color),
+    var(--pixel-unit) 0 0 var(--pixel-disabled-frame-color);
+
+  /* Жёсткие тени без размытия; разнос = толщина рамки, тень повторяет её контур.
+     Пишутся ПОСЛЕ рамки: box-shadow: var(--pixel-frame), var(--pixel-drop);
+     Цветная тень (выбранная карточка): --pixel-shadow-color: rgba(43, 79, 217, 0.25); */
+  --pixel-drop: 8px 8px 0 var(--pixel-unit) var(--pixel-shadow-color);
+  --pixel-drop-lg: 10px 10px 0 var(--pixel-unit) var(--pixel-shadow-strong-color);
+}

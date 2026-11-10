@@ -1,0 +1,79 @@
+/* sidebar-header-card: 8-битный вид поверх corporate/components/sidebar-header-card.css — раскладка приходит оттуда, здесь только оформление.
+   Кнопка-стрелка — квадратный «кирпич»; выпадашка — окно с рамкой и жёсткой тенью;
+   подсвеченный пункт — синяя строка с курсором ▶ (как меню в макете Overlays). */
+:where([data-vl-skin~='pixel']) {
+  .vl-sidebar-header-card__right-button {
+    --pixel-unit: 2px;
+    margin: 2px;
+    border: 0;
+    border-radius: 0;
+    background: var(--bg-white-0);
+    color: var(--icon-sub-600);
+    box-shadow: var(--pixel-frame), var(--pixel-bevel-panel);
+  }
+  .vl-sidebar-header-card__right-button svg {
+    transition-timing-function: steps(2, end);
+  }
+
+  .vl-sidebar-header-card__dropdown {
+    margin-top: 12px;
+    padding: 6px 0;
+    border: 0;
+    border-radius: 0;
+    background: var(--bg-white-0);
+    box-shadow: var(--pixel-frame), var(--pixel-drop);
+    scrollbar-width: thin;
+    scrollbar-color: var(--stroke-sub-300) transparent;
+  }
+
+  .vl-sidebar-header-card__dropdown-item {
+    position: relative;
+    padding: 8px 16px 8px 30px;
+    border-radius: 0;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    letter-spacing: 0;
+    transition: none;
+  }
+  .vl-sidebar-header-card__dropdown-item:hover,
+  .vl-sidebar-header-card__dropdown-item:focus-visible {
+    background: var(--primary-base);
+    color: var(--static-white);
+  }
+  /* Выпадашка прокручивается (overflow-y: auto) — внешний контур обрезался бы, пунктир внутри */
+  .vl-sidebar-header-card__dropdown-item:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: calc(-1 * var(--pixel-unit));
+  }
+  .vl-sidebar-header-card__dropdown-item:hover::before,
+  .vl-sidebar-header-card__dropdown-item:focus-visible::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    width: var(--pixel-cursor-width);
+    height: var(--pixel-cursor-height);
+    margin-top: calc(var(--pixel-cursor-height) / -2);
+    background: currentColor;
+    clip-path: var(--pixel-cursor-shape);
+    pointer-events: none;
+  }
+  .vl-sidebar-header-card__dropdown-item:hover .vl-sidebar-header-card__dropdown-item-label,
+  .vl-sidebar-header-card__dropdown-item:hover .vl-sidebar-header-card__dropdown-item-subtitle,
+  .vl-sidebar-header-card__dropdown-item:focus-visible .vl-sidebar-header-card__dropdown-item-label,
+  .vl-sidebar-header-card__dropdown-item:focus-visible
+    .vl-sidebar-header-card__dropdown-item-subtitle {
+    color: inherit;
+  }
+
+  .vl-sidebar-header-card__dropdown-item-icon {
+    border-radius: 0;
+  }
+  .vl-sidebar-header-card__dropdown-item-label {
+    font-size: 15px;
+    font-weight: 400;
+  }
+  .vl-sidebar-header-card__dropdown-item-subtitle {
+    font-size: 13px;
+  }
+}

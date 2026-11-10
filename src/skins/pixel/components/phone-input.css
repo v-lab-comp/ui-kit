@@ -1,0 +1,31 @@
+/* phone-input: 8-битный вид поверх corporate/components/phone-input.css — раскладка приходит оттуда, здесь только оформление. */
+:where([data-vl-skin~='pixel']) {
+  /* Селект страны в startBlock — часть поля, без своей рамки (её гасит corporate) и отступа рамки */
+  .vl-phone-input__phone-country-select button {
+    margin: 0;
+    background: transparent;
+  }
+
+  /* corporate затемняет наведение полупрозрачным чёрным — в тёмной схеме его не видно.
+     Наведение и открытый список показывает весь блок (input-field.css), кнопка — прозрачная. */
+  .vl-phone-input__phone-country-select button:hover:not(:disabled):not([data-open]) {
+    background: transparent;
+  }
+
+  .vl-phone-input__phone-country-select button[data-open] {
+    background: transparent;
+  }
+
+  /* Поле номера — тем же шрифтом и кеглем, что остальные поля */
+  .vl-phone-input__phone-input-field {
+    font-family: var(--base-input-font-family);
+    font-size: var(--base-input-font-size);
+    letter-spacing: var(--base-input-letter-spacing);
+    color: var(--base-input-color);
+  }
+
+  .vl-phone-input__phone-input-field:disabled {
+    color: var(--base-input-color-disabled);
+    background: transparent;
+  }
+}

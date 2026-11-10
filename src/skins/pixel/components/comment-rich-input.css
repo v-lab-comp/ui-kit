@@ -1,0 +1,151 @@
+/* comment-rich-input: 8-битный вид поверх corporate/components/comment-rich-input.css — раскладка приходит оттуда, здесь только оформление.
+   Поле — утопленная панель со ступенчатой рамкой; кнопки панели инструментов — «клавиши» с объёмом,
+   активная — синяя и нажатая. */
+:where([data-vl-skin~='pixel']) {
+  .vl-comment-rich-input {
+    margin: var(--pixel-unit);
+    background: var(--bg-white-0);
+    box-shadow: var(--pixel-frame), var(--pixel-inset);
+  }
+
+  .vl-comment-rich-input:focus-within {
+    --pixel-frame-color: var(--primary-base);
+  }
+
+  .vl-comment-rich-input__body {
+    padding: 10px 12px;
+  }
+
+  .vl-comment-rich-input__editable {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .vl-comment-rich-input__editable[data-empty='true']::before {
+    color: var(--text-soft-400);
+  }
+
+  .vl-comment-rich-input__toolbar {
+    padding: 6px 8px;
+    box-shadow: none;
+  }
+
+  .vl-comment-rich-input__toolbar-divider {
+    width: var(--pixel-unit-sm);
+    background: var(--pixel-divider-color);
+  }
+
+  /* Кнопки панели: светлая «клавиша» с тенью снизу-справа */
+  .vl-comment-rich-input__icon-button,
+  .vl-comment-rich-input__align-button {
+    background: var(--bg-white-0);
+    color: var(--icon-strong-950);
+    box-shadow: inset -3px -3px 0 var(--stroke-soft-200);
+  }
+
+  .vl-comment-rich-input__icon-button:hover:not(:disabled),
+  .vl-comment-rich-input__align-button:hover:not(:disabled) {
+    background: var(--bg-soft-200);
+  }
+
+  .vl-comment-rich-input__icon-button:active:not(:disabled),
+  .vl-comment-rich-input__align-button:active:not(:disabled) {
+    transform: var(--pixel-press-shift);
+    box-shadow: inset 3px 3px 0 var(--pixel-divider-color);
+  }
+
+  :where(.vl-comment-rich-input__icon-button)[data-active] {
+    background: var(--primary-base);
+    color: var(--static-white);
+    box-shadow: inset 3px 3px 0 var(--pixel-bevel-dark);
+  }
+
+  .vl-comment-rich-input__icon-button:disabled,
+  .vl-comment-rich-input__align-button:disabled {
+    opacity: 1;
+    background: var(--pixel-dither);
+    color: var(--icon-disabled-300);
+    box-shadow: none;
+  }
+
+  /* Отправка — цветная кнопка с рамкой и объёмом */
+  .vl-comment-rich-input__send-button,
+  .vl-comment-rich-input__send-text-button {
+    margin: var(--pixel-unit-sm);
+    background: var(--primary-base);
+    color: var(--static-white);
+    box-shadow: var(--pixel-frame-sm), var(--pixel-bevel-sm);
+  }
+
+  .vl-comment-rich-input__send-text-button,
+  .vl-comment-rich-input__secondary-button {
+    font-family: var(--font-display);
+    font-size: 8px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  /* Hover: заливка та же (тёмный primary-dark в тёмной схеме светлый — белый текст не читался бы),
+     меняется только объём — свет становится ярче */
+  .vl-comment-rich-input__send-button:hover:not(:disabled),
+  .vl-comment-rich-input__send-text-button:hover:not(:disabled) {
+    opacity: 1;
+    box-shadow:
+      var(--pixel-frame-sm),
+      inset calc(-1 * var(--pixel-unit-sm)) calc(-1 * var(--pixel-unit-sm)) 0
+        var(--pixel-bevel-dark),
+      inset var(--pixel-unit-sm) var(--pixel-unit-sm) 0 rgba(255, 255, 255, 0.5);
+  }
+
+  .vl-comment-rich-input__send-button:active:not(:disabled),
+  .vl-comment-rich-input__send-text-button:active:not(:disabled) {
+    transform: var(--pixel-press-shift);
+    box-shadow:
+      var(--pixel-frame-sm),
+      inset var(--pixel-unit-sm) var(--pixel-unit-sm) 0 var(--pixel-bevel-dark);
+  }
+
+  .vl-comment-rich-input__send-button:disabled,
+  .vl-comment-rich-input__send-text-button:disabled {
+    opacity: 1;
+    background: var(--pixel-dither);
+    color: var(--text-disabled-300);
+    --pixel-frame-color: var(--pixel-disabled-frame-color);
+    box-shadow: var(--pixel-frame-sm);
+  }
+
+  .vl-comment-rich-input__secondary-button {
+    color: var(--text-sub-600);
+  }
+
+  .vl-comment-rich-input__secondary-button:hover:not(:disabled) {
+    background: var(--pixel-dither-hover);
+    color: var(--text-strong-950);
+  }
+
+  .vl-comment-rich-input__secondary-button:disabled {
+    opacity: 1;
+    color: var(--text-disabled-300);
+  }
+
+  :where(
+    .vl-comment-rich-input__icon-button,
+    .vl-comment-rich-input__align-button,
+    .vl-comment-rich-input__send-button,
+    .vl-comment-rich-input__send-text-button,
+    .vl-comment-rich-input__secondary-button
+  ):focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: 4px;
+  }
+
+  .vl-comment-rich-input__counter {
+    font-size: 13px;
+  }
+
+  :where(.vl-comment-rich-input__counter)[data-error] {
+    color: var(--error-dark);
+  }
+}

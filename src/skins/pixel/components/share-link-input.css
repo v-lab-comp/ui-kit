@@ -1,0 +1,54 @@
+/* share-link-input: 8-битный вид поверх corporate/components/share-link-input.css — раскладка приходит оттуда, здесь только оформление. */
+:where([data-vl-skin~='pixel']) {
+  /* endBlock с кнопкой «Копировать» — без своего фона и внутренних отступов: кнопка
+     заполняет блок целиком. Разделитель (border-left) рисует input-field.css. */
+  .vl-input-field__wrapper:not([data-disabled])
+    .vl-input-field__block-end:has(.vl-share-link-input__copy-button),
+  .vl-input-field__block-end:has(.vl-share-link-input__copy-button) {
+    padding: 0;
+    background: transparent;
+  }
+
+  /* Кнопка — цветная 8-битная: заливка primary, объём (свет сверху-слева, тень снизу-справа),
+     Press Start 2P 8px */
+  .vl-share-link-input__copy-button {
+    align-self: stretch;
+    gap: 8px;
+    padding: 0 14px;
+    border-radius: 0;
+    background-color: var(--primary-base);
+    color: var(--static-white);
+    box-shadow: var(--pixel-bevel);
+    font-family: var(--font-display);
+    font-size: 8px;
+    line-height: 1;
+    text-transform: uppercase;
+    transition: none;
+  }
+
+  .vl-share-link-input__copy-button:hover:not(:disabled) {
+    filter: brightness(1.15);
+  }
+
+  /* Нажатие: объём переворачивается внутрь, содержимое сдвигается на «пиксель» */
+  .vl-share-link-input__copy-button:active:not(:disabled) {
+    box-shadow: var(--pixel-bevel-pressed);
+    filter: none;
+  }
+
+  .vl-share-link-input__copy-button:active:not(:disabled) > * {
+    transform: var(--pixel-press-shift);
+  }
+
+  /* Пунктир фокуса у всей оболочки рисует input-field.css; на кнопке — белый пунктир внутри */
+  .vl-share-link-input__copy-button:focus-visible {
+    outline: var(--pixel-unit-sm) dashed var(--static-white);
+    outline-offset: -6px;
+  }
+
+  .vl-share-link-input__copy-button:disabled {
+    background: transparent;
+    box-shadow: none;
+    color: var(--text-sub-600);
+  }
+}

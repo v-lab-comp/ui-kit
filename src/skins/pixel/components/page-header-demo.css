@@ -1,0 +1,102 @@
+/* page-header-demo: 8-битный вид поверх corporate/components/page-header-demo.css — раскладка приходит оттуда, здесь только оформление.
+   Демо-содержимое шапки: иконочные кнопки и «вторичная» кнопка — светлые панельные кирпичи
+   (рамка + тень объёма снизу-справа), «главная» — синяя с объёмом. Нажатие — сдвиг на 2px
+   и перевёрнутый объём. Зазоры шире на толщину рамок (рамка рисуется снаружи). */
+:where([data-vl-skin~='pixel']) {
+  .vl-page-header-demo {
+    font-size: 15px;
+  }
+
+  .vl-page-header-demo__title {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    color: var(--text-strong-950);
+  }
+
+  .vl-page-header-demo__actions,
+  .vl-page-header-demo__btn-group {
+    gap: 16px;
+  }
+
+  .vl-page-header-demo__topbar-btn,
+  .vl-page-header-demo__secondary-btn {
+    border: 0;
+    border-radius: 0;
+    background: var(--bg-white-0);
+    box-shadow: var(--pixel-frame), var(--pixel-bevel-panel);
+  }
+  .vl-page-header-demo__topbar-btn {
+    color: var(--icon-strong-950);
+  }
+  .vl-page-header-demo__secondary-btn {
+    height: 40px;
+    padding: 0 14px;
+    gap: 8px;
+    color: var(--text-strong-950);
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0;
+  }
+  .vl-page-header-demo__topbar-btn:hover,
+  .vl-page-header-demo__secondary-btn:hover {
+    background: var(--pixel-dither-hover), var(--bg-white-0);
+  }
+  .vl-page-header-demo__topbar-btn:active,
+  .vl-page-header-demo__secondary-btn:active {
+    transform: var(--pixel-press-shift);
+    box-shadow:
+      var(--pixel-frame),
+      inset var(--pixel-unit) var(--pixel-unit) 0 var(--pixel-shade);
+  }
+
+  .vl-page-header-demo__primary-btn {
+    height: 40px;
+    padding: 0 14px;
+    gap: 8px;
+    border-radius: 0;
+    background: var(--primary-base);
+    color: var(--static-white);
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0;
+    box-shadow: var(--pixel-frame), var(--pixel-bevel);
+  }
+  .vl-page-header-demo__primary-btn:hover {
+    background: var(--primary-base);
+    filter: brightness(1.15);
+  }
+  .vl-page-header-demo__primary-btn:active {
+    transform: var(--pixel-press-shift);
+    box-shadow: var(--pixel-frame), var(--pixel-bevel-pressed);
+  }
+
+  .vl-page-header-demo__topbar-btn:focus-visible,
+  .vl-page-header-demo__secondary-btn:focus-visible,
+  .vl-page-header-demo__primary-btn:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: var(--pixel-focus-offset);
+  }
+
+  .vl-page-header-demo__secondary-btn svg,
+  .vl-page-header-demo__primary-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Точка уведомления — квадратный «пиксель» */
+  .vl-page-header-demo__notification-dot {
+    right: 9px;
+    top: 9px;
+    width: 6px;
+    height: 6px;
+    border-radius: 0;
+  }
+}

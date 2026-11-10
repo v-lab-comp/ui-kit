@@ -1,0 +1,144 @@
+/* file-upload: 8-битный вид поверх corporate/components/file-upload.css — раскладка приходит оттуда, здесь только оформление.
+   Зона сброса — пунктирная рамка 4px, файл — панель со ступенчатой рамкой, прогресс — «сегментная» полоска. */
+:where([data-vl-skin~='pixel']) {
+  /* Ярлык расширения на иконке файла */
+  .vl-file-upload__file-icon-ext {
+    background-color: var(--error-base);
+    color: var(--static-white);
+    font-family: var(--font-display);
+    font-size: 6px;
+    font-weight: 400;
+    line-height: 1.4;
+    padding: 2px 3px;
+  }
+
+  .vl-file-upload__file-item {
+    margin: var(--pixel-unit);
+    padding: 12px 14px;
+    border: none;
+    background-color: var(--bg-white-0);
+    box-shadow: var(--pixel-frame);
+  }
+
+  .vl-file-upload__file-item-name {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .vl-file-upload__file-item-size,
+  .vl-file-upload__file-item-dot,
+  .vl-file-upload__file-item-status {
+    font-size: 13px;
+  }
+
+  .vl-file-upload__file-item-download-btn:hover .vl-file-upload__file-item-name {
+    color: var(--primary-dark);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+
+  .vl-file-upload__file-item-action {
+    color: var(--icon-sub-600);
+  }
+
+  .vl-file-upload__file-item-action:hover {
+    background: var(--pixel-dither-hover);
+    color: var(--icon-strong-950);
+  }
+
+  .vl-file-upload__file-item-action:active {
+    transform: var(--pixel-press-shift);
+  }
+
+  :where(
+    .vl-file-upload__file-item-action,
+    .vl-file-upload__file-item-download-btn,
+    .vl-file-upload__drop-zone-btn
+  ):focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: 4px;
+  }
+
+  /* Прогресс: утопленная дорожка и сегменты по 8px */
+  .vl-file-upload__progress-track {
+    background-color: var(--bg-soft-200);
+    box-shadow: inset 2px 2px 0 var(--bg-sub-300);
+  }
+
+  .vl-file-upload__progress-fill {
+    background: repeating-linear-gradient(
+      90deg,
+      var(--primary-base) 0 8px,
+      var(--pixel-primary-light) 8px 10px
+    );
+  }
+
+  /* Вращение заменено пошаговым — как спрайт в 8 кадров */
+  .vl-file-upload__spinning {
+    animation-timing-function: steps(8);
+  }
+
+  .vl-file-upload__drop-zone-label {
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  .vl-file-upload__drop-zone,
+  .vl-file-upload__drop-zone-compact {
+    border: var(--pixel-unit) dashed var(--stroke-strong-950);
+    background-color: var(--bg-white-0);
+    transition: none;
+  }
+
+  .vl-file-upload__drop-zone {
+    padding: 28px 20px;
+  }
+
+  :where(.vl-file-upload__drop-zone, .vl-file-upload__drop-zone-compact)[data-dragging] {
+    border-color: var(--primary-base);
+    background-color: var(--primary-alpha-10);
+  }
+
+  .vl-file-upload__drop-zone:focus-visible,
+  .vl-file-upload__drop-zone-compact:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: 2px;
+  }
+
+  /* Кнопка «Выбрать файл» — светлая кнопка с рамкой и объёмом */
+  .vl-file-upload__drop-zone-btn {
+    margin: var(--pixel-unit);
+    padding: 10px 12px;
+    border: none;
+    background-color: var(--bg-white-0);
+    box-shadow: var(--pixel-frame), var(--pixel-bevel-panel);
+    font-family: var(--font-display);
+    font-size: 8px;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--text-strong-950);
+  }
+
+  .vl-file-upload__drop-zone-btn:hover {
+    background-color: var(--bg-weak-50);
+  }
+
+  .vl-file-upload__drop-zone-btn:active {
+    transform: var(--pixel-press-shift);
+    box-shadow:
+      var(--pixel-frame),
+      inset var(--pixel-unit) var(--pixel-unit) 0 var(--pixel-shade);
+  }
+
+  .vl-file-upload__drop-zone-title {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .vl-file-upload__drop-zone-subtitle {
+    font-size: 14px;
+  }
+}

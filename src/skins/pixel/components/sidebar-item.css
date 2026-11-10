@@ -1,0 +1,76 @@
+/* sidebar-item: 8-битный вид поверх corporate/components/sidebar-item.css — раскладка приходит оттуда, здесь только оформление.
+   Пункт навигации: hover — шахматка, активный — синий «кирпич» с объёмом и курсором ▶ слева
+   (как в меню старых RPG). Полоска-индикатор corporate у края панели скрыта: её роль
+   выполняет курсор. Слева у пункта оставлено место под курсор (30px). */
+:where([data-vl-skin~='pixel']) {
+  .vl-sidebar-item__bar-slot {
+    display: none;
+  }
+
+  .vl-sidebar-item__item {
+    position: relative;
+    min-height: 40px;
+    padding: 10px 12px 10px 30px;
+    gap: 12px;
+    border-radius: 0;
+    background: transparent;
+    color: var(--text-strong-950);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0;
+    transition: none;
+  }
+  .vl-sidebar-item__item:hover {
+    background: var(--pixel-dither-hover);
+  }
+  .vl-sidebar-item__item:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: 2px;
+  }
+
+  /* Активный пункт. Перечислены все сочетания, которые corporate красит в bg-weak-50
+     (hover, collapsed) — с тем же или большим весом. */
+  .vl-sidebar-item__item[data-active],
+  .vl-sidebar-item__item[data-active]:hover,
+  .vl-sidebar-item__item[data-collapsed][data-active],
+  .vl-sidebar-item__item[data-collapsed][data-active]:hover {
+    background: var(--primary-base);
+    color: var(--static-white);
+    box-shadow:
+      inset -3px -3px 0 var(--pixel-bevel-dark),
+      inset 3px 3px 0 var(--pixel-bevel-light);
+  }
+  .vl-sidebar-item__item[data-active] .vl-sidebar-item__left,
+  .vl-sidebar-item__item[data-active] .vl-sidebar-item__right {
+    color: inherit;
+  }
+  /* Курсор ▶ — ступенчатый треугольник из clip-path */
+  .vl-sidebar-item__item[data-active]::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    width: var(--pixel-cursor-width);
+    height: var(--pixel-cursor-height);
+    margin-top: calc(var(--pixel-cursor-height) / -2);
+    background: currentColor;
+    clip-path: var(--pixel-cursor-shape);
+    pointer-events: none;
+  }
+
+  /* Свёрнутая панель: только иконка, места под курсор нет */
+  .vl-sidebar-item__item[data-collapsed] {
+    padding: 8px;
+  }
+  .vl-sidebar-item__item[data-collapsed]::before {
+    display: none;
+  }
+
+  .vl-sidebar-item__right {
+    color: var(--icon-sub-600);
+    font-family: var(--font-display);
+    font-size: 7px;
+  }
+}

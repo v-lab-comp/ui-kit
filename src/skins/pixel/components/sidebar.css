@@ -1,0 +1,161 @@
+/* sidebar: 8-битный вид поверх corporate/components/sidebar.css — раскладка приходит оттуда, здесь только оформление.
+   Боковая панель по макету — тёмная «консоль» в обеих схемах. Атрибута темы у Sidebar нет,
+   поэтому тёмные значения семантических токенов переобъявлены прямо на .vl-sidebar: всё
+   внутри (пункты, карточки, аватары, бейджи, выпадашка шапки) берёт цвета из токенов и само
+   становится тёмным. Составные --pixel-* пересобраны здесь же: значение var() вычисляется там,
+   где переменная объявлена, иначе потомки получили бы светлые цвета корня. */
+:where([data-vl-skin~='pixel']) {
+  .vl-sidebar {
+    color-scheme: dark;
+
+    --bg-strong-950: #ecead9;
+    --bg-surface-800: #a9a7bd;
+    --bg-sub-300: #3a3a52;
+    --bg-soft-200: #2a2a3c;
+    --bg-weak-50: #262640;
+    --bg-white-0: #1b1b2f;
+
+    --text-strong-950: #ecead9;
+    --text-sub-600: #a9a7bd;
+    --text-soft-400: #9896ae;
+    --text-disabled-300: #5c5a72;
+    --text-white-0: #14141f;
+
+    --stroke-strong-950: #ecead9;
+    --stroke-sub-300: #6f6d88;
+    --stroke-soft-200: #3a3a52;
+    --stroke-white-0: #14141f;
+
+    --icon-strong-950: #ecead9;
+    --icon-sub-600: #a9a7bd;
+    --icon-soft-400: #9896ae;
+    --icon-disabled-300: #5c5a72;
+    --icon-white-0: #14141f;
+
+    --static-black: #14141f;
+    --primary-darker: #b8c6ff;
+    --primary-dark: #8fa6ff;
+    --primary-alpha-16: #2a3366;
+    --primary-alpha-10: #232a4d;
+
+    /* Текстовые оттенки состояний и фоны lighter / light — как в тёмной схеме */
+    --warning-dark: #f2b31a;
+    --warning-light: #4d3d14;
+    --warning-lighter: #33291a;
+    --error-dark: #ff6b6b;
+    --error-light: #4a1f2a;
+    --error-lighter: #3a1f2a;
+    --faded-dark: #c9c7d6;
+    --faded-light: #3a3a52;
+    --faded-lighter: #2a2a3c;
+    --information-dark: #5fc0e8;
+    --information-light: #173f52;
+    --information-lighter: #162d3a;
+    --success-dark: #5fd47f;
+    --success-light: #1f4a2e;
+    --success-lighter: #1a3324;
+    --away-dark: #f0d75a;
+    --away-light: #4a4216;
+    --away-lighter: #2f2b17;
+    --feature-dark: #b59cff;
+    --feature-light: #3b2a6b;
+    --feature-lighter: #2a2147;
+    --verified-dark: #6cc0f0;
+    --verified-light: #183f5a;
+    --verified-lighter: #162c3d;
+    --highlighted-dark: #ff8fc4;
+    --highlighted-light: #5a1f3d;
+    --highlighted-lighter: #3a1a2c;
+    --stable-dark: #5fd1c1;
+    --stable-light: #17463f;
+    --stable-lighter: #152f2c;
+
+    --pixel-disabled-frame-color: #5c5a72;
+    --pixel-shade: #14141f;
+    --pixel-inset-color: #2a2a3c;
+    --pixel-shadow-color: rgba(0, 0, 0, 0.55);
+    --pixel-shadow-strong-color: rgba(0, 0, 0, 0.7);
+    --pixel-dither-a: #2a2a3c;
+    --pixel-dither-b: #1b1b2f;
+    --pixel-dither-hover-color: #3a3a52;
+    --pixel-divider-color: #3a3a52;
+    --pixel-focus-color: #f2b31a;
+    --pixel-selected-row: #3d3415;
+    --pixel-primary-light: #2e3870;
+
+    /* Пересборка составных токенов на новых цветах */
+    --pixel-frame-color: var(--stroke-strong-950);
+    --pixel-bevel-panel: inset calc(-1 * var(--pixel-unit)) calc(-1 * var(--pixel-unit)) 0
+      var(--pixel-shade);
+    --pixel-inset: inset var(--pixel-unit) var(--pixel-unit) 0 var(--pixel-inset-color);
+    --pixel-dither: repeating-conic-gradient(
+        var(--pixel-dither-a) 0 25%,
+        var(--pixel-dither-b) 0 50%
+      )
+      0 0 / 4px 4px;
+    --pixel-dither-hover: repeating-conic-gradient(
+        var(--pixel-dither-hover-color) 0 25%,
+        transparent 0 50%
+      )
+      0 0 / 4px 4px;
+    --pixel-divider: var(--pixel-unit) dotted var(--pixel-divider-color);
+    --pixel-focus-outline: var(--pixel-unit) dashed var(--pixel-focus-color);
+
+    background: var(--bg-white-0);
+    color: var(--text-strong-950);
+    font-family: var(--font-sans);
+    /* Край панели — толстая черта на 4px вместо волосяной линии */
+    box-shadow: var(--pixel-unit) 0 0 0 var(--stroke-soft-200);
+  }
+
+  .vl-sidebar-content {
+    scrollbar-width: thin;
+    scrollbar-color: var(--stroke-sub-300) transparent;
+  }
+
+  .vl-sidebar-section {
+    gap: 6px;
+  }
+  .vl-sidebar-section__items {
+    gap: 6px;
+  }
+  /* Подпись секции — мелкий Press Start 2P, как «РАБОТА» / «СИСТЕМА» в макете */
+  .vl-sidebar-section__label {
+    padding: 10px 12px 4px;
+    font-family: var(--font-display);
+    font-size: 7px;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0;
+    color: var(--text-sub-600);
+  }
+  .vl-sidebar[data-collapsed='true'] .vl-sidebar-section__label {
+    padding: 10px 0 4px;
+  }
+
+  /* Кнопка сворачивания — квадратный «кирпич» с тонкой рамкой */
+  .vl-sidebar-trigger {
+    --pixel-unit: 2px;
+    border: 0;
+    border-radius: 0;
+    background: var(--bg-white-0);
+    color: var(--icon-sub-600);
+    box-shadow: var(--pixel-frame), var(--pixel-bevel-panel);
+  }
+  .vl-sidebar-trigger:hover {
+    color: var(--icon-strong-950);
+    background: var(--pixel-dither-hover), var(--bg-white-0);
+  }
+  .vl-sidebar-trigger:active {
+    transform: var(--pixel-press-shift);
+    box-shadow: var(--pixel-frame);
+  }
+  .vl-sidebar-trigger:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: 4px;
+  }
+  .vl-sidebar-trigger svg,
+  .vl-sidebar-trigger__icon {
+    transition-timing-function: steps(2, end);
+  }
+}

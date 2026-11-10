@@ -1,0 +1,58 @@
+/* modal-status: 8-битный вид поверх corporate/components/modal-status.css — раскладка приходит оттуда, здесь только оформление.
+   Иконка статуса — квадратная плашка с рамкой и объёмом. Фон плашки задан инлайн-стилем
+   (var(--<variant>-lighter)) и из CSS без !important не меняется, поэтому цвет варианта
+   передаёт рамка: вариант читается по подстроке инлайн-стиля. */
+:where([data-vl-skin~='pixel']) {
+  .vl-modal-status__status-icon {
+    --pixel-unit: 2px;
+    margin: 2px;
+    border-radius: 0;
+    box-shadow: var(--pixel-frame), var(--pixel-bevel-sm);
+  }
+  .vl-modal-status__status-icon[style*='error'] {
+    --pixel-frame-color: var(--error-base);
+  }
+  .vl-modal-status__status-icon[style*='warning'] {
+    --pixel-frame-color: var(--warning-base);
+  }
+  .vl-modal-status__status-icon[style*='success'] {
+    --pixel-frame-color: var(--success-base);
+  }
+  .vl-modal-status__status-icon[style*='information'] {
+    --pixel-frame-color: var(--information-base);
+  }
+
+  /* По центру — крупная плашка, как «экран победы» в макете */
+  .vl-modal-status__status-center {
+    gap: 16px;
+  }
+  .vl-modal-status__status-center .vl-modal-status__status-icon {
+    --pixel-unit: 4px;
+    width: 64px;
+    height: 64px;
+    margin: 4px;
+    box-shadow: var(--pixel-frame), var(--pixel-bevel);
+  }
+  .vl-modal-status__status-center .vl-modal-status__status-icon svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .vl-modal-status__status-center .vl-modal-status__status-title-center.vl-typography {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    color: var(--text-strong-950);
+  }
+
+  .vl-modal-status__status-center .vl-modal-status__status-desc-center.vl-typography {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: 0;
+    color: var(--text-sub-600);
+  }
+}

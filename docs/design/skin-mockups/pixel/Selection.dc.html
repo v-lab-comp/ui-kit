@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>8-bit — выбор</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=Tiny5&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.r{font-family:'Tiny5',monospace;color:#1b1b2f;background:#f4f1e6}
+.d{font-family:'Press Start 2P',monospace;line-height:1.6}
+.f{display:flex;flex-direction:column}
+.lbl{font-family:'Press Start 2P',monospace;font-size:9px;line-height:1.4;margin-bottom:12px}
+.trg{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:10px;background:#fffdf5;margin:4px;padding:0 12px;height:40px;cursor:pointer;font-size:16px;box-shadow:0 -4px 0 var(--b,#1b1b2f),0 4px 0 var(--b,#1b1b2f),-4px 0 0 var(--b,#1b1b2f),4px 0 0 var(--b,#1b1b2f),inset 4px 4px 0 #e6e1cf}
+.trg .v{flex:1}
+.trg .ph{flex:1;color:#6e6b82}
+.trg.open{--b:#2b4fd9}
+.pop{background:#fffdf5;margin:12px 4px 4px;box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f,8px 8px 0 4px rgba(27,27,47,.28)}
+.srch{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:4px solid #1b1b2f;font-size:15px;color:#6e6b82}
+.opts{list-style:none;margin:0;padding:6px 0}
+.opts li{display:flex;align-items:center;gap:10px;padding:9px 12px 9px 30px;font-size:16px;position:relative}
+.opts li.hl{background:#2b4fd9;color:#fff}
+.opts li.hl::before{content:'';position:absolute;left:10px;top:50%;margin-top:-7px;width:8px;height:14px;background:#fff;clip-path:polygon(0 0,2px 0,2px 2px,4px 2px,4px 4px,6px 4px,6px 6px,8px 6px,8px 8px,6px 8px,6px 10px,4px 10px,4px 12px,2px 12px,2px 14px,0 14px)}
+.opts li .ck{margin-left:auto}
+.opts li .sub{font-size:13px;color:#55536a}
+.opts li.hl .sub{color:#dfe6ff}
+.grp-t{font-family:'Press Start 2P',monospace;font-size:7px;color:#55536a;padding:10px 12px 4px}
+.chipm{display:inline-flex;align-items:center;gap:6px;font-size:14px;padding:2px 8px;background:#dfe6ff;color:#1b3bb3;box-shadow:0 -2px 0 #2b4fd9,0 2px 0 #2b4fd9,-2px 0 0 #2b4fd9,2px 0 0 #2b4fd9;margin:2px}
+.cmp{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Press Start 2P',monospace;font-size:9px;padding:9px 12px;background:#fffdf5;margin:4px;box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f,inset -4px -4px 0 #e0dbc8}
+.inl{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:16px;color:#1b3bb3;border-bottom:3px dashed #2b4fd9;padding-bottom:1px}
+.st{display:flex;align-items:center;gap:10px;padding:16px 12px;font-size:15px;color:#55536a}
+.blink{display:inline-flex;gap:4px}.blink i{width:6px;height:6px;background:#2b4fd9;display:block}.blink i:nth-child(2){opacity:.6}.blink i:nth-child(3){opacity:.3}
+.cb{display:flex;align-items:center;gap:12px;font-size:16px}
+.bx{width:20px;height:20px;flex:none;display:flex;align-items:center;justify-content:center;background:#fffdf5;margin:2px;box-shadow:0 -2px 0 var(--b,#1b1b2f),0 2px 0 var(--b,#1b1b2f),-2px 0 0 var(--b,#1b1b2f),2px 0 0 var(--b,#1b1b2f),inset 2px 2px 0 #e6e1cf;color:#fff}
+.bx.on{background:#2b4fd9;--b:#1b1b2f;box-shadow:0 -2px 0 #1b1b2f,0 2px 0 #1b1b2f,-2px 0 0 #1b1b2f,2px 0 0 #1b1b2f,inset -2px -2px 0 rgba(0,0,0,.3)}
+.bx.off{background:repeating-conic-gradient(#d9d5c3 0 25%,#ece8d8 0 50%) 0 0/4px 4px;--b:#8d8a9c}
+.bx.err{--b:#c42b2b}
+.card{display:flex;gap:14px;align-items:flex-start;padding:16px;background:#fffdf5;margin:4px;box-shadow:0 -4px 0 var(--b,#1b1b2f),0 4px 0 var(--b,#1b1b2f),-4px 0 0 var(--b,#1b1b2f),4px 0 0 var(--b,#1b1b2f)}
+.card.sel{--b:#2b4fd9;background:#eef1ff;box-shadow:0 -4px 0 #2b4fd9,0 4px 0 #2b4fd9,-4px 0 0 #2b4fd9,4px 0 0 #2b4fd9,8px 8px 0 4px rgba(43,79,217,.25)}
+.hint{font-size:14px;color:#55536a}
+</style>
+</helmet>
+<div class="r" style="width: 1200px; height: 1360px; box-sizing: border-box; padding: 56px; display: flex; flex-direction: column; gap: 44px">
+  <div class="d" style="font-size: 20px">Выбор</div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; align-items: start">
+    <div class="f">
+      <span class="lbl" id="s1l">SelectInput — закрыт</span>
+      <button class="trg" role="combobox" aria-expanded="false" aria-labelledby="s1l"><span class="ph">Выберите роль</span><svg width="14" height="8" viewBox="0 0 7 4" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h2v1H0zM5 0h2v1H5zM1 1h2v1H1zM4 1h2v1H4zM2 2h3v1H2zM3 3h1v1H3z"/></svg></button>
+      <span class="lbl" id="s4l" style="margin-top: 28px">Множественный выбор</span>
+      <div class="trg" style="height: auto; min-height: 40px; padding: 6px 10px; flex-wrap: wrap; gap: 6px"><span class="chipm">Дизайн</span><span class="chipm">Фронтенд</span><span class="chipm">+2</span><span style="flex: 1"></span><svg width="14" height="8" viewBox="0 0 7 4" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h2v1H0zM5 0h2v1H5zM1 1h2v1H1zM4 1h2v1H4zM2 2h3v1H2zM3 3h1v1H3z"/></svg></div>
+      <span class="lbl" style="margin-top: 28px">Compact и inline</span>
+      <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap">
+        <button class="cmp" aria-label="Сортировка">По дате<svg width="10" height="6" viewBox="0 0 7 4" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h2v1H0zM5 0h2v1H5zM1 1h2v1H1zM4 1h2v1H4zM2 2h3v1H2zM3 3h1v1H3z"/></svg></button>
+        <span style="font-size: 16px">Показать <button class="inl" aria-label="Количество строк">25 строк<svg width="10" height="6" viewBox="0 0 7 4" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h2v1H0zM5 0h2v1H5zM1 1h2v1H1zM4 1h2v1H4zM2 2h3v1H2zM3 3h1v1H3z"/></svg></button></span>
+      </div>
+    </div>
+
+    <div class="f">
+      <span class="lbl" id="s2l">Открыт, с поиском</span>
+      <button class="trg open" role="combobox" aria-expanded="true" aria-labelledby="s2l"><span class="v">Дизайнер</span><svg width="14" height="8" viewBox="0 0 7 4" shape-rendering="crispEdges" fill="currentColor" style="transform: rotate(180deg)" aria-hidden="true"><path d="M0 0h2v1H0zM5 0h2v1H5zM1 1h2v1H1zM4 1h2v1H4zM2 2h3v1H2zM3 3h1v1H3z"/></svg></button>
+      <div class="pop">
+        <div class="srch"><svg width="16" height="16" viewBox="0 0 8 8" shape-rendering="crispEdges" fill="#1b1b2f" aria-hidden="true"><path d="M1 0h4v1H1zM0 1h1v4H0zM5 1h1v4H5zM1 5h4v1H1zM5 5h1v1H5zM6 6h1v1H6zM7 7h1v1H7z"/></svg>Поиск…</div>
+        <ul class="opts" role="listbox" aria-label="Роли">
+          <li class="grp-t" role="presentation">КОМАНДА</li>
+          <li role="option" aria-selected="false">Разработчик</li>
+          <li role="option" aria-selected="true" class="hl">Дизайнер<span class="ck"><svg width="16" height="12" viewBox="0 0 8 6" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M6 0h2v2H6zM5 2h2v1H5zM4 3h2v1H4zM0 2h2v1H0zM1 3h2v1H1zM2 4h3v1H2zM3 5h1v1H3z"/></svg></span></li>
+          <li role="option" aria-selected="false"><span>Менеджер<br><span class="sub">Доступ к отчётам</span></span></li>
+          <li class="grp-t" role="presentation">ГОСТИ</li>
+          <li role="option" aria-selected="false" aria-disabled="true" style="color: #8d8a9c">Наблюдатель — скоро</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="f">
+      <span class="lbl" id="s3l">AsyncSearchSelect</span>
+      <button class="trg open" role="combobox" aria-expanded="true" aria-labelledby="s3l"><span class="ph">Найти пользователя</span></button>
+      <div class="pop">
+        <div class="srch" style="color: #1b1b2f"><svg width="16" height="16" viewBox="0 0 8 8" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M1 0h4v1H1zM0 1h1v4H0zM5 1h1v4H5zM1 5h4v1H1zM5 5h1v1H5zM6 6h1v1H6zM7 7h1v1H7z"/></svg>ann</div>
+        <div class="st" role="status"><span class="blink" aria-hidden="true"><i></i><i></i><i></i></span>Загрузка…</div>
+      </div>
+      <div class="pop">
+        <div class="srch" style="color: #1b1b2f"><svg width="16" height="16" viewBox="0 0 8 8" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M1 0h4v1H1zM0 1h1v4H0zM5 1h1v4H5zM1 5h4v1H1zM5 5h1v1H5zM6 6h1v1H6zM7 7h1v1H7z"/></svg>zzz</div>
+        <div class="st" role="status">Ничего не найдено</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; align-items: start">
+    <div class="f" style="gap: 18px">
+      <span class="lbl">Checkbox</span>
+      <label class="cb"><span class="bx"></span>Не выбран</label>
+      <label class="cb"><span class="bx on"><svg width="12" height="9" viewBox="0 0 8 6" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M6 0h2v2H6zM5 2h2v1H5zM4 3h2v1H4zM0 2h2v1H0zM1 3h2v1H1zM2 4h3v1H2zM3 5h1v1H3z"/></svg></span>Выбран</label>
+      <label class="cb"><span class="bx on"><span style="width: 10px; height: 3px; background: #fff; display: block"></span></span>Частично</label>
+      <label class="cb" style="color: #55536a"><span class="bx off"></span>Отключён</label>
+      <label class="cb"><span class="bx err"></span>С ошибкой</label>
+    </div>
+    <div class="f" style="gap: 22px">
+      <span class="lbl">CheckboxField</span>
+      <div style="display: flex; gap: 12px; align-items: flex-start"><span class="bx on" style="margin-top: 2px"><svg width="12" height="9" viewBox="0 0 8 6" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M6 0h2v2H6zM5 2h2v1H5zM4 3h2v1H4zM0 2h2v1H0zM1 3h2v1H1zM2 4h3v1H2zM3 5h1v1H3z"/></svg></span><div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 16px">Получать новости</span><span class="hint">Раз в неделю, без спама</span></div></div>
+      <div style="display: flex; gap: 12px; align-items: flex-start"><span class="bx err" style="margin-top: 2px"></span><div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 16px">Принимаю <a href="#" style="color: #1b3bb3">условия</a></span><span class="hint" style="color: #c42b2b">Нужно согласие, чтобы продолжить</span></div></div>
+    </div>
+    <div class="f" style="gap: 14px">
+      <span class="lbl">CheckboxCard</span>
+      <div class="card sel"><span class="bx on"><svg width="12" height="9" viewBox="0 0 8 6" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M6 0h2v2H6zM5 2h2v1H5zM4 3h2v1H4zM0 2h2v1H0zM1 3h2v1H1zM2 4h3v1H2zM3 5h1v1H3z"/></svg></span><div style="display: flex; flex-direction: column; gap: 4px"><span class="d" style="font-size: 9px">ТАРИФ PRO</span><span class="hint">Безлимитные проекты и экспорт</span></div><span class="d" style="margin-left: auto; font-size: 9px">990 ₽</span></div>
+      <div class="card"><span class="bx"></span><div style="display: flex; flex-direction: column; gap: 4px"><span class="d" style="font-size: 9px">ТАРИФ START</span><span class="hint">До 3 проектов</span></div><span class="d" style="margin-left: auto; font-size: 9px">0 ₽</span></div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":1360}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

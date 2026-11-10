@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>8-bit — кнопки</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=Tiny5&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.r{font-family:'Tiny5',monospace;color:#1b1b2f;background:#f4f1e6}
+.d{font-family:'Press Start 2P',monospace;line-height:1.6}
+.box{background:#fffdf5;margin:4px;box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f}
+.btn{font-family:'Press Start 2P',monospace;font-size:10px;line-height:1;padding:12px 16px;border:0;margin:4px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;color:#fff;background:var(--c,#2b4fd9);box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f,inset -4px -4px 0 rgba(0,0,0,.3),inset 4px 4px 0 rgba(255,255,255,.3)}
+.btn.stroke{color:var(--c,#2b4fd9);background:#fffdf5;box-shadow:0 -4px 0 var(--c,#2b4fd9),0 4px 0 var(--c,#2b4fd9),-4px 0 0 var(--c,#2b4fd9),4px 0 0 var(--c,#2b4fd9)}
+.btn.lite{color:var(--c,#2b4fd9);background:var(--t,#dfe6ff);box-shadow:0 -4px 0 var(--t,#dfe6ff),0 4px 0 var(--t,#dfe6ff),-4px 0 0 var(--t,#dfe6ff),4px 0 0 var(--t,#dfe6ff),inset 0 -4px 0 rgba(27,27,47,.14)}
+.btn.ghost{color:var(--c,#2b4fd9);background:transparent;box-shadow:none}
+.btn.hover{filter:brightness(1.15)}
+.btn.ghost.hover{filter:none;background:repeating-conic-gradient(#dcd7c4 0 25%,transparent 0 50%) 0 0/4px 4px}
+.btn.pressed{transform:translate(2px,2px);box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f,inset 4px 4px 0 rgba(0,0,0,.3)}
+.btn.focus{outline:4px dashed #e0a100;outline-offset:6px}
+.btn[disabled]{color:#55536a;background:repeating-conic-gradient(#d9d5c3 0 25%,#ece8d8 0 50%) 0 0/4px 4px;box-shadow:0 -4px 0 #8d8a9c,0 4px 0 #8d8a9c,-4px 0 0 #8d8a9c,4px 0 0 #8d8a9c;cursor:not-allowed}
+.sm{font-size:9px;padding:9px 12px}
+.xs{font-size:8px;padding:7px 10px}
+.xxs{font-size:8px;padding:5px 7px}
+.ico{padding:10px}
+.row{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.lab{font-size:14px;color:#55536a;width:110px;flex:none}
+.grp{display:inline-flex;margin:4px;box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f}
+.grp button{font-family:'Press Start 2P',monospace;font-size:9px;border:0;padding:12px 16px;background:#fffdf5;color:#1b1b2f;cursor:pointer;box-shadow:inset -4px -4px 0 #e0dbc8}
+.grp button + button{border-left:4px solid #1b1b2f}
+.grp button.on{background:#2b4fd9;color:#fff;box-shadow:inset 4px 4px 0 rgba(0,0,0,.3)}
+.seg{display:inline-flex;gap:4px;padding:6px;margin:4px;background:#e6e1cf;box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f}
+.seg button{font-family:'Tiny5',monospace;font-size:16px;border:0;padding:8px 16px;background:transparent;color:#1b1b2f;cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+.seg button.on{background:#fffdf5;box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f,inset -4px -4px 0 #e0dbc8;margin:0 4px}
+.h{display:flex;flex-direction:column;gap:20px}
+</style>
+</helmet>
+<div class="r" style="width: 1200px; height: 1360px; box-sizing: border-box; padding: 56px; display: flex; flex-direction: column; gap: 44px">
+  <div class="d" style="font-size: 20px">Кнопки</div>
+
+  <div class="h">
+    <div class="d" style="font-size: 11px">Button — варианты × цвета</div>
+    <div class="row"><span class="lab">filled</span>
+      <button class="btn">Primary</button>
+      <button class="btn" style="--c: #1b1b2f">Neutral</button>
+      <button class="btn" style="--c: #c42b2b">Error</button>
+      <button class="btn" style="--c: #1e7d38">Success</button>
+      <button class="btn" style="--c: #f2b31a; color: #1b1b2f">Warning</button>
+      <button class="btn" style="--c: #6a3fd4">Feature</button>
+    </div>
+    <div class="row"><span class="lab">stroke</span>
+      <button class="btn stroke">Primary</button>
+      <button class="btn stroke" style="--c: #1b1b2f">Neutral</button>
+      <button class="btn stroke" style="--c: #c42b2b">Error</button>
+      <button class="btn stroke" style="--c: #1e7d38">Success</button>
+      <button class="btn stroke" style="--c: #8a5d00">Warning</button>
+      <button class="btn stroke" style="--c: #6a3fd4">Feature</button>
+    </div>
+    <div class="row"><span class="lab">lighter</span>
+      <button class="btn lite">Primary</button>
+      <button class="btn lite" style="--c: #1b1b2f; --t: #e6e1cf">Neutral</button>
+      <button class="btn lite" style="--c: #c42b2b; --t: #fbe0e0">Error</button>
+      <button class="btn lite" style="--c: #18692f; --t: #dcf2e1">Success</button>
+      <button class="btn lite" style="--c: #7a5300; --t: #fdf0c9">Warning</button>
+      <button class="btn lite" style="--c: #5a33c0; --t: #ebe3ff">Feature</button>
+    </div>
+    <div class="row"><span class="lab">ghost</span>
+      <button class="btn ghost">Primary</button>
+      <button class="btn ghost" style="--c: #1b1b2f">Neutral</button>
+      <button class="btn ghost" style="--c: #c42b2b">Error</button>
+      <button class="btn ghost" style="--c: #18692f">Success</button>
+      <button class="btn ghost" style="--c: #7a5300">Warning</button>
+      <button class="btn ghost" style="--c: #5a33c0">Feature</button>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px">
+    <div class="h">
+      <div class="d" style="font-size: 11px">Размеры</div>
+      <div class="row">
+        <button class="btn">Medium</button>
+        <button class="btn sm">Small</button>
+        <button class="btn xs">X-Small</button>
+        <button class="btn xxs">2X-Small</button>
+      </div>
+      <div class="d" style="font-size: 11px; margin-top: 12px">С иконками</div>
+      <div class="row">
+        <button class="btn"><svg width="14" height="14" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M3 0h1v7H3zM0 3h7v1H0z"/></svg>Добавить</button>
+        <button class="btn stroke" style="--c: #1b1b2f">Далее<svg width="8" height="14" viewBox="0 0 4 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h1v7H0zM1 1h1v5H1zM2 2h1v3H2zM3 3h1v1H3z"/></svg></button>
+        <button class="btn ico" aria-label="Добавить"><svg width="14" height="14" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M3 0h1v7H3zM0 3h7v1H0z"/></svg></button>
+        <button class="btn stroke ico" style="--c: #1b1b2f" aria-label="Поиск"><svg width="16" height="16" viewBox="0 0 8 8" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M1 0h4v1H1zM0 1h1v4H0zM5 1h1v4H5zM1 5h4v1H1zM5 5h1v1H5zM6 6h1v1H6zM7 7h1v1H7z"/></svg></button>
+        <button class="btn ghost ico" style="--c: #1b1b2f" aria-label="Настройки"><svg width="14" height="14" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" fill-rule="evenodd" aria-hidden="true"><path d="M3 0h1v1H3zM3 6h1v1H3zM0 3h1v1H0zM6 3h1v1H6zM1 1h5v5H1zM3 3h1v1H3z"/></svg></button>
+      </div>
+    </div>
+    <div class="h">
+      <div class="d" style="font-size: 11px">Состояния</div>
+      <div class="row">
+        <button class="btn">Default</button>
+        <button class="btn hover">Hover</button>
+        <button class="btn pressed">Pressed</button>
+      </div>
+      <div class="row">
+        <button class="btn focus">Focus</button>
+        <button class="btn" disabled>Disabled</button>
+        <button class="btn" aria-busy="true">Загрузка<span aria-hidden="true" style="display: inline-flex; gap: 3px"><span style="width: 4px; height: 4px; background: #fff"></span><span style="width: 4px; height: 4px; background: rgba(255,255,255,.6)"></span><span style="width: 4px; height: 4px; background: rgba(255,255,255,.3)"></span></span></button>
+      </div>
+      <div class="row">
+        <button class="btn ghost hover" style="--c: #1b1b2f">Ghost hover</button>
+        <button class="btn stroke" style="--c: #c42b2b" disabled>Stroke disabled</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px">
+    <div class="h">
+      <div class="d" style="font-size: 11px">ButtonGroup</div>
+      <div class="grp" role="group" aria-label="Период">
+        <button>День</button><button class="on" aria-pressed="true">Неделя</button><button>Месяц</button><button>Год</button>
+      </div>
+      <div class="d" style="font-size: 11px; margin-top: 12px">ToggleButton</div>
+      <div class="row">
+        <button class="btn stroke" style="--c: #1b1b2f" aria-pressed="false"><svg width="14" height="14" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h7v1H0zM1 1h5v1H1zM2 2h3v1H2zM3 3h1v4H3z"/></svg>Фильтр</button>
+        <button class="btn pressed" aria-pressed="true"><svg width="14" height="14" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h7v1H0zM1 1h5v1H1zM2 2h3v1H2zM3 3h1v4H3z"/></svg>Фильтр</button>
+      </div>
+      <div class="d" style="font-size: 11px; margin-top: 12px">ToggleGroup — multiple</div>
+      <div class="grp" role="group" aria-label="Форматирование">
+        <button class="on d" aria-pressed="true" aria-label="Жирный" style="font-size: 12px">B</button><button aria-pressed="false" aria-label="Курсив" style="font-size: 12px; font-style: italic">I</button><button class="on" aria-pressed="true" aria-label="Подчёркнутый" style="font-size: 12px; text-decoration: underline">U</button>
+      </div>
+    </div>
+    <div class="h">
+      <div class="d" style="font-size: 11px">SegmentedControl</div>
+      <div class="seg" role="radiogroup" aria-label="Вид">
+        <button role="radio" aria-checked="true" class="on">Таблица</button>
+        <button role="radio" aria-checked="false">Дерево</button>
+        <button role="radio" aria-checked="false">Канбан</button>
+      </div>
+      <div class="seg" role="radiogroup" aria-label="Раскладка">
+        <button role="radio" aria-checked="false" aria-label="Сетка"><svg width="14" height="14" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h3v3H0zM4 0h3v3H4zM0 4h3v3H0zM4 4h3v3H4z"/></svg></button>
+        <button role="radio" aria-checked="true" class="on" aria-label="Список"><svg width="14" height="14" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h1v1H0zM2 0h5v1H2zM0 3h1v1H0zM2 3h5v1H2zM0 6h1v1H0zM2 6h5v1H2z"/></svg></button>
+        <button role="radio" aria-checked="false" aria-label="График"><svg width="14" height="14" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 6h7v1H0zM1 3h1v3H1zM3 1h1v5H3zM5 4h1v2H5z"/></svg></button>
+      </div>
+      <div class="box" style="padding: 16px 18px; font-size: 15px; line-height: 1.5; color: #55536a; margin-top: 12px">Активный сегмент «приподнят» над подложкой — как вкладка картриджа. Нажатые ToggleButton и пункты ButtonGroup «вдавлены» внутрь.</div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":1360}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

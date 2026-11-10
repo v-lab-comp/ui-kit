@@ -1,0 +1,12 @@
+/* calendar-grid: 8-битный вид поверх corporate/components/calendar-grid.css — раскладка приходит оттуда, здесь только оформление. */
+:where([data-vl-skin~='pixel']) {
+  .vl-calendar-grid__weekday {
+    font-family: var(--font-display);
+    font-size: 7px;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    color: var(--text-sub-600);
+  }
+}

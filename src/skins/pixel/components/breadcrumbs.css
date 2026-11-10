@@ -1,0 +1,13 @@
+/* breadcrumbs: 8-битный вид поверх corporate/components/breadcrumbs.css — раскладка приходит оттуда, здесь только оформление. */
+:where([data-vl-skin~='pixel']) {
+  .vl-breadcrumbs__list > li + li::before {
+    content: var(--breadcrumb-sep, '›');
+    height: 22px;
+    margin: 0 8px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 22px;
+    letter-spacing: 0;
+    color: var(--text-sub-600);
+  }
+}

@@ -1,0 +1,11 @@
+/* sidebar-header: 8-битный вид поверх corporate/components/sidebar-header.css — раскладка приходит оттуда, здесь только оформление.
+   Фон — от панели (тёмные токены .vl-sidebar), разделитель — пунктир из «пикселей». */
+:where([data-vl-skin~='pixel']) {
+  .vl-sidebar-header {
+    background: var(--bg-white-0);
+  }
+  .vl-sidebar-header__divider {
+    height: 0;
+    border-top: var(--pixel-divider);
+  }
+}

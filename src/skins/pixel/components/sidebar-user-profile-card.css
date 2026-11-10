@@ -1,0 +1,4 @@
+/* sidebar-user-profile-card: 8-битный вид поверх corporate/components/sidebar-user-profile-card.css — раскладка приходит оттуда, здесь только оформление.
+   Своих классов у UserProfileCard нет: она рендерит .vl-sidebar-card, весь вид — в sidebar-card.css. */
+:where([data-vl-skin~='pixel']) {
+}

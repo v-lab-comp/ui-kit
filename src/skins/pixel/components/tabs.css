@@ -1,0 +1,60 @@
+/* tabs: 8-битный вид поверх corporate/components/tabs.css — раскладка приходит оттуда, здесь только оформление.
+   Вкладки — «закладки папки»: рамка сверху и с боков, активная сливается с линией-разделителем. */
+:where([data-vl-skin~='pixel']) {
+  .vl-tabs__list {
+    align-items: flex-end;
+    gap: 8px;
+    padding-left: var(--pixel-unit);
+  }
+
+  .vl-tabs__tab {
+    margin: var(--pixel-unit) var(--pixel-unit) 0;
+    padding: 12px 14px;
+    background: var(--bg-soft-200);
+    font-family: var(--font-display);
+    font-size: 8px;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    color: var(--text-sub-600);
+    box-shadow:
+      0 calc(-1 * var(--pixel-unit)) 0 var(--pixel-divider-color),
+      calc(-1 * var(--pixel-unit)) 0 0 var(--pixel-divider-color),
+      var(--pixel-unit) 0 0 var(--pixel-divider-color);
+  }
+
+  .vl-tabs__tab:hover {
+    background: var(--pixel-dither-hover), var(--bg-soft-200);
+    color: var(--text-strong-950);
+  }
+
+  .vl-tabs__tab:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: var(--pixel-focus-offset);
+  }
+
+  /* Активная: светлая панель, чернильная рамка, на 4px ниже — перекрывает разделитель */
+  :where(.vl-tabs__tab)[data-active] {
+    z-index: 1;
+    margin-bottom: calc(-1 * var(--pixel-unit));
+    padding-bottom: calc(12px + var(--pixel-unit));
+    background: var(--bg-white-0);
+    color: var(--text-strong-950);
+    box-shadow:
+      0 calc(-1 * var(--pixel-unit)) 0 var(--stroke-strong-950),
+      calc(-1 * var(--pixel-unit)) 0 0 var(--stroke-strong-950),
+      var(--pixel-unit) 0 0 var(--stroke-strong-950);
+  }
+
+  :where(.vl-tabs__tab)[data-active]::after {
+    content: none;
+  }
+
+  .vl-tabs__separator {
+    position: relative;
+    margin-top: 0;
+    height: var(--pixel-unit);
+    background-color: var(--stroke-strong-950);
+  }
+}

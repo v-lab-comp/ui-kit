@@ -1,0 +1,106 @@
+/*
+ * rich-input: 8-битный вид поверх corporate/components/rich-input.css — раскладка приходит оттуда,
+ * здесь только оформление.
+ *
+ * Оболочка — панель InputField (input-field.css). Тулбар — полоса с толстым разделителем цвета
+ * рамки (следует за фокусом и ошибкой); кнопки — светлые «клавиши» с объёмом снизу-справа,
+ * включённая — заливка primary с вдавленным объёмом.
+ */
+:where([data-vl-skin~='pixel']) {
+  /* Внутренняя тень «утопленного» края оболочки легла бы под тулбар — у редактора её нет */
+  .vl-rich-input__wrapper {
+    --_pi-inset: transparent;
+  }
+
+  .vl-rich-input__wrapper:hover:not([data-disabled]):not(:focus-within) {
+    --_pi-inset: transparent;
+  }
+
+  /* ── Тулбар ──────────────────────────────────────────────────────────────── */
+
+  .vl-rich-input__toolbar {
+    gap: 4px;
+    padding: 6px;
+    border-bottom: var(--pixel-unit) solid var(--pixel-frame-color);
+    background: var(--faded-lighter);
+  }
+
+  :where(.vl-rich-input__toolbar)[data-placement='bottom'] {
+    border-top: var(--pixel-unit) solid var(--pixel-frame-color);
+    border-bottom: none;
+  }
+
+  .vl-rich-input__wrapper[data-disabled] .vl-rich-input__toolbar {
+    background: transparent;
+    border-color: var(--pixel-disabled-frame-color);
+  }
+
+  .vl-rich-input__tool-button {
+    min-width: 30px;
+    min-height: 30px;
+    padding: 4px;
+    border-radius: 0;
+    background: var(--bg-white-0);
+    color: var(--text-strong-950);
+    box-shadow: inset -3px -3px 0 var(--stroke-soft-200);
+  }
+
+  .vl-rich-input__tool-button:hover:not(:disabled) {
+    background: var(--pixel-dither-hover), var(--bg-white-0);
+  }
+
+  /* Нажатие: сдвиг на «пиксель», объём вдавливается */
+  .vl-rich-input__tool-button:active:not(:disabled) {
+    transform: var(--pixel-press-shift);
+    box-shadow: inset 3px 3px 0 var(--stroke-soft-200);
+  }
+
+  .vl-rich-input__tool-button:focus-visible {
+    outline: var(--pixel-unit-sm) dashed var(--pixel-focus-color);
+    outline-offset: 1px;
+  }
+
+  /* Включённый формат (жирный, список…) — заливка primary, объём вдавлен */
+  :where(.vl-rich-input__tool-button)[data-on] {
+    background: var(--primary-base);
+    color: var(--static-white);
+    box-shadow: inset 3px 3px 0 var(--pixel-bevel-dark);
+  }
+
+  .vl-rich-input__tool-button[data-on]:hover:not(:disabled) {
+    background: var(--primary-base);
+    filter: brightness(1.15);
+  }
+
+  .vl-rich-input__tool-button:disabled {
+    background: transparent;
+    box-shadow: none;
+    color: var(--icon-disabled-300);
+  }
+
+  /* ── Текст ───────────────────────────────────────────────────────────────── */
+
+  .vl-rich-input__editable {
+    line-height: 1.55;
+  }
+
+  .vl-rich-input__editable[data-empty]::before {
+    color: var(--text-soft-400);
+  }
+
+  /* Маркеры списка — квадратные «пиксели» */
+  .vl-rich-input__editable ul {
+    list-style: square;
+  }
+
+  /* ── Счётчик ─────────────────────────────────────────────────────────────── */
+
+  .vl-rich-input__counter {
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  :where(.vl-rich-input__counter)[data-error] {
+    color: var(--pixel-input-error);
+  }
+}

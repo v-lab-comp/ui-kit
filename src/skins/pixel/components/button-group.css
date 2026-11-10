@@ -1,0 +1,60 @@
+/* button-group: 8-битный вид поверх corporate/components/button-group.css (макет: Buttons.dc.html).
+
+   Группа — одна общая рамка; кнопки внутри без своих рамок и отступов, между ними —
+   чернильная перегородка 4px. Светлые кнопки (stroke / ghost / lighter) — «панельные»
+   с тенью дна, filled — с объёмом; нажатие вдавливает кнопку внутрь рамки. */
+:where([data-vl-skin~='pixel']) {
+  .vl-button-group {
+    margin: var(--pixel-unit);
+    box-shadow: var(--pixel-frame);
+    background: var(--bg-white-0);
+  }
+
+  /* Вес (0,3,0) — выше правил варианта Button ((0,1,0)…(0,2,0)) и их margin */
+  .vl-button-group > .vl-button[data-variant] {
+    --pixel-frame-color: var(--stroke-strong-950);
+    margin: 0;
+  }
+
+  /* Перегородка вместо схлопнутой границы corporate (margin-left: -1px) */
+  .vl-button-group > * + * {
+    margin-left: 0;
+  }
+
+  /* Вес (0,5,0) — выше border-color вариантов Button (neutral stroke, :hover — до (0,3,0)) */
+  .vl-button-group > .vl-button[data-variant] + .vl-button[data-variant] {
+    border-left: var(--pixel-unit) solid var(--stroke-strong-950);
+  }
+
+  /* Вес как у правил ниже Button (:hover / :active — (0,3,0)), плюс родитель: (0,4,0) */
+  .vl-button-group > .vl-button:not([data-variant='filled']) {
+    background: var(--bg-white-0);
+    color: var(--text-strong-950);
+    box-shadow: var(--pixel-bevel-panel);
+  }
+
+  .vl-button-group > .vl-button[data-variant='filled'] {
+    box-shadow: var(--pixel-bevel);
+  }
+
+  .vl-button-group > .vl-button:not([data-variant='filled']):hover:not(:disabled) {
+    background: var(--pixel-dither-hover), var(--bg-white-0);
+  }
+
+  /* Нажатие: без сдвига (кнопка зажата соседями), только вдавленный объём */
+  .vl-button-group > .vl-button:active:not(:disabled) {
+    transform: none;
+    box-shadow: var(--pixel-bevel-pressed);
+  }
+
+  .vl-button-group > .vl-button:disabled {
+    background: var(--pixel-dither);
+    color: var(--text-sub-600);
+    box-shadow: none;
+  }
+
+  /* Фокус поверх соседей и рамки группы */
+  .vl-button-group > .vl-button:focus-visible {
+    outline-offset: calc(-1 * var(--pixel-unit));
+  }
+}

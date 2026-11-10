@@ -1,0 +1,61 @@
+/* avatar: 8-битный вид поверх corporate/components/avatar.css (макет: Data.dc.html, «Avatar»).
+
+   Квадрат вместо круга, ступенчатая рамка 3px снаружи (место — margin), насыщенная
+   заливка палитры с белыми инициалами в Press Start 2P, фото — без сглаживания.
+   Кегль инициалов задаёт компонент инлайном (10…24px под гротеск) — пиксельный шрифт
+   шире, поэтому текст внутри уменьшается в em от этого значения. */
+:where([data-vl-skin~='pixel']) {
+  .vl-avatar {
+    --pixel-unit: 3px;
+    border-radius: 0;
+    background: var(--bg-soft-200);
+    color: var(--text-strong-950);
+    font-family: var(--font-display);
+    font-weight: 400;
+    box-shadow: var(--pixel-frame);
+  }
+
+  /* Вес (0,2,0) — выше сброса margin в ui-kit-root (0,1,1) */
+  .vl-avatar[class] {
+    margin: var(--pixel-unit);
+  }
+
+  /* Цвет палитры — сплошная заливка, текст на ней (у warning / away — чернила) */
+  .vl-avatar[data-color] {
+    background: var(--pal-base);
+    color: var(--pal-on-base, var(--static-white));
+  }
+
+  .vl-avatar[data-color='neutral'] {
+    background: var(--bg-soft-200);
+    color: var(--text-strong-950);
+  }
+
+  .vl-avatar img {
+    image-rendering: pixelated;
+  }
+
+  /* Инициалы: ~0,65 от кегля компонента (56px → 12px, 40px → 9px, 24px → 7px) */
+  .vl-avatar span:not(.vl-avatar__icon) {
+    font-size: 0.65em;
+    line-height: 1;
+    letter-spacing: 0;
+  }
+
+  .vl-avatar svg {
+    shape-rendering: crispEdges;
+  }
+
+  /* Силуэт-заглушка: светлая фигура на заливке */
+  .vl-avatar__default-icon-head,
+  .vl-avatar__default-icon-shoulders {
+    fill: var(--bg-white-0);
+  }
+
+  .vl-avatar:not([data-color]) .vl-avatar__default-icon-head,
+  .vl-avatar:not([data-color]) .vl-avatar__default-icon-shoulders,
+  .vl-avatar[data-color='neutral'] .vl-avatar__default-icon-head,
+  .vl-avatar[data-color='neutral'] .vl-avatar__default-icon-shoulders {
+    fill: var(--icon-sub-600);
+  }
+}

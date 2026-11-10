@@ -1,0 +1,54 @@
+/* drawer: 8-битный вид поверх corporate/components/drawer.css — раскладка приходит оттуда, здесь только оформление.
+   Подложка — дизеринг, у панели — чернильная черта по внутреннему краю и жёсткая полоса тени
+   за ней (без размытия). Выезд идёт «кадрами»: меняется только кривая, длительность та же,
+   поэтому transitionend и тайминги JS не затронуты. */
+:where([data-vl-skin~='pixel']) {
+  .vl-drawer__backdrop {
+    background: var(--pixel-scrim);
+    transition-timing-function: steps(4, end);
+  }
+
+  .vl-drawer__panel {
+    border: 0;
+    border-radius: 0;
+    background: var(--bg-white-0);
+    color: var(--text-strong-950);
+    font-family: var(--font-sans);
+    transition-timing-function: steps(6, end);
+  }
+  .vl-drawer__panel[data-side='right'] {
+    border: 0;
+    box-shadow:
+      calc(-1 * var(--pixel-unit)) 0 0 var(--pixel-frame-color),
+      -12px 0 0 var(--pixel-shadow-strong-color);
+  }
+  .vl-drawer__panel[data-side='left'] {
+    border: 0;
+    box-shadow:
+      var(--pixel-unit) 0 0 var(--pixel-frame-color),
+      12px 0 0 var(--pixel-shadow-strong-color);
+  }
+  .vl-drawer__panel[data-side='top'] {
+    border: 0;
+    box-shadow:
+      0 var(--pixel-unit) 0 var(--pixel-frame-color),
+      0 12px 0 var(--pixel-shadow-strong-color);
+  }
+  .vl-drawer__panel[data-side='bottom'] {
+    border: 0;
+    border-radius: 0;
+    box-shadow:
+      0 calc(-1 * var(--pixel-unit)) 0 var(--pixel-frame-color),
+      0 -12px 0 var(--pixel-shadow-strong-color);
+  }
+
+  @media (max-width: 640px) {
+    .vl-drawer__panel[data-mobile-bottom='true'] {
+      border: 0;
+      border-radius: 0;
+      box-shadow:
+        0 calc(-1 * var(--pixel-unit)) 0 var(--pixel-frame-color),
+        0 -12px 0 var(--pixel-shadow-strong-color);
+    }
+  }
+}

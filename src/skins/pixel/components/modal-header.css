@@ -1,0 +1,74 @@
+/* modal-header: 8-битный вид поверх corporate/components/modal-header.css — раскладка приходит оттуда, здесь только оформление.
+   Заголовок — цветная «полоса окна» (как в старых RPG): заливка --pixel-modal-bar-bg
+   (задаёт modal.css по смыслу окна), чернильная черта снизу, заголовок шрифтом Press Start 2P.
+   Шапка только с крестиком (close-only, ModalStatus по центру) остаётся без полосы. */
+:where([data-vl-skin~='pixel']) {
+  .vl-modal-header:not([data-close-only]) {
+    align-items: center;
+    padding: 12px 12px 12px var(--modal-padding-inline, 20px);
+    background: var(--pixel-modal-bar-bg, var(--primary-base));
+    color: var(--pixel-modal-bar-text, var(--static-white));
+    border-bottom: var(--pixel-unit) solid var(--stroke-strong-950);
+  }
+
+  /* Вес (0,3,0) — выше правил Typography, которые красят и задают кегль заголовку */
+  .vl-modal-header .vl-modal-header__title.vl-typography {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    color: inherit;
+  }
+
+  .vl-modal-header .vl-modal-header__subtitle.vl-typography {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.4;
+    letter-spacing: 0;
+    color: inherit;
+  }
+
+  .vl-modal-header__text-column {
+    gap: 6px;
+  }
+
+  /* Крестик на полосе — тёмная «кнопка-кирпич» с объёмом */
+  .vl-modal-header__close {
+    width: 32px;
+    height: 32px;
+    border-radius: 0;
+    color: inherit;
+    background: rgba(0, 0, 0, 0.25);
+    box-shadow:
+      inset -3px -3px 0 var(--pixel-bevel-dark),
+      inset 3px 3px 0 var(--pixel-bevel-light);
+  }
+  .vl-modal-header__close:hover {
+    color: inherit;
+    background: rgba(0, 0, 0, 0.4);
+  }
+  .vl-modal-header__close:active {
+    transform: var(--pixel-press-shift);
+    box-shadow: inset 3px 3px 0 var(--pixel-bevel-dark);
+  }
+  .vl-modal-header__close:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: 2px;
+  }
+
+  /* Без полосы: крестик — прозрачная иконочная кнопка на панели, hover — шахматка */
+  .vl-modal-header[data-close-only] .vl-modal-header__close {
+    color: var(--icon-sub-600);
+    background: transparent;
+    box-shadow: none;
+  }
+  .vl-modal-header[data-close-only] .vl-modal-header__close:hover {
+    color: var(--icon-strong-950);
+    background: var(--pixel-dither-hover);
+  }
+  .vl-modal-header[data-close-only] .vl-modal-header__close:active {
+    box-shadow: none;
+  }
+}

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>8-bit — тёмная схема</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=Tiny5&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.r{font-family:'Tiny5',monospace;color:#ecead9;background:#14141f}
+.d{font-family:'Press Start 2P',monospace;line-height:1.6}
+.box{background:#1f1f2e;margin:4px;box-shadow:0 -4px 0 #ecead9,0 4px 0 #ecead9,-4px 0 0 #ecead9,4px 0 0 #ecead9}
+.sh{box-shadow:0 -4px 0 #ecead9,0 4px 0 #ecead9,-4px 0 0 #ecead9,4px 0 0 #ecead9,8px 8px 0 4px rgba(0,0,0,.55)}
+.btn{font-family:'Press Start 2P',monospace;font-size:10px;line-height:1;padding:12px 16px;border:0;margin:4px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;color:#fff;background:var(--c,#3a5bef);box-shadow:0 -4px 0 #ecead9,0 4px 0 #ecead9,-4px 0 0 #ecead9,4px 0 0 #ecead9,inset -4px -4px 0 rgba(0,0,0,.35),inset 4px 4px 0 rgba(255,255,255,.25)}
+.btn.stroke{color:var(--c,#8fa6ff);background:#1f1f2e;box-shadow:0 -4px 0 var(--c,#8fa6ff),0 4px 0 var(--c,#8fa6ff),-4px 0 0 var(--c,#8fa6ff),4px 0 0 var(--c,#8fa6ff)}
+.btn.lite{color:var(--c,#b8c6ff);background:var(--t,#2a3366);box-shadow:0 -4px 0 var(--t,#2a3366),0 4px 0 var(--t,#2a3366),-4px 0 0 var(--t,#2a3366),4px 0 0 var(--t,#2a3366)}
+.btn[disabled]{color:#a9a7bd;background:repeating-conic-gradient(#2a2a3c 0 25%,#1f1f2e 0 50%) 0 0/4px 4px;box-shadow:0 -4px 0 #5c5a72,0 4px 0 #5c5a72,-4px 0 0 #5c5a72,4px 0 0 #5c5a72}
+.lbl{font-family:'Press Start 2P',monospace;font-size:9px;margin-bottom:12px;display:block}
+.fld{display:flex;align-items:center;gap:10px;background:#1f1f2e;margin:4px;padding:0 12px;height:40px;font-size:16px;box-shadow:0 -4px 0 var(--b,#ecead9),0 4px 0 var(--b,#ecead9),-4px 0 0 var(--b,#ecead9),4px 0 0 var(--b,#ecead9),inset 4px 4px 0 #2a2a3c}
+.fld.focus{--b:#8fa6ff;outline:4px dashed #f2b31a;outline-offset:6px}
+.fld.err{--b:#ff6b6b}
+.hint{font-size:14px;color:#a9a7bd;margin-top:10px}
+.hint.e{color:#ff6b6b}
+.opts{list-style:none;margin:0;padding:6px 0;font-size:16px}
+.opts li{padding:9px 12px 9px 30px;position:relative}
+.opts li.hl{background:#3a5bef;color:#fff}
+.opts li.hl::before{content:'';position:absolute;left:10px;top:50%;margin-top:-7px;width:8px;height:14px;background:#fff;clip-path:polygon(0 0,2px 0,2px 2px,4px 2px,4px 4px,6px 4px,6px 6px,8px 6px,8px 8px,6px 8px,6px 10px,4px 10px,4px 12px,2px 12px,2px 14px,0 14px)}
+.bdg{display:inline-flex;align-items:center;gap:6px;font-family:'Press Start 2P',monospace;font-size:7px;line-height:1;padding:6px 8px;margin:2px;color:#fff;background:var(--c);box-shadow:0 -2px 0 #ecead9,0 2px 0 #ecead9,-2px 0 0 #ecead9,2px 0 0 #ecead9}
+.bx{width:20px;height:20px;display:flex;align-items:center;justify-content:center;background:#1f1f2e;margin:2px;color:#fff;box-shadow:0 -2px 0 #ecead9,0 2px 0 #ecead9,-2px 0 0 #ecead9,2px 0 0 #ecead9}
+.bx.on{background:#3a5bef}
+.seg{display:inline-flex;gap:4px;padding:6px;margin:4px;background:#2a2a3c;box-shadow:0 -4px 0 #ecead9,0 4px 0 #ecead9,-4px 0 0 #ecead9,4px 0 0 #ecead9}
+.seg button{font-family:'Tiny5',monospace;font-size:16px;border:0;padding:8px 16px;background:transparent;color:#ecead9;cursor:pointer}
+.seg button.on{background:#3a5bef;color:#fff;box-shadow:inset -3px -3px 0 rgba(0,0,0,.35),inset 3px 3px 0 rgba(255,255,255,.25)}
+.tabs{display:flex;gap:8px;align-items:flex-end;border-bottom:4px solid #ecead9;padding-left:8px}
+.tabs button{font-family:'Press Start 2P',monospace;font-size:8px;border:0;cursor:pointer;padding:12px 14px;background:#2a2a3c;color:#a9a7bd;margin:4px 4px 0;box-shadow:0 -4px 0 #5c5a72,-4px 0 0 #5c5a72,4px 0 0 #5c5a72}
+.tabs button.on{background:#1f1f2e;color:#ecead9;padding-bottom:16px;margin-bottom:-4px;box-shadow:0 -4px 0 #ecead9,-4px 0 0 #ecead9,4px 0 0 #ecead9}
+.toast{display:flex;gap:14px;align-items:flex-start;padding:14px;font-size:15px;line-height:1.4}
+.tic{width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;background:var(--c);color:#fff;box-shadow:inset -3px -3px 0 rgba(0,0,0,.35),inset 3px 3px 0 rgba(255,255,255,.25)}
+.h{display:flex;flex-direction:column;gap:16px}
+</style>
+</helmet>
+<div class="r" style="width: 1200px; height: 1160px; box-sizing: border-box; padding: 56px; display: flex; flex-direction: column; gap: 44px">
+  <div style="display: flex; align-items: baseline; gap: 20px"><div class="d" style="font-size: 20px">Тёмная схема</div><span style="font-size: 16px; color: #a9a7bd">data-vl-scheme="dark" — те же компоненты, токены другие</span></div>
+
+  <div style="display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 14px">
+    <div class="h" style="gap: 8px"><div class="box" style="height: 48px; background: #14141f"></div><span style="font-size: 13px; color: #a9a7bd">#14141f фон</span></div>
+    <div class="h" style="gap: 8px"><div class="box" style="height: 48px"></div><span style="font-size: 13px; color: #a9a7bd">#1f1f2e панели</span></div>
+    <div class="h" style="gap: 8px"><div class="box" style="height: 48px; background: #ecead9"></div><span style="font-size: 13px; color: #a9a7bd">#ecead9 текст</span></div>
+    <div class="h" style="gap: 8px"><div class="box" style="height: 48px; background: #a9a7bd"></div><span style="font-size: 13px; color: #a9a7bd">#a9a7bd вторичный</span></div>
+    <div class="h" style="gap: 8px"><div class="box" style="height: 48px; background: #3a5bef"></div><span style="font-size: 13px; color: #a9a7bd">#3a5bef primary</span></div>
+    <div class="h" style="gap: 8px"><div class="box" style="height: 48px; background: #8fa6ff"></div><span style="font-size: 13px; color: #a9a7bd">#8fa6ff ссылки</span></div>
+    <div class="h" style="gap: 8px"><div class="box" style="height: 48px; background: #ff6b6b"></div><span style="font-size: 13px; color: #a9a7bd">#ff6b6b ошибка</span></div>
+    <div class="h" style="gap: 8px"><div class="box" style="height: 48px; background: #f2b31a"></div><span style="font-size: 13px; color: #a9a7bd">#f2b31a фокус</span></div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px">
+    <div class="h">
+      <div class="d" style="font-size: 11px">Кнопки</div>
+      <div style="display: flex; gap: 14px; flex-wrap: wrap"><button class="btn">Primary</button><button class="btn stroke">Stroke</button><button class="btn lite">Lighter</button><button class="btn" style="--c: #c42b2b">Удалить</button><button class="btn" disabled>Disabled</button></div>
+      <div class="seg" role="radiogroup" aria-label="Вид" style="align-self: flex-start"><button role="radio" aria-checked="true" class="on">Таблица</button><button role="radio" aria-checked="false">Дерево</button><button role="radio" aria-checked="false">Канбан</button></div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap"><span class="bdg" style="--c: #3a5bef">PRIMARY</span><span class="bdg" style="--c: #1e7d38">SUCCESS</span><span class="bdg" style="--c: #c42b2b">ERROR</span><span class="bdg" style="--c: #f2b31a; color: #14141f">WARNING</span></div>
+      <label style="display: flex; gap: 12px; align-items: center; font-size: 16px"><span class="bx on"><svg width="12" height="9" viewBox="0 0 8 6" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M6 0h2v2H6zM5 2h2v1H5zM4 3h2v1H4zM0 2h2v1H0zM1 3h2v1H1zM2 4h3v1H2zM3 5h1v1H3z"/></svg></span>Получать новости</label>
+    </div>
+    <div class="h">
+      <div class="d" style="font-size: 11px">Поля</div>
+      <div><span class="lbl">ИМЯ</span><div class="fld focus">Анна</div></div>
+      <div><span class="lbl">ПОЧТА</span><div class="fld err">anna@</div><div class="hint e">Проверьте адрес</div></div>
+      <div><span class="lbl">РОЛЬ</span><div class="fld" style="justify-content: space-between">Дизайнер<svg width="14" height="8" viewBox="0 0 7 4" shape-rendering="crispEdges" fill="currentColor" style="transform: rotate(180deg)" aria-hidden="true"><path d="M0 0h2v1H0zM5 0h2v1H5zM1 1h2v1H1zM4 1h2v1H4zM2 2h3v1H2zM3 3h1v1H3z"/></svg></div>
+        <div class="box sh" style="margin-top: 12px"><ul class="opts" role="listbox" aria-label="Роли"><li role="option" aria-selected="false">Разработчик</li><li role="option" aria-selected="true" class="hl">Дизайнер</li><li role="option" aria-selected="false">Менеджер</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px">
+    <div class="h">
+      <div class="d" style="font-size: 11px">Окно и уведомление</div>
+      <div class="box sh">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: #3a5bef; color: #fff; border-bottom: 4px solid #ecead9"><span class="d" style="font-size: 10px">СОХРАНИТЬ?</span></div>
+        <div style="padding: 18px; display: flex; flex-direction: column; gap: 16px"><p style="margin: 0; font-size: 16px; line-height: 1.5">Есть несохранённые изменения в уровне 3.</p><div style="display: flex; gap: 12px; justify-content: flex-end"><button class="btn stroke" style="--c: #ecead9">Отмена</button><button class="btn">Сохранить</button></div></div>
+      </div>
+      <div class="box sh toast" role="status"><span class="tic" style="--c: #1e7d38"><svg width="16" height="12" viewBox="0 0 8 6" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M6 0h2v2H6zM5 2h2v1H5zM4 3h2v1H4zM0 2h2v1H0zM1 3h2v1H1zM2 4h3v1H2zM3 5h1v1H3z"/></svg></span><span><b class="d" style="font-size: 9px; font-weight: 400">СОХРАНЕНО</b><br>Изменения в «Пиксель» сохранены.</span></div>
+    </div>
+    <div class="h">
+      <div class="d" style="font-size: 11px">Вкладки и таблица</div>
+      <div>
+        <div class="tabs" role="tablist" aria-label="Проект"><button role="tab" aria-selected="true" class="on">ОБЗОР</button><button role="tab" aria-selected="false">УРОВНИ</button></div>
+        <div role="tabpanel" style="background: #1f1f2e; box-shadow: -4px 0 0 #ecead9, 4px 0 0 #ecead9, 0 4px 0 #ecead9; margin: 0 4px 4px">
+          <table style="border-collapse: collapse; width: 100%; font-size: 16px"><thead><tr><th scope="col" class="d" style="font-size: 8px; font-weight: 400; text-align: left; padding: 12px 14px; background: #ecead9; color: #14141f">УРОВЕНЬ</th><th scope="col" class="d" style="font-size: 8px; font-weight: 400; text-align: left; padding: 12px 14px; background: #ecead9; color: #14141f">СТАТУС</th></tr></thead>
+          <tbody><tr><td style="padding: 12px 14px">1. Луг</td><td style="padding: 12px 14px"><span class="bdg" style="--c: #1e7d38">ГОТОВ</span></td></tr><tr><td style="padding: 12px 14px; border-top: 4px dotted #3a3a52">2. Пещеры</td><td style="padding: 12px 14px; border-top: 4px dotted #3a3a52"><span class="bdg" style="--c: #f2b31a; color: #14141f">РЕВЬЮ</span></td></tr><tr><td style="padding: 12px 14px; border-top: 4px dotted #3a3a52">3. Замок</td><td style="padding: 12px 14px; border-top: 4px dotted #3a3a52"><span class="bdg" style="--c: #c42b2b">ОШИБКА</span></td></tr></tbody></table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":1160}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

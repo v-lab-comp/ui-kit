@@ -1,0 +1,209 @@
+/* toast: 8-битный вид поверх corporate/components/toast.css — раскладка приходит оттуда, здесь только оформление.
+   Табличка с рамкой и жёсткой тенью; иконка — цветной «кирпич» с объёмом (как в макете),
+   заголовок Press Start 2P, действия — пиксельные ссылки с толстым подчёркиванием.
+
+   НЕ ТРОГАТЬ transition / transform / opacity у .vl-toast и состояний data-mounted / data-exiting:
+   на тайминг выхода завязан JS провайдера.
+
+   Вес: правила corporate для вариантов — до (0,3,0) (`:where(.vl-toast)[data-variant][data-color] .icon`),
+   поэтому здесь селекторы того же или большего веса; файл подключается позже и побеждает при равенстве. */
+:where([data-vl-skin~='pixel']) {
+  .vl-toast {
+    gap: 14px;
+    padding: 14px;
+    border: 0;
+    border-radius: 0;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.4;
+    box-shadow: var(--pixel-frame), var(--pixel-drop);
+  }
+  .vl-toast[data-size='x-small'],
+  .vl-toast[data-size='small'] {
+    gap: 10px;
+  }
+
+  /* ---------- Варианты: сплошные цвета, тексты >= 4,5:1 ---------- */
+
+  /* filled: заливка палитры, текст --pal-on-base (у warning — чернила), объём как у кнопки */
+  .vl-toast[data-variant='filled'],
+  .vl-toast[data-variant='filled'][data-color='neutral'] {
+    background-color: var(--pal-base);
+    color: var(--pal-on-base);
+    box-shadow: var(--pixel-frame), var(--pixel-bevel), var(--pixel-drop);
+  }
+  .vl-toast[data-variant='filled'] .vl-toast__content {
+    color: inherit;
+  }
+
+  .vl-toast[data-variant='light'] .vl-toast__content,
+  .vl-toast[data-variant='lighter'] .vl-toast__content,
+  .vl-toast[data-variant='stroke'] .vl-toast__content {
+    color: var(--text-strong-950);
+  }
+  /* Полупрозрачный текст в 8-бит не смешивают: описание — сплошным цветом */
+  .vl-toast[data-variant] .vl-toast__description {
+    opacity: 1;
+  }
+  .vl-toast[data-variant='light'] .vl-toast__description {
+    color: var(--text-strong-950);
+  }
+  .vl-toast[data-variant='lighter'] .vl-toast__description,
+  .vl-toast[data-variant='stroke'] .vl-toast__description {
+    color: var(--text-sub-600);
+  }
+  .vl-toast[data-variant='stroke'] {
+    border: 0;
+    background-color: var(--bg-white-0);
+  }
+
+  /* ---------- Иконка ---------- */
+
+  /* Крупный тост (по умолчанию): цветной «кирпич» 32×32, иконка цветом --pal-on-base */
+  .vl-toast .vl-toast__icon {
+    width: 32px;
+    height: 32px;
+    margin-top: 0;
+  }
+  .vl-toast .vl-toast__icon svg {
+    width: 18px;
+    height: 18px;
+  }
+  .vl-toast[data-variant]:not([data-variant='filled']) .vl-toast__icon {
+    background: var(--pal-base);
+    color: var(--pal-on-base);
+    box-shadow:
+      inset -3px -3px 0 var(--pixel-bevel-dark),
+      inset 3px 3px 0 var(--pixel-bevel-light);
+  }
+  .vl-toast[data-variant='filled'] .vl-toast__icon {
+    color: inherit;
+  }
+
+  /* Мелкие тосты: без «кирпича», просто иконка читаемого цвета палитры */
+  .vl-toast[data-size='x-small'] .vl-toast__icon,
+  .vl-toast[data-size='small'] .vl-toast__icon {
+    width: 18px;
+    height: 18px;
+  }
+  .vl-toast[data-size='x-small'] .vl-toast__icon svg {
+    width: 16px;
+    height: 16px;
+  }
+  .vl-toast[data-size='x-small'][data-variant]:not([data-variant='filled']) .vl-toast__icon,
+  .vl-toast[data-size='small'][data-variant]:not([data-variant='filled']) .vl-toast__icon {
+    background: none;
+    box-shadow: none;
+    color: var(--pal-text);
+  }
+
+  /* ---------- Тексты ---------- */
+
+  .vl-toast .vl-toast__content {
+    gap: 6px;
+  }
+  /* Крупный тост: заголовок «табличкой» — Press Start 2P; по высоте выровнен с «кирпичом» */
+  .vl-toast .vl-toast__title {
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 400;
+    line-height: 1.7;
+    letter-spacing: 0;
+    padding-top: 2px;
+  }
+  .vl-toast .vl-toast__description {
+    font-size: 15px;
+    line-height: 1.4;
+    letter-spacing: 0;
+  }
+  /* Однострочный и мелкие тосты: заголовок — это само сообщение, читаемым Tiny5 */
+  .vl-toast .vl-toast__content[data-row] .vl-toast__title,
+  .vl-toast[data-size='x-small'] .vl-toast__title,
+  .vl-toast[data-size='small'] .vl-toast__title {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 20px;
+    padding-top: 0;
+  }
+  .vl-toast[data-size='x-small'] .vl-toast__title {
+    font-size: 14px;
+    line-height: 18px;
+  }
+  .vl-toast:not([data-size='x-small']):not([data-size='small']) .vl-toast__content[data-row] {
+    min-height: 32px;
+  }
+
+  /* ---------- Действия ---------- */
+
+  .vl-toast .vl-toast__actions {
+    gap: 16px;
+    margin-top: 4px;
+  }
+  .vl-toast .vl-toast__action-item[data-sep-after]::after {
+    content: none;
+  }
+  .vl-toast .vl-toast__action {
+    padding-bottom: 2px;
+    font-family: var(--font-display);
+    font-size: 8px;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0;
+    color: var(--primary-dark);
+    text-decoration: none;
+    border-bottom: 3px solid var(--primary-base);
+  }
+  .vl-toast .vl-toast__action:hover {
+    opacity: 1;
+    color: var(--text-strong-950);
+    border-bottom-color: var(--stroke-strong-950);
+  }
+  .vl-toast[data-variant='filled'] .vl-toast__action,
+  .vl-toast[data-variant='filled'] .vl-toast__action:hover {
+    color: inherit;
+    border-bottom-color: currentColor;
+  }
+  .vl-toast .vl-toast__action:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: 4px;
+  }
+  .vl-toast[data-size='x-small'] .vl-toast__action {
+    font-size: 7px;
+  }
+
+  /* ---------- Крестик ---------- */
+
+  .vl-toast .vl-toast__close {
+    width: 24px;
+    height: 24px;
+    margin-top: 0;
+    border-radius: 0;
+    opacity: 1;
+    color: var(--icon-sub-600);
+  }
+  .vl-toast .vl-toast__close svg {
+    width: 16px;
+    height: 16px;
+  }
+  .vl-toast .vl-toast__close:hover {
+    color: var(--icon-strong-950);
+    background: var(--pixel-dither-hover);
+  }
+  .vl-toast[data-variant='filled'] .vl-toast__close {
+    opacity: 1;
+    color: inherit;
+  }
+  .vl-toast[data-variant='filled'] .vl-toast__close:hover {
+    color: inherit;
+    background: rgba(0, 0, 0, 0.25);
+  }
+  .vl-toast .vl-toast__close:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: 2px;
+  }
+  .vl-toast[data-size='x-small'] .vl-toast__close,
+  .vl-toast[data-size='small'] .vl-toast__close {
+    width: 18px;
+    height: 18px;
+  }
+}

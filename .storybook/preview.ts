@@ -2,13 +2,19 @@ import type { Preview } from '@storybook/react'
 import { createElement } from 'react'
 import { ThemeProvider } from '../src/theme'
 import { corporateSkin } from '../src/skins/corporate'
+import { pixelSkin } from '../src/skins/pixel'
 // Google Sans для Storybook (потребители подключают шрифт самостоятельно)
 import '@fontsource/google-sans/latin-400.css'
 import '@fontsource/google-sans/latin-500.css'
 import '@fontsource/google-sans/cyrillic-400.css'
 import '@fontsource/google-sans/cyrillic-500.css'
+// Пиксельные шрифты скина pixel (латиница и кириллица; потребители подключают их сами)
+import '@fontsource/press-start-2p/400.css'
+import '@fontsource/tiny5/400.css'
 // Скин corporate: токены, палитры и стили компонентов (компоненты сами стилей не подключают)
 import '../src/skins/corporate/index.css'
+// Скин pixel расширяет corporate и переопределяет его вид — строго ПОСЛЕ corporate
+import '../src/skins/pixel/index.css'
 
 /**
  * Storybook 8 + React 18/19 в режиме Docs генерирует ложные предупреждения act:
@@ -50,7 +56,7 @@ console.warn = (...args: unknown[]) => {
   originalConsoleWarn.apply(console, args as Parameters<typeof console.warn>)
 }
 
-const SKINS = [corporateSkin] as const
+const SKINS = [corporateSkin, pixelSkin] as const
 
 /**
  * «Без скина»: история рендерится без ThemeProvider, на `<html>` нет `data-vl-skin`.

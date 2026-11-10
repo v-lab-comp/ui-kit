@@ -1,0 +1,87 @@
+/* calendar-day: 8-битный вид поверх corporate/components/calendar-day.css — раскладка приходит оттуда, здесь только оформление.
+   Выбранный день — синяя «кнопка» с объёмом, диапазон — сплошная светлая заливка,
+   сегодня — квадратная рамка 3px (жёлтый пунктир оставлен за фокусом с клавиатуры). */
+:where([data-vl-skin~='pixel']) {
+  .vl-calendar-day {
+    color: var(--text-strong-950);
+    transition: none;
+  }
+
+  .vl-calendar-day:active:not([data-selected]):not([data-disabled]) {
+    transform: var(--pixel-press-shift);
+  }
+
+  .vl-calendar-day__label {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0;
+  }
+
+  .vl-calendar-day:hover:not([data-selected]):not([data-disabled]) {
+    background-color: var(--bg-soft-200);
+    color: var(--text-strong-950);
+    box-shadow: inset -3px -3px 0 var(--pixel-divider-color);
+  }
+
+  .vl-calendar-day:focus-visible {
+    position: relative;
+    z-index: 1;
+    outline: var(--pixel-focus-outline);
+    outline-offset: 2px;
+  }
+
+  .vl-calendar-day[data-selected] {
+    background-color: var(--primary-base);
+    color: var(--static-white);
+    box-shadow:
+      inset -3px -3px 0 var(--pixel-bevel-dark),
+      inset 3px 3px 0 var(--pixel-bevel-light);
+  }
+
+  .vl-calendar-day[data-today]:not([data-selected]) {
+    color: var(--primary-dark);
+    font-weight: 600;
+    box-shadow: inset 0 0 0 3px var(--primary-dark);
+  }
+
+  .vl-calendar-day[data-today]:hover:not([data-selected]):not([data-disabled]) {
+    color: var(--primary-dark);
+    box-shadow: inset 0 0 0 3px var(--primary-dark);
+  }
+
+  .vl-calendar-day[data-in-range]:not([data-selected]) {
+    background-color: var(--primary-alpha-16);
+    color: var(--text-strong-950);
+  }
+
+  .vl-calendar-day[data-in-range]:not([data-selected]):hover {
+    background-color: var(--pixel-primary-light);
+  }
+
+  .vl-calendar-day[data-active]:not([data-selected]),
+  .vl-calendar-day[data-active]:hover:not([data-selected]):not([data-disabled]) {
+    color: var(--primary-dark);
+  }
+
+  .vl-calendar-day[data-outside-month],
+  .vl-calendar-day[data-disabled] {
+    color: var(--text-disabled-300);
+  }
+
+  .vl-calendar-day[data-disabled] {
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+  }
+
+  /* Точка события — квадратный пиксель */
+  .vl-calendar-day__dot {
+    width: 4px;
+    height: 4px;
+    background-color: var(--primary-dark);
+  }
+
+  :where(.vl-calendar-day)[data-selected] .vl-calendar-day__dot {
+    background-color: var(--static-white);
+  }
+}

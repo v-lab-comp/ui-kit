@@ -1,0 +1,9 @@
+/* layout-root: 8-битный вид поверх corporate/components/layout-root.css — раскладка приходит оттуда, здесь только оформление.
+   Корень раскладки красится в «бумагу» и задаёт шрифт и цвет текста по умолчанию. */
+:where([data-vl-skin~='pixel']) {
+  .vl-layout-root {
+    background: var(--bg-weak-50);
+    color: var(--text-strong-950);
+    font-family: var(--font-sans);
+  }
+}

@@ -1,0 +1,47 @@
+/* checkbox-field: 8-битный вид поверх corporate/components/checkbox-field.css — раскладка приходит оттуда, здесь только оформление. */
+:where([data-vl-skin~='pixel']) {
+  .vl-checkbox-field__label {
+    gap: 12px;
+  }
+
+  /* 20px-чекбокс с рамкой 2px снаружи — выравнивание по первой строке подписи 20px */
+  .vl-checkbox-field__label input[data-size='small'] {
+    margin-top: 4px;
+  }
+
+  /* Отключённая подпись — #55536a / #a9a7bd: читается, но тише основного текста */
+  .vl-checkbox-field__label:has(input:disabled) {
+    --_checkbox-disabled-color: var(--text-sub-600);
+  }
+
+  .vl-checkbox-field__description,
+  .vl-checkbox-field__hint,
+  .vl-checkbox-field__error,
+  .vl-checkbox-field__link {
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  .vl-checkbox-field__hint {
+    color: var(--_checkbox-disabled-color, var(--text-sub-600));
+  }
+
+  .vl-checkbox-field__error {
+    color: var(--pixel-input-error);
+  }
+
+  .vl-checkbox-field__link {
+    font-weight: 600;
+  }
+
+  .vl-checkbox-field__link a {
+    color: var(--primary-dark);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+
+  /* Ошибка — рамка чекбокса красная (у самого input атрибута ошибки нет) */
+  .vl-checkbox-field:has(.vl-checkbox-field__error) .vl-base-checkbox:not(:disabled) {
+    --pixel-frame-color: var(--pixel-input-error);
+  }
+}

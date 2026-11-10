@@ -1,0 +1,81 @@
+/*
+ * base-input: 8-битный вид поверх corporate/components/base-input.css — раскладка приходит оттуда,
+ * здесь только оформление.
+ *
+ * Самостоятельный BaseInput — та же «утопленная» панель, что оболочка InputField (input-field.css):
+ * ступенчатая рамка --pixel-frame + внутренняя тень сверху-слева. Рамка снаружи, поэтому
+ * margin: var(--pixel-unit) и ширина на две рамки меньше.
+ *
+ * Внутри оболочки InputField (TextInput, PasswordInput, TagInput…) поле «голое»: рамку, отступ,
+ * фон и пунктир фокуса рисует оболочка — сброс в конце файла.
+ */
+:where([data-vl-skin~='pixel']) {
+  .vl-base-input {
+    --_pi-inset: var(--pixel-input-inset);
+
+    width: calc(100% - 2 * var(--pixel-unit));
+    margin: var(--pixel-unit);
+    border-radius: 0;
+    background-color: var(--bg-white-0);
+    box-shadow:
+      var(--pixel-frame),
+      inset var(--pixel-unit) var(--pixel-unit) 0 var(--_pi-inset);
+  }
+
+  .vl-base-input:hover:not(:disabled):not(:focus-visible) {
+    --_pi-inset: var(--pixel-input-inset-hover);
+  }
+
+  .vl-base-input:focus-visible {
+    --pixel-frame-color: var(--pixel-input-accent);
+    outline: var(--pixel-focus-outline);
+    outline-offset: var(--pixel-focus-offset);
+  }
+
+  .vl-base-input[data-error] {
+    --pixel-frame-color: var(--pixel-input-error);
+  }
+
+  /* corporate красит пунктир ошибки в светло-красный — в pixel фокус всегда жёлтый */
+  .vl-base-input[data-error]:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: var(--pixel-focus-offset);
+  }
+
+  /* Отключено: дизеринг, серая рамка, без «утопленного» края */
+  .vl-base-input:disabled {
+    --pixel-frame-color: var(--pixel-disabled-frame-color);
+    background: var(--pixel-dither);
+    box-shadow: var(--pixel-frame);
+  }
+
+  /* Только чтение — плоская панель без «утопленного» края */
+  .vl-base-input:read-only:not(:disabled) {
+    box-shadow: var(--pixel-frame);
+  }
+
+  /* Радиусы размеров — 0 (токены радиусов в pixel и так 0; явно, чтобы не зависеть от них) */
+  :where(.vl-base-input)[data-size] {
+    border-radius: 0;
+  }
+
+  :where(.vl-base-input)[data-size='small'] {
+    --base-input-font-size: 14px;
+  }
+
+  /* ── Поле внутри оболочки InputField — без своей рамки и фона ───────────── */
+
+  .vl-input-field__wrapper .vl-base-input,
+  .vl-input-field__wrapper .vl-base-input:disabled,
+  .vl-input-field__wrapper .vl-base-input:read-only:not(:disabled) {
+    width: auto;
+    margin: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .vl-input-field__wrapper .vl-base-input:focus-visible,
+  .vl-input-field__wrapper .vl-base-input[data-error]:focus-visible {
+    outline: none;
+  }
+}

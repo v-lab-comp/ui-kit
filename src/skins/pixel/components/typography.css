@@ -1,0 +1,169 @@
+/* typography: 8-битный вид поверх corporate/components/typography.css
+   (макет: Data.dc.html, «Typography»).
+
+   - title (h1…h6) — Press Start 2P. Он широкий и «тяжёлый», поэтому шкала сжата
+     (corporate h1 56px → 28px), межстрочный — с запасом под квадратные глифы. Толщина
+     одна (400): у шрифта нет жирного начертания, data-weight на заголовке не синтезирует
+     ложный жирный.
+   - subheading (капс) — тоже Press Start 2P, мелкие кегли 7–10px.
+   - label / paragraph / docs — Tiny5; у него только 400, поэтому 500 и выше
+     сводятся к 600, а кегль label чуть крупнее (шрифт мельче по очку). */
+:where([data-vl-skin~='pixel']) {
+  .vl-typography {
+    letter-spacing: 0;
+  }
+
+  /* Tiny5: начертание одно (400); жирность браузер синтезирует */
+  :where(.vl-typography)[data-weight='thin'],
+  :where(.vl-typography)[data-weight='extralight'],
+  :where(.vl-typography)[data-weight='light'] {
+    font-weight: 400;
+  }
+  :where(.vl-typography)[data-weight='medium'],
+  :where(.vl-typography)[data-weight='bold'],
+  :where(.vl-typography)[data-weight='extrabold'],
+  :where(.vl-typography)[data-weight='black'] {
+    font-weight: 600;
+  }
+
+  /* ---------- Title — Press Start 2P ---------- */
+
+  :where(.vl-typography)[data-variant='title'] {
+    font-family: var(--font-display);
+    font-weight: 400;
+  }
+
+  :where(.vl-typography)[data-variant='title']:where([data-size='h1']) {
+    font-size: 28px;
+    line-height: 40px;
+    letter-spacing: 0;
+  }
+
+  :where(.vl-typography)[data-variant='title']:where([data-size='h2']) {
+    font-size: 24px;
+    line-height: 34px;
+    letter-spacing: 0;
+  }
+
+  :where(.vl-typography)[data-variant='title']:where([data-size='h3']) {
+    font-size: 20px;
+    line-height: 30px;
+    letter-spacing: 0;
+  }
+
+  :where(.vl-typography)[data-variant='title']:where([data-size='h4']) {
+    font-size: 16px;
+    line-height: 26px;
+    letter-spacing: 0;
+  }
+
+  :where(.vl-typography)[data-variant='title']:where([data-size='h5']) {
+    font-size: 13px;
+    line-height: 22px;
+    letter-spacing: 0;
+  }
+
+  :where(.vl-typography)[data-variant='title']:where([data-size='h6']) {
+    font-size: 11px;
+    line-height: 20px;
+    letter-spacing: 0;
+  }
+
+  /* ---------- Label — Tiny5, на 2px крупнее ---------- */
+
+  :where(.vl-typography)[data-variant='label']:where([data-size='x-large']) {
+    font-size: 26px;
+    letter-spacing: 0;
+  }
+
+  :where(.vl-typography)[data-variant='label']:where([data-size='large']) {
+    font-size: 20px;
+    letter-spacing: 0;
+  }
+
+  :where(.vl-typography)[data-variant='label']:where([data-size='medium']) {
+    font-size: 18px;
+    letter-spacing: 0;
+  }
+
+  :where(.vl-typography)[data-variant='label']:where([data-size='small']) {
+    font-size: 16px;
+    letter-spacing: 0;
+  }
+
+  :where(.vl-typography)[data-variant='label']:where([data-size='x-small']) {
+    font-size: 14px;
+    letter-spacing: 0;
+  }
+
+  /* ---------- Paragraph — Tiny5, на 1px крупнее ---------- */
+
+  :where(.vl-typography)[data-variant='paragraph']:where([data-size='x-large']) {
+    font-size: 25px;
+    letter-spacing: 0;
+  }
+
+  :where(.vl-typography)[data-variant='paragraph']:where([data-size='large']) {
+    font-size: 19px;
+    letter-spacing: 0;
+  }
+
+  :where(.vl-typography)[data-variant='paragraph']:where([data-size='medium']) {
+    font-size: 17px;
+    letter-spacing: 0;
+  }
+
+  :where(.vl-typography)[data-variant='paragraph']:where([data-size='small']) {
+    font-size: 15px;
+    letter-spacing: 0;
+  }
+
+  :where(.vl-typography)[data-variant='paragraph']:where([data-size='x-small']) {
+    font-size: 13px;
+    letter-spacing: 0;
+  }
+
+  /* ---------- Subheading — Press Start 2P, капс ---------- */
+
+  :where(.vl-typography)[data-variant='subheading'] {
+    font-family: var(--font-display);
+    font-weight: 400;
+  }
+
+  :where(.vl-typography)[data-variant='subheading']:where([data-size='medium']) {
+    font-size: 10px;
+    line-height: 20px;
+    letter-spacing: 0.04em;
+  }
+
+  :where(.vl-typography)[data-variant='subheading']:where([data-size='small']) {
+    font-size: 9px;
+    line-height: 18px;
+    letter-spacing: 0.04em;
+  }
+
+  :where(.vl-typography)[data-variant='subheading']:where([data-size='x-small']) {
+    font-size: 8px;
+    line-height: 16px;
+    letter-spacing: 0.04em;
+  }
+
+  :where(.vl-typography)[data-variant='subheading']:where([data-size='2x-small']) {
+    font-size: 7px;
+    line-height: 12px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ---------- Docs — Tiny5 ---------- */
+
+  :where(.vl-typography)[data-variant='docs']:where([data-size='label']) {
+    font-weight: 600;
+    font-size: 19px;
+    letter-spacing: 0;
+  }
+
+  :where(.vl-typography)[data-variant='docs']:where([data-size='paragraph']) {
+    font-size: 19px;
+    letter-spacing: 0;
+  }
+}

@@ -1,0 +1,49 @@
+/* avatar-card: 8-битный вид поверх corporate/components/avatar-card.css
+   (макет: Data.dc.html, «AvatarCard»).
+
+   Раскладка — corporate. corporate обрезает переполнение (overflow: hidden) — рамка аватара
+   рисуется снаружи, поэтому карточке нужен внутренний отступ на её толщину. Имя — Tiny5
+   полужирный (кегль чуть крупнее: пиксельный шрифт мельче по очку), подпись — приглушённая. */
+:where([data-vl-skin~='pixel']) {
+  .vl-avatar-card {
+    padding: 3px;
+  }
+
+  .vl-avatar-card__title {
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .vl-avatar-card__subtitle {
+    letter-spacing: 0;
+  }
+
+  .vl-avatar-card[data-avatar-size='20'] .vl-avatar-card__title,
+  .vl-avatar-card[data-avatar-size='24'] .vl-avatar-card__title {
+    font-size: 13px;
+  }
+  .vl-avatar-card[data-avatar-size='20'] .vl-avatar-card__subtitle,
+  .vl-avatar-card[data-avatar-size='24'] .vl-avatar-card__subtitle {
+    font-size: 12px;
+  }
+
+  .vl-avatar-card[data-avatar-size='32'] .vl-avatar-card__title,
+  .vl-avatar-card[data-avatar-size='40'] .vl-avatar-card__title {
+    font-size: 16px;
+    letter-spacing: 0;
+  }
+  .vl-avatar-card[data-avatar-size='32'] .vl-avatar-card__subtitle,
+  .vl-avatar-card[data-avatar-size='40'] .vl-avatar-card__subtitle {
+    font-size: 14px;
+  }
+
+  .vl-avatar-card[data-avatar-size='48'] .vl-avatar-card__title,
+  .vl-avatar-card[data-avatar-size='56'] .vl-avatar-card__title {
+    font-size: 20px;
+    letter-spacing: 0;
+  }
+  .vl-avatar-card[data-avatar-size='48'] .vl-avatar-card__subtitle,
+  .vl-avatar-card[data-avatar-size='56'] .vl-avatar-card__subtitle {
+    font-size: 16px;
+  }
+}

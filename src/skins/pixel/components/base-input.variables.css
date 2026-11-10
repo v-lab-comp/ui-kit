@@ -1,0 +1,65 @@
+/**
+ * Переменные поля ввода (--base-input-*) для pixel — поверх corporate/components/base-input.variables.css.
+ * Файл токенов: явные селекторы, как в tokens.css (вес (0,1,0), файл идёт после corporate).
+ *
+ * Размеры и отступы (высоты 40/36/32, padding, gap) приходят из corporate как есть — раскладка общая.
+ * Здесь меняется только вид: рамки нет (её рисует ступенчатая --pixel-frame в input-field.css /
+ * base-input.css), шрифт Tiny5 16px, цвета состояний.
+ *
+ * Значения со ссылками на токены объявлены на каждой ветке схемы (корень, вложенный светлый и тёмный
+ * контейнер): var() вычисляется там, где объявлен, иначе во вложенном [data-theme='dark'] остались бы
+ * светлые цвета.
+ */
+
+/* ── Общие значения (не зависят от схемы) ─────────────────────────────────── */
+[data-vl-skin~='pixel'] {
+  /* Рамку рисует box-shadow (--pixel-frame), обычная border не нужна: ширина 0 гасит и все
+     border-color из правил состояний corporate. */
+  --base-input-border: 0 solid transparent;
+
+  /* Tiny5: 16px — основной кегль полей; у small — 14px (см. input-field.css) */
+  --base-input-font-weight: 400;
+  --base-input-font-size: 16px;
+  --base-input-line-height: 20px;
+  --base-input-letter-spacing: 0;
+
+  /* В 8-бит переходов нет — состояния меняются мгновенно */
+  --base-input-transition: none;
+}
+
+/* ── Цвета, светлая схема (и вложенный светлый контейнер) ─────────────────── */
+[data-vl-skin~='pixel'],
+:where([data-vl-skin~='pixel']) [data-theme='light'],
+:where([data-vl-skin~='pixel']) [data-theme='dark'] {
+  --base-input-font-family: var(--font-sans);
+  --base-input-color: var(--text-strong-950);
+  --base-input-border-filled: var(--stroke-strong-950);
+  --base-input-bg-disabled: var(--bg-weak-50);
+  --base-input-border-disabled: var(--pixel-disabled-frame-color);
+  /* Текст отключённого поля — приглушённый, но читаемый (как в макете: #55536a) */
+  --base-input-color-disabled: var(--text-sub-600);
+
+  /* Свои переменные pixel для полей ввода: цвет рамки в состояниях и «утопленный» край.
+     accent — фокус / открытый список, error — ошибка (рамка и текст подсказки),
+     done — заполнено (data-completed). */
+  --pixel-input-accent: var(--primary-base);
+  --pixel-input-error: var(--error-base);
+  --pixel-input-done: var(--success-base);
+  --pixel-input-inset: var(--pixel-inset-color);
+  --pixel-input-inset-hover: var(--bg-sub-300);
+  --base-input-border-error: var(--pixel-input-error);
+  --base-input-outline-error: var(--pixel-input-error);
+}
+
+/* ── Тёмная схема: те же три ветки, что у tokens.css; блок идёт позже и перекрывает светлый ── */
+:where([data-vl-skin~='pixel'])[data-vl-scheme='dark'],
+:where([data-vl-skin~='pixel'])[data-theme='dark'],
+:where([data-vl-skin~='pixel']) [data-theme='dark'] {
+  /* На тёмной панели base-оттенки темноваты — рамки состояний светлее (как в макете Dark):
+     фокус #8fa6ff, ошибка #ff6b6b, готово #5fd47f */
+  --pixel-input-accent: var(--primary-dark);
+  --pixel-input-error: var(--error-dark);
+  --pixel-input-done: var(--success-dark);
+  --base-input-border-error: var(--error-dark);
+  --base-input-outline-error: var(--error-dark);
+}

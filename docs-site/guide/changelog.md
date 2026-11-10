@@ -26,6 +26,7 @@ outline: deep
 - **`themeHtmlAttributes(skin, scheme)`** — атрибуты скина и схемы для серверного `<html>` при SSR: стили скина действуют с первого кадра, до гидрации. Пример для Next.js App Router — [Установка → SSR и Next.js](./installation#ssr).
 - **Доступность полей ввода.** `InputField` связывает поле с подсказкой и ошибкой (`aria-describedby`) и сообщает об ошибке и обязательности (`aria-invalid`, `aria-required`) — во всех полях кита. Для своих полей на `InputField` render-функция получает второй аргумент `control` с этими атрибутами; `inputFieldLabelId(id)` — id подписи для `aria-labelledby`, `splitInputFieldProps(props)` — разделение пропсов поля и контрола.
 - **`ThemeProvider onSkinLoadError`** — ошибка загрузки CSS скина (`load`) больше не теряется: прежний скин остаётся, ошибка уходит в обработчик или в `console.error`.
+- **Скин `pixel` (8-bit)** — ретро-оформление: рамки со ступенчатыми углами, жёсткие тени, пиксельные шрифты, светлая и тёмная схема. Наследует `corporate` (`extends`): подключите `@v-lab/ui-kit/skins/corporate.css`, затем `@v-lab/ui-kit/skins/pixel.css`, и `ThemeProvider skins={[corporateSkin, pixelSkin]}`. Шрифты (Press Start 2P, Tiny5) подключает приложение.
 
 ### Changed
 
@@ -34,6 +35,8 @@ outline: deep
 - **React 19.** Кит разрабатывается и тестируется на React 19.3. Peer `react` / `react-dom` — `^18.2.0 || ^19.0.0` (было `>=17`, но на React 17 кит не работал: компоненты используют `useId` из React 18). Приложения на React 18.2+ работают без изменений.
 - **`Button` по умолчанию `type="button"`** — кнопка внутри `<form>` больше не отправляет форму. Для отправки укажите `type="submit"`.
 - **Кнопки только с иконкой требуют доступное имя:** у `Button`, `ToggleButton` и `SegmentedControl.Item` без `children` TypeScript требует `aria-label` или `aria-labelledby`; в dev-режиме без имени — предупреждение в консоли. Для обёрток — типы без этого правила: `ButtonBaseProps`, `ToggleButtonBaseProps`, `SegmentedControlItemBaseProps`.
+- **`SelectInput`, `AsyncSearchSelect`, `LanguageSwitcher`: новое API.** `onChange` получает значение — `(value, option)`, в режиме `multiple` — `(values, options)` — вместо поддельного события; `ref` указывает на кнопку-триггер, а не на скрытый `<select>`; вместо `triggerAriaLabel` — стандартные `aria-label` / `aria-labelledby`, у вариантов `compact`, `compact-label`, `inline` и у `AsyncSearchSelect` без `label` они обязательны. Форма получает значение через скрытые `<input name>`. Удалён неиспользуемый проп `multipleDisplay`. Подробнее — в гайде миграций.
+- **Клавиатура в выпадающих списках по паттерну WAI-ARIA combobox:** поле поиска получает фокус при открытии, Escape закрывает только список (не модалку вокруг), Tab и клик снаружи закрывают, поиск по первым буквам, Home / End / PageUp / PageDown, Delete / Backspace очищают значение, «Ничего не найдено» и загрузка объявляются скринридеру. `TagInput`: Enter добавляет подсвеченную подсказку.
 
 ### Fixed
 

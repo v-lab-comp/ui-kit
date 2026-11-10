@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>8-bit — оверлеи</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=Tiny5&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.r{font-family:'Tiny5',monospace;color:#1b1b2f;background:#f4f1e6}
+.d{font-family:'Press Start 2P',monospace;line-height:1.6}
+.box{background:#fffdf5;margin:4px;box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f}
+.win{background:#fffdf5;margin:4px;box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f,10px 10px 0 4px rgba(27,27,47,.45)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 12px 12px 16px;background:var(--c,#2b4fd9);color:#fff;border-bottom:4px solid #1b1b2f}
+.btn{font-family:'Press Start 2P',monospace;font-size:9px;line-height:1;padding:11px 14px;border:0;margin:4px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;color:#fff;background:var(--c,#2b4fd9);box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f,inset -4px -4px 0 rgba(0,0,0,.3),inset 4px 4px 0 rgba(255,255,255,.3)}
+.btn.stroke{color:#1b1b2f;background:#fffdf5;box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f}
+.x{border:0;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;background:rgba(0,0,0,.25);box-shadow:inset -3px -3px 0 rgba(0,0,0,.3),inset 3px 3px 0 rgba(255,255,255,.25)}
+.scr{position:relative;overflow:hidden;background:#e6e1cf;margin:4px;box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f}
+.dim{position:absolute;inset:0;background:repeating-conic-gradient(rgba(27,27,47,.72) 0 25%,rgba(27,27,47,.18) 0 50%) 0 0/4px 4px}
+.ghostrow{height:14px;background:#cfc9b3;margin:10px 0}
+.fake{padding:20px}
+.lbl{font-family:'Press Start 2P',monospace;font-size:8px;margin-bottom:10px;display:block}
+.fld{display:flex;align-items:center;background:#fffdf5;margin:4px;padding:0 12px;height:38px;font-size:15px;box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f,inset 4px 4px 0 #e6e1cf}
+.menu{list-style:none;margin:0;padding:6px 0;font-size:16px}
+.menu li{display:flex;align-items:center;gap:10px;padding:9px 14px 9px 30px;position:relative}
+.menu li.hl{background:#2b4fd9;color:#fff}
+.menu li.hl::before{content:'';position:absolute;left:10px;top:50%;margin-top:-7px;width:8px;height:14px;background:#fff;clip-path:polygon(0 0,2px 0,2px 2px,4px 2px,4px 4px,6px 4px,6px 6px,8px 6px,8px 8px,6px 8px,6px 10px,4px 10px,4px 12px,2px 12px,2px 14px,0 14px)}
+.menu li.danger{color:#c42b2b}
+.menu hr{border:0;border-top:4px dotted #b9b4a0;margin:6px 10px}
+.tip{position:relative;background:#1b1b2f;color:#f4f1e6;font-size:15px;padding:10px 14px;margin:4px;box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f}
+.tip::after{content:'';position:absolute;left:50%;bottom:-16px;margin-left:-8px;width:16px;height:12px;background:#1b1b2f;clip-path:polygon(0 0,16px 0,16px 4px,12px 4px,12px 8px,8px 8px,8px 12px,8px 12px,8px 8px,4px 8px,4px 4px,0 4px)}
+.toast{display:flex;gap:14px;align-items:flex-start;padding:14px;background:#fffdf5;margin:4px;box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f,8px 8px 0 4px rgba(27,27,47,.28)}
+.tic{width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;background:var(--c);color:#fff;box-shadow:inset -3px -3px 0 rgba(0,0,0,.3),inset 3px 3px 0 rgba(255,255,255,.3)}
+.tx{flex:1;display:flex;flex-direction:column;gap:6px;font-size:15px;line-height:1.4}
+.tx b{font-family:'Press Start 2P',monospace;font-size:9px;font-weight:400}
+.tx .act{display:flex;gap:16px;margin-top:4px}
+.tx .act button{all:unset;cursor:pointer;font-family:'Press Start 2P',monospace;font-size:8px;color:#1b3bb3;border-bottom:3px solid #2b4fd9;padding-bottom:2px}
+.tx .act button.mut{color:#55536a;border-color:#8d8a9c}
+.cl{border:0;background:transparent;width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#55536a}
+.prog{height:6px;background:repeating-linear-gradient(90deg,var(--c) 0 8px,transparent 8px 10px);margin-top:4px}
+.h{display:flex;flex-direction:column;gap:16px}
+</style>
+</helmet>
+<div class="r" style="width: 1200px; height: 1480px; box-sizing: border-box; padding: 56px; display: flex; flex-direction: column; gap: 44px">
+  <div class="d" style="font-size: 20px">Оверлеи</div>
+
+  <div style="display: grid; grid-template-columns: 640px minmax(0, 1fr); gap: 40px">
+    <div class="h">
+      <div class="d" style="font-size: 11px">Modal / ConfirmModal</div>
+      <div class="scr" style="height: 400px">
+        <div class="fake"><div class="ghostrow" style="width: 60%"></div><div class="ghostrow"></div><div class="ghostrow" style="width: 80%"></div><div class="ghostrow" style="width: 40%"></div></div>
+        <div class="dim"></div>
+        <div class="win" role="alertdialog" aria-labelledby="m1t" aria-describedby="m1d" style="position: absolute; left: 90px; top: 70px; width: 440px">
+          <div class="bar" style="--c: #c42b2b"><span class="d" id="m1t" style="font-size: 10px">УДАЛИТЬ ПРОЕКТ?</span><button class="x" aria-label="Закрыть"><svg width="12" height="12" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h1v1H0zM1 1h1v1H1zM2 2h1v1H2zM3 3h1v1H3zM4 4h1v1H4zM5 5h1v1H5zM6 6h1v1H6zM6 0h1v1H6zM5 1h1v1H5zM4 2h1v1H4zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z"/></svg></button></div>
+          <div style="padding: 20px; display: flex; flex-direction: column; gap: 20px">
+            <p id="m1d" style="margin: 0; font-size: 16px; line-height: 1.5">Проект «Пиксель» и все его уровни будут удалены. Это действие нельзя отменить.</p>
+            <div style="display: flex; gap: 14px; justify-content: flex-end"><button class="btn stroke">Отмена</button><button class="btn" style="--c: #c42b2b">Удалить</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="h">
+      <div class="d" style="font-size: 11px">ModalStatus</div>
+      <div class="scr" style="height: 400px">
+        <div class="dim"></div>
+        <div class="win" role="dialog" aria-labelledby="m2t" style="position: absolute; left: 32px; right: 32px; top: 50px; padding: 28px 24px; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center">
+          <div class="tic" style="--c: #1e7d38; width: 64px; height: 64px"><svg width="32" height="24" viewBox="0 0 8 6" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M6 0h2v2H6zM5 2h2v1H5zM4 3h2v1H4zM0 2h2v1H0zM1 3h2v1H1zM2 4h3v1H2zM3 5h1v1H3z"/></svg></div>
+          <span class="d" id="m2t" style="font-size: 11px">УРОВЕНЬ ПРОЙДЕН!</span>
+          <p style="margin: 0; font-size: 16px; line-height: 1.5">Проект сохранён. Команда получит приглашения.</p>
+          <button class="btn">Продолжить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 640px minmax(0, 1fr); gap: 40px">
+    <div class="h">
+      <div class="d" style="font-size: 11px">Drawer</div>
+      <div class="scr" style="height: 440px">
+        <div class="fake"><div class="ghostrow" style="width: 50%"></div><div class="ghostrow" style="width: 70%"></div><div class="ghostrow" style="width: 45%"></div></div>
+        <div class="dim"></div>
+        <div class="win" role="dialog" aria-labelledby="dr1" style="position: absolute; top: 0; right: 0; bottom: 0; width: 340px; margin: 0; display: flex; flex-direction: column">
+          <div class="bar"><span class="d" id="dr1" style="font-size: 10px">НАСТРОЙКИ</span><button class="x" aria-label="Закрыть"><svg width="12" height="12" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h1v1H0zM1 1h1v1H1zM2 2h1v1H2zM3 3h1v1H3zM4 4h1v1H4zM5 5h1v1H5zM6 6h1v1H6zM6 0h1v1H6zM5 1h1v1H5zM4 2h1v1H4zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z"/></svg></button></div>
+          <div style="padding: 20px; display: flex; flex-direction: column; gap: 20px; flex: 1">
+            <div><span class="lbl">НАЗВАНИЕ</span><div class="fld">Пиксель</div></div>
+            <div><span class="lbl">ВЛАДЕЛЕЦ</span><div class="fld">Анна Петрова</div></div>
+          </div>
+          <div style="padding: 16px 20px; border-top: 4px solid #1b1b2f; display: flex; gap: 12px; justify-content: flex-end"><button class="btn stroke">Отмена</button><button class="btn">Сохранить</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="h">
+      <div class="d" style="font-size: 11px">Popover</div>
+      <button class="btn stroke" aria-expanded="true" style="align-self: flex-start">Действия<svg width="12" height="8" viewBox="0 0 7 4" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h2v1H0zM5 0h2v1H5zM1 1h2v1H1zM4 1h2v1H4zM2 2h3v1H2zM3 3h1v1H3z"/></svg></button>
+      <div class="win" style="width: 260px; margin-top: 4px">
+        <ul class="menu" role="menu" aria-label="Действия">
+          <li role="menuitem" class="hl">Переименовать</li>
+          <li role="menuitem">Дублировать</li>
+          <li role="menuitem">Скачать</li>
+          <hr>
+          <li role="menuitem" class="danger">Удалить</li>
+        </ul>
+      </div>
+      <div class="d" style="font-size: 11px; margin-top: 18px">Tooltip</div>
+      <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 22px">
+        <div class="tip" role="tooltip" id="tt1">Сохраняется автоматически</div>
+        <button class="btn stroke" aria-describedby="tt1" style="margin-left: 70px">Автосохранение</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="h">
+    <div class="d" style="font-size: 11px">Toast</div>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 40px">
+      <div class="toast" role="status"><span class="tic" style="--c: #1e7d38"><svg width="16" height="12" viewBox="0 0 8 6" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M6 0h2v2H6zM5 2h2v1H5zM4 3h2v1H4zM0 2h2v1H0zM1 3h2v1H1zM2 4h3v1H2zM3 5h1v1H3z"/></svg></span><div class="tx"><b>СОХРАНЕНО</b>Изменения в проекте «Пиксель» сохранены.<div class="prog" style="--c: #1e7d38; width: 70%" aria-hidden="true"></div></div><button class="cl" aria-label="Закрыть уведомление"><svg width="12" height="12" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h1v1H0zM1 1h1v1H1zM2 2h1v1H2zM3 3h1v1H3zM4 4h1v1H4zM5 5h1v1H5zM6 6h1v1H6zM6 0h1v1H6zM5 1h1v1H5zM4 2h1v1H4zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z"/></svg></button></div>
+      <div class="toast" role="status"><span class="tic" style="--c: #c42b2b"><svg width="14" height="14" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h1v1H0zM1 1h1v1H1zM2 2h1v1H2zM3 3h1v1H3zM4 4h1v1H4zM5 5h1v1H5zM6 6h1v1H6zM6 0h1v1H6zM5 1h1v1H5zM4 2h1v1H4zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z"/></svg></span><div class="tx"><b>ОШИБКА</b>Не удалось загрузить файл level-3.png<div class="act"><button>Повторить</button><button class="mut">Подробнее</button></div></div><button class="cl" aria-label="Закрыть уведомление"><svg width="12" height="12" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h1v1H0zM1 1h1v1H1zM2 2h1v1H2zM3 3h1v1H3zM4 4h1v1H4zM5 5h1v1H5zM6 6h1v1H6zM6 0h1v1H6zM5 1h1v1H5zM4 2h1v1H4zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z"/></svg></button></div>
+      <div class="toast" role="status"><span class="tic" style="--c: #2b4fd9"><svg width="14" height="14" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M3 0h1v1H3zM3 2h1v5H3zM2 2h1v1H2zM2 6h3v1H2z"/></svg></span><div class="tx"><b>НОВОЕ</b>Анна пригласила вас в проект «Пиксель».</div><button class="cl" aria-label="Закрыть уведомление"><svg width="12" height="12" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h1v1H0zM1 1h1v1H1zM2 2h1v1H2zM3 3h1v1H3zM4 4h1v1H4zM5 5h1v1H5zM6 6h1v1H6zM6 0h1v1H6zM5 1h1v1H5zM4 2h1v1H4zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z"/></svg></button></div>
+      <div class="toast" role="status"><span class="tic" style="--c: #f2b31a; color: #1b1b2f"><svg width="6" height="14" viewBox="0 0 3 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M1 0h1v4H1zM1 5h1v2H1z"/></svg></span><div class="tx"><b>ВНИМАНИЕ</b>Осталось 2 из 3 свободных проектов.</div><button class="cl" aria-label="Закрыть уведомление"><svg width="12" height="12" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h1v1H0zM1 1h1v1H1zM2 2h1v1H2zM3 3h1v1H3zM4 4h1v1H4zM5 5h1v1H5zM6 6h1v1H6zM6 0h1v1H6zM5 1h1v1H5zM4 2h1v1H4zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z"/></svg></button></div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":1480}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

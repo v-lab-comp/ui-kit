@@ -1,0 +1,48 @@
+/* toggle-group: 8-битный вид поверх corporate/components/toggle-group.css (макет: Buttons.dc.html,
+   «ToggleGroup — multiple»).
+
+   Группа — одна общая рамка, кнопки стоят вплотную через чернильную перегородку 4px;
+   включённые — синие и вдавлены внутрь (без сдвига: кнопку держат соседи). */
+:where([data-vl-skin~='pixel']) {
+  .vl-toggle-group {
+    gap: 0;
+    align-items: stretch;
+    margin: var(--pixel-unit);
+    box-shadow: var(--pixel-frame);
+  }
+
+  :where(.vl-toggle-group)[data-orientation='vertical'] {
+    flex-direction: column;
+  }
+
+  /* Вес (0,3,0) — выше правил ToggleButton (до (0,3,0) у :hover / [data-state='on']:hover) */
+  .vl-toggle-group > .vl-toggle-button[data-state] {
+    margin: 0;
+    box-shadow: var(--pixel-bevel-panel);
+  }
+
+  .vl-toggle-group > .vl-toggle-button + .vl-toggle-button {
+    border-left: var(--pixel-unit) solid var(--stroke-strong-950);
+  }
+
+  :where(.vl-toggle-group)[data-orientation='vertical'] > .vl-toggle-button + .vl-toggle-button {
+    border-left: 0;
+    border-top: var(--pixel-unit) solid var(--stroke-strong-950);
+  }
+
+  .vl-toggle-group > .vl-toggle-button:active:not(:disabled),
+  .vl-toggle-group > .vl-toggle-button[data-state='on'],
+  .vl-toggle-group > .vl-toggle-button[data-state='on']:hover:not(:disabled) {
+    transform: none;
+    box-shadow: var(--pixel-bevel-pressed);
+  }
+
+  .vl-toggle-group > .vl-toggle-button:disabled {
+    box-shadow: none;
+  }
+
+  .vl-toggle-group > .vl-toggle-button:focus-visible {
+    position: relative;
+    z-index: var(--z-raised);
+  }
+}

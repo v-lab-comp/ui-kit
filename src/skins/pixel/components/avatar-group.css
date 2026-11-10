@@ -1,0 +1,38 @@
+/* avatar-group: 8-битный вид поверх corporate/components/avatar-group.css
+   (макет: Data.dc.html, «AvatarGroup»).
+
+   Аватары в своих рамках 3px просто наезжают друг на друга — светлое кольцо-разделитель
+   corporate не нужно, его роль играет чернильная рамка. Compact — лоток в рамке 4px. */
+:where([data-vl-skin~='pixel']) {
+  .vl-avatar-group__item,
+  .vl-avatar-group__compact-item {
+    border: 0;
+    border-radius: 0;
+  }
+
+  /* Нахлёст меньше, чем у кругов corporate: у квадратов перекрытие заметнее */
+  .vl-avatar-group__item:not(:first-child) {
+    margin-left: calc(var(--avatar-group-overlap, 12px) * -0.75);
+  }
+
+  :where(.vl-avatar-group)[data-mode='compact'] {
+    margin: var(--pixel-unit);
+    border-radius: 0;
+    background: var(--bg-white-0);
+    box-shadow: var(--pixel-frame);
+    overflow: visible;
+  }
+
+  /* stroke-вариант — мягкая рамка вместо чернильной */
+  :where(.vl-avatar-group)[data-compact-style='stroke'] {
+    --pixel-frame-color: var(--stroke-sub-300);
+    border: 0;
+  }
+
+  .vl-avatar-group__overflow-text {
+    font-family: var(--font-display);
+    font-size: 10px;
+    letter-spacing: 0;
+    color: var(--text-sub-600);
+  }
+}

@@ -1,0 +1,8 @@
+/* ui-kit-root: база pixel под .vl-ui-kit-root поверх сброса corporate/components/ui-kit-root.css. */
+:where([data-vl-skin~='pixel']) {
+  /* corporate включает здесь сглаживание antialiased — пиксельному шрифту нужны чёткие края */
+  .vl-ui-kit-root {
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: auto;
+  }
+}

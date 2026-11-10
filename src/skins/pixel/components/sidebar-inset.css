@@ -1,0 +1,8 @@
+/* sidebar-inset: 8-битный вид поверх corporate/components/sidebar-inset.css — раскладка приходит оттуда, здесь только оформление.
+   Основная область рядом с панелью — «бумага» (фон страницы в макете). */
+:where([data-vl-skin~='pixel']) {
+  .vl-sidebar-inset {
+    background: var(--bg-weak-50);
+    color: var(--text-strong-950);
+  }
+}

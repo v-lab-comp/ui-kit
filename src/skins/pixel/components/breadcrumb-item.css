@@ -1,0 +1,47 @@
+/* breadcrumb-item: 8-битный вид поверх corporate/components/breadcrumb-item.css — раскладка приходит оттуда, здесь только оформление.
+   Ссылки — синие с толстым подчёркиванием, текущая страница — чернилами. */
+:where([data-vl-skin~='pixel']) {
+  .vl-breadcrumb-item__icon {
+    height: 22px;
+  }
+
+  .vl-breadcrumb-item__label {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: 0;
+  }
+
+  .vl-breadcrumb-link,
+  .vl-breadcrumb-link :where(.vl-breadcrumb-item__label, .vl-breadcrumb-item__icon) {
+    color: var(--primary-dark);
+  }
+
+  .vl-breadcrumb-link .vl-breadcrumb-item__label {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+
+  .vl-breadcrumb-link:hover :where(.vl-breadcrumb-item__label, .vl-breadcrumb-item__icon) {
+    color: var(--primary-darker);
+  }
+
+  .vl-breadcrumb-link:hover {
+    background: var(--pixel-dither-hover);
+  }
+
+  .vl-breadcrumb-link:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: 2px;
+  }
+
+  .vl-breadcrumb-page,
+  .vl-breadcrumb-page :where(.vl-breadcrumb-item__label, .vl-breadcrumb-item__icon) {
+    color: var(--text-strong-950);
+  }
+
+  .vl-breadcrumb-page .vl-breadcrumb-item__label {
+    font-weight: 600;
+  }
+}

@@ -1,0 +1,60 @@
+/* drawer-header: 8-битный вид поверх corporate/components/drawer-header.css — раскладка приходит оттуда, здесь только оформление.
+   Как у Modal: синяя «полоса окна» с чернильной чертой снизу, заголовок Press Start 2P.
+   Крестик здесь — Button ghost neutral; на полосе он перекрашивается в белый «кирпич» с объёмом
+   (вес выше правил button.css, файл подключается позже). */
+:where([data-vl-skin~='pixel']) {
+  .vl-drawer-header:not([data-close-only]) {
+    align-items: center;
+    padding: 12px 12px 12px var(--drawer-padding-inline, 20px);
+    background: var(--primary-base);
+    color: var(--static-white);
+    border-bottom: var(--pixel-unit) solid var(--stroke-strong-950);
+  }
+
+  .vl-drawer-header__text-column {
+    gap: 6px;
+  }
+
+  .vl-drawer-header .vl-drawer-header__title.vl-typography {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    color: inherit;
+  }
+
+  .vl-drawer-header .vl-drawer-header__subtitle.vl-typography {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.4;
+    letter-spacing: 0;
+    color: inherit;
+  }
+
+  .vl-drawer-header:not([data-close-only]) .vl-button[data-variant='ghost'] {
+    --pal-text: var(--static-white);
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    margin: 0;
+    color: var(--static-white);
+    background: rgba(0, 0, 0, 0.25);
+    box-shadow:
+      inset -3px -3px 0 var(--pixel-bevel-dark),
+      inset 3px 3px 0 var(--pixel-bevel-light);
+  }
+  .vl-drawer-header:not([data-close-only]) .vl-button[data-variant='ghost']:hover:not(:disabled) {
+    color: var(--static-white);
+    background: rgba(0, 0, 0, 0.4);
+  }
+  .vl-drawer-header:not([data-close-only]) .vl-button[data-variant='ghost']:active:not(:disabled) {
+    transform: var(--pixel-press-shift);
+    box-shadow: inset 3px 3px 0 var(--pixel-bevel-dark);
+  }
+  .vl-drawer-header:not([data-close-only]) .vl-button[data-variant='ghost']:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: 2px;
+  }
+}

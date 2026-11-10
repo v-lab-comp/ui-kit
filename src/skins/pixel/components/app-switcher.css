@@ -1,0 +1,177 @@
+/* app-switcher: 8-битный вид поверх corporate/components/app-switcher.css — раскладка приходит оттуда, здесь только оформление.
+   Триггер — светлый панельный кирпич (рамка + объём), открытый — «нажат». Выпадашка — окно
+   с рамкой и жёсткой тенью; промо — фиолетовая полоса во всю ширину (без переливающегося
+   градиента), плитки приложений — квадратные, активная — синяя внутренняя рамка (макет Layout). */
+:where([data-vl-skin~='pixel']) {
+  /* Кнопки шрифт не наследуют — задаём явно */
+  .vl-app-switcher,
+  .vl-app-switcher__trigger,
+  .vl-app-switcher__item {
+    font-family: var(--font-sans);
+  }
+
+  .vl-app-switcher__trigger {
+    margin: var(--pixel-unit);
+    border: 0;
+    border-radius: 0;
+    background: var(--bg-white-0);
+    box-shadow: var(--pixel-frame), var(--pixel-bevel-panel);
+    transition: none;
+  }
+  .vl-app-switcher__trigger:hover {
+    background: var(--bg-white-0);
+  }
+  .vl-app-switcher__trigger[aria-expanded='true'] {
+    background: var(--bg-weak-50);
+    transform: var(--pixel-press-shift);
+    box-shadow:
+      var(--pixel-frame),
+      inset var(--pixel-unit) var(--pixel-unit) 0 var(--pixel-shade);
+  }
+  .vl-app-switcher__trigger:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: var(--pixel-focus-offset);
+  }
+
+  .vl-app-switcher__trigger-labels {
+    gap: 6px;
+  }
+  .vl-app-switcher__trigger-name {
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+  .vl-app-switcher__trigger-description {
+    font-size: 13px;
+    line-height: 1;
+    color: var(--text-sub-600);
+  }
+  /* Разделитель — пунктир из «пикселей» по вертикали */
+  .vl-app-switcher__trigger-divider {
+    width: var(--pixel-unit);
+    height: 24px;
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--pixel-divider-color) 0 4px,
+      transparent 4px 8px
+    );
+  }
+  .vl-app-switcher__trigger-grid {
+    color: var(--icon-sub-600);
+    transition: none;
+  }
+  .vl-app-switcher__trigger:hover .vl-app-switcher__trigger-grid {
+    color: var(--icon-strong-950);
+    background: var(--pixel-dither-hover);
+  }
+
+  .vl-app-switcher__dropdown {
+    top: calc(100% + 12px);
+    width: 300px;
+    border: 0;
+    border-radius: 0;
+    background: var(--bg-white-0);
+    color: var(--text-strong-950);
+    box-shadow: var(--pixel-frame), var(--pixel-drop);
+  }
+
+  /* Промо-полоса во всю ширину окна: выходит на паддинг выпадашки, снизу — чернильная черта */
+  .vl-app-switcher__promo {
+    margin: -12px -12px 12px;
+    padding: 14px 16px;
+    border-radius: 0;
+    background: var(--promo-gradient, var(--feature-base));
+    background-size: auto;
+    animation: none;
+    border-bottom: var(--pixel-unit) solid var(--stroke-strong-950);
+  }
+  .vl-app-switcher__promo-title {
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--static-white);
+  }
+  .vl-app-switcher__promo-subtitle {
+    margin-top: 4px;
+    font-size: 14px;
+    color: var(--static-white);
+  }
+
+  .vl-app-switcher__grid {
+    gap: 8px;
+  }
+  .vl-app-switcher__item {
+    padding: 12px 4px;
+    border-radius: 0;
+    transition: none;
+  }
+  .vl-app-switcher__item:hover:not(:disabled) {
+    background: var(--pixel-dither-hover);
+  }
+  .vl-app-switcher__item[data-active='true'],
+  .vl-app-switcher__item[data-active='true']:hover:not(:disabled) {
+    background: var(--primary-alpha-10);
+    box-shadow: inset 0 0 0 3px var(--primary-base);
+  }
+  /* Выпадашка с overflow: hidden — пунктир фокуса рисуется внутри плитки */
+  .vl-app-switcher__item:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: calc(-1 * var(--pixel-unit));
+  }
+  /* Неактивная плитка — шахматка и серые цвета, без полупрозрачности */
+  .vl-app-switcher__item:disabled {
+    opacity: 1;
+    background: var(--pixel-dither);
+    filter: grayscale(1);
+  }
+  .vl-app-switcher__item-label {
+    font-size: 14px;
+    color: var(--text-strong-950);
+  }
+  .vl-app-switcher__item[data-active='true'] .vl-app-switcher__item-label {
+    font-weight: 400;
+  }
+  .vl-app-switcher__item:disabled .vl-app-switcher__item-label {
+    color: var(--text-sub-600);
+  }
+
+  .vl-app-switcher__icon-img,
+  .vl-app-switcher__icon-node {
+    border-radius: 0;
+  }
+  .vl-app-switcher__icon-initial {
+    border-radius: 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    color: var(--static-white);
+    box-shadow:
+      inset -3px -3px 0 var(--pixel-bevel-dark),
+      inset 3px 3px 0 var(--pixel-bevel-light);
+  }
+
+  .vl-app-switcher__active-dot {
+    border-radius: 0;
+    border-color: var(--bg-white-0);
+  }
+  .vl-app-switcher__badge {
+    height: 16px;
+    padding: 0 4px;
+    border-radius: 0;
+    font-family: var(--font-display);
+    font-size: 7px;
+    font-weight: 400;
+    color: var(--static-white);
+  }
+  .vl-app-switcher__soon-label {
+    padding: 3px 5px;
+    border-radius: 0;
+    font-family: var(--font-display);
+    font-size: 6px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1;
+    color: var(--text-white-0);
+  }
+}

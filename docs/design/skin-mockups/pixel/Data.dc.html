@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>8-bit — данные</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=Tiny5&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.r{font-family:'Tiny5',monospace;color:#1b1b2f;background:#f4f1e6}
+.d{font-family:'Press Start 2P',monospace;line-height:1.6}
+.box{background:#fffdf5;margin:4px;box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f}
+.h{display:flex;flex-direction:column;gap:16px}
+table{border-collapse:collapse;width:100%;font-size:16px}
+th{font-family:'Press Start 2P',monospace;font-size:8px;font-weight:400;text-align:left;padding:14px 16px;background:#1b1b2f;color:#f4f1e6}
+td{padding:12px 16px;border-top:4px dotted #d9d5c3}
+tr.sel td{background:#fff3c4}
+.bdg{display:inline-flex;align-items:center;gap:6px;font-family:'Press Start 2P',monospace;font-size:7px;line-height:1;padding:6px 8px;margin:2px;color:#fff;background:var(--c);box-shadow:0 -2px 0 #1b1b2f,0 2px 0 #1b1b2f,-2px 0 0 #1b1b2f,2px 0 0 #1b1b2f}
+.bdg.lite{color:var(--c);background:var(--t);box-shadow:0 -2px 0 var(--t),0 2px 0 var(--t),-2px 0 0 var(--t),2px 0 0 var(--t)}
+.bdg.stroke{color:var(--c);background:#fffdf5;box-shadow:0 -2px 0 var(--c),0 2px 0 var(--c),-2px 0 0 var(--c),2px 0 0 var(--c)}
+.dot{width:6px;height:6px;background:currentColor;display:inline-block}
+.tabs{display:flex;gap:8px;align-items:flex-end;border-bottom:4px solid #1b1b2f;padding-left:8px}
+.tabs button{font-family:'Press Start 2P',monospace;font-size:8px;border:0;cursor:pointer;padding:12px 14px;background:#e6e1cf;color:#55536a;box-shadow:0 -4px 0 #b9b4a0,-4px 0 0 #b9b4a0,4px 0 0 #b9b4a0;margin:4px 4px 0}
+.tabs button.on{background:#fffdf5;color:#1b1b2f;padding-bottom:16px;margin-bottom:-4px;box-shadow:0 -4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f}
+.acc{display:flex;flex-direction:column}
+.acc button{all:unset;cursor:pointer;display:flex;align-items:center;gap:12px;padding:14px 16px;font-size:16px;border-top:4px dotted #d9d5c3}
+.acc button:first-child{border-top:0}
+.acc .pnl{padding:0 16px 16px 40px;font-size:15px;line-height:1.5;color:#55536a}
+.crumbs{display:flex;align-items:center;gap:10px;font-size:16px;flex-wrap:wrap}
+.crumbs a{color:#1b3bb3}
+.cal{width:340px}
+.cal .hd{display:flex;align-items:center;justify-content:space-between;padding:12px;border-bottom:4px solid #1b1b2f}
+.cal .nav{border:0;width:30px;height:30px;cursor:pointer;background:#e6e1cf;display:flex;align-items:center;justify-content:center;box-shadow:inset -3px -3px 0 #b9b4a0}
+.cal .gr{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;padding:12px}
+.cal .wd{font-family:'Press Start 2P',monospace;font-size:7px;text-align:center;color:#55536a;padding:6px 0}
+.cal .dy{border:0;background:transparent;height:36px;font-family:'Tiny5',monospace;font-size:15px;color:#1b1b2f;cursor:pointer}
+.cal .dy.out{color:#8d8a9c}
+.cal .dy.rng{background:#dfe6ff}
+.cal .dy.sel{background:#2b4fd9;color:#fff;box-shadow:inset -3px -3px 0 rgba(0,0,0,.3),inset 3px 3px 0 rgba(255,255,255,.3)}
+.cal .dy.today{outline:3px dashed #e0a100;outline-offset:-3px}
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:15px;padding:4px 4px 4px 10px;margin:2px;background:var(--t,#e6e1cf);color:var(--c,#1b1b2f);box-shadow:0 -2px 0 var(--c,#1b1b2f),0 2px 0 var(--c,#1b1b2f),-2px 0 0 var(--c,#1b1b2f),2px 0 0 var(--c,#1b1b2f)}
+.tag button{border:0;background:transparent;color:inherit;width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;margin:-4px 0}
+.av{display:inline-flex;align-items:center;justify-content:center;font-family:'Press Start 2P',monospace;color:#fff;background:var(--c,#2b4fd9);box-shadow:0 -3px 0 #1b1b2f,0 3px 0 #1b1b2f,-3px 0 0 #1b1b2f,3px 0 0 #1b1b2f;margin:3px;flex:none}
+.avg{display:flex}
+.avg > *{margin-left:-6px}
+.avg > *:first-child{margin-left:3px}
+.div{display:flex;align-items:center;gap:14px;font-family:'Press Start 2P',monospace;font-size:8px;color:#55536a}
+.div::before,.div::after{content:'';flex:1;height:4px;background:repeating-linear-gradient(90deg,#1b1b2f 0 8px,transparent 8px 12px)}
+</style>
+</helmet>
+<div class="r" style="width: 1200px; height: 1800px; box-sizing: border-box; padding: 56px; display: flex; flex-direction: column; gap: 44px">
+  <div class="d" style="font-size: 20px">Данные и отображение</div>
+
+  <div class="h">
+    <div class="d" style="font-size: 11px">Table</div>
+    <div class="box">
+      <table>
+        <thead><tr><th scope="col">ПРОЕКТ ▲</th><th scope="col">СТАТУС</th><th scope="col">ВЛАДЕЛЕЦ</th><th scope="col">ОБНОВЛЁН</th><th scope="col"><span style="position: absolute; left: -9999px">Действия</span></th></tr></thead>
+        <tbody>
+          <tr><td>Пиксель</td><td><span class="bdg" style="--c: #1e7d38"><span class="dot"></span>АКТИВЕН</span></td><td><span style="display: inline-flex; gap: 10px; align-items: center"><span class="av" style="width: 24px; height: 24px; font-size: 7px">АП</span>Анна Петрова</span></td><td>сегодня</td><td><button aria-label="Действия: Пиксель" style="border: 0; background: transparent; cursor: pointer; padding: 6px"><svg width="16" height="4" viewBox="0 0 8 2" shape-rendering="crispEdges" fill="#1b1b2f" aria-hidden="true"><path d="M0 0h2v2H0zM3 0h2v2H3zM6 0h2v2H6z"/></svg></button></td></tr>
+          <tr class="sel" aria-selected="true"><td>Тайлсет 16×16</td><td><span class="bdg" style="--c: #f2b31a; color: #1b1b2f"><span class="dot"></span>НА РЕВЬЮ</span></td><td><span style="display: inline-flex; gap: 10px; align-items: center"><span class="av" style="width: 24px; height: 24px; font-size: 7px; --c: #6a3fd4">ИС</span>Иван Смирнов</span></td><td>вчера</td><td><button aria-label="Действия: Тайлсет" style="border: 0; background: transparent; cursor: pointer; padding: 6px"><svg width="16" height="4" viewBox="0 0 8 2" shape-rendering="crispEdges" fill="#1b1b2f" aria-hidden="true"><path d="M0 0h2v2H0zM3 0h2v2H3zM6 0h2v2H6z"/></svg></button></td></tr>
+          <tr><td>Звуки чиптюн</td><td><span class="bdg" style="--c: #55536a"><span class="dot"></span>ЧЕРНОВИК</span></td><td><span style="display: inline-flex; gap: 10px; align-items: center"><span class="av" style="width: 24px; height: 24px; font-size: 7px; --c: #c42b2b">ЛК</span>Лейла Каримова</span></td><td>3 дня назад</td><td><button aria-label="Действия: Звуки" style="border: 0; background: transparent; cursor: pointer; padding: 6px"><svg width="16" height="4" viewBox="0 0 8 2" shape-rendering="crispEdges" fill="#1b1b2f" aria-hidden="true"><path d="M0 0h2v2H0zM3 0h2v2H3zM6 0h2v2H6z"/></svg></button></td></tr>
+          <tr><td>Босс-уровень</td><td><span class="bdg" style="--c: #c42b2b"><span class="dot"></span>ОШИБКА</span></td><td><span style="display: inline-flex; gap: 10px; align-items: center"><span class="av" style="width: 24px; height: 24px; font-size: 7px; --c: #1e7d38">ДН</span>Дилшод Назаров</span></td><td>12.10.2026</td><td><button aria-label="Действия: Босс-уровень" style="border: 0; background: transparent; cursor: pointer; padding: 6px"><svg width="16" height="4" viewBox="0 0 8 2" shape-rendering="crispEdges" fill="#1b1b2f" aria-hidden="true"><path d="M0 0h2v2H0zM3 0h2v2H3zM6 0h2v2H6z"/></svg></button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px">
+    <div class="h">
+      <div class="d" style="font-size: 11px">Tabs</div>
+      <div>
+        <div class="tabs" role="tablist" aria-label="Проект"><button role="tab" aria-selected="true" class="on">ОБЗОР</button><button role="tab" aria-selected="false">УРОВНИ</button><button role="tab" aria-selected="false">КОМАНДА</button></div>
+        <div role="tabpanel" style="background: #fffdf5; padding: 18px; font-size: 16px; line-height: 1.5; box-shadow: -4px 0 0 #1b1b2f, 4px 0 0 #1b1b2f, 0 4px 0 #1b1b2f; margin: 0 4px 4px">Платформер в 8 уровнях. Активная вкладка соединяется с панелью — как закладка в папке.</div>
+      </div>
+      <div class="d" style="font-size: 11px; margin-top: 12px">Breadcrumbs</div>
+      <nav aria-label="Навигация" class="crumbs"><a href="#">Главная</a><span aria-hidden="true">›</span><a href="#">Проекты</a><span aria-hidden="true">›</span><span aria-current="page" style="font-weight: 600">Пиксель</span></nav>
+    </div>
+    <div class="h">
+      <div class="d" style="font-size: 11px">Accordion</div>
+      <div class="box acc">
+        <button aria-expanded="true"><svg width="14" height="8" viewBox="0 0 7 4" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h2v1H0zM5 0h2v1H5zM1 1h2v1H1zM4 1h2v1H4zM2 2h3v1H2zM3 3h1v1H3z"/></svg>Как пригласить команду?</button>
+        <div class="pnl">Откройте проект → вкладка «Команда» → «Пригласить». Ссылка действует 7 дней.</div>
+        <button aria-expanded="false"><svg width="8" height="14" viewBox="0 0 4 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h1v7H0zM1 1h1v5H1zM2 2h1v3H2zM3 3h1v1H3z"/></svg>Можно ли экспортировать уровни?</button>
+        <button aria-expanded="false"><svg width="8" height="14" viewBox="0 0 4 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h1v7H0zM1 1h1v5H1zM2 2h1v3H2zM3 3h1v1H3z"/></svg>Какие форматы спрайтов поддерживаются?</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 48px">
+    <div class="h">
+      <div class="d" style="font-size: 11px">Calendar</div>
+      <div class="box cal">
+        <div class="hd"><button class="nav" aria-label="Предыдущий месяц"><svg width="6" height="12" viewBox="0 0 4 7" shape-rendering="crispEdges" fill="#1b1b2f" aria-hidden="true"><path d="M3 0h1v7H3zM2 1h1v5H2zM1 2h1v3H1zM0 3h1v1H0z"/></svg></button><span class="d" style="font-size: 9px">НОЯБРЬ 2026</span><button class="nav" aria-label="Следующий месяц"><svg width="6" height="12" viewBox="0 0 4 7" shape-rendering="crispEdges" fill="#1b1b2f" aria-hidden="true"><path d="M0 0h1v7H0zM1 1h1v5H1zM2 2h1v3H2zM3 3h1v1H3z"/></svg></button></div>
+        <div class="gr" role="grid" aria-label="Ноябрь 2026">
+          <span class="wd">ПН</span><span class="wd">ВТ</span><span class="wd">СР</span><span class="wd">ЧТ</span><span class="wd">ПТ</span><span class="wd">СБ</span><span class="wd">ВС</span>
+          <button class="dy out">26</button><button class="dy out">27</button><button class="dy out">28</button><button class="dy out">29</button><button class="dy out">30</button><button class="dy out">31</button><button class="dy">1</button>
+          <button class="dy">2</button><button class="dy">3</button><button class="dy">4</button><button class="dy">5</button><button class="dy">6</button><button class="dy">7</button><button class="dy">8</button>
+          <button class="dy">9</button><button class="dy today" aria-current="date">10</button><button class="dy sel" aria-pressed="true">11</button><button class="dy rng">12</button><button class="dy rng">13</button><button class="dy rng">14</button><button class="dy sel" aria-pressed="true">15</button>
+          <button class="dy">16</button><button class="dy">17</button><button class="dy">18</button><button class="dy">19</button><button class="dy">20</button><button class="dy">21</button><button class="dy">22</button>
+          <button class="dy">23</button><button class="dy">24</button><button class="dy">25</button><button class="dy">26</button><button class="dy">27</button><button class="dy">28</button><button class="dy">29</button>
+        </div>
+      </div>
+    </div>
+    <div class="h">
+      <div class="d" style="font-size: 11px">Badge</div>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center">
+        <span class="bdg" style="--c: #2b4fd9">PRIMARY</span><span class="bdg" style="--c: #1e7d38">SUCCESS</span><span class="bdg" style="--c: #c42b2b">ERROR</span><span class="bdg" style="--c: #f2b31a; color: #1b1b2f">WARNING</span><span class="bdg" style="--c: #6a3fd4">FEATURE</span><span class="bdg" style="--c: #55536a">NEUTRAL</span>
+      </div>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center">
+        <span class="bdg lite" style="--c: #1b3bb3; --t: #dfe6ff">LIGHTER</span><span class="bdg lite" style="--c: #18692f; --t: #dcf2e1"><span class="dot"></span>ОНЛАЙН</span><span class="bdg stroke" style="--c: #c42b2b">STROKE</span><span class="bdg" style="--c: #c42b2b">12</span><span class="bdg" style="--c: #2b4fd9">99+</span>
+      </div>
+      <div class="d" style="font-size: 11px; margin-top: 12px">Tag</div>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center">
+        <span class="tag">Платформер</span>
+        <span class="tag" style="--c: #1b3bb3; --t: #dfe6ff">Чиптюн<button aria-label="Удалить тег Чиптюн"><svg width="10" height="10" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h1v1H0zM1 1h1v1H1zM2 2h1v1H2zM3 3h1v1H3zM4 4h1v1H4zM5 5h1v1H5zM6 6h1v1H6zM6 0h1v1H6zM5 1h1v1H5zM4 2h1v1H4zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z"/></svg></button></span>
+        <span class="tag" style="--c: #18692f; --t: #dcf2e1">Готово<button aria-label="Удалить тег Готово"><svg width="10" height="10" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h1v1H0zM1 1h1v1H1zM2 2h1v1H2zM3 3h1v1H3zM4 4h1v1H4zM5 5h1v1H5zM6 6h1v1H6zM6 0h1v1H6zM5 1h1v1H5zM4 2h1v1H4zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z"/></svg></button></span>
+      </div>
+      <div class="d" style="font-size: 11px; margin-top: 12px">ContentDivider</div>
+      <div class="div">ИЛИ</div>
+      <div class="d" style="font-size: 11px; margin-top: 12px">Box</div>
+      <div class="box" style="padding: 18px; font-size: 16px; line-height: 1.5; box-shadow: 0 -4px 0 #1b1b2f, 0 4px 0 #1b1b2f, -4px 0 0 #1b1b2f, 4px 0 0 #1b1b2f, 8px 8px 0 4px rgba(27,27,47,.28)">Box — базовая поверхность: рамка со ступенчатыми углами и жёсткая тень.</div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px">
+    <div class="h">
+      <div class="d" style="font-size: 11px">Avatar</div>
+      <div style="display: flex; gap: 14px; align-items: center">
+        <span class="av" style="width: 56px; height: 56px; font-size: 12px; --c: #2b4fd9">АП</span>
+        <svg width="56" height="56" viewBox="0 0 8 8" shape-rendering="crispEdges" role="img" aria-label="Иван Смирнов" style="margin: 3px; box-shadow: 0 -3px 0 #1b1b2f, 0 3px 0 #1b1b2f, -3px 0 0 #1b1b2f, 3px 0 0 #1b1b2f"><rect width="8" height="8" fill="#6a3fd4"/><path fill="#f2c9a0" d="M2 2h4v4H2zM3 6h2v2H3z"/><path fill="#1b1b2f" d="M2 1h4v1H2zM1 2h1v2H1zM6 2h1v2H6zM3 3h1v1H3zM5 3h1v1H5z"/><path fill="#c42b2b" d="M3 5h2v1H3z"/><path fill="#2b4fd9" d="M1 7h2v1H1zM5 7h2v1H5z"/></svg>
+        <span class="av" style="width: 40px; height: 40px; font-size: 9px; --c: #1e7d38">ДН</span>
+        <span class="av" style="width: 24px; height: 24px; font-size: 7px; --c: #c42b2b">ЛК</span>
+      </div>
+      <div class="d" style="font-size: 11px; margin-top: 12px">AvatarGroup</div>
+      <div class="avg"><span class="av" style="width: 40px; height: 40px; font-size: 9px">АП</span><span class="av" style="width: 40px; height: 40px; font-size: 9px; --c: #6a3fd4">ИС</span><span class="av" style="width: 40px; height: 40px; font-size: 9px; --c: #1e7d38">ДН</span><span class="av" style="width: 40px; height: 40px; font-size: 9px; --c: #e6e1cf; color: #1b1b2f">+5</span></div>
+    </div>
+    <div class="h">
+      <div class="d" style="font-size: 11px">AvatarCard</div>
+      <div class="box" style="display: flex; gap: 14px; align-items: center; padding: 14px">
+        <span class="av" style="width: 40px; height: 40px; font-size: 9px">АП</span>
+        <div style="display: flex; flex-direction: column; gap: 4px; flex: 1"><span style="font-size: 16px; font-weight: 600">Анна Петрова</span><span style="font-size: 14px; color: #55536a">Гейм-дизайнер</span></div>
+        <span class="bdg lite" style="--c: #18692f; --t: #dcf2e1"><span class="dot"></span>ОНЛАЙН</span>
+      </div>
+    </div>
+    <div class="h">
+      <div class="d" style="font-size: 11px">Typography</div>
+      <div class="d" style="font-size: 22px; line-height: 1.3">H1 Заголовок</div>
+      <div class="d" style="font-size: 16px; line-height: 1.3">H2 Заголовок</div>
+      <div class="d" style="font-size: 11px">H3 Заголовок</div>
+      <div style="font-size: 18px">Body large — основной текст</div>
+      <div style="font-size: 16px">Body — основной текст</div>
+      <div style="font-size: 13px; color: #55536a">Caption — подпись</div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":1800}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

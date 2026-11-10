@@ -26,6 +26,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); ver
 - **`themeHtmlAttributes(skin, scheme)`** — skin and scheme attributes for the server `<html>` with SSR, so skin styles apply from the first frame, before hydration. Next.js App Router example: [Installation → SSR and Next.js](./installation#ssr).
 - **Input accessibility.** `InputField` links the control to its hint and error (`aria-describedby`) and exposes the error and required state (`aria-invalid`, `aria-required`) — in every kit input. For your own fields built on `InputField`, the render function gets a second argument `control` with these attributes; `inputFieldLabelId(id)` gives the label id for `aria-labelledby`, `splitInputFieldProps(props)` splits field and control props.
 - **`ThemeProvider onSkinLoadError`** — a failed skin CSS load (`load`) is no longer lost: the previous skin stays, the error goes to the handler or to `console.error`.
+- **`pixel` skin (8-bit)** — retro look: notched pixel frames, hard shadows, pixel fonts, light and dark schemes. Extends `corporate` (`extends`): import `@v-lab/ui-kit/skins/corporate.css`, then `@v-lab/ui-kit/skins/pixel.css`, and use `ThemeProvider skins={[corporateSkin, pixelSkin]}`. The app loads the fonts (Press Start 2P, Tiny5).
 
 ### Changed
 
@@ -34,6 +35,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); ver
 - **React 19.** The kit is developed and tested on React 19.3. The `react` / `react-dom` peer range is `^18.2.0 || ^19.0.0` (was `>=17`, but the kit never worked on React 17: components use `useId` from React 18). Apps on React 18.2+ keep working unchanged.
 - **`Button` defaults to `type="button"`** — a button inside a `<form>` no longer submits it. Pass `type="submit"` to submit.
 - **Icon-only buttons require an accessible name:** `Button`, `ToggleButton` and `SegmentedControl.Item` without `children` require `aria-label` or `aria-labelledby` in TypeScript; in dev mode a nameless one logs a warning. Wrappers can use the types without this rule: `ButtonBaseProps`, `ToggleButtonBaseProps`, `SegmentedControlItemBaseProps`.
+- **`SelectInput`, `AsyncSearchSelect`, `LanguageSwitcher`: new API.** `onChange` receives the value — `(value, option)`, in `multiple` mode `(values, options)` — instead of a fake event; `ref` points to the trigger button instead of a hidden `<select>`; `triggerAriaLabel` is replaced by standard `aria-label` / `aria-labelledby`, required for the `compact`, `compact-label`, `inline` variants and for `AsyncSearchSelect` without `label`. Forms get the value through hidden `<input name>`. The unused `multipleDisplay` prop is removed. See the migration guide.
+- **Dropdown keyboard follows the WAI-ARIA combobox pattern:** the search field is focused on open, Escape closes only the list (not an enclosing modal), Tab and outside clicks close it, typeahead, Home / End / PageUp / PageDown, Delete / Backspace clear the value, "No results" and loading are announced. `TagInput`: Enter adds the highlighted suggestion.
 
 ### Fixed
 

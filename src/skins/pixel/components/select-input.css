@@ -1,0 +1,351 @@
+/*
+ * select-input: 8-битный вид поверх corporate/components/select-input.css — раскладка приходит
+ * оттуда, здесь только оформление.
+ *
+ * - Полный триггер живёт в оболочке InputField: рамку, фокус и рамку открытого списка рисует
+ *   input-field.css (`:has([aria-expanded='true'])`).
+ * - Compact — самостоятельная «панельная» кнопка: рамка + объём снизу-справа, Press Start 2P.
+ * - Inline — текст ссылки с пунктирным подчёркиванием.
+ *   Внутри оболочки поля (startBlock у PhoneInput / SiteInput) compact и inline — часть поля,
+ *   поэтому их «самостоятельный» вид ограничен `:not(.vl-input-field__wrapper *)`.
+ * - Выпадающий список — панель с рамкой и жёсткой тенью; подсвеченная опция — заливка primary
+ *   и курсор «▶», как в меню старых RPG.
+ */
+:where([data-vl-skin~='pixel']) {
+  /* ── Полный триггер ────────────────────────────────────────────────────── */
+
+  /* React пишет data-placeholder="false" у выбранного значения, а corporate красит любой
+     [data-placeholder] в серый. В pixel серый — только у настоящего плейсхолдера. */
+  .vl-select-input__trigger-text[data-placeholder],
+  .vl-select-input__compact-text[data-placeholder] {
+    color: var(--base-input-color);
+  }
+
+  .vl-select-input__trigger-text[data-placeholder='true'],
+  .vl-select-input__compact-text[data-placeholder='true'] {
+    color: var(--text-soft-400);
+  }
+
+  .vl-select-input__clear-btn {
+    margin: -2px;
+    padding: 2px;
+    border-radius: 0;
+    color: var(--icon-sub-600);
+    transition: none;
+  }
+
+  .vl-select-input__clear-btn:hover:not(:disabled),
+  .vl-select-input__clear-btn:focus-visible {
+    color: var(--icon-strong-950);
+    background: var(--pixel-dither-hover);
+  }
+
+  .vl-select-input__clear-btn:focus-visible {
+    outline: var(--pixel-unit-sm) dashed var(--pixel-focus-color);
+    outline-offset: 0;
+  }
+
+  .vl-select-input__chevron {
+    color: var(--icon-sub-600);
+    transition: none;
+  }
+
+  /* Открытый список — стрелка смотрит вверх (без анимации поворота) */
+  [aria-expanded='true'] .vl-select-input__chevron,
+  .vl-input-field__wrapper:has([aria-expanded='true']) .vl-select-input__chevron {
+    transform: rotate(180deg);
+  }
+
+  /* ── Compact: «панельная» кнопка ───────────────────────────────────────── */
+
+  .vl-select-input__compact-trigger:not(.vl-input-field__wrapper *) {
+    margin: var(--pixel-unit);
+    gap: 8px;
+    border: 0;
+    border-radius: 0;
+    background: var(--bg-white-0);
+    box-shadow: var(--pixel-frame), var(--pixel-bevel-panel);
+    color: var(--text-strong-950);
+    transition: none;
+  }
+
+  .vl-select-input__compact-trigger:not(.vl-input-field__wrapper *) .vl-select-input__compact-text {
+    font-family: var(--font-display);
+    font-size: 9px;
+    line-height: 1.6;
+    letter-spacing: 0;
+  }
+
+  .vl-select-input__compact-trigger:not(.vl-input-field__wrapper *)
+    .vl-select-input__compact-text[data-placeholder='true'] {
+    color: var(--text-sub-600);
+  }
+
+  /* Наведение — светлее; нажатие — сдвиг и перевёрнутый объём */
+  .vl-select-input__compact-trigger:not(.vl-input-field__wrapper *):hover:not(:disabled) {
+    background: var(--pixel-dither-hover), var(--bg-white-0);
+  }
+
+  .vl-select-input__compact-trigger:not(.vl-input-field__wrapper *):active:not(:disabled) {
+    transform: var(--pixel-press-shift);
+    box-shadow:
+      var(--pixel-frame),
+      inset var(--pixel-unit) var(--pixel-unit) 0 var(--pixel-shade);
+  }
+
+  .vl-select-input__compact-trigger:not(.vl-input-field__wrapper *)[data-completed] {
+    --pixel-frame-color: var(--input-completed-border, var(--pixel-input-done));
+  }
+
+  .vl-select-input__compact-trigger:not(.vl-input-field__wrapper *)[data-open] {
+    --pixel-frame-color: var(--pixel-input-accent);
+  }
+
+  .vl-select-input__compact-trigger:not(.vl-input-field__wrapper *)[data-error] {
+    --pixel-frame-color: var(--pixel-input-error);
+  }
+
+  /* Мягкое кольцо corporate у открытого списка гасим — та же рамка, только цвет другой */
+  .vl-select-input__compact-trigger:not(.vl-input-field__wrapper *)[data-open],
+  .vl-select-input__compact-trigger:not(.vl-input-field__wrapper *)[data-error][data-open] {
+    box-shadow: var(--pixel-frame), var(--pixel-bevel-panel);
+  }
+
+  .vl-select-input__compact-trigger:not(.vl-input-field__wrapper *):focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: var(--pixel-focus-offset);
+  }
+
+  .vl-select-input__compact-trigger:not(.vl-input-field__wrapper *):disabled {
+    --pixel-frame-color: var(--pixel-disabled-frame-color);
+    background: var(--pixel-dither);
+    box-shadow: var(--pixel-frame);
+  }
+
+  .vl-select-input__compact-trigger:disabled .vl-select-input__compact-text {
+    color: var(--text-sub-600);
+  }
+
+  /* Compact внутри startBlock поля (страна у PhoneInput) — текст полей, без рамки */
+  .vl-input-field__wrapper .vl-select-input__compact-trigger {
+    border-radius: 0;
+    transition: none;
+  }
+
+  /* ── Inline: текст с пунктирным подчёркиванием ─────────────────────────── */
+
+  .vl-select-input__inline-trigger {
+    border-radius: 0;
+    transition: none;
+  }
+
+  .vl-select-input__inline-trigger:not(.vl-input-field__wrapper *) {
+    color: var(--primary-dark);
+  }
+
+  .vl-select-input__inline-trigger:not(.vl-input-field__wrapper *) .vl-select-input__compact-text {
+    padding-bottom: 1px;
+    border-bottom: 3px dashed var(--primary-base);
+    color: var(--primary-dark);
+  }
+
+  .vl-select-input__inline-trigger:not(.vl-input-field__wrapper *) .vl-select-input__chevron {
+    color: var(--primary-dark);
+  }
+
+  .vl-select-input__inline-trigger:hover:not(:disabled),
+  .vl-select-input__inline-trigger[data-open] {
+    background: var(--pixel-dither-hover);
+  }
+
+  /* Внутри startBlock фон наведения рисует сам блок */
+  .vl-input-field__wrapper .vl-select-input__inline-trigger:hover:not(:disabled),
+  .vl-input-field__wrapper .vl-select-input__inline-trigger[data-open] {
+    background: transparent;
+  }
+
+  .vl-select-input__inline-trigger:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: 2px;
+  }
+
+  /* Внутри поля пунктир фокуса рисует оболочка */
+  .vl-input-field__wrapper .vl-select-input__inline-trigger:focus-visible,
+  .vl-input-field__wrapper .vl-select-input__compact-trigger:focus-visible {
+    outline: none;
+  }
+
+  /* Заполнено (data-completed) — вместо тонкой рамки цветное пунктирное подчёркивание */
+  .vl-select-input__inline-trigger[data-completed]:not([data-error]):not(:disabled),
+  .vl-select-input__inline-trigger[data-completed]:not([data-error]):not(:disabled)[data-open] {
+    border-color: transparent;
+  }
+
+  .vl-select-input__inline-trigger[data-completed]:not(.vl-input-field__wrapper *)
+    .vl-select-input__compact-text {
+    border-bottom-color: var(--input-completed-border, var(--pixel-input-done));
+  }
+
+  /* Ошибка — красное пунктирное подчёркивание (у corporate inline-триггер ошибку не показывает) */
+  .vl-select-input__inline-trigger[data-error]:not(.vl-input-field__wrapper *)
+    .vl-select-input__compact-text {
+    border-bottom-color: var(--pixel-input-error);
+  }
+
+  /* Отключено — без полупрозрачности: приглушённый текст, пунктир серый */
+  .vl-select-input__inline-trigger:disabled {
+    opacity: 1;
+    color: var(--text-sub-600);
+  }
+
+  .vl-select-input__inline-trigger:disabled .vl-select-input__compact-text,
+  .vl-select-input__inline-trigger:disabled .vl-select-input__chevron {
+    color: var(--text-sub-600);
+    border-bottom-color: var(--pixel-disabled-frame-color);
+  }
+
+  /* ── Выпадающая панель ─────────────────────────────────────────────────── */
+
+  .vl-select-input__dropdown {
+    /* Рамка снаружи: место под неё и под жёсткую тень даёт отступ от триггера (Floating UI) */
+    padding: 8px 0;
+    gap: 8px;
+    border: 0;
+    border-radius: 0;
+    box-shadow: var(--pixel-frame), var(--pixel-drop);
+  }
+
+  /* Появление рывками, по кадрам (сама анимация — corporate) */
+  .vl-select-input__dropdown[data-placement] {
+    animation-timing-function: steps(3, end);
+  }
+
+  /* Поле поиска в панели — с боковыми отступами (у панели их нет, чтобы подсветка опций шла
+     во всю ширину) */
+  .vl-select-input__dropdown-search-field {
+    box-sizing: border-box;
+    padding: 0 8px;
+  }
+
+  /* ── Прокрутка: квадратный ползунок ────────────────────────────────────── */
+
+  .vl-select-input__options-scroll {
+    padding: 0;
+    scrollbar-color: var(--stroke-sub-300) transparent;
+  }
+
+  .vl-select-input__options-scroll::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .vl-select-input__options-scroll::-webkit-scrollbar-thumb {
+    border-radius: 0;
+    background-color: var(--stroke-sub-300);
+  }
+
+  .vl-select-input__options-scroll::-webkit-scrollbar-thumb:hover {
+    background-color: var(--stroke-strong-950);
+  }
+
+  .vl-select-input__options-list {
+    gap: 0;
+  }
+
+  /* ── Группы ────────────────────────────────────────────────────────────── */
+
+  .vl-select-input__option-group-label {
+    padding: 10px 12px 4px 30px;
+    font-family: var(--font-display);
+    font-size: 7px;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  :where(.vl-select-input__option-group-label)[data-sep] {
+    margin-top: 6px;
+    padding-top: 12px;
+    border-top: var(--pixel-divider);
+  }
+
+  /* ── Опции ─────────────────────────────────────────────────────────────── */
+
+  .vl-select-input__option {
+    position: relative;
+    /* Слева 30px — место под курсор «▶» */
+    padding: 9px 12px 9px 30px;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    letter-spacing: 0;
+    border-radius: 0;
+    transition: none;
+  }
+
+  /* Подсвеченная опция (мышь или стрелки) — заливка primary, белый текст, курсор «▶» */
+  .vl-select-input__option:hover,
+  .vl-select-input__option[data-highlighted] {
+    background-color: var(--primary-base);
+    color: var(--static-white);
+  }
+
+  .vl-select-input__option:hover::before,
+  .vl-select-input__option[data-highlighted]::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    width: var(--pixel-cursor-width);
+    height: var(--pixel-cursor-height);
+    margin-top: calc(var(--pixel-cursor-height) / -2);
+    background: currentColor;
+    clip-path: var(--pixel-cursor-shape);
+  }
+
+  /* Многострочные опции — курсор у первой строки */
+  :where(.vl-select-input__option)[data-multi]:is(:hover, [data-highlighted])::before,
+  :where(.vl-select-input__option)[data-wrap]:is(:hover, [data-highlighted])::before {
+    top: 12px;
+    margin-top: 0;
+  }
+
+  .vl-select-input__option[data-placeholder] {
+    color: var(--text-sub-600);
+  }
+
+  .vl-select-input__option[data-placeholder]:hover,
+  .vl-select-input__option[data-placeholder][data-highlighted] {
+    color: var(--static-white);
+  }
+
+  .vl-select-input__option[data-selected] {
+    font-weight: 600;
+  }
+
+  /* Текст внутри подсвеченной опции — белый целиком (подпись и описание тоже) */
+  .vl-select-input__option:is(:hover, [data-highlighted]) .vl-select-input__option-primary,
+  .vl-select-input__option:is(:hover, [data-highlighted]) .vl-select-input__option-description {
+    color: inherit;
+  }
+
+  .vl-select-input__option-primary {
+    font-weight: 600;
+  }
+
+  .vl-select-input__option-description {
+    font-size: 14px;
+    letter-spacing: 0;
+  }
+
+  /* ── Пусто / загрузка ──────────────────────────────────────────────────── */
+
+  .vl-select-input__empty-state,
+  .vl-select-input__async-footer-message {
+    font-family: var(--font-sans);
+    font-size: 15px;
+  }
+
+  :where(.vl-select-input__empty-state, .vl-select-input__async-footer-message)[data-error] {
+    color: var(--pixel-input-error);
+  }
+}

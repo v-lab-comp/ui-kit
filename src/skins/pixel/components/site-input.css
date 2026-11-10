@@ -1,0 +1,7 @@
+/*
+ * site-input: 8-битный вид поверх corporate/components/site-input.css — раскладка приходит оттуда.
+ * Своих правил нет: оболочку (рамка, состояния, фокус) рисует input-field.css, «голое» поле
+ * внутри неё — base-input.css, блок протокола — input-field.css (startBlock) и select-input.css (inline-триггер).
+ */
+:where([data-vl-skin~='pixel']) {
+}

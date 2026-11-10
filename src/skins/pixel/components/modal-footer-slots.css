@@ -1,0 +1,100 @@
+/* modal-footer-slots: 8-битный вид поверх corporate/components/modal-footer-slots.css — раскладка приходит оттуда, здесь только оформление.
+   Точки шагов — квадратные «пиксели», ссылка — Press Start 2P с толстым подчёркиванием,
+   переключатель — квадратный трек с рамкой и квадратным бегунком. */
+:where([data-vl-skin~='pixel']) {
+  .vl-modal-footer-slots__info,
+  .vl-modal-footer-slots__switch-row {
+    font-size: 16px;
+    letter-spacing: 0;
+  }
+
+  .vl-modal-footer-slots__info-icon {
+    --pixel-unit: 2px;
+    margin: 2px;
+    border-radius: 0;
+    box-shadow: var(--pixel-frame);
+  }
+
+  .vl-modal-footer-slots__dots {
+    gap: 6px;
+  }
+  .vl-modal-footer-slots__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 0;
+    background: var(--stroke-sub-300);
+  }
+  .vl-modal-footer-slots__dot[data-active] {
+    width: 16px;
+    background: var(--primary-base);
+  }
+
+  .vl-modal-footer-slots__link-button {
+    padding-bottom: 2px;
+    font-family: var(--font-display);
+    font-size: 8px;
+    line-height: 1.6;
+    letter-spacing: 0;
+    color: var(--primary-dark);
+    text-decoration: none;
+    border-bottom: 3px solid var(--primary-base);
+  }
+  .vl-modal-footer-slots__link-button:hover {
+    color: var(--text-strong-950);
+    border-bottom-color: var(--stroke-strong-950);
+  }
+  .vl-modal-footer-slots__link-button:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: 4px;
+    border-radius: 0;
+  }
+  /* Обёртка-якорь: подчёркивание и цвет — от вложенной ссылки */
+  .vl-modal-footer-slots__link-button[data-anchor] {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .vl-modal-footer-slots__switch-track {
+    --pixel-unit: 2px;
+    width: 36px;
+    height: 20px;
+    margin: 2px;
+    border-radius: 0;
+    background: var(--bg-soft-200);
+    box-shadow: var(--pixel-frame);
+    transition: background-color 0.15s steps(2, end);
+  }
+  .vl-modal-footer-slots__switch-thumb {
+    top: 4px;
+    left: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 0;
+    background: var(--stroke-strong-950);
+    box-shadow: none;
+    transition: transform 0.15s steps(3, end);
+  }
+  .vl-modal-footer-slots__switch-input:checked + .vl-modal-footer-slots__switch-track {
+    background: var(--primary-base);
+  }
+  .vl-modal-footer-slots__switch-input:checked
+    + .vl-modal-footer-slots__switch-track
+    .vl-modal-footer-slots__switch-thumb {
+    background: var(--static-white);
+  }
+  .vl-modal-footer-slots__switch-input:focus-visible + .vl-modal-footer-slots__switch-track {
+    outline: var(--pixel-focus-outline);
+    outline-offset: 4px;
+  }
+  /* Неактивный — шахматка и серая рамка вместо полупрозрачности */
+  .vl-modal-footer-slots__switch-input:disabled + .vl-modal-footer-slots__switch-track {
+    opacity: 1;
+    background: var(--pixel-dither);
+    --pixel-frame-color: var(--pixel-disabled-frame-color);
+  }
+  .vl-modal-footer-slots__switch-input:disabled
+    + .vl-modal-footer-slots__switch-track
+    .vl-modal-footer-slots__switch-thumb {
+    background: var(--pixel-disabled-frame-color);
+  }
+}

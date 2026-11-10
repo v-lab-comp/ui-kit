@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>8-bit — контент</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=Tiny5&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.r{font-family:'Tiny5',monospace;color:#1b1b2f;background:#f4f1e6}
+.d{font-family:'Press Start 2P',monospace;line-height:1.6}
+.box{background:#fffdf5;margin:4px;box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f}
+.sh{box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f,8px 8px 0 4px rgba(27,27,47,.28)}
+.h{display:flex;flex-direction:column;gap:16px}
+.av{display:inline-flex;align-items:center;justify-content:center;font-family:'Press Start 2P',monospace;font-size:8px;color:#fff;background:var(--c,#2b4fd9);width:32px;height:32px;flex:none;box-shadow:0 -3px 0 #1b1b2f,0 3px 0 #1b1b2f,-3px 0 0 #1b1b2f,3px 0 0 #1b1b2f;margin:3px}
+.cm{display:flex;gap:14px;padding:16px;position:relative}
+.cm + .cm{border-top:4px dotted #d9d5c3}
+.cm .meta{display:flex;align-items:baseline;gap:10px;font-size:15px}
+.cm .meta b{font-weight:600}
+.cm .meta span{color:#55536a;font-size:13px}
+.cm p{margin:6px 0 0;font-size:16px;line-height:1.5}
+.more{border:0;background:transparent;cursor:pointer;width:32px;height:28px;display:flex;align-items:center;justify-content:center;margin-left:auto}
+.more.on{background:#e6e1cf;box-shadow:inset 3px 3px 0 #b9b4a0}
+.menu{list-style:none;margin:0;padding:6px 0;font-size:15px}
+.menu li{padding:8px 14px 8px 28px;position:relative}
+.menu li.hl{background:#2b4fd9;color:#fff}
+.menu li.hl::before{content:'';position:absolute;left:9px;top:50%;margin-top:-6px;width:6px;height:12px;background:#fff;clip-path:polygon(0 0,2px 0,2px 2px,4px 2px,4px 4px,6px 4px,6px 8px,4px 8px,4px 10px,2px 10px,2px 12px,0 12px)}
+.menu li.danger{color:#c42b2b}
+.daydiv{display:flex;align-items:center;gap:12px;font-family:'Press Start 2P',monospace;font-size:7px;color:#55536a;padding:8px 16px}
+.daydiv::before,.daydiv::after{content:'';flex:1;height:4px;background:repeating-linear-gradient(90deg,#b9b4a0 0 6px,transparent 6px 10px)}
+.tb{display:flex;gap:4px;align-items:center}
+.tb button{font-family:'Press Start 2P',monospace;font-size:9px;width:28px;height:28px;border:0;background:#fffdf5;cursor:pointer;color:#1b1b2f;box-shadow:inset -3px -3px 0 #d9d5c3}
+.tb button.on{background:#2b4fd9;color:#fff;box-shadow:inset 3px 3px 0 rgba(0,0,0,.3)}
+.btn{font-family:'Press Start 2P',monospace;font-size:9px;line-height:1;padding:10px 12px;border:0;margin:4px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;color:#fff;background:var(--c,#2b4fd9);box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f,inset -4px -4px 0 rgba(0,0,0,.3),inset 4px 4px 0 rgba(255,255,255,.3)}
+.btn.stroke{color:#1b1b2f;background:#fffdf5;box-shadow:0 -4px 0 #1b1b2f,0 4px 0 #1b1b2f,-4px 0 0 #1b1b2f,4px 0 0 #1b1b2f}
+.drop{display:flex;flex-direction:column;align-items:center;gap:14px;padding:32px 20px;text-align:center;background:#fffdf5;outline:4px dashed #1b1b2f;outline-offset:-4px;margin:4px}
+.drop.over{background:#eef1ff;outline-color:#2b4fd9}
+.file{display:flex;gap:14px;align-items:center;padding:12px 14px}
+.file + .file{border-top:4px dotted #d9d5c3}
+.fi{width:36px;height:42px;flex:none;position:relative;background:#fffdf5;box-shadow:0 -3px 0 #1b1b2f,0 3px 0 #1b1b2f,-3px 0 0 #1b1b2f,3px 0 0 #1b1b2f;margin:3px}
+.fi span{position:absolute;left:-3px;right:-3px;bottom:6px;text-align:center;font-family:'Press Start 2P',monospace;font-size:7px;padding:3px 0;color:#fff;background:var(--c)}
+.prog{height:10px;margin-top:8px;background:#e6e1cf;box-shadow:inset 2px 2px 0 #cfc9b3;position:relative}
+.prog i{position:absolute;left:0;top:0;bottom:0;background:repeating-linear-gradient(90deg,#2b4fd9 0 8px,#5b7cff 8px 10px)}
+.ib{border:0;background:transparent;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#55536a}
+.pdfbar{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#1b1b2f;color:#f4f1e6}
+.pdfbar button{border:0;width:28px;height:28px;background:#3a3a52;color:#f4f1e6;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Press Start 2P',monospace;font-size:10px;box-shadow:inset -3px -3px 0 rgba(0,0,0,.35),inset 3px 3px 0 rgba(255,255,255,.15)}
+.ln{height:8px;background:#cfc9b3;margin:9px 0}
+</style>
+</helmet>
+<div class="r" style="width: 1200px; height: 1360px; box-sizing: border-box; padding: 56px; display: flex; flex-direction: column; gap: 44px">
+  <div class="d" style="font-size: 20px">Контент</div>
+
+  <div style="display: grid; grid-template-columns: 600px minmax(0, 1fr); gap: 48px; align-items: start">
+    <div class="h">
+      <div class="d" style="font-size: 11px">CommentsSection</div>
+      <section class="box" aria-label="Комментарии">
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 4px solid #1b1b2f"><span class="d" style="font-size: 9px">КОММЕНТАРИИ · 3</span><button class="btn stroke" style="padding: 7px 9px; font-size: 7px">НОВЫЕ ▼</button></div>
+        <div class="daydiv">ВЧЕРА</div>
+        <article class="cm"><span class="av" style="--c: #6a3fd4">ИС</span><div style="flex: 1"><div class="meta"><b>Иван Смирнов</b><span>18:42</span></div><p>Залил тайлсет «Лес», гляньте углы у травы — кажется, стыкуются неровно.</p></div><button class="more" aria-label="Действия с комментарием"><svg width="16" height="4" viewBox="0 0 8 2" shape-rendering="crispEdges" fill="#1b1b2f" aria-hidden="true"><path d="M0 0h2v2H0zM3 0h2v2H3zM6 0h2v2H6z"/></svg></button></article>
+        <div class="daydiv">СЕГОДНЯ</div>
+        <article class="cm"><span class="av">АП</span><div style="flex: 1"><div class="meta"><b>Анна Петрова</b><span>09:15 · изменено</span></div><p>Поправила стыки, теперь <b>ровно</b>. Можно собирать уровень 3.</p></div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px">
+            <button class="more on" aria-label="Действия с комментарием" aria-expanded="true"><svg width="16" height="4" viewBox="0 0 8 2" shape-rendering="crispEdges" fill="#1b1b2f" aria-hidden="true"><path d="M0 0h2v2H0zM3 0h2v2H3zM6 0h2v2H6z"/></svg></button>
+            <div class="box sh" style="width: 170px"><ul class="menu" role="menu" aria-label="Действия"><li role="menuitem" class="hl">Изменить</li><li role="menuitem">Копировать ссылку</li><li role="menuitem" class="danger">Удалить</li></ul></div>
+          </div>
+        </article>
+        <article class="cm"><span class="av" style="--c: #1e7d38">ДН</span><div style="flex: 1"><div class="meta"><b>Дилшод Назаров</b><span>10:03</span></div><p>Собрал, всё ок. Закрываю задачу.</p></div><button class="more" aria-label="Действия с комментарием"><svg width="16" height="4" viewBox="0 0 8 2" shape-rendering="crispEdges" fill="#1b1b2f" aria-hidden="true"><path d="M0 0h2v2H0zM3 0h2v2H3zM6 0h2v2H6z"/></svg></button></article>
+        <div style="padding: 14px 16px; border-top: 4px solid #1b1b2f; display: flex; flex-direction: column; gap: 10px">
+          <span class="d" id="cri" style="font-size: 8px">CommentRichInput</span>
+          <div class="box" style="margin: 4px">
+            <div role="textbox" aria-multiline="true" aria-labelledby="cri" tabindex="0" style="padding: 12px 14px; min-height: 56px; font-size: 16px; color: #6e6b82">Оставьте комментарий…</div>
+            <div style="display: flex; align-items: center; gap: 8px; padding: 8px; border-top: 4px dotted #d9d5c3; background: #f7f4ea">
+              <span class="av" style="width: 24px; height: 24px; font-size: 7px">АП</span>
+              <div class="tb" role="toolbar" aria-label="Форматирование"><button aria-label="Жирный">B</button><button aria-label="Курсив" style="font-style: italic">I</button><button aria-label="Подчёркнутый" style="text-decoration: underline">U</button><button aria-label="Список"><svg width="12" height="12" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h1v1H0zM2 0h5v1H2zM0 3h1v1H0zM2 3h5v1H2zM0 6h1v1H0zM2 6h5v1H2z"/></svg></button></div>
+              <span style="margin-left: auto; font-size: 13px; color: #55536a">0 / 1000</span>
+              <button class="btn" aria-label="Отправить"><svg width="14" height="14" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 3h5v1H0zM4 1h1v1H4zM5 2h1v1H5zM6 3h1v1H6zM5 4h1v1H5zM4 5h1v1H4z"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="h">
+      <div class="d" style="font-size: 11px">FileDropZone</div>
+      <div class="drop">
+        <svg width="28" height="32" viewBox="0 0 7 8" shape-rendering="crispEdges" fill="#1b1b2f" aria-hidden="true"><path d="M3 0h1v6H3zM2 1h3v1H2zM1 2h1v1H1zM5 2h1v1H5zM0 7h7v1H0z"/></svg>
+        <span style="font-size: 16px">Перетащите файлы сюда</span>
+        <button class="btn">Выбрать файлы</button>
+        <span style="font-size: 13px; color: #55536a">PNG, PDF до 10 МБ</span>
+      </div>
+      <div class="drop over"><span class="d" style="font-size: 9px; color: #1b3bb3">ОТПУСТИТЕ, ЧТОБЫ ЗАГРУЗИТЬ</span></div>
+
+      <div class="d" style="font-size: 11px; margin-top: 8px">FileUploadItem</div>
+      <div class="box">
+        <div class="file"><span class="fi" style="--c: #c42b2b"><span>PDF</span></span><div style="flex: 1; min-width: 0"><div style="display: flex; justify-content: space-between; font-size: 15px"><span>Дизайн-док.pdf</span><span style="color: #55536a; font-size: 13px">60%</span></div><div class="prog" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" aria-label="Загрузка Дизайн-док.pdf"><i style="width: 60%"></i></div></div><button class="ib" aria-label="Отменить загрузку Дизайн-док.pdf"><svg width="12" height="12" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h1v1H0zM1 1h1v1H1zM2 2h1v1H2zM3 3h1v1H3zM4 4h1v1H4zM5 5h1v1H5zM6 6h1v1H6zM6 0h1v1H6zM5 1h1v1H5zM4 2h1v1H4zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z"/></svg></button></div>
+        <div class="file"><span class="fi" style="--c: #2b4fd9"><span>PNG</span></span><div style="flex: 1"><div style="font-size: 15px">hero-sprite.png</div><div style="font-size: 13px; color: #18692f; display: flex; gap: 6px; align-items: center; margin-top: 4px"><svg width="12" height="9" viewBox="0 0 8 6" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M6 0h2v2H6zM5 2h2v1H5zM4 3h2v1H4zM0 2h2v1H0zM1 3h2v1H1zM2 4h3v1H2zM3 5h1v1H3z"/></svg>Загружено · 248 КБ</div></div><button class="ib" aria-label="Удалить hero-sprite.png"><svg width="12" height="12" viewBox="0 0 7 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h1v1H0zM1 1h1v1H1zM2 2h1v1H2zM3 3h1v1H3zM4 4h1v1H4zM5 5h1v1H5zM6 6h1v1H6zM6 0h1v1H6zM5 1h1v1H5zM4 2h1v1H4zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z"/></svg></button></div>
+        <div class="file"><span class="fi" style="--c: #55536a"><span>ZIP</span></span><div style="flex: 1"><div style="font-size: 15px">levels.zip</div><div style="font-size: 13px; color: #c42b2b; margin-top: 4px">Файл больше 10 МБ</div></div><button class="btn stroke" style="padding: 7px 9px; font-size: 7px">ПОВТОРИТЬ</button></div>
+      </div>
+
+      <div class="d" style="font-size: 11px; margin-top: 8px">PdfPreview</div>
+      <div class="box">
+        <div class="pdfbar"><button aria-label="Предыдущая страница"><svg width="6" height="12" viewBox="0 0 4 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M3 0h1v7H3zM2 1h1v5H2zM1 2h1v3H1zM0 3h1v1H0z"/></svg></button><span class="d" style="font-size: 8px" aria-live="polite">2 / 12</span><button aria-label="Следующая страница"><svg width="6" height="12" viewBox="0 0 4 7" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M0 0h1v7H0zM1 1h1v5H1zM2 2h1v3H2zM3 3h1v1H3z"/></svg></button><span style="flex: 1"></span><button aria-label="Уменьшить">−</button><span class="d" style="font-size: 8px">100%</span><button aria-label="Увеличить">+</button><button aria-label="Скачать"><svg width="12" height="14" viewBox="0 0 7 8" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><path d="M3 0h1v5H3zM1 3h1v1H1zM5 3h1v1H5zM2 4h1v1H2zM4 4h1v1H4zM0 7h7v1H0z"/></svg></button></div>
+        <div style="background: #cfc9b3; padding: 18px; display: flex; justify-content: center">
+          <div role="img" aria-label="Страница 2 из 12: Дизайн-док.pdf" style="width: 240px; height: 300px; background: #fffdf5; padding: 22px; box-sizing: border-box; box-shadow: 6px 6px 0 rgba(27,27,47,.3)"><div class="ln" style="width: 60%; height: 12px; background: #1b1b2f"></div><div class="ln"></div><div class="ln" style="width: 90%"></div><div class="ln" style="width: 75%"></div><div style="height: 70px; margin: 14px 0; background: repeating-conic-gradient(#2b4fd9 0 25%,#dfe6ff 0 50%) 0 0/8px 8px"></div><div class="ln"></div><div class="ln" style="width: 82%"></div><div class="ln" style="width: 50%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":1360}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

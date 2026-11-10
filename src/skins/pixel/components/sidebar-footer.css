@@ -1,0 +1,12 @@
+/* sidebar-footer: 8-битный вид поверх corporate/components/sidebar-footer.css — раскладка приходит оттуда, здесь только оформление.
+   Разделитель — пунктир из «пикселей» (как над профилем в макете). */
+:where([data-vl-skin~='pixel']) {
+  .vl-sidebar-footer {
+    background: var(--bg-white-0);
+  }
+  .vl-sidebar-footer__divider {
+    height: 0;
+    background: none;
+    border-top: var(--pixel-divider);
+  }
+}

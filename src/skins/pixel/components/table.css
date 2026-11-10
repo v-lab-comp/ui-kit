@@ -1,0 +1,175 @@
+/* table: 8-битный вид поверх corporate/components/table.css — раскладка приходит оттуда, здесь только оформление.
+   Рамка со ступенчатыми углами, тёмная шапка шрифтом Press Start 2P, пунктир между строками. */
+:where([data-vl-skin~='pixel']) {
+  .vl-table__root {
+    margin: var(--pixel-unit);
+    border: none;
+    background-color: var(--bg-white-0);
+    box-shadow: var(--pixel-frame);
+  }
+
+  /* Шапка: чернила, светлый пиксельный шрифт */
+  .vl-table__th,
+  .vl-table__th[data-sticky-left],
+  :where(.vl-table__root)[data-scroll] .vl-table__th[data-sticky-left] {
+    background-color: var(--bg-strong-950);
+  }
+
+  .vl-table__th {
+    padding: 12px 16px;
+    font-family: var(--font-display);
+    font-size: 8px;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    color: var(--text-white-0);
+  }
+
+  :where(.vl-table__th)[data-sortable] {
+    padding: 0;
+  }
+
+  :where(.vl-table__th)[data-drag-over] {
+    box-shadow: inset var(--pixel-unit) 0 0 0 var(--pixel-focus-color);
+  }
+
+  .vl-table__sort-btn {
+    padding: 12px 16px;
+    text-transform: inherit;
+  }
+
+  .vl-table__sort-btn:hover {
+    background-color: var(--bg-surface-800);
+  }
+
+  .vl-table__sort-btn:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: calc(-1 * var(--pixel-unit));
+  }
+
+  /* Стрелки сортировки: приглушённые светлые, активная — в полную силу */
+  .vl-table__sort-icon {
+    color: var(--text-white-0);
+    opacity: 0.5;
+  }
+
+  :where(.vl-table__sort-icon)[data-active] {
+    color: var(--text-white-0);
+    opacity: 1;
+  }
+
+  /* Строки: пунктирный разделитель вместо тонкой линии */
+  .vl-table__tr:not(:last-child) td {
+    border-bottom: var(--pixel-divider);
+    border-bottom-color: var(--stroke-soft-200);
+  }
+
+  .vl-table__td {
+    padding: 12px 16px;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0;
+    color: var(--text-strong-950);
+  }
+
+  :where(.vl-table__td)[data-strong] {
+    font-weight: 600;
+  }
+
+  :where(.vl-table__th, .vl-table__td)[data-sticky-left-last] {
+    box-shadow: inset calc(-1 * var(--pixel-unit)) 0 0 0 var(--stroke-soft-200);
+  }
+
+  :where(.vl-table__tr)[data-clickable]:hover,
+  :where(.vl-table__tr)[data-clickable]:hover
+    :where(.vl-table__th, .vl-table__td)[data-sticky-left] {
+    background: var(--bg-weak-50);
+  }
+
+  /* Выбранная строка — жёлтая подсветка, как в мокапе */
+  :where(.vl-table__tr)[data-active],
+  :where(.vl-table__tr)[data-active] :where(.vl-table__th, .vl-table__td)[data-sticky-left],
+  :where(.vl-table__tr)[data-active][data-clickable]:hover,
+  :where(.vl-table__tr)[data-active][data-clickable]:hover
+    :where(.vl-table__th, .vl-table__td)[data-sticky-left] {
+    background: var(--pixel-selected-row);
+  }
+
+  /* Пагинация */
+  .vl-table__pagination-info {
+    font-size: 15px;
+    letter-spacing: 0;
+  }
+
+  .vl-table__btn-group {
+    margin: var(--pixel-unit);
+    border: none;
+    background-color: var(--bg-white-0);
+    box-shadow: var(--pixel-frame);
+  }
+
+  .vl-table__page-btn,
+  .vl-table__ellipsis {
+    border-right: var(--pixel-unit-sm) solid var(--stroke-soft-200);
+  }
+
+  .vl-table__page-btn {
+    min-width: 32px;
+    font-family: var(--font-display);
+    font-size: 8px;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--text-strong-950);
+  }
+
+  .vl-table__page-btn:last-child {
+    border-right: none;
+  }
+
+  .vl-table__page-btn:hover:not(:disabled):not([data-active]) {
+    background: var(--pixel-dither-hover), var(--bg-white-0);
+  }
+
+  .vl-table__page-btn:active:not(:disabled) {
+    box-shadow: var(--pixel-bevel-pressed);
+  }
+
+  .vl-table__page-btn:focus-visible {
+    position: relative;
+    z-index: 1;
+    outline: var(--pixel-focus-outline);
+    outline-offset: 2px;
+  }
+
+  .vl-table__page-btn:disabled {
+    opacity: 1;
+    color: var(--text-disabled-300);
+    background: var(--pixel-dither);
+  }
+
+  :where(.vl-table__page-btn)[data-active] {
+    background-color: var(--primary-base);
+    color: var(--static-white);
+    font-weight: 400;
+    box-shadow: var(--pixel-bevel-sm);
+  }
+
+  .vl-table__compact-select {
+    margin: var(--pixel-unit);
+    border: none;
+    background-color: var(--bg-white-0);
+    box-shadow: var(--pixel-frame), var(--pixel-bevel-panel);
+    font-size: 15px;
+    color: var(--text-strong-950);
+  }
+
+  .vl-table__compact-select:hover {
+    background: var(--bg-weak-50);
+  }
+
+  .vl-table__compact-select:has(:focus-visible) {
+    outline: var(--pixel-focus-outline);
+    outline-offset: var(--pixel-focus-offset);
+  }
+}

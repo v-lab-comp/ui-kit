@@ -1,0 +1,210 @@
+/* tag: 8-битный вид поверх corporate/components/tag.css (макет: Data.dc.html, «Tag»).
+
+   Tiny5, тонкая ступенчатая рамка 2px снаружи (место под неё — margin), углы 0.
+   Цвета варианта собираются в локальные --_px-tag-*, а применяются одним правилом
+   `.vl-tag[data-variant]` — оно перекрывает и варианты corporate, и их neutral-исключения.
+
+   Без палитры:            с палитрой (data-color / customColor):
+   stroke — панель, чернила        stroke — панель, рамка и текст цвета палитры
+   gray   — серый фон, чернила     gray   — светлый фон палитры, рамка цвета палитры
+   filled — чернила, светлый текст filled — заливка палитры, чернильная рамка
+   light  — бумага, мягкая рамка   light  — фон палитры, рамка в цвет фона */
+:where([data-vl-skin~='pixel']) {
+  .vl-tag {
+    --pixel-unit: var(--pixel-unit-sm);
+    --_px-tag-bg: var(--bg-white-0);
+    --_px-tag-fg: var(--text-strong-950);
+    --_px-tag-hover-bg: var(--bg-soft-200);
+
+    /* Tiny5 мельче по очку, чем гротеск corporate, — кегль на 2px крупнее */
+    --_tag-fs: 14px;
+    --_tag-lh: 16px;
+    font-weight: 400;
+    letter-spacing: 0;
+    transition: none;
+  }
+
+  :where(.vl-tag)[data-size='small'] {
+    --_tag-fs: 13px;
+    --_tag-lh: 14px;
+  }
+  :where(.vl-tag)[data-size='medium'] {
+    --_tag-fs: 14px;
+    --_tag-lh: 16px;
+  }
+  :where(.vl-tag)[data-size='large'] {
+    --_tag-fs: 16px;
+    --_tag-lh: 18px;
+  }
+
+  /* Вес (0,2,0): тот же, что у neutral-исключений corporate, — файл идёт позже */
+  .vl-tag[data-variant] {
+    margin: var(--pixel-unit);
+    border: 0;
+    background: var(--_px-tag-bg);
+    color: var(--_px-tag-fg);
+    box-shadow: var(--pixel-frame-sm);
+  }
+
+  /* ---------- Без палитры ---------- */
+
+  :where(.vl-tag)[data-variant='stroke'] {
+    --_px-tag-bg: var(--bg-white-0);
+    --_px-tag-hover-bg: var(--bg-soft-200);
+  }
+
+  :where(.vl-tag)[data-variant='gray'] {
+    --_px-tag-bg: var(--bg-soft-200);
+    --_px-tag-hover-bg: var(--bg-sub-300);
+  }
+
+  :where(.vl-tag)[data-variant='filled'] {
+    --_px-tag-bg: var(--bg-strong-950);
+    --_px-tag-fg: var(--text-white-0);
+    --_px-tag-hover-bg: var(--bg-surface-800);
+  }
+
+  :where(.vl-tag)[data-variant='light'] {
+    --pixel-frame-color: var(--stroke-soft-200);
+    --_px-tag-bg: var(--bg-weak-50);
+    --_px-tag-hover-bg: var(--bg-soft-200);
+  }
+
+  /* ---------- С палитрой ---------- */
+
+  :where(.vl-tag)[data-variant='stroke']:where([data-color], [data-custom-color]) {
+    --pixel-frame-color: var(--pal-text, var(--pal-base));
+    --_px-tag-bg: var(--bg-white-0);
+    --_px-tag-fg: var(--pal-text, var(--pal-base));
+    --_px-tag-hover-bg: var(--pal-bg-hover);
+  }
+
+  :where(.vl-tag)[data-variant='gray']:where([data-color], [data-custom-color]) {
+    --pixel-frame-color: var(--pal-text, var(--pal-base));
+    --_px-tag-bg: var(--pal-bg-hover);
+    --_px-tag-fg: var(--pal-text, var(--pal-base));
+    --_px-tag-hover-bg: var(--pal-bg-active);
+  }
+
+  :where(.vl-tag)[data-variant='filled']:where([data-color], [data-custom-color]) {
+    --pixel-frame-color: var(--stroke-strong-950);
+    --_px-tag-bg: var(--pal-base);
+    --_px-tag-fg: var(--pal-on-base, var(--static-white));
+    --_px-tag-hover-bg: var(--pal-base);
+  }
+
+  /* neutral filled: corporate подменяет --pal-base на faded-base — текст светлый в обеих схемах */
+  :where(.vl-tag)[data-color='neutral'][data-variant='filled'] {
+    --_px-tag-fg: var(--text-white-0);
+  }
+
+  :where(.vl-tag)[data-variant='light']:where([data-color], [data-custom-color]) {
+    --pixel-frame-color: var(--pal-bg-active);
+    --_px-tag-bg: var(--pal-bg-active);
+    --_px-tag-fg: var(--pal-text, var(--pal-hover));
+    --_px-tag-hover-bg: var(--pal-bg-hover);
+  }
+
+  /* ---------- Наведение ----------
+     corporate меняет фон на hover у всех тегов, даже некликабельных, весом до (0,4,0).
+     Здесь — тот же вес, файл позже: фон некликабельного тега стоит на месте,
+     у кликабельного — меняется. */
+  .vl-tag[data-variant]:not([data-disabled]):hover {
+    background: var(--_px-tag-bg);
+    color: var(--_px-tag-fg);
+  }
+
+  .vl-tag[data-interactive]:not([data-disabled]):hover {
+    background: var(--_px-tag-hover-bg);
+  }
+
+  :where(.vl-tag)[data-variant='filled'][data-interactive]:not([data-disabled]):hover {
+    filter: brightness(1.15);
+  }
+
+  .vl-tag[data-interactive]:not([data-disabled]):active {
+    transform: var(--pixel-press-shift);
+    filter: none;
+  }
+
+  /* ---------- Фокус ---------- */
+
+  .vl-tag:focus-visible,
+  .vl-tag__main-hit:focus-visible,
+  .vl-tag__dismiss:focus-visible {
+    outline: var(--pixel-unit-sm) dashed var(--pixel-focus-color);
+    outline-offset: 4px;
+  }
+
+  .vl-tag__main-hit {
+    border-radius: 0;
+  }
+
+  /* ---------- Слоты ---------- */
+
+  .vl-tag svg {
+    shape-rendering: crispEdges;
+  }
+
+  /* Аватар в префиксе: без своей рамки и отступа — мелочь 16px в рамке тега и так видна */
+  .vl-tag__prefix .vl-avatar[class] {
+    margin: 0;
+    box-shadow: none;
+  }
+
+  :where(.vl-tag__prefix)[data-rounded] {
+    border-radius: 0;
+  }
+
+  :where(.vl-tag__prefix)[data-rounded] img {
+    image-rendering: pixelated;
+  }
+
+  .vl-tag__sublabel {
+    color: var(--_px-tag-fg);
+    opacity: 0.75;
+  }
+
+  .vl-tag__dismiss {
+    border-radius: 0;
+    opacity: 1;
+  }
+
+  /* Вес как у corporate: тот же селектор, файл позже */
+  .vl-tag__dismiss:hover {
+    background: var(--pixel-dither-hover);
+  }
+
+  :where(.vl-tag)[data-variant='stroke']:where([data-color], [data-custom-color])
+    .vl-tag__dismiss:hover,
+  :where(.vl-tag)[data-variant='gray']:where([data-color], [data-custom-color])
+    .vl-tag__dismiss:hover,
+  :where(.vl-tag)[data-variant='light']:where([data-color], [data-custom-color])
+    .vl-tag__dismiss:hover {
+    background: var(--pal-bg-active);
+  }
+
+  :where(.vl-tag)[data-variant='filled']:where([data-color], [data-custom-color])
+    .vl-tag__dismiss:hover,
+  :where(.vl-tag)[data-variant='filled']:where(:not([data-color], [data-custom-color]))
+    .vl-tag__dismiss:hover {
+    background: var(--pixel-bevel-dark);
+  }
+
+  .vl-tag__dismiss:active {
+    transform: var(--pixel-press-shift);
+  }
+
+  /* ---------- Disabled: дизеринг вместо полупрозрачности ---------- */
+
+  .vl-tag[data-disabled] {
+    --pixel-frame-color: var(--pixel-disabled-frame-color);
+    opacity: 1;
+    background: var(--pixel-dither);
+    color: var(--text-sub-600);
+  }
+
+  .vl-tag[data-disabled] .vl-tag__sublabel {
+    color: var(--text-sub-600);
+  }
+}

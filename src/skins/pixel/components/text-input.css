@@ -1,0 +1,7 @@
+/*
+ * text-input: 8-битный вид поверх corporate/components/text-input.css — раскладка приходит оттуда.
+ * Своих правил нет: оболочку (рамка, состояния, фокус) рисует input-field.css, «голое» поле
+ * внутри неё — base-input.css.
+ */
+:where([data-vl-skin~='pixel']) {
+}

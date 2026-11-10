@@ -1,0 +1,16 @@
+/* drawer-footer: 8-битный вид поверх corporate/components/drawer-footer.css — раскладка приходит оттуда, здесь только оформление.
+   Сплошная чернильная черта сверху (как в макете), зазоры шире на толщину рамок кнопок. */
+:where([data-vl-skin~='pixel']) {
+  .vl-drawer-footer {
+    gap: 16px;
+    border-top: var(--pixel-unit) solid var(--stroke-strong-950);
+    background: var(--bg-white-0);
+  }
+  .vl-drawer-footer__start {
+    font-size: 16px;
+  }
+  .vl-drawer-footer__actions,
+  .vl-drawer-footer__actions[data-full-width] {
+    gap: 16px;
+  }
+}

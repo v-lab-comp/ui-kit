@@ -83,6 +83,25 @@ Peer `react` / `react-dom` — `^18.2.0 || ^19.0.0` (было `>=17`). На Reac
 - `Button` без `type` теперь `type="button"`: кнопка в `<form>` больше не отправляет форму. Кнопкам отправки укажите `type="submit"`.
 - `Button`, `ToggleButton`, `SegmentedControl.Item` без `children` требуют `aria-label` или `aria-labelledby` (ошибка TypeScript). Свои обёртки, которые сами подставляют имя, типизируйте через `ButtonBaseProps` / `ToggleButtonBaseProps` / `SegmentedControlItemBaseProps`.
 
+### 8. `SelectInput`, `AsyncSearchSelect`, `LanguageSwitcher`
+
+```diff
+- <SelectInput options={o} onChange={(e) => setRole(e.target.value)} />
++ <SelectInput options={o} onChange={(value) => setRole(value)} />
+
+- <SelectInput multiple onChange={(e) => setTags(e.target.value)} />
++ <SelectInput multiple onChange={(values) => setTags(values)} />
+
+- <SelectInput variant="compact" triggerAriaLabel="Сортировка" … />
++ <SelectInput variant="compact" aria-label="Сортировка" … />
+```
+
+- `onChange(value, option)` (одиночный выбор; очистка — `('', null)`), `onChange(values, options)` (`multiple`). Повторный выбор того же значения `onChange` не вызывает.
+- `ref` — `HTMLButtonElement` (триггер), а не скрытый `<select>`.
+- `triggerAriaLabel` удалён → `aria-label` / `aria-labelledby`; обязательны у `compact`, `compact-label`, `inline` и у `AsyncSearchSelect` без `label`.
+- Форма: значение отправляется скрытыми `<input type="hidden" name>` (в `multiple` — по одному на значение, пустое значение — `''`).
+- Удалены неиспользуемые пропсы: `multipleDisplay` (`SelectInput`), `variant`, `searchThreshold`, `lazyLoadPageSize` (`AsyncSearchSelect`); у `PhoneInput` из типов убран `startBlock` (его занимает выбор страны).
+
 ## Sub-entry points для тяжёлых peer-зависимостей
 
 С версии `0.2.0` `DateInput`, `PhoneInput`, `PdfPreview` и RHF-адаптеры вынесены в отдельные entry points. Импорт из основного `@v-lab/ui-kit` не сработает.

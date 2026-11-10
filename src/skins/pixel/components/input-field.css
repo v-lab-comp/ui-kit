@@ -1,0 +1,180 @@
+/*
+ * input-field: 8-битный вид поверх corporate/components/input-field.css — раскладка приходит оттуда,
+ * здесь только оформление.
+ *
+ * Оболочка поля — «утопленная» панель со ступенчатой рамкой:
+ *   box-shadow: var(--pixel-frame), inset 4px 4px 0 <край>
+ * Рамка рисуется снаружи, поэтому у оболочки margin: var(--pixel-unit). Состояния меняют только
+ * --pixel-frame-color (составной --pixel-frame пересчитывается на элементе — см. tokens.css), а
+ * --base-input-focus-shadow(-error) переопределены на самой оболочке, поэтому правила фокуса и
+ * ошибки corporate рисуют ту же рамку нужного цвета, без мягких колец.
+ *
+ * Порядок правил состояний важен (вес у всех (0,2,0)): заполнено → фокус / открытый список →
+ * ошибка → отключено. Позднее правило побеждает.
+ */
+:where([data-vl-skin~='pixel']) {
+  /* ── Подпись ───────────────────────────────────────────────────────────── */
+
+  .vl-input-field__label-row {
+    /* Зазор до рамки: 4px gap поля + 6px; рамка занимает margin оболочки */
+    margin-bottom: 6px;
+  }
+
+  .vl-input-field__label {
+    gap: 6px;
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0;
+  }
+
+  .vl-input-field__label[data-disabled] {
+    color: var(--text-sub-600);
+  }
+
+  /* Звёздочка на строке подписи, без надстрочного смещения */
+  .vl-input-field__required {
+    margin-left: 0;
+    color: var(--input-required-color, var(--pixel-input-error));
+    vertical-align: baseline;
+  }
+
+  .vl-input-field__optional {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1;
+    color: var(--text-sub-600);
+  }
+
+  .vl-input-field__label-tooltip {
+    color: var(--icon-sub-600);
+  }
+
+  /* ── Оболочка ──────────────────────────────────────────────────────────── */
+
+  .vl-input-field__wrapper {
+    --_pi-inset: var(--pixel-input-inset);
+    --_pi-shadow: var(--pixel-frame), inset var(--pixel-unit) var(--pixel-unit) 0 var(--_pi-inset);
+    /* Правила фокуса и ошибки corporate берут эти переменные — подменяем их той же рамкой */
+    --base-input-focus-shadow: var(--_pi-shadow);
+    --base-input-focus-shadow-error: var(--_pi-shadow);
+
+    margin: var(--pixel-unit);
+    border-radius: 0;
+    background-color: var(--bg-white-0);
+    box-shadow: var(--_pi-shadow);
+    transition: none;
+  }
+
+  /* Наведение: фон не меняется (как у corporate), темнеет «утопленный» край */
+  .vl-input-field__wrapper:hover:not([data-disabled]):not(:focus-within) {
+    --_pi-inset: var(--pixel-input-inset-hover);
+    background-color: var(--bg-white-0);
+  }
+
+  /* Заполнено (data-completed): зелёная рамка или свой цвет из пропа completedColor */
+  .vl-input-field__wrapper[data-completed] {
+    --pixel-frame-color: var(--input-completed-border, var(--pixel-input-done));
+  }
+
+  /* Фокус и открытый выпадающий список — рамка цвета primary */
+  .vl-input-field__wrapper:focus-within,
+  .vl-input-field__wrapper:has([aria-expanded='true']) {
+    --pixel-frame-color: var(--input-focus-border-color, var(--pixel-input-accent));
+  }
+
+  .vl-input-field__wrapper[data-error] {
+    --pixel-frame-color: var(--pixel-input-error);
+  }
+
+  /* Отключено: дизеринг вместо заливки, серая рамка, без «утопленного» края */
+  .vl-input-field__wrapper[data-disabled] {
+    --pixel-frame-color: var(--pixel-disabled-frame-color);
+    --_pi-shadow: var(--pixel-frame);
+    background: var(--pixel-dither);
+  }
+
+  /* Фокус с клавиатуры — жёлтый пунктир вокруг всей оболочки (текстовые поля получают
+     :focus-visible и при клике — это штатное поведение браузера) */
+  .vl-input-field__wrapper:has(:focus-visible):not([data-disabled]) {
+    outline: var(--pixel-focus-outline);
+    outline-offset: var(--pixel-focus-offset);
+  }
+
+  /* small — кегль 14px, как в макете; переменную наследуют поле и триггер списка */
+  .vl-input-field__wrapper[data-size='small'] {
+    --base-input-font-size: 14px;
+  }
+
+  /* ── Блоки startBlock / endBlock: «ячейка» с фоном и толстым разделителем ─── */
+
+  .vl-input-field__block-start,
+  .vl-input-field__block-end {
+    background-color: var(--bg-soft-200);
+    color: var(--text-strong-950);
+    transition: none;
+  }
+
+  /* Разделитель — того же цвета, что рамка (следует за фокусом и ошибкой) */
+  .vl-input-field__block-start {
+    border-right: var(--pixel-unit) solid var(--pixel-frame-color);
+  }
+
+  .vl-input-field__block-end {
+    border-left: var(--pixel-unit) solid var(--pixel-frame-color);
+  }
+
+  /* corporate красит hover блока примитивом --neutral-100 — гасим, фон остаётся прежним */
+  .vl-input-field__wrapper:not([data-disabled]) .vl-input-field__block-start:hover,
+  .vl-input-field__wrapper:not([data-disabled]) .vl-input-field__block-end:hover {
+    background-color: var(--bg-soft-200);
+  }
+
+  /* Интерактивный блок (селект протокола / страны, кнопка) — шахматка при наведении */
+  .vl-input-field__wrapper:not([data-disabled]) .vl-input-field__block-start:has(button):hover,
+  .vl-input-field__wrapper:not([data-disabled]) .vl-input-field__block-end:has(button):hover {
+    background: var(--pixel-dither-hover), var(--bg-soft-200);
+  }
+
+  /* Открыт список в блоке (страна, протокол) — блок «нажат»: фон темнее */
+  .vl-input-field__wrapper:not([data-disabled]) .vl-input-field__block-start:has([data-open]),
+  .vl-input-field__wrapper:not([data-disabled])
+    .vl-input-field__block-start:has([data-open]):hover {
+    background: var(--bg-sub-300);
+  }
+
+  .vl-input-field__wrapper[data-disabled] .vl-input-field__block-start,
+  .vl-input-field__wrapper[data-disabled] .vl-input-field__block-end {
+    background: transparent;
+    color: var(--text-sub-600);
+  }
+
+  /* ── Префикс / суффикс ─────────────────────────────────────────────────── */
+
+  .vl-input-field__addon-start,
+  .vl-input-field__addon-end {
+    color: var(--icon-sub-600);
+  }
+
+  /* ── Подсказка / ошибка ────────────────────────────────────────────────── */
+
+  .vl-input-field__hint-row {
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .vl-input-field__hint-icon {
+    color: var(--icon-sub-600);
+  }
+
+  .vl-input-field__hint-text {
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  .vl-input-field__hint-row[data-error] .vl-input-field__hint-icon,
+  .vl-input-field__hint-row[data-error] .vl-input-field__hint-text {
+    color: var(--pixel-input-error);
+  }
+}

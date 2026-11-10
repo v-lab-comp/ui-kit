@@ -1,0 +1,184 @@
+/* comments-section: 8-битный вид поверх corporate/components/comments-section.css — раскладка приходит оттуда, здесь только оформление.
+   Комментарий — панель со ступенчатой рамкой; разделитель дня — пунктир с подписью пиксельным
+   шрифтом; в меню подсвеченный пункт получает RPG-курсор ▶. */
+:where([data-vl-skin~='pixel']) {
+  /* Скелетон: дизеринг, «мигающий» ступенями вместо плавного блика */
+  .vl-comments-section__skeleton-card {
+    margin: var(--pixel-unit);
+    background: var(--pixel-dither);
+    box-shadow: var(--pixel-frame-disabled);
+    animation: vl-comments-section-pixel-blink 1s steps(2, jump-none) infinite;
+  }
+
+  .vl-comments-section__retry-button,
+  .vl-comments-section__show-more-button,
+  .vl-comments-section__comment-html a {
+    color: var(--primary-dark);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+
+  .vl-comments-section__retry-button:hover,
+  .vl-comments-section__show-more-button:hover {
+    opacity: 1;
+    color: var(--primary-darker);
+  }
+
+  .vl-comments-section__show-more-button {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  :where(
+    .vl-comments-section__retry-button,
+    .vl-comments-section__show-more-button,
+    .vl-comments-section__menu-trigger,
+    .vl-comments-section__menu-item
+  ):focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: 2px;
+  }
+
+  /* Разделитель дня: пунктирные линии слева и справа от подписи */
+  .vl-comments-section__day-divider-row {
+    align-items: center;
+    gap: 12px;
+  }
+
+  .vl-comments-section__day-divider-row::before,
+  .vl-comments-section__day-divider-row::after {
+    content: '';
+    flex: 1;
+    height: var(--pixel-unit);
+    background: repeating-linear-gradient(
+      90deg,
+      var(--pixel-divider-color) 0 6px,
+      transparent 6px 10px
+    );
+  }
+
+  .vl-comments-section__day-chip {
+    padding: 4px 0;
+    background: transparent;
+    font-family: var(--font-display);
+    font-size: 7px;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    color: var(--text-sub-600);
+  }
+
+  .vl-comments-section__comment-card {
+    margin: var(--pixel-unit);
+    padding: 12px 14px;
+    background: var(--bg-white-0);
+    box-shadow: var(--pixel-frame);
+  }
+
+  :where(.vl-comments-section__comment-card)[data-deleted] {
+    opacity: 1;
+    background: var(--pixel-dither);
+    box-shadow: var(--pixel-frame-disabled);
+  }
+
+  .vl-comments-section__author-name {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .vl-comments-section__comment-html {
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: 0;
+    color: var(--text-strong-950);
+  }
+
+  .vl-comments-section__time-meta {
+    font-size: 13px;
+    letter-spacing: 0;
+  }
+
+  .vl-comments-section__edited-mark,
+  .vl-comments-section__deleted-placeholder {
+    color: var(--text-sub-600);
+  }
+
+  .vl-comments-section__deleted-mark {
+    color: var(--error-dark);
+  }
+
+  /* Кнопка «⋯»: hover — дизеринг, открыта — утоплена */
+  .vl-comments-section__menu-trigger {
+    color: var(--icon-sub-600);
+  }
+
+  .vl-comments-section__menu-trigger:hover:not(:disabled) {
+    background: var(--pixel-dither-hover);
+    color: var(--icon-strong-950);
+  }
+
+  .vl-comments-section__menu-trigger[aria-expanded='true'] {
+    background: var(--bg-soft-200);
+    color: var(--icon-strong-950);
+    box-shadow: inset 3px 3px 0 var(--pixel-divider-color);
+  }
+
+  .vl-comments-section__menu-trigger:disabled {
+    opacity: 1;
+    color: var(--icon-disabled-300);
+  }
+
+  .vl-comments-section__menu-list {
+    padding: 6px 0;
+  }
+
+  .vl-comments-section__menu-item {
+    position: relative;
+    padding: 8px 14px 8px 28px;
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+
+  .vl-comments-section__menu-item:hover,
+  .vl-comments-section__menu-item:focus-visible {
+    background: var(--primary-base);
+    color: var(--static-white);
+  }
+
+  :where(.vl-comments-section__menu-item)[data-danger] {
+    color: var(--error-dark);
+  }
+
+  :where(.vl-comments-section__menu-item)[data-danger]:hover,
+  :where(.vl-comments-section__menu-item)[data-danger]:focus-visible {
+    background: var(--error-base);
+    color: var(--static-white);
+  }
+
+  /* RPG-курсор ▶ на подсвеченном пункте */
+  .vl-comments-section__menu-item:hover::before,
+  .vl-comments-section__menu-item:focus-visible::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    width: var(--pixel-cursor-width);
+    height: var(--pixel-cursor-height);
+    margin-top: calc(var(--pixel-cursor-height) / -2);
+    background: currentColor;
+    clip-path: var(--pixel-cursor-shape);
+  }
+}
+
+@keyframes vl-comments-section-pixel-blink {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.55;
+  }
+}

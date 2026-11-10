@@ -1,0 +1,80 @@
+/* toggle-button: 8-битный вид поверх corporate/components/toggle-button.css (макет: Buttons.dc.html).
+
+   Выключена — «панельная» кнопка с чернильной рамкой (как Button stroke neutral);
+   включена — синяя и «вдавлена»: сдвиг на 2px и перевёрнутый объём. */
+:where([data-vl-skin~='pixel']) {
+  .vl-toggle-button {
+    padding: 10px 14px;
+    gap: 8px;
+    margin: var(--pixel-unit);
+    border: 0;
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0;
+    background-color: var(--bg-white-0);
+    color: var(--text-strong-950);
+    box-shadow: var(--pixel-frame), var(--pixel-bevel-panel);
+    transition: none;
+  }
+
+  /* Вес (0,2,0) — выше сброса margin в ui-kit-root (0,1,1) */
+  .vl-toggle-button[data-state] {
+    margin: var(--pixel-unit);
+  }
+
+  :where(.vl-toggle-button)[data-size='small'] {
+    padding: 8px 12px;
+    gap: 6px;
+    font-size: 9px;
+  }
+
+  :where(.vl-toggle-button)[data-size='x-small'] {
+    padding: 6px 10px;
+    gap: 6px;
+    font-size: 8px;
+  }
+
+  :where(.vl-toggle-button)[data-size='2x-small'] {
+    padding: 4px 7px;
+    gap: 4px;
+    font-size: 8px;
+  }
+
+  .vl-toggle-button svg {
+    flex-shrink: 0;
+    shape-rendering: crispEdges;
+  }
+
+  .vl-toggle-button:hover:not(:disabled) {
+    background: var(--pixel-dither-hover), var(--bg-white-0);
+  }
+
+  .vl-toggle-button:active:not(:disabled) {
+    background: var(--bg-white-0);
+    transform: var(--pixel-press-shift);
+    box-shadow: var(--pixel-frame), var(--pixel-bevel-pressed);
+  }
+
+  /* Включена: заливка primary, вдавлена */
+  .vl-toggle-button[data-state='on'],
+  .vl-toggle-button[data-state='on']:hover:not(:disabled) {
+    background: var(--primary-base);
+    color: var(--static-white);
+    transform: var(--pixel-press-shift);
+    box-shadow: var(--pixel-frame), var(--pixel-bevel-pressed);
+  }
+
+  .vl-toggle-button:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: var(--pixel-focus-offset);
+  }
+
+  .vl-toggle-button:disabled {
+    background: var(--pixel-dither);
+    color: var(--text-sub-600);
+    box-shadow: var(--pixel-frame-disabled);
+    transform: none;
+  }
+}
