@@ -1,4 +1,4 @@
-import { useRef, useState, type ChangeEvent } from 'react'
+import { useRef, useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { RiFilter3Line, RiUserLine } from '@remixicon/react'
 import { Button } from '@/components/Button'
@@ -185,7 +185,7 @@ export const Playground: Story = {
                 placeholder="Выберите роль"
                 options={ROLE_OPTIONS}
                 value={role}
-                onChange={(e: ChangeEvent<HTMLSelectElement>) => setRole(e.target.value)}
+                onChange={(next) => setRole(next)}
               />
             </div>
           </DrawerBody>
@@ -264,13 +264,13 @@ export const EditRecord: Story = {
                 label="Отдел"
                 options={DEPARTMENT_OPTIONS}
                 value={dept}
-                onChange={(e: ChangeEvent<HTMLSelectElement>) => setDept(e.target.value)}
+                onChange={(next) => setDept(next)}
               />
               <SelectInput
                 label="Статус"
                 options={STATUS_OPTIONS}
                 value={status}
-                onChange={(e: ChangeEvent<HTMLSelectElement>) => setStatus(e.target.value)}
+                onChange={(next) => setStatus(next)}
               />
             </div>
           </DrawerBody>
@@ -350,14 +350,14 @@ export const Filters: Story = {
                 placeholder="Все отделы"
                 options={DEPARTMENT_OPTIONS}
                 value={dept}
-                onChange={(e: ChangeEvent<HTMLSelectElement>) => setDept(e.target.value)}
+                onChange={(next) => setDept(next)}
               />
               <SelectInput
                 label="Статус"
                 placeholder="Любой статус"
                 options={STATUS_OPTIONS}
                 value={status}
-                onChange={(e: ChangeEvent<HTMLSelectElement>) => setStatus(e.target.value)}
+                onChange={(next) => setStatus(next)}
               />
               <CheckboxField
                 label="Только активные"
@@ -465,7 +465,7 @@ export const Controlled: Story = {
                 placeholder="Выберите отдел"
                 options={DEPARTMENT_OPTIONS}
                 value=""
-                onChange={(_e: ChangeEvent<HTMLSelectElement>) => {}}
+                onChange={() => {}}
               />
             </div>
           </DrawerBody>

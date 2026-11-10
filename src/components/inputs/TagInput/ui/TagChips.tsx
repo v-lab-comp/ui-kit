@@ -3,11 +3,8 @@ import type { TagVariant } from '@/components/Tag'
 import { chipKey } from '../model'
 import { contractPart } from '@/theme/contract'
 import { tagInputContract } from '@/theme/contracts/tag-input'
-import type { TagInputProps } from '../types'
-import type { TagInputTagValue } from '../types'
+import type { TagInputProps, TagInputTagValue } from '../types'
 import { tagLabel } from '../types'
-
-type RenderTagFn = NonNullable<TagInputProps['renderTag']>
 
 export type TagChipsProps = {
   visibleTags: TagInputTagValue[]
@@ -15,7 +12,7 @@ export type TagChipsProps = {
   tagVariant: TagVariant
   disabled: boolean
   removeTagLabel: (tag: TagInputTagValue) => string
-  renderTag: RenderTagFn | undefined
+  renderTag: TagInputProps['renderTag']
   maxTagCountOverflow: TagInputProps['maxTagCountOverflow']
   onRemoveAt: (index: number) => void
 }
@@ -32,8 +29,10 @@ export function TagChips({
 }: TagChipsProps) {
   return (
     <>
-      {visibleTags.map((tag, index) =>
-        renderTag ? (
+      {visibleTags.map((tag, index) => {
+        // Имя кнопки удаления содержит текст тега: «Remove React», а не безликое «Remove»
+        const removeLabel = removeTagLabel(tag)
+        return renderTag ? (
           <span
             key={chipKey(tag, index)}
             className={contractPart(tagInputContract, 'render-tag-wrap')}
@@ -41,7 +40,8 @@ export function TagChips({
             {renderTag({
               tag,
               index,
-              disabled: !!disabled,
+              disabled,
+              removeLabel,
               onRemove: disabled ? () => {} : () => onRemoveAt(index),
             })}
           </span>
@@ -51,12 +51,12 @@ export function TagChips({
             variant={tagVariant}
             disabled={disabled}
             onDismiss={disabled ? undefined : () => onRemoveAt(index)}
-            dismissLabel={removeTagLabel(tag)}
+            dismissLabel={removeLabel}
           >
             {tagLabel(tag)}
           </Tag>
         )
-      )}
+      })}
       {hiddenTagCount > 0 ? (
         <span className={contractPart(tagInputContract, 'more-tags')}>
           {maxTagCountOverflow ? maxTagCountOverflow(hiddenTagCount) : `+${hiddenTagCount}`}

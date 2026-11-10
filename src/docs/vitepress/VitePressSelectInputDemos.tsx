@@ -1,6 +1,6 @@
-import { useState, type ChangeEvent } from 'react'
+import { useState } from 'react'
 import { SelectInput } from '@/components/inputs'
-import type { SelectInputMultipleChangeEvent, SelectOptionGroup } from '@/components/inputs'
+import type { SelectOptionGroup } from '@/components/inputs'
 
 const OPTIONS = [
   { value: 'uz', label: 'Узбекистан' },
@@ -52,7 +52,7 @@ export function SelectInputDocsDemo() {
         hint="Подсказка под полем; выпадающий список может выходить за рамку превью — прокрутите блок при необходимости."
         options={OPTIONS}
         value={value}
-        onChange={(e: ChangeEvent<HTMLSelectElement>) => setValue(e.target.value)}
+        onChange={(next) => setValue(next)}
       />
     </div>
   )
@@ -75,7 +75,7 @@ export function SelectInputGroupedDocsDemo() {
         hint="Список с секциями через **`groups`** (как SelectGroup в shadcn/ui)."
         groups={GROUPED_DEMO}
         value={value}
-        onChange={(e: ChangeEvent<HTMLSelectElement>) => setValue(e.target.value)}
+        onChange={(next) => setValue(next)}
       />
     </div>
   )
@@ -99,7 +99,7 @@ export function SelectInputMultipleDocsDemo() {
         hint="Подсказка под полем (скрывается, если задан error)."
         options={MULTI_FIELD_OPTIONS}
         value={value}
-        onChange={(e: SelectInputMultipleChangeEvent) => setValue(e.target.value)}
+        onChange={(next) => setValue(next)}
         searchPlaceholder="Поиск поля"
         multipleSummaryLabel="Изменить выбор"
       />

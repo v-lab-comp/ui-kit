@@ -1,10 +1,13 @@
-import type { ReactNode, SelectHTMLAttributes } from 'react'
-import type { InputFieldProps } from '../base/InputField'
+import type { ButtonHTMLAttributes, ReactNode } from 'react'
+import type { InputFieldOwnProps } from '../base/InputField'
 import type { BaseInputSize } from '../base/BaseInput'
 
 // ── Тег варианта отображения ───────────────────────────────────────────────
 
 export type SelectVariant = 'full' | 'compact' | 'compact-label' | 'inline'
+
+/** Положение выпадающего списка относительно поля */
+export type SelectPlacement = 'bottom' | 'top' | 'left' | 'right'
 
 // ── Данные списка: опции, группы, источник для пропсов ─────────────────────
 
@@ -38,38 +41,111 @@ export type SelectInputOptionsProp<O extends SelectOption = SelectOption> =
   | { options: O[]; groups?: undefined }
   | { groups: SelectOptionGroup<O>[]; options?: undefined }
 
-// ── Режим `multiple`: события и отображение триггера ───────────────────────
+// ── Значение и onChange ────────────────────────────────────────────────────
 
-/** Событие смены значения при `mode="multiple"` (как у Ant Design Select). */
-export type SelectInputMultipleChangeEvent = {
-  target: {
-    name?: string
-    value: string[]
-  }
+/** Одиночный выбор: значение — строка, `''` — ничего не выбрано. */
+export type SelectInputSingleValueProps = {
+  mode?: undefined
+  value?: string
+  defaultValue?: string
+  /**
+   * Новое значение и выбранная опция (`null` — значение очищено).
+   * Не вызывается при повторном выборе уже выбранной опции.
+   */
+  onChange?: (value: string, option: SelectOption | null) => void
+  multipleSummaryLabel?: undefined
+  multipleSummaryRender?: undefined
 }
 
-export type SelectInputMultipleDisplay = 'summary' | 'tags'
+/** Аргумент **`multipleSummaryRender`** */
+export type SelectInputMultipleSummaryContext = {
+  count: number
+  selectedValues: string[]
+  selectedOptions: SelectOption[]
+}
 
-// ── Общие пропсы всех вариантов (кроме `variant` и options/groups) ─────────
+/** **`mode="multiple"`**: значение — массив `value` выбранных опций. */
+export type SelectInputMultipleValueProps = {
+  mode: 'multiple'
+  value?: string[]
+  defaultValue?: string[]
+  /** Новый набор значений и соответствующие опции (в порядке выбора) */
+  onChange?: (value: string[], options: SelectOption[]) => void
+  /**
+   * Префикс сводки при непустом выборе; по умолчанию к нему добавляется **` (N)`**, если нет **`multipleSummaryRender`**.
+   */
+  multipleSummaryLabel?: string
+  /** Полный контроль текста/разметки триггера при непустом выборе */
+  multipleSummaryRender?: (ctx: SelectInputMultipleSummaryContext) => ReactNode
+}
 
-type SelectInputCommonProps = Omit<
-  SelectHTMLAttributes<HTMLSelectElement>,
-  'size' | 'prefix' | 'labelTooltip'
-> & {
+// ── Доступное имя триггера ─────────────────────────────────────────────────
+
+/**
+ * Обязательное доступное имя для триггера без видимой подписи
+ * (`compact` / `compact-label` / `inline`): `aria-label` или `aria-labelledby`.
+ */
+export type SelectAccessibleName =
+  | { 'aria-label': string; 'aria-labelledby'?: string }
+  | { 'aria-labelledby': string; 'aria-label'?: string }
+
+/** У `full` имя даёт `label`; `aria-label` / `aria-labelledby` — по желанию. */
+export type SelectOptionalAccessibleName = {
+  'aria-label'?: string
+  'aria-labelledby'?: string
+}
+
+// ── Атрибуты кнопки-триггера ───────────────────────────────────────────────
+
+/**
+ * Стандартные атрибуты, которые уходят на кнопку-триггер (ref указывает на неё):
+ * обработчики (`onFocus`, `onBlur`, `onKeyDown`…), `aria-describedby`, `title`, `autoFocus`, `data-*`.
+ * Роль, `aria-expanded` / `aria-controls` / `aria-activedescendant` и т.п. ставит компонент.
+ */
+export type SelectTriggerNativeProps = Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  | 'type'
+  | 'role'
+  | 'value'
+  | 'defaultValue'
+  | 'onChange'
+  | 'prefix'
+  | 'children'
+  | 'className'
+  | 'style'
+  | 'id'
+  | 'name'
+  | 'form'
+  | 'formAction'
+  | 'formEncType'
+  | 'formMethod'
+  | 'formNoValidate'
+  | 'formTarget'
+  | 'disabled'
+  | 'aria-label'
+  | 'aria-labelledby'
+  | 'aria-expanded'
+  | 'aria-haspopup'
+  | 'aria-controls'
+  | 'aria-activedescendant'
+  | 'aria-autocomplete'
+>
+
+// ── Общие пропсы всех вариантов ────────────────────────────────────────────
+
+type SelectInputCommonProps = SelectTriggerNativeProps & {
   /** big 40px | medium 36px | small 32px */
   size?: BaseInputSize
   /** Текст для пустого значения (placeholder) */
   placeholder?: string
   /** Иконка/элемент слева (фоллбэк, если у выбранной опции нет icon) */
   prefix?: ReactNode
-  /** Тултип/иконка рядом с label (только для variant full) */
-  labelTooltip?: ReactNode
   /**
    * Порог числа опций для показа поиска в выпадающем списке (по умолчанию 20).
    * Считается по плоскому списку (после разворота `groups`). В `mode="multiple"` поиск при >1 опции.
    */
   searchThreshold?: number
-  /** Placeholder для поля поиска */
+  /** Placeholder (и доступное имя) поля поиска */
   searchPlaceholder?: string
   /** Размер страницы для lazy loading в клиентском списке (по умолчанию 50) */
   lazyLoadPageSize?: number
@@ -77,7 +153,7 @@ type SelectInputCommonProps = Omit<
    * Положение выпадающего списка относительно инпута.
    * `bottom` — вниз, по центру (по умолчанию).
    */
-  placement?: 'bottom' | 'top' | 'left' | 'right'
+  placement?: SelectPlacement
   /** Фиксированная ширина выпадающего списка (px). Если не задано — width: max-content */
   dropdownWidth?: number
   /**
@@ -93,98 +169,112 @@ type SelectInputCommonProps = Omit<
   /** Перенос длинных подписей опций в несколько строк вместо одной строки с ellipsis. */
   optionTextWrap?: boolean
   /**
-   * `aria-label` для кнопки-триггера (compact / compact-label / inline и combobox в full).
-   * Нужен для шапки и тулбаров без видимого текстового лейбла.
-   */
-  triggerAriaLabel?: string
-  /**
    * Рамка триггера в акцентном primary (full — через InputField, compact — рамка кнопки).
    * Не применяется при `error` или `disabled`.
    */
   completed?: boolean
+  /** Цвет рамки при `completed`: коротко **`"success"`**, **`"error"`**, **`"warning"`**, **`"primary"`** и др. (→ `var(--*-base)`), либо hex / `rgb()` / `var(--…)`. */
+  completedColor?: string
+  /** Сообщение об ошибке. У `full` — текст под полем, у компактных вариантов — красная рамка и `aria-invalid`. */
+  error?: string
+  disabled?: boolean
+  /** Имя поля формы: значение уходит скрытым `<input type="hidden">` (в `multiple` — по одному на значение) */
+  name?: string
+  /** id формы для скрытых полей, если селект вне `<form>` */
+  form?: string
+  /** id кнопки-триггера (у `full` — ещё и связка с `label`) */
+  id?: string
+  /** Класс корня: у `full` — InputField, у компактных — контейнер `vl-select-input` */
+  className?: string
 }
 
+/** Пропсы InputField, которые есть только у `variant="full"` */
+type SelectInputFieldOnlyProps = Pick<
+  InputFieldOwnProps,
+  | 'label'
+  | 'required'
+  | 'requiredMarker'
+  | 'optional'
+  | 'labelTooltip'
+  | 'hint'
+  | 'suffix'
+  | 'startBlock'
+  | 'endBlock'
+  | 'wrapperClassName'
+  | 'wrapperStyle'
+>
+
+/** Ключи, недоступные варианту: объявлены как `undefined`, чтобы union разбирался без приведений */
+type NotApplicable<T> = { [K in keyof T]?: undefined }
+
 /**
- * База поля как у `SelectInput` variant **full**: InputField + выпадашка/триггер, **без** `options` / `groups`.
- * **AsyncSearchSelect** расширяет это тип у себя.
+ * База поля как у `SelectInput` variant **full**: InputField + выпадашка/триггер, **без** значения
+ * и `options` / `groups`. **AsyncSearchSelect** расширяет этот тип у себя.
  */
-export type SelectInputFullFieldProps = Omit<
-  InputFieldProps,
-  'children' | 'prefix' | 'labelTooltip'
-> &
-  SelectInputCommonProps & {
+export type SelectInputFullFieldProps = SelectInputCommonProps &
+  SelectInputFieldOnlyProps &
+  SelectOptionalAccessibleName & {
     variant?: 'full'
   }
 
 // ── Варианты: полный инпут (single и multiple) ─────────────────────────────
 
 /** `variant="full"` (по умолчанию), одиночный выбор, статический список. */
-type SelectInputFullSingleProps = SelectInputFullFieldProps & SelectInputOptionsProp
+type SelectInputFullSingleProps = SelectInputFullFieldProps &
+  SelectInputSingleValueProps &
+  SelectInputOptionsProp
 
 /**
  * `variant="full"` и **`mode="multiple"`**: чекбоксы в списке, сводка в триггере.
  * Компактные варианты не поддерживаются.
  */
-export type FullVariantMultipleProps = Omit<
-  SelectInputFullSingleProps,
-  'value' | 'defaultValue' | 'onChange'
-> & {
-  mode: 'multiple'
-  value?: string[]
-  defaultValue?: string[]
-  onChange?: (event: SelectInputMultipleChangeEvent) => void
-  /**
-   * Префикс сводки при непустом выборе; по умолчанию к нему добавляется **` (N)`**, если нет **`multipleSummaryRender`**.
-   */
-  multipleSummaryLabel?: string
-  /** Полный контроль текста/разметки триггера при непустом выборе */
-  multipleSummaryRender?: (ctx: {
-    count: number
-    selectedValues: string[]
-    selectedOptions: SelectOption[]
-  }) => ReactNode
-  /**
-   * Отображение выбранного в триггере: **`summary`** — текст «Label (N)» (по умолчанию);
-   * **`tags`** — чипы (пока отображаются как **`summary`**).
-   */
-  multipleDisplay?: SelectInputMultipleDisplay
-}
+export type FullVariantMultipleProps = SelectInputFullFieldProps &
+  SelectInputMultipleValueProps &
+  SelectInputOptionsProp
 
-// ── Варианты: компактные (один `error`, без полного InputField) ─────────────
+// ── Варианты: компактные (без InputField, имя обязательно) ─────────────────
 
-type SelectInputCompactChromeProps = {
-  /** Сообщение об ошибке для компактных вариантов (рамка/стиль как у поля с ошибкой). */
-  error?: string
-  /** Цвет рамки при `completed`: коротко **`"success"`**, **`"error"`**, **`"warning"`**, **`"primary"`** и др. (→ `var(--*-base)`), либо hex / `rgb()` / `var(--…)`. Для `variant="full"` см. **`InputFieldProps.completedColor`**. */
-  completedColor?: string
-}
+type SelectInputCompactBaseProps<
+  V extends SelectVariant,
+  O extends SelectOption,
+> = SelectInputCommonProps &
+  NotApplicable<SelectInputFieldOnlyProps> &
+  SelectAccessibleName &
+  SelectInputSingleValueProps &
+  SelectInputOptionsProp<O> & {
+    variant: V
+  }
 
-type SelectInputCompactProps = SelectInputCommonProps &
-  SelectInputCompactChromeProps & {
-    variant: 'compact'
-  } & SelectInputOptionsProp
+type SelectInputCompactProps = SelectInputCompactBaseProps<'compact', SelectOption>
 
-type SelectInputCompactLabelProps = SelectInputCommonProps &
-  SelectInputCompactChromeProps & {
-    variant: 'compact-label'
-  } & SelectInputOptionsProp<SelectOptionWithShortLabel>
+type SelectInputCompactLabelProps = SelectInputCompactBaseProps<
+  'compact-label',
+  SelectOptionWithShortLabel
+>
 
-type SelectInputInlineProps = SelectInputCommonProps &
-  SelectInputCompactChromeProps & {
-    variant: 'inline'
-  } & SelectInputOptionsProp<SelectOptionWithShortLabel>
+type SelectInputInlineProps = SelectInputCompactBaseProps<'inline', SelectOptionWithShortLabel>
 
 // ── Публичный тип компонента ───────────────────────────────────────────────
 
-type SelectInputPropsUnion =
+export type SelectInputProps =
   | SelectInputFullSingleProps
   | FullVariantMultipleProps
   | SelectInputCompactProps
   | SelectInputCompactLabelProps
   | SelectInputInlineProps
 
-/** Override `prefix` / `labelTooltip` в `ReactNode`, чтобы JSX и строка проходили без приведения типов. */
-export type SelectInputProps = SelectInputPropsUnion & {
-  prefix?: ReactNode
-  labelTooltip?: ReactNode
+// ── Устаревшее (оставлено до чистки экспорта src/index.ts) ─────────────────
+
+/**
+ * @deprecated `onChange` в `mode="multiple"` получает `(value: string[], options)`.
+ * Тип больше не используется компонентом.
+ */
+export type SelectInputMultipleChangeEvent = {
+  target: {
+    name?: string
+    value: string[]
+  }
 }
+
+/** @deprecated Проп `multipleDisplay` удалён: в триггере всегда сводка «Label (N)». */
+export type SelectInputMultipleDisplay = 'summary' | 'tags'

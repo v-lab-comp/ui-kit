@@ -1,25 +1,49 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import { useCallback, useEffect, useId, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { SelectOption } from '../SelectInput'
 import type { AsyncSearchSelectProps } from './AsyncSearchSelect.types'
 import { normalizeAsyncSearchLoadResult } from './normalizeLoadResult'
 
-type LoadOptions = AsyncSearchSelectProps['loadOptions']
+/** Сколько пикселей до низа списка запускает дозагрузку следующей страницы */
+const LOAD_MORE_THRESHOLD_PX = 56
 
-export function useAsyncSearchSelectRemote(
-  loadOptions: LoadOptions,
-  debounceMs: number,
-  onSearchQueryChange: AsyncSearchSelectProps['onSearchQueryChange'],
-  selectedValue: string
-) {
+export type AsyncSearchSelectRemoteOptions = {
+  loadOptions: AsyncSearchSelectProps['loadOptions']
+  debounceMs: number
+  onSearchQueryChange?: AsyncSearchSelectProps['onSearchQueryChange']
+  /** Поле отключено: запросы не идут, текущий отменяется */
+  disabled: boolean
+  /**
+   * Первая страница сменилась: `null` — грузится новая (прежние опции убраны),
+   * массив — пришёл ответ. По нему поле выставляет активный пункт.
+   */
+  onFirstPage?: (options: SelectOption[] | null) => void
+}
+
+/**
+ * Опции AsyncSearchSelect с сервера: строка поиска с debounce, первая страница при открытии
+ * и при новом запросе, дозагрузка при прокрутке к низу, отмена запросов через `AbortSignal`.
+ * Открытием управляет поле (`useSelectInteractions`) — через `setActive(open)`.
+ */
+export function useAsyncSearchSelectRemote({
+  loadOptions,
+  debounceMs,
+  onSearchQueryChange,
+  disabled,
+  onFirstPage,
+}: AsyncSearchSelectRemoteOptions) {
   const listScrollRef = useRef<HTMLDivElement>(null)
-  const listboxId = useId()
   const fetchGenRef = useRef(0)
   const loadedPageRef = useRef(-1)
   const loadMoreAbortRef = useRef<AbortController | null>(null)
   const loadMoreInFlightRef = useRef(false)
+  const onFirstPageRef = useRef(onFirstPage)
 
-  const [open, setOpen] = useState(false)
+  useLayoutEffect(() => {
+    onFirstPageRef.current = onFirstPage
+  })
+
+  const [active, setActiveState] = useState(false)
   const [filterText, setFilterText] = useState('')
   const [query, setQuery] = useState('')
   const [options, setOptions] = useState<SelectOption[]>([])
@@ -27,7 +51,10 @@ export function useAsyncSearchSelectRemote(
   const [loadingMore, setLoadingMore] = useState(false)
   const [loadError, setLoadError] = useState(false)
   const [hasMore, setHasMore] = useState(false)
-  const [hi, setHi] = useState(-1)
+
+  // Поле отключили на открытом списке: useSelectInteractions закрывает его без onOpenChange.
+  // Иначе после включения первая страница загрузилась бы при закрытом списке.
+  if (disabled && active) setActiveState(false)
 
   useEffect(() => {
     const t = window.setTimeout(() => setQuery(filterText), debounceMs)
@@ -38,46 +65,44 @@ export function useAsyncSearchSelectRemote(
     onSearchQueryChange?.(query)
   }, [query, onSearchQueryChange])
 
-  const close = useCallback(() => {
+  /**
+   * Открытие / закрытие списка: пустой поиск, нет опций, дозагрузка отменена.
+   * При открытии сразу «загрузка» — первая страница запросится в эффекте.
+   */
+  const setActive = useCallback((nextActive: boolean) => {
     loadMoreAbortRef.current?.abort()
     loadMoreAbortRef.current = null
     loadMoreInFlightRef.current = false
-    setOpen(false)
-    setHi(-1)
+    loadedPageRef.current = -1
+    setActiveState(nextActive)
     setFilterText('')
     setQuery('')
     setOptions([])
-    setLoading(false)
+    setLoading(nextActive)
     setLoadingMore(false)
     setLoadError(false)
     setHasMore(false)
-    loadedPageRef.current = -1
-  }, [])
-
-  const openDropdown = useCallback(() => {
-    setFilterText('')
-    setQuery('')
-    setOptions([])
-    setLoadError(false)
-    setHi(-1)
-    setOpen(true)
   }, [])
 
   /** Первая страница: открытие или новый debounced `query`. */
   useEffect(() => {
-    if (!open) return
+    if (!active || disabled) return
     loadMoreAbortRef.current?.abort()
     loadMoreAbortRef.current = null
     loadMoreInFlightRef.current = false
 
     const gen = ++fetchGenRef.current
     const ctrl = new AbortController()
+    /** Запрос отменён (закрытие, отключение, новый запрос) — его ответ не применяем */
+    let cancelled = false
+    const isStale = () => cancelled || gen !== fetchGenRef.current
     setLoading(true)
     setLoadingMore(false)
     setLoadError(false)
     setOptions([])
     setHasMore(false)
     loadedPageRef.current = -1
+    onFirstPageRef.current?.(null)
 
     requestAnimationFrame(() => {
       if (listScrollRef.current) listScrollRef.current.scrollTop = 0
@@ -85,28 +110,31 @@ export function useAsyncSearchSelectRemote(
 
     loadOptions({ query, signal: ctrl.signal, page: 0 })
       .then((raw) => {
-        if (gen !== fetchGenRef.current) return
+        if (isStale()) return
         const { options: rows, hasMore: more } = normalizeAsyncSearchLoadResult(raw)
         loadedPageRef.current = 0
         setOptions(rows)
         setHasMore(more)
         setLoading(false)
+        onFirstPageRef.current?.(rows)
       })
       .catch(() => {
-        if (gen !== fetchGenRef.current) return
+        if (isStale()) return
         setLoadError(true)
         setLoading(false)
         setHasMore(false)
       })
 
-    return () => ctrl.abort()
-  }, [open, query, loadOptions])
+    return () => {
+      cancelled = true
+      ctrl.abort()
+    }
+  }, [active, disabled, query, loadOptions])
 
   const handleListScroll = useCallback(() => {
     const el = listScrollRef.current
-    if (!el || !open || loading || loadError || !hasMore || loadMoreInFlightRef.current) return
-    const thresholdPx = 56
-    if (el.scrollHeight - el.scrollTop - el.clientHeight > thresholdPx) return
+    if (!el || !active || loading || loadError || !hasMore || loadMoreInFlightRef.current) return
+    if (el.scrollHeight - el.scrollTop - el.clientHeight > LOAD_MORE_THRESHOLD_PX) return
 
     loadMoreInFlightRef.current = true
     setLoadingMore(true)
@@ -142,29 +170,17 @@ export function useAsyncSearchSelectRemote(
         setLoadingMore(false)
         setHasMore(false)
       })
-  }, [open, loading, loadError, hasMore, query, loadOptions])
-
-  useEffect(() => {
-    if (!open || options.length === 0) return
-    const idx = options.findIndex((o) => o.value === selectedValue)
-    setHi(idx >= 0 ? idx : 0)
-  }, [open, selectedValue, options])
+  }, [active, loading, loadError, hasMore, query, loadOptions])
 
   return {
-    listboxId,
     listScrollRef,
-    open,
-    openDropdown,
-    close,
+    setActive,
     filterText,
     setFilterText,
     options,
     loading,
     loadingMore,
     loadError,
-    hasMore,
-    hi,
-    setHi,
     handleListScroll,
   }
 }

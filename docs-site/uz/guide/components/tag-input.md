@@ -75,11 +75,20 @@ export function TagsFromApiExample() {
 
 Standart holatda tanlangan punktlar ro‘yxatda **qoladi**, o‘ngda **belgi**; qayta bosish **tegni olib tashlaydi**. Eski usul (tanlanganlar ro‘yxatdan yo‘qoladi) — **`suggestionsExcludeSelected`**.
 
-### Klaviatura (ro‘yxat ochiq bo‘lsa)
+### Klaviatura
 
-- **Enter** / vergul / **`;`** — maydon bo‘sh emas bo‘lsa, yozilgan matn teg sifatida qo‘shiladi.
-- Belgili rejimda qator **toggle**; aks holda bir marta tanlash: sichqoncha, **Tab**, yoki **Enter** **bo‘sh** maydonda.
-- **Esc** — ro‘yxatni yopadi.
+**`suggestions`** bilan maydon **combobox** (listbox-popap, [WAI-ARIA APG](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/)): fokus maydonda qoladi, belgilangan punkt **`aria-activedescendant`** orqali bildiriladi.
+
+- **Enter** / vergul / **`;`** — hech qaysi punkt belgilanmagan bo‘lsa, yozilgan matn teg sifatida qo‘shiladi.
+- **↓** / **↑** — punktni belgilash (aylanma, o‘chirilganlar o‘tkazib yuboriladi); yopiq ro‘yxatni birinchi / oxirgi punkt bilan ochadi.
+- Belgilangan punktda **Enter** — belgili rejimda **toggle**, aks holda bir marta tanlash; fokus maydonda qoladi. **Tab** — punktni tanlaydi va fokusni keyingi elementga o‘tkazadi. Sichqoncha — punktni bosish.
+- **Esc** — faqat ro‘yxatni yopadi (ota modal yopilmaydi); matn kiritish yoki maydonni bosish uni qayta ochadi.
+- Bo‘sh maydonda **Backspace** — oxirgi tegni o‘chiradi. **Enter** formani yubormaydi.
+
+### Foydalanish imkoniyati
+
+- Listbox maydon **`label`**i bilan nomlanadi; punktlar Tab tartibiga kirmaydi. Belgili rejimda listbox **`aria-multiselectable`**.
+- Har bir chipning o‘chirish tugmasi teg matni bilan nomlanadi: standart **`Remove {label}`**, o‘zgartirish — **`removeTagLabel`**; **`renderTag`** shu matnni **`removeLabel`** sifatida oladi. Tugma bilan o‘chirilgandan keyin fokus maydonga qaytadi.
 
 ### Balandlik
 

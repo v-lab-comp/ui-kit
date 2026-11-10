@@ -1,22 +1,34 @@
 import { createElement, useCallback, useState } from 'react'
 
 /**
+ * Поля формы для `formFields`: объект «имя → значение» или массив пар `[имя, значение]`.
+ * Массив сохраняет порядок полей и повторяющиеся имена (объект их бы схлопнул).
+ */
+export type FormFieldValues = Record<string, string> | ReadonlyArray<readonly [string, string]>
+
+const toEntries = (fields: FormFieldValues): ReadonlyArray<readonly [string, string]> =>
+  Array.isArray(fields)
+    ? (fields as ReadonlyArray<readonly [string, string]>)
+    : Object.entries(fields as Record<string, string>)
+
+/**
  * Генерирует скрытые `<input type="hidden">` для отправки данных в форму.
  * Простая альтернатива `useCompositeInput` — без split/join, без хука.
  *
  * @example
  * {formFields({ phone: '+998 901234567', countryCode: '+998' })}
+ * {formFields([['tag', 'a'], ['tag', 'b']])}
  */
-export function formFields(fields: Record<string, string>) {
-  const entries = Object.entries(fields)
+export function formFields(fields: FormFieldValues) {
+  const entries = toEntries(fields)
   if (entries.length === 0) return null
   return createElement(
     'span',
     { hidden: true },
-    ...entries.map(([key, val]) =>
+    ...entries.map(([key, val], index) =>
       createElement('input', {
         type: 'hidden',
-        key,
+        key: `${index}-${key}`,
         name: key,
         value: val,
         readOnly: true,
@@ -26,11 +38,36 @@ export function formFields(fields: Record<string, string>) {
 }
 
 /**
+ * Доступное имя селекта внутри составного поля (страна у PhoneInput, протокол у SiteInput).
+ * Новых текстов не добавляет: своя подпись `ariaLabel` → label поля (`labelId`) →
+ * подпись выбранной опции (`fallbackLabel`, например «Узбекистан» или «HTTPS»).
+ *
+ * Ссылка `aria-labelledby` на сам триггер не годится: у combobox, на который ссылается
+ * `aria-labelledby`, имя берётся из выбранного пункта открытого списка, а не из текста кнопки.
+ */
+export function compositeSelectName({
+  ariaLabel,
+  labelId,
+  fallbackLabel,
+}: {
+  /** Подпись от приложения (проп поля) */
+  ariaLabel?: string
+  /** id элемента label поля, если label показан */
+  labelId?: string
+  /** Подпись выбранной опции — имя, когда нет ни `ariaLabel`, ни label */
+  fallbackLabel: string
+}): { 'aria-label': string } | { 'aria-labelledby': string } {
+  if (ariaLabel) return { 'aria-label': ariaLabel }
+  if (labelId) return { 'aria-labelledby': labelId }
+  return { 'aria-label': fallbackLabel }
+}
+
+/**
  * Хук для составных инпутов, где несколько подзначений собираются
  * в одну строку для форм (протокол + путь, код страны + телефон и т.д.).
  *
  * Управляет controlled/uncontrolled состоянием и отдаёт `hiddenInputs` —
- * готовые `<input type="hidden">` для отправки в форму.
+ * готовые `<input type="hidden">` для отправки в форму (через `formFields`).
  *
  * @example
  * const { parts, notifyParts, hiddenInputs } = useCompositeInput({
@@ -93,29 +130,14 @@ export function useCompositeInput<T extends unknown[]>({
 
   const notifyParts = useCallback((newParts: T) => notify(join(newParts)), [notify, join])
 
-  // Скрытые инпуты для нативной формы
+  // Скрытые инпуты для нативной формы: полное значение, затем части с именами из `formNames`
   const hiddenInputs = name
-    ? createElement(
-        'span',
-        { hidden: true },
-        createElement('input', {
-          type: 'hidden',
-          name,
-          value: composedValue,
-          readOnly: true,
-        }),
-        ...(formNames ?? []).map((formName, i) =>
-          formName
-            ? createElement('input', {
-                type: 'hidden',
-                key: formName,
-                name: formName,
-                value: String(parts[i] ?? ''),
-                readOnly: true,
-              })
-            : null
-        )
-      )
+    ? formFields([
+        [name, composedValue],
+        ...(formNames ?? []).flatMap((formName, i) =>
+          formName ? [[formName, String(parts[i] ?? '')] as const] : []
+        ),
+      ])
     : null
 
   return { composedValue, parts, notify, notifyParts, hiddenInputs }

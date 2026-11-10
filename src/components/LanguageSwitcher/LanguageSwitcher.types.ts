@@ -10,6 +10,9 @@ type CompactLabelSelect = Extract<
   { variant: 'compact-label'; options: SelectOptionWithShortLabel[] }
 >
 
+/** Omit по каждому члену union: сохраняет обязательность `aria-label` / `aria-labelledby` */
+type DistributiveOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never
+
 /**
  * Переключатель локали: только список кодов, текущее значение и колбэки.
  * Подписи опций и смена локали — на стороне приложения.
@@ -23,11 +26,11 @@ type CompactLabelSelect = Extract<
  *   value={locale}
  *   onLocaleChange={setLocale}
  *   getLocaleLabel={(code) => labels[code] ?? code}
- *   triggerAriaLabel="Language"
+ *   aria-label="Language"
  * />
  * ```
  */
-export type LanguageSwitcherProps = Omit<
+export type LanguageSwitcherProps = DistributiveOmit<
   CompactLabelSelect,
   'variant' | 'options' | 'onChange' | 'value'
 > & {

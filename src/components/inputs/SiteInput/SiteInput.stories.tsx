@@ -39,6 +39,11 @@ const meta: Meta<typeof SiteInput> = {
     error: { control: 'text' },
     placeholder: { control: 'text' },
     protocol: { control: 'text' },
+    protocolAriaLabel: {
+      control: 'text',
+      description:
+        'Доступное имя селектора протокола. По умолчанию — label поля, без label — label выбранной опции.',
+    },
     required: { control: 'boolean' },
     optional: { control: 'boolean' },
     disabled: { control: 'boolean' },

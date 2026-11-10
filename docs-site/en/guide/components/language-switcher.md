@@ -40,7 +40,7 @@ export function LocalePicker() {
       value={locale}
       onLocaleChange={setLocale}
       getLocaleLabel={(code) => LABELS[code] ?? code}
-      triggerAriaLabel="Interface language"
+      aria-label="Interface language"
     />
   )
 }
@@ -48,15 +48,15 @@ export function LocalePicker() {
 
 ## Main props
 
-| Prop                  | Type                                        | Description                                       |
-| --------------------- | ------------------------------------------- | ------------------------------------------------- |
-| `locales`             | `readonly string[]`                         | Locale codes in display order                     |
-| `value`               | `string`                                    | Current locale (one of **`locales`**)             |
-| `onLocaleChange`      | `(locale: string) => void \| Promise<void>` | User picked another locale                        |
-| `getLocaleLabel`      | `(locale: string) => string`                | Full label in the dropdown                        |
-| `getLocaleShortLabel` | `(locale: string) => string`                | Short label on trigger (default — uppercase code) |
-| `prefix`              | `ReactNode`                                 | Icon left on trigger (default translate icon)     |
-| `triggerAriaLabel`    | `string`                                    | **`aria-label`** for open button                  |
+| Prop                  | Type                                        | Description                                                  |
+| --------------------- | ------------------------------------------- | ------------------------------------------------------------ |
+| `locales`             | `readonly string[]`                         | Locale codes in display order                                |
+| `value`               | `string`                                    | Current locale (one of **`locales`**)                        |
+| `onLocaleChange`      | `(locale: string) => void \| Promise<void>` | User picked another locale                                   |
+| `getLocaleLabel`      | `(locale: string) => string`                | Full label in the dropdown                                   |
+| `getLocaleShortLabel` | `(locale: string) => string`                | Short label on trigger (default — uppercase code)            |
+| `prefix`              | `ReactNode`                                 | Icon left on trigger (default translate icon)                |
+| `aria-label`          | `string`                                    | Open button accessible name; required (or `aria-labelledby`) |
 
 Other visual props inherit from compact **`SelectInput`** (without **`variant`**, **`options`**, **`value`**, **`onChange`** — fixed by this component). Type — **`LanguageSwitcherProps`**.
 

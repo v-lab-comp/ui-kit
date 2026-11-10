@@ -19,7 +19,7 @@ export function LanguageSwitcherDocsDemo() {
         value={value}
         onLocaleChange={setValue}
         getLocaleLabel={(code) => DEMO_LABELS[code] ?? code}
-        triggerAriaLabel="Язык интерфейса"
+        aria-label="Язык интерфейса"
       />
     </div>
   )
@@ -45,7 +45,7 @@ export function LanguageSwitcherGalleryEmbed() {
         value={a}
         onLocaleChange={setA}
         getLocaleLabel={(code) => DEMO_LABELS[code] ?? code}
-        triggerAriaLabel="Language"
+        aria-label="Language"
       />
       <LanguageSwitcher
         locales={[...DEMO_LOCALES]}
@@ -53,7 +53,7 @@ export function LanguageSwitcherGalleryEmbed() {
         onLocaleChange={setB}
         getLocaleLabel={(code) => DEMO_LABELS[code] ?? code}
         getLocaleShortLabel={(code) => code}
-        triggerAriaLabel="Locale"
+        aria-label="Locale"
         size="medium"
         disabled
       />

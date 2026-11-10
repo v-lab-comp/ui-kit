@@ -50,12 +50,13 @@ export function WebsiteField() {
 
 Composite URL field: protocol + path as one form value. Uses **[useCompositeInput](/en/guide/hooks/use-composite-input)** internally.
 
-| Prop                  | Description                                                                                                                                |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| **`protocol`**        | Static protocol prefix (default **`https://`**). Ignored if **`protocolOptions`** is set                                                   |
-| **`protocolOptions`** | **`SelectOptionWithShortLabel[]`** for inline protocol **`SelectInput`**; each **`value`** is a protocol string; **`shortLabel`** required |
+| Prop                    | Description                                                                                                                                                      |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`protocol`**          | Static protocol prefix (default **`https://`**). Ignored if **`protocolOptions`** is set                                                                         |
+| **`protocolOptions`**   | **`SelectOptionWithShortLabel[]`** for inline protocol **`SelectInput`**; each **`value`** is a protocol string; **`shortLabel`** required                       |
+| **`protocolAriaLabel`** | Accessible name of the protocol select. Defaults to the field **`label`** (via **`aria-labelledby`**); without a **`label`** — the selected option's **`label`** |
 
-Otherwise like **[TextInput](./text-input)**: **[InputField](./input-field)** without **`startBlock`** + path **`BaseInput`**.
+Otherwise like **[TextInput](./text-input)**: **[InputField](./input-field)** without **`startBlock`** (**`endBlock`**, **`wrapperClassName`**, **`wrapperStyle`** go to the shell) + path **`BaseInput`**. The protocol selector is a **combobox** with the same keyboard behaviour as **[SelectInput](./select-input#keyboard-and-accessibility)**.
 
 ### Full type
 

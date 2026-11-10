@@ -16,4 +16,9 @@ export type SiteInputProps = Omit<InputFieldProps, 'children' | 'startBlock'> &
      * Requires `shortLabel` in each option (e.g. `'https://'`).
      */
     protocolOptions?: SelectOptionWithShortLabel[]
+    /**
+     * Доступное имя селекта протокола (при `protocolOptions`). По умолчанию селект подписан
+     * `label` поля, без `label` — подписью выбранной опции (`label`, например «HTTPS»).
+     */
+    protocolAriaLabel?: string
   }

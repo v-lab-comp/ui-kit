@@ -227,7 +227,7 @@ return (
 
 1. **Текущее значение части** ты уже получаешь из `parts` (например `currentProtocol`). Эту же величину передаёшь в Select как `value={currentProtocol}` — выпадающий список показывает актуальный выбор.
 
-2. **Пользователь выбрал другой пункт** (например сменил `https://` на `http://`). В `onChange` Select приходит новое значение этой части. Остальные части не трогаем — берём из `parts` (например `currentPath`). Вызываешь `notifyParts([e.target.value, currentPath])` — «новая первая часть, вторая без изменений».
+2. **Пользователь выбрал другой пункт** (например сменил `https://` на `http://`). В `onChange` Select приходит новое значение этой части. Остальные части не трогаем — берём из `parts` (например `currentPath`). `onChange(value)` SelectInput получает само значение — вызываешь `notifyParts([value, currentPath])` — «новая первая часть, вторая без изменений».
 
 3. **Хук делает то же, что и при вводе в инпут:** склеивает части через `join`, получает новую полную строку, обновляет внутреннее значение и вызывает `onChange` с этой строкой. На следующем рендере `split(composedValue)` даёт уже обновлённые части — Select получит новый `currentProtocol` и отобразит его.
 
@@ -251,13 +251,20 @@ const { parts, notifyParts, hiddenInputs } = useCompositeInput({
 })
 
 const [currentProtocol, currentPath] = parts
+const fieldId = id ?? generatedId // тот же id уходит в InputField — от него id элемента label
 
 const startBlock = protocolOptions ? (
   <SelectInput
     variant="inline"
+    // у inline нет видимой подписи — имя обязательно: своя подпись → label поля → подпись опции
+    {...compositeSelectName({
+      ariaLabel: protocolAriaLabel,
+      labelId: label ? inputFieldLabelId(fieldId) : undefined,
+      fallbackLabel: protocolOptions.find((o) => o.value === currentProtocol)?.label ?? currentProtocol,
+    })}
     options={protocolOptions}
     value={currentProtocol}
-    onChange={(e) => notifyParts([e.target.value, currentPath])}
+    onChange={(nextProtocol) => notifyParts([nextProtocol, currentPath])}
     size={size}
     disabled={disabled}
     placement="bottom"
@@ -269,7 +276,7 @@ const startBlock = protocolOptions ? (
 return (
   <>
     {hiddenInputs}
-    <InputField startBlock={startBlock} ...>
+    <InputField id={fieldId} startBlock={startBlock} ...>
       <BaseInput
         value={currentPath}
         onChange={(e) => notifyParts([currentProtocol, e.target.value])}
@@ -282,8 +289,9 @@ return (
 
 - **Select `value`** — всегда текущая часть из `parts`, чтобы отображалось то, что лежит в общей строке.
 - **Select `onChange`** — собираем новый массив частей (выбранное в Select + остальные из `parts`) и вызываем `notifyParts`. Дальше хук обновляет строку и при следующем рендере `parts` уже содержат новый протокол.
+- **Имя Select** — `compositeSelectName` (рядом с хуком, в `useCompositeInput.ts`): подпись от приложения (`protocolAriaLabel` / `countryAriaLabel`), иначе `aria-labelledby` на label поля, иначе `aria-label` с подписью выбранной опции. Новых текстов не добавляет. `aria-labelledby` на сам триггер не подходит: у combobox, на который ссылаются, имя берётся из выбранного пункта списка, а не из текста кнопки.
 
-То же самое можно сделать для части справа (`endBlock`): например, Select зоны домена — `value={currentTld}`, `onChange={(e) => notifyParts([currentName, e.target.value])}`.
+То же самое можно сделать для части справа (`endBlock`): например, Select зоны домена — `value={currentTld}`, `onChange={(nextTld) => notifyParts([currentName, nextTld])}`.
 
 ---
 
@@ -333,5 +341,5 @@ return (
 - Снаружи компонент — как обычный инпут: одна строка в `value`/`onChange`.
 - Внутри хранится одна строка; части каждый раз считаются через `split`.
 - Менять значение — только через `notifyParts([...части])`; хук сам склеит и обновит всё.
-- Скрытые поля для формы хук создаёт сам — достаточно вставить `{hiddenInputs}` в JSX.
+- Скрытые поля для формы хук создаёт сам — достаточно вставить `{hiddenInputs}` в JSX. Разметку строит `formFields` (тот же модуль): ему можно передать объект `{ имя: значение }` или массив пар `[имя, значение]` — массив сохраняет порядок и повторяющиеся имена.
 - С react-hook-form достаточно работать через `value`/`onChange` одной строкой; скрытые поля нужны только для нативной отправки формы.

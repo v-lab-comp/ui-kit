@@ -40,7 +40,7 @@ export function LocalePicker() {
       value={locale}
       onLocaleChange={setLocale}
       getLocaleLabel={(code) => LABELS[code] ?? code}
-      triggerAriaLabel="Язык интерфейса"
+      aria-label="Язык интерфейса"
     />
   )
 }
@@ -56,7 +56,7 @@ export function LocalePicker() {
 | `getLocaleLabel`      | `(locale: string) => string`                | Полная подпись в выпадающем списке                                 |
 | `getLocaleShortLabel` | `(locale: string) => string`                | Короткая подпись на триггере (по умолчанию — верхний регистр кода) |
 | `prefix`              | `ReactNode`                                 | Иконка слева на триггере (по умолчанию translate-иконка)           |
-| `triggerAriaLabel`    | `string`                                    | **`aria-label`** для кнопки открытия                               |
+| `aria-label`          | `string`                                    | Доступное имя кнопки открытия; обязательно (или `aria-labelledby`) |
 
 Остальные визуальные пропсы наследуются от компактного **`SelectInput`** (без **`variant`**, **`options`**, **`value`**, **`onChange`** — они заданы смыслом компонента). Тип — **`LanguageSwitcherProps`**.
 

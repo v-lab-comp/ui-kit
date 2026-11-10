@@ -71,6 +71,13 @@ const { field } = useController({ name: 'phone', control })
 | **`defaultCountry`**             | **`CountryCode`**              | Код страны по умолчанию (ISO, напр. **`UZ`**, **`RU`**) |
 | **`countries`**                  | **`CountryCode[]`**            | Ограничить список стран в выпадающем флаге              |
 | **`locale`**                     | **`'ru'` \| `'en'` \| `'uz'`** | Язык названий стран (по умолчанию **`ru`**)             |
+| **`countryAriaLabel`**           | `string`                       | Доступное имя селекта страны (см. ниже)                 |
+
+Пропсы **[InputField](./input-field)** (**`endBlock`**, **`wrapperClassName`**, **`wrapperStyle`**, …) уходят в оболочку поля; **`startBlock`** занят селектором страны.
+
+### Доступность
+
+Селектор страны — **combobox** с клавиатурой и поиском как у **[SelectInput](./select-input#клавиатура-и-доступность)**. Его доступное имя: **`countryAriaLabel`**, иначе **`label`** поля (через **`aria-labelledby`**), без **`label`** — название выбранной страны.
 
 Остальные атрибуты — см. **`PhoneInput.types.ts`** (наследование без дублирования **`value`** / **`onChange`** из обычного input там, где задано явно).
 

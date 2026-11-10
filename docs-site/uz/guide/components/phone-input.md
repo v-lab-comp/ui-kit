@@ -59,6 +59,10 @@ const { field } = useController({ name: 'phone', control })
 
 ## Asosiy proplar
 
-To‘liq tip — **`PhoneInputProps`**: **`InputField`** + **`value`** / **`onChange`** da **E.164**, **`defaultCountry`**, **`countries`**, **`locale`**, … Qarang **`PhoneInput.types.ts`**.
+To‘liq tip — **`PhoneInputProps`**: **`InputField`** + **`value`** / **`onChange`** da **E.164**, **`defaultCountry`**, **`countries`**, **`locale`**, **`countryAriaLabel`**, … Qarang **`PhoneInput.types.ts`**. **`InputField`** proplari (**`endBlock`**, **`wrapperClassName`**, **`wrapperStyle`**, …) maydon qobig‘iga tushadi; **`startBlock`** mamlakat tanlovi uchun band.
+
+### Foydalanish imkoniyati
+
+Mamlakat tanlovi — **[SelectInput](./select-input)** kabi klaviatura va qidiruvli **combobox**. Uning nomi: **`countryAriaLabel`**, aks holda maydon **`label`** i (**`aria-labelledby`** orqali), **`label`** bo‘lmasa — tanlangan mamlakat nomi.
 
 Manbalar: `src/components/inputs/PhoneInput/`.

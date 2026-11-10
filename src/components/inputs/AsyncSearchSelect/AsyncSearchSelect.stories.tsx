@@ -185,7 +185,7 @@ export const Playground: Story = {
         {...args}
         loadOptions={loadOptions}
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(next) => setValue(next)}
       />
     )
   },
@@ -211,7 +211,7 @@ export const Completed: Story = {
         {...args}
         loadOptions={loadOptions}
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(next) => setValue(next)}
       />
     )
   },
@@ -345,7 +345,7 @@ export const WithSelectedOption: Story = {
         placeholder="Pick…"
         value={value}
         selectedOption={selectedOption}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(next) => setValue(next)}
         loadOptions={defaultLoadOptions}
       />
     )
@@ -369,7 +369,7 @@ export const LoadFailure: Story = {
         hint="Откройте список — имитация ошибки загрузки (Failed to load)."
         placeholder="Try open…"
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(next) => setValue(next)}
         loadOptions={failLoad}
       />
     )

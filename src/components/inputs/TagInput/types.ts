@@ -51,16 +51,22 @@ export type TagInputProps = Omit<InputFieldProps, 'children'> & {
   commitOnBlur?: boolean
   /** Разбиение при вставке из буфера и при фиксации черновика (по умолчанию запятая, `;`, перевод строки). */
   splitPattern?: RegExp
-  /** `aria-label` для кнопки удаления у каждого тега. */
+  /**
+   * `aria-label` для кнопки удаления у каждого тега. Включайте текст тега, чтобы кнопки различались
+   * для скринридера. По умолчанию **`Remove {label}`**.
+   */
   removeTagLabel?: (tag: TagInputTagValue) => string
   /**
    * Вместо стандартного чипа **`Tag`** — свой рендер (например иконка + текст).
    * Вызывается для каждого **видимого** тега с учётом **`maxTagCount`**.
+   * **`removeLabel`** — результат **`removeTagLabel(tag)`** для `aria-label` своей кнопки удаления;
+   * **`onRemove`** удаляет тег и возвращает фокус в поле, если он был на чипе.
    */
   renderTag?: (ctx: {
     tag: TagInputTagValue
     index: number
     disabled: boolean
+    removeLabel: string
     onRemove: () => void
   }) => ReactNode
   /**
@@ -76,8 +82,10 @@ export type TagInputProps = Omit<InputFieldProps, 'children'> & {
    * Предложения для выбора из списка (бэк, константы и т.д.).
    * **`undefined`** — выпадающий список отключён.
    *
-   * При **`allowCustomTags === true`** (по умолчанию): **Enter** / запятая / `;` фиксируют ввод как тег;
-   * пункт из списка — клик, **Tab** (при открытом списке) или **Enter** на **пустом** поле с подсветкой.
+   * Поле получает роль **combobox** (WAI-ARIA APG, listbox-попап). **↑** / **↓** подсвечивают пункт
+   * (`aria-activedescendant`), **Enter** или **Tab** выбирают подсвеченный пункт, клик — любой.
+   * Без подсветки **Enter** / запятая / `;` фиксируют набранный текст как тег
+   * (при **`allowCustomTags={false}`** — только точное совпадение с **`label`** пункта). **Esc** скрывает список.
    *
    * Объект **`{ id, label }`** из списка попадает в **`value`** как **`TagInputTagObject`**; строка из списка — как **`string`**.
    */
@@ -87,7 +95,7 @@ export type TagInputProps = Omit<InputFieldProps, 'children'> & {
   /** Максимум пунктов в выпадающем списке. */
   suggestionsLimit?: number
   /**
-   * Уже выбранные пункты **остаются** в выпадающем списке с галочкой; клик / Enter по пункту **снимает** выбор.
+   * Уже выбранные пункты **остаются** в выпадающем списке с галочкой (`aria-multiselectable`); клик / Enter по пункту **снимает** выбор.
    * Если **`true`** — прежнее поведение: выбранные скрываются из списка, выбор только добавляет тег.
    */
   suggestionsExcludeSelected?: boolean

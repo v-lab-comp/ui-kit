@@ -1,298 +1,248 @@
-import {
-  forwardRef,
-  useCallback,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-  useState,
-  type ChangeEvent,
-} from 'react'
-import { RiArrowDownSLine, RiCloseLine } from '@remixicon/react'
-import { formatSize } from '@/utils/formatSize'
-import { InputField } from '../base/InputField'
-import { contractPart } from '@/theme/contract'
+import { forwardRef, useState } from 'react'
 import { selectInputContract } from '@/theme/contracts/select-input'
-import { SelectDropdownPanel } from '../SelectInput/SelectDropdownPanel'
-import { useSelectDropdownFloating } from '../SelectInput/useSelectDropdownFloating'
-import type { AsyncSearchSelectProps } from './AsyncSearchSelect.types'
+import { useControllableState } from '@/utils/useControllableState'
+import { useMergeRefs } from '@/utils/useMergeRefs'
+import { InputField, splitInputFieldProps } from '../base/InputField'
+import {
+  SelectDropdownPanel,
+  SelectFormFields,
+  SelectListStatus,
+  SelectOptionList,
+  SelectOptionRow,
+  SelectSuffix,
+  SelectTrigger,
+  useSelectInteractions,
+} from '../SelectInput/parts'
+import type { SelectListStatusProps } from '../SelectInput/parts'
 import type { SelectOption } from '../SelectInput'
+import type { AsyncSearchSelectProps } from './AsyncSearchSelect.types'
 import { ASYNC_SEARCH_SELECT_DEBOUNCE_MS } from './constants'
-import { AsyncSearchSelectOptionsBody } from './AsyncSearchSelectOptionsBody'
-import { useAsyncSearchSelectDismiss } from './useAsyncSearchSelectDismiss'
-import { useAsyncSearchSelectListboxKeyboard } from './useAsyncSearchSelectListboxKeyboard'
 import { useAsyncSearchSelectRemote } from './useAsyncSearchSelectRemote'
 
-export const AsyncSearchSelect = forwardRef<HTMLSelectElement, AsyncSearchSelectProps>(
+/** id через пробел без пустых значений */
+const joinIds = (...ids: Array<string | undefined>) => ids.filter(Boolean).join(' ') || undefined
+
+/** Индекс опции со значением `value`; нет такой — `null` */
+const findValueIndex = (options: readonly SelectOption[], value: string) => {
+  const index = value ? options.findIndex((option) => option.value === value) : -1
+  return index === -1 ? null : index
+}
+
+/** Статус списка: загрузка, ошибка, пустой ответ или дозагрузка следующей страницы */
+function getListStatus(state: {
+  loading: boolean
+  loadingMore: boolean
+  loadError: boolean
+  empty: boolean
+}): SelectListStatusProps {
+  if (state.loading) return { message: 'Loading…' }
+  if (state.loadError) return { message: 'Failed to load', error: true }
+  if (state.empty) return { message: 'No results' }
+  if (state.loadingMore) return { message: 'Loading…', part: 'async-footer-message' }
+  return {}
+}
+
+export const AsyncSearchSelect = forwardRef<HTMLButtonElement, AsyncSearchSelectProps>(
   (props, ref) => {
+    const [field, rest] = splitInputFieldProps(props)
     const {
-      size = 'medium',
-      disabled,
-      placeholder,
-      searchPlaceholder = 'Search...',
-      debounceMs = ASYNC_SEARCH_SELECT_DEBOUNCE_MS,
-      loadOptions,
       value: valueProp,
       defaultValue,
       onChange,
-      name,
-      prefix,
+      loadOptions,
+      debounceMs = ASYNC_SEARCH_SELECT_DEBOUNCE_MS,
+      onSearchQueryChange,
       selectedOption: selectedOptionProp,
+      placeholder,
+      searchPlaceholder = 'Search...',
       placement = 'bottom',
       dropdownWidth,
       dropdownPortalZIndex,
       dropdownMaxHeight,
       optionTextWrap = false,
-      triggerAriaLabel,
-      label,
-      required,
-      requiredMarker,
-      optional,
-      labelTooltip,
-      hint,
-      error,
-      completed,
-      completedColor,
-      suffix,
-      id: idProp,
-      className,
-      onSearchQueryChange,
-    } = props
+      name,
+      form,
+      'aria-describedby': ariaDescribedBy,
+      // Остальное (aria-label, обработчики, data-*) — на кнопку-триггер
+      ...triggerProps
+    } = rest
+    const { error } = field
+    const size = field.size ?? 'medium'
+    const disabled = field.disabled ?? false
 
-    const triggerRef = useRef<HTMLButtonElement>(null)
-    const hiddenSelectRef = useRef<HTMLSelectElement>(null)
-
-    const [internalValue, setInternalValue] = useState(() =>
-      defaultValue == null ? '' : String(defaultValue)
-    )
-    const isControlled = valueProp !== undefined
-    const raw = isControlled ? valueProp : internalValue
-    const value = raw == null || raw === '' ? '' : String(raw)
-
+    const [rawValue, setValue] = useControllableState<string, [SelectOption | null]>({
+      value: valueProp,
+      defaultValue: defaultValue ?? '',
+      onChange,
+    })
+    // JS-код и формы могут передать null — это «не выбрано»
+    const value = rawValue == null ? '' : String(rawValue)
+    /** Последняя выбранная опция: её подпись остаётся в триггере, когда список закрыт */
     const [picked, setPicked] = useState<SelectOption | null>(null)
 
     const {
-      listboxId,
       listScrollRef,
-      open,
-      openDropdown,
-      close,
+      setActive,
       filterText,
       setFilterText,
       options,
       loading,
       loadingMore,
       loadError,
-      hi,
-      setHi,
       handleListScroll,
-    } = useAsyncSearchSelectRemote(loadOptions, debounceMs, onSearchQueryChange, value)
+    } = useAsyncSearchSelectRemote({
+      loadOptions,
+      debounceMs,
+      onSearchQueryChange,
+      disabled,
+      // Пришла первая страница — активен выбранный пункт, если он есть, иначе первый
+      onFirstPage: (rows) =>
+        setActiveIndex(
+          rows === null ? null : (findValueIndex(rows, value) ?? (rows.length > 0 ? 0 : null))
+        ),
+    })
 
-    const selected = useMemo((): SelectOption | null => {
-      if (!value) return null
-      if (picked?.value === value) return picked
-      if (selectedOptionProp?.value === value) return selectedOptionProp
-      const fromList = options.find((o) => o.value === value)
-      return fromList ?? { value, label: value }
-    }, [value, picked, selectedOptionProp, options])
+    const commit = (nextValue: string, option: SelectOption | null) => {
+      setPicked(option)
+      setValue(nextValue, option)
+    }
 
-    const { refs, floatingStyles, basePlacement } = useSelectDropdownFloating({
+    const navigable = !loading && !loadError
+
+    const {
       open,
+      activeIndex,
+      setActiveIndex,
+      focusTrigger,
+      triggerRef: interactionTriggerRef,
+      positionRef,
+      floatingRef,
+      floatingStyles,
+      basePlacement,
+      getTriggerProps,
+      getFloatingProps,
+      getListboxProps,
+      getOptionProps,
+      getSearchProps,
+    } = useSelectInteractions({
+      disabled,
+      closeOnSelect: true,
       placement,
       variant: 'full',
       dropdownWidth,
+      itemCount: navigable ? options.length : 0,
+      // Поиск есть всегда: набор символов уходит в поле поиска, typeahead не нужен
+      typeaheadLabels: null,
+      hasSearch: true,
+      selectedIndex: findValueIndex(options, value),
+      onSelectIndex: (index) => {
+        const option = options[index]
+        // Как у нативного <select>: повторный выбор того же пункта не меняет значение
+        if (option && option.value !== value) commit(option.value, option)
+      },
+      onClear: value && !disabled ? () => commit('', null) : undefined,
+      onOpenChange: setActive,
     })
 
-    useImperativeHandle(ref, () => hiddenSelectRef.current!)
+    const triggerRef = useMergeRefs<HTMLButtonElement>([ref, interactionTriggerRef])
 
-    const emit = useCallback(
-      (v: string, opt: SelectOption | null) => {
-        if (!isControlled) setInternalValue(v)
-        setPicked(v && opt ? opt : null)
-        onChange?.({
-          target: { value: v, name: name ?? '' },
-        } as ChangeEvent<HTMLSelectElement>)
-      },
-      [isControlled, onChange, name]
-    )
+    const selected: SelectOption | null = !value
+      ? null
+      : picked?.value === value
+        ? picked
+        : selectedOptionProp?.value === value
+          ? selectedOptionProp
+          : (options.find((option) => option.value === value) ?? { value, label: value })
 
-    useAsyncSearchSelectDismiss(open, close, triggerRef, refs.floating)
-
-    useAsyncSearchSelectListboxKeyboard({
-      open,
-      options,
-      hi,
-      setHi,
-      loading,
-      loadingMore,
-      loadError,
-      emit,
-      close,
-    })
-
-    const pickOption = useCallback(
-      (opt: SelectOption) => {
-        emit(opt.value, opt)
-        close()
-      },
-      [emit, close]
-    )
-
-    const chevronTransform = open
-      ? placement === 'top'
-        ? undefined
-        : 'rotate(180deg)'
-      : placement === 'top'
-        ? 'rotate(180deg)'
-        : undefined
-
-    const dropdownMaxHeightStyle =
-      dropdownMaxHeight !== undefined
-        ? { ['--select-dropdown-max-height' as string]: formatSize(dropdownMaxHeight) }
-        : undefined
-
-    const dropdownInnerStyle = {
-      ...(dropdownWidth ? { width: dropdownWidth } : {}),
-      ...dropdownMaxHeightStyle,
+    const handleClear = () => {
+      commit('', null)
+      // Кнопка очистки исчезнет вместе со значением — фокус на триггер
+      focusTrigger()
     }
 
-    const listBody = (
-      <AsyncSearchSelectOptionsBody
-        listboxId={listboxId}
-        loading={loading}
-        loadingMore={loadingMore}
-        loadError={loadError}
-        options={options}
-        value={value}
-        hi={hi}
-        optionTextWrap={optionTextWrap}
-        onHighlightLeave={() => setHi(-1)}
-        onPick={pickOption}
-        onOptionHover={setHi}
-      />
-    )
-
-    const dropdown = (
+    const panel = (
       <SelectDropdownPanel
         open={open}
-        setFloatingRef={refs.setFloating}
+        floatingRef={floatingRef}
+        floatingProps={getFloatingProps()}
         floatingStyles={floatingStyles}
         dropdownPortalZIndex={dropdownPortalZIndex}
         basePlacement={basePlacement}
-        dropdownInnerStyle={dropdownInnerStyle}
-        showSearch
-        searchPlaceholder={searchPlaceholder}
-        searchValue={filterText}
-        onSearchChange={setFilterText}
-        searchDisabled={disabled}
+        dropdownWidth={dropdownWidth}
+        dropdownMaxHeight={dropdownMaxHeight}
+        search={{
+          value: filterText,
+          onChange: setFilterText,
+          placeholder: searchPlaceholder,
+          disabled,
+          inputProps: getSearchProps(),
+        }}
         listScrollRef={listScrollRef}
         onListScroll={handleListScroll}
       >
-        {listBody}
+        <SelectOptionList {...getListboxProps()} busy={loading || loadingMore}>
+          {navigable &&
+            options.map((option, index) => {
+              const isSelected = option.value === value
+              return (
+                <SelectOptionRow
+                  key={option.value}
+                  {...getOptionProps(index, isSelected)}
+                  option={option}
+                  selected={isSelected}
+                  active={activeIndex === index}
+                  wrap={optionTextWrap}
+                />
+              )
+            })}
+        </SelectOptionList>
+        <SelectListStatus
+          {...getListStatus({ loading, loadingMore, loadError, empty: options.length === 0 })}
+        />
       </SelectDropdownPanel>
     )
 
     return (
-      <div
-        ref={(el) => {
-          if (el) refs.setReference(el)
-        }}
-        className={selectInputContract.className}
-      >
-        <select
-          ref={hiddenSelectRef}
-          tabIndex={-1}
-          aria-hidden
-          className={contractPart(selectInputContract, 'hidden-select')}
-          value={value}
-          onChange={() => {}}
-          {...(name && { name })}
-        >
-          {placeholder !== undefined && <option value="">{placeholder}</option>}
-          {value !== '' && <option value={value}>{selected?.label ?? value}</option>}
-        </select>
-
+      <div ref={positionRef} className={selectInputContract.className}>
+        <SelectFormFields name={name} form={form} values={[value]} />
         <InputField
-          label={label}
-          required={required}
-          requiredMarker={requiredMarker}
-          optional={optional}
-          labelTooltip={labelTooltip}
-          hint={hint}
-          error={error}
-          completed={completed}
-          completedColor={completedColor}
+          {...field}
+          size={size}
           filled={value !== ''}
-          prefix={selected?.icon ?? prefix}
+          prefix={selected?.icon ?? field.prefix}
           suffix={
-            suffix ?? (
-              <span className={contractPart(selectInputContract, 'suffix-group')}>
-                {value !== '' && (
-                  <button
-                    type="button"
-                    className={contractPart(selectInputContract, 'clear-btn')}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      if (!disabled) emit('', null)
-                    }}
-                    disabled={disabled}
-                    aria-label="Clear selection"
-                    tabIndex={-1}
-                  >
-                    <RiCloseLine size={20} />
-                  </button>
-                )}
-                <RiArrowDownSLine
-                  size={20}
-                  className={contractPart(selectInputContract, 'chevron')}
-                  style={{ transform: chevronTransform }}
-                />
-              </span>
+            field.suffix ?? (
+              <SelectSuffix
+                open={open}
+                placement={placement}
+                showClear={value !== ''}
+                disabled={disabled}
+                onClear={handleClear}
+              />
             )
           }
-          size={size}
-          disabled={disabled}
-          className={className}
-          id={idProp}
         >
           {(_fieldId, control) => (
-            <button
+            <SelectTrigger
               ref={triggerRef}
-              type="button"
-              {...control}
-              role="combobox"
-              aria-label={triggerAriaLabel}
-              aria-expanded={open}
-              aria-haspopup="listbox"
-              aria-controls={open ? listboxId : undefined}
-              aria-activedescendant={hi >= 0 ? `${listboxId}-option-${hi}` : undefined}
+              {...getTriggerProps({
+                ...triggerProps,
+                ...control,
+                'aria-describedby': joinIds(control['aria-describedby'], ariaDescribedBy),
+              })}
+              variant="full"
+              open={open}
+              placement={placement}
+              size={size}
               disabled={disabled}
-              data-error={!!error || undefined}
-              className={contractPart(selectInputContract, 'trigger')}
-              onClick={() => {
-                if (!disabled) (open ? close : openDropdown)()
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault()
-                  if (!disabled) (open ? close : openDropdown)()
-                }
-                if (e.key === 'ArrowDown' && !open) {
-                  e.preventDefault()
-                  if (!disabled) openDropdown()
-                }
-              }}
-            >
-              <span
-                className={contractPart(selectInputContract, 'trigger-text')}
-                data-placeholder={!selected && placeholder ? true : undefined}
-              >
-                {selected ? selected.label : (placeholder ?? '')}
-              </span>
-            </button>
+              text={selected ? selected.label : (placeholder ?? '')}
+              isPlaceholder={!selected && !!placeholder}
+              placeholderAttrWhenFilled={false}
+              error={!!error}
+            />
           )}
         </InputField>
-
-        {dropdown}
+        {panel}
       </div>
     )
   }

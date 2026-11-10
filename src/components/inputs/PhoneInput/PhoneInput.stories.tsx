@@ -32,6 +32,11 @@ const meta: Meta<typeof PhoneInput> = {
       },
     },
     label: { control: 'text' },
+    countryAriaLabel: {
+      control: 'text',
+      description:
+        'Доступное имя селектора страны. По умолчанию — label поля, без label — название выбранной страны.',
+    },
     hint: { control: 'text' },
     error: { control: 'text' },
     placeholder: { control: 'text' },

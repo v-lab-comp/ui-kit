@@ -71,6 +71,13 @@ Import from **`@v-lab/ui-kit/phone`**. Shell — **[InputField](./input-field)**
 | **`defaultCountry`**             | **`CountryCode`**              | Default country (e.g. **`UZ`**, **`US`**)       |
 | **`countries`**                  | **`CountryCode[]`**            | Restrict country list                           |
 | **`locale`**                     | **`'ru'` \| `'en'` \| `'uz'`** | Country name language (default **`ru`**)        |
+| **`countryAriaLabel`**           | `string`                       | Accessible name of the country select (below)   |
+
+**[InputField](./input-field)** props (**`endBlock`**, **`wrapperClassName`**, **`wrapperStyle`**, …) go to the field shell; **`startBlock`** is taken by the country select.
+
+### Accessibility
+
+The country selector is a **combobox** with the same keyboard and search behaviour as **[SelectInput](./select-input#keyboard-and-accessibility)**. Its accessible name is **`countryAriaLabel`**, otherwise the field **`label`** (via **`aria-labelledby`**), and without a **`label`** — the selected country name.
 
 ### Full type
 

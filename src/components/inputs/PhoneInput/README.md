@@ -21,4 +21,10 @@
 - **Несколько цифр разом без события `paste`** (автозаполнение браузера, подсказка клавиатуры на мобильных): если цифр больше, чем помещается в номер страны, они пробуются как целый номер с кодом страны — `+<цифры>`, затем как национальный номер текущей страны.
 - **Лишняя цифра в полном номере**: на десктопе блокируется в `keydown` (кроме случая, когда есть выделение — тогда ввод заменяет выделенное). На мобильных `key` бывает `Unidentified`, поэтому страховка — обрезка по `TOO_LONG` в `onChange`.
 
+## Селект страны и доступность
+
+Селект страны — `SelectInput variant="compact-label"` в `startBlock`. Его доступное имя (`compositeSelectName` из `base/useCompositeInput.ts`): `countryAriaLabel`, иначе `aria-labelledby` на label поля, иначе `aria-label` с названием выбранной страны. Новых встроенных текстов нет. Поэтому `getByLabelText(label)` в тестах находит и селект, и поле номера — поле ищите по роли: `getByRole('textbox', { name })`.
+
+Пропсы InputField (`endBlock`, `wrapperClassName`, `wrapperStyle`, …) отделяются `splitInputFieldProps` и уходят в обёртку, а не на `<input>`; `startBlock` занят селектом страны.
+
 Логика разбора — в `phoneInputHelpers.tsx`: `parseFullPhone`, `normalizePhoneValue`, `getPhoneCountry`, `getAllowedCountries`.

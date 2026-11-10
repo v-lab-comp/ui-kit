@@ -461,7 +461,12 @@ export const CustomRenderTag: Story = {
         value={tags}
         onChange={setTags}
         renderTag={({ tag, onRemove, disabled: chipDisabled }) => (
-          <Tag variant="gray" disabled={chipDisabled} onDismiss={onRemove} dismissLabel="Удалить">
+          <Tag
+            variant="gray"
+            disabled={chipDisabled}
+            onDismiss={onRemove}
+            dismissLabel={`Удалить ${tagLabel(tag)}`}
+          >
             [{tagLabel(tag)}]
           </Tag>
         )}

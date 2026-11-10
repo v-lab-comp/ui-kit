@@ -1,8 +1,8 @@
 import clsx from 'clsx'
-import { forwardRef } from 'react'
-import { InputField } from '../base/InputField'
+import { forwardRef, useId } from 'react'
+import { InputField, inputFieldLabelId, splitInputFieldProps } from '../base/InputField'
 import { BaseInput } from '../base/BaseInput'
-import { useCompositeInput } from '../base/useCompositeInput'
+import { compositeSelectName, useCompositeInput } from '../base/useCompositeInput'
 import { SelectInput } from '../SelectInput'
 import { contractPart } from '@/theme/contract'
 import { siteInputContract } from '@/theme/contracts/site-input'
@@ -17,109 +17,90 @@ function splitProtocol(url: string, fallback: string): [string, string] {
   return [fallback, url]
 }
 
-export const SiteInput = forwardRef<HTMLInputElement, SiteInputProps>(
-  (
-    {
-      label,
-      required,
-      requiredMarker,
-      optional,
-      labelTooltip,
-      hint,
-      error,
-      completed,
-      completedColor,
-      prefix,
-      suffix,
-      endBlock,
-      protocol = 'https://',
-      protocolOptions,
-      id,
-      size = 'medium',
-      disabled,
-      className,
-      value,
-      defaultValue,
-      onChange,
-      name,
-      ...inputProps
-    },
-    ref
-  ) => {
-    const defaultProtocol = protocolOptions?.[0]?.value ?? protocol
+export const SiteInput = forwardRef<HTMLInputElement, SiteInputProps>((props, ref) => {
+  const {
+    protocol = 'https://',
+    protocolOptions,
+    protocolAriaLabel,
+    value,
+    defaultValue,
+    onChange,
+    name,
+    ...otherProps
+  } = props
+  const [field, inputProps] = splitInputFieldProps(otherProps)
+  const { error, completed, completedColor, disabled } = field
+  const size = field.size ?? 'medium'
+  const defaultProtocol = protocolOptions?.[0]?.value ?? protocol
 
-    const { parts, notifyParts, hiddenInputs } = useCompositeInput<[string, string]>({
-      value: value as string | undefined,
-      defaultValue: defaultValue as string | undefined,
-      onChange,
-      name,
-      split: (url) => splitProtocol(url, defaultProtocol),
-      join: ([proto, path]) => proto + path,
-      formNames: ['protocol'],
-    })
+  const { parts, notifyParts, hiddenInputs } = useCompositeInput<[string, string]>({
+    value: value as string | undefined,
+    defaultValue: defaultValue as string | undefined,
+    onChange,
+    name,
+    split: (url) => splitProtocol(url, defaultProtocol),
+    join: ([proto, path]) => proto + path,
+    formNames: ['protocol'],
+  })
 
-    const [currentProtocol, currentPath] = parts
+  const [currentProtocol, currentPath] = parts
 
-    const showCompletedChrome = !!(completed && !error && !disabled)
+  const showCompletedChrome = !!(completed && !error && !disabled)
+  const generatedFieldId = useId()
+  const fieldId = field.id ?? generatedFieldId
 
-    const startBlock = protocolOptions ? (
-      <SelectInput
-        variant="inline"
-        options={protocolOptions}
-        value={currentProtocol}
-        onChange={(e) => notifyParts([e.target.value, currentPath])}
+  const startBlock = protocolOptions ? (
+    <SelectInput
+      variant="inline"
+      {...compositeSelectName({
+        ariaLabel: protocolAriaLabel,
+        labelId: field.label ? inputFieldLabelId(fieldId) : undefined,
+        fallbackLabel:
+          protocolOptions.find((option) => option.value === currentProtocol)?.label ??
+          currentProtocol,
+      })}
+      options={protocolOptions}
+      value={currentProtocol}
+      onChange={(nextProtocol) => notifyParts([nextProtocol, currentPath])}
+      size={size}
+      disabled={disabled}
+      placement="bottom"
+      completed={showCompletedChrome}
+      completedColor={completedColor}
+    />
+  ) : (
+    currentProtocol
+  )
+
+  return (
+    <>
+      {hiddenInputs}
+      <InputField
+        {...field}
         size={size}
-        disabled={disabled}
-        placement="bottom"
-        completed={showCompletedChrome}
-        completedColor={completedColor}
-      />
-    ) : (
-      currentProtocol
-    )
-
-    return (
-      <>
-        {hiddenInputs}
-        <InputField
-          label={label}
-          required={required}
-          requiredMarker={requiredMarker}
-          optional={optional}
-          labelTooltip={labelTooltip}
-          hint={hint}
-          error={error}
-          completed={completed}
-          completedColor={completedColor}
-          prefix={prefix}
-          suffix={suffix}
-          startBlock={startBlock}
-          endBlock={endBlock}
-          size={size}
-          disabled={disabled}
-          className={clsx(siteInputContract.className, className)}
-          id={id}
-        >
-          {(_fieldId, control) => (
-            <BaseInput
-              ref={ref}
-              {...control}
-              type="text"
-              inputMode="url"
-              autoComplete="url"
-              size={size}
-              hasError={!!error}
-              disabled={disabled}
-              className={contractPart(siteInputContract, 'input-inner')}
-              value={currentPath}
-              onChange={(e) => notifyParts([currentProtocol, e.target.value])}
-              {...inputProps}
-            />
-          )}
-        </InputField>
-      </>
-    )
-  }
-)
+        className={clsx(siteInputContract.className, field.className)}
+        id={fieldId}
+        startBlock={startBlock}
+      >
+        {(_fieldId, control) => (
+          <BaseInput
+            ref={ref}
+            {...control}
+            type="text"
+            inputMode="url"
+            autoComplete="url"
+            size={size}
+            hasError={!!error}
+            disabled={disabled}
+            className={contractPart(siteInputContract, 'input-inner')}
+            value={currentPath}
+            onChange={(e) => notifyParts([currentProtocol, e.target.value])}
+            {...inputProps}
+          />
+        )}
+      </InputField>
+    </>
+  )
+})
 
 SiteInput.displayName = 'SiteInput'

@@ -1,10 +1,17 @@
 export { SelectInput } from './SelectInput'
 export type {
   SelectVariant,
+  SelectPlacement,
   SelectOption,
   SelectOptionWithShortLabel,
   SelectOptionGroup,
   SelectInputOptionsProp,
+  SelectInputSingleValueProps,
+  SelectInputMultipleValueProps,
+  SelectInputMultipleSummaryContext,
+  SelectAccessibleName,
+  SelectOptionalAccessibleName,
+  SelectTriggerNativeProps,
   SelectInputMultipleChangeEvent,
   SelectInputMultipleDisplay,
   SelectInputFullFieldProps,

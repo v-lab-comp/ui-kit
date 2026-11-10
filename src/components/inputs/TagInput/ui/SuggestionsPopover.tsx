@@ -1,43 +1,50 @@
+import { useLayoutEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { RiCheckLine } from '@remixicon/react'
 import { Popover } from '../../../overlays/Popover'
 import type { PopoverProps } from '../../../overlays/Popover/Popover.types'
 import type { NormalizedSuggestion } from '../model'
+import type { SuggestionsListbox } from '../hooks/useSuggestionsListbox'
 import { contractPart } from '@/theme/contract'
 import { tagInputContract } from '@/theme/contracts/tag-input'
 
 export type SuggestionsPopoverProps = {
-  open: boolean
+  listbox: SuggestionsListbox
+  /** Callback-ref listbox: элемент нужен floating-ui для навигации и закрытия по клику снаружи. */
+  listboxRef: (el: HTMLElement | null) => void
   anchorRef: PopoverProps['anchorRef']
-  popoverMinWidth: number | undefined
-  suggestionsListId: string
-  suggestionsLoading: boolean
-  suggestionsLoadingText: ReactNode
-  suggestionsEmptyText: ReactNode
-  filtered: NormalizedSuggestion[]
-  highlightIndex: number
-  isOptionDisabled: (row: NormalizedSuggestion) => boolean
-  /** Галочка справа и пункты не исчезают после выбора. */
-  showCheckmarks: boolean
-  isRowSelected: (row: NormalizedSuggestion) => boolean
+  loadingText: ReactNode
+  emptyText: ReactNode
+  /** Доступное имя listbox — id подписи поля. */
+  labelledBy: string | undefined
+  /** Доступное имя listbox, если у поля нет видимой подписи (`aria-label` поля). */
+  ariaLabel: string | undefined
   onPick: (row: NormalizedSuggestion) => void
 }
 
+/** Список и пункты не забирают фокус у поля — иначе blur закрыл бы список до click. */
+const keepInputFocus = (e: { preventDefault: () => void }) => e.preventDefault()
+
 export function SuggestionsPopover({
-  open,
+  listbox,
+  listboxRef,
   anchorRef,
-  popoverMinWidth,
-  suggestionsListId,
-  suggestionsLoading,
-  suggestionsLoadingText,
-  suggestionsEmptyText,
-  filtered,
-  highlightIndex,
-  isOptionDisabled,
-  showCheckmarks,
-  isRowSelected,
+  loadingText,
+  emptyText,
+  labelledBy,
+  ariaLabel,
   onPick,
 }: SuggestionsPopoverProps) {
+  const { open, loading, options, activeIndex, showCheckmarks } = listbox
+  const [minWidth, setMinWidth] = useState<number>()
+
+  // Ширина попапа — не меньше области тегов
+  useLayoutEffect(() => {
+    if (open && anchorRef.current instanceof HTMLElement) {
+      setMinWidth(anchorRef.current.offsetWidth)
+    }
+  }, [open, anchorRef])
+
   return (
     <Popover
       open={open}
@@ -45,39 +52,47 @@ export function SuggestionsPopover({
       placement="bottom-start"
       offset={4}
       className={contractPart(tagInputContract, 'suggestions-popover')}
-      style={popoverMinWidth != null ? { minWidth: popoverMinWidth } : undefined}
+      style={minWidth != null ? { minWidth } : undefined}
     >
-      {suggestionsLoading ? (
+      {loading ? (
         <div className={contractPart(tagInputContract, 'suggestions-message')} role="status">
-          {suggestionsLoadingText}
+          {loadingText}
         </div>
-      ) : filtered.length === 0 ? (
+      ) : options.length === 0 ? (
         <div className={contractPart(tagInputContract, 'suggestions-message')} role="status">
-          {suggestionsEmptyText}
+          {emptyText}
         </div>
       ) : (
         <ul
-          id={suggestionsListId}
-          role="listbox"
-          className={contractPart(tagInputContract, 'suggestions-list')}
+          ref={listboxRef}
+          {...listbox.getListboxProps({
+            className: contractPart(tagInputContract, 'suggestions-list'),
+            'aria-labelledby': labelledBy,
+            'aria-label': labelledBy ? undefined : ariaLabel,
+            onMouseDown: keepInputFocus,
+          })}
         >
-          {filtered.map((row, i) => {
-            const optDisabled = isOptionDisabled(row)
-            const selected = isRowSelected(row)
+          {options.map((row, i) => {
+            const disabled = listbox.isOptionDisabled(row)
+            const selected = listbox.isOptionSelected(row)
+            const active = i === activeIndex
             return (
               <li key={row.id} role="presentation">
                 <button
+                  ref={(node) => listbox.setOptionElement(i, node)}
                   type="button"
                   role="option"
-                  id={`${suggestionsListId}-opt-${i}`}
-                  aria-selected={selected}
-                  aria-disabled={optDisabled ? true : undefined}
-                  disabled={optDisabled}
-                  data-active={i === highlightIndex ? 'true' : undefined}
+                  id={listbox.optionId(i)}
+                  tabIndex={-1}
+                  // Мультивыбор (галочки) — состояние выбора; иначе выбранным считается подсвеченный пункт
+                  aria-selected={showCheckmarks ? selected : active}
+                  aria-disabled={disabled || undefined}
+                  disabled={disabled}
+                  data-active={active ? 'true' : undefined}
                   data-with-check={showCheckmarks || undefined}
-                  data-disabled={optDisabled || undefined}
+                  data-disabled={disabled || undefined}
                   className={contractPart(tagInputContract, 'suggestion-btn')}
-                  onMouseDown={(ev) => ev.preventDefault()}
+                  onMouseDown={keepInputFocus}
                   onClick={() => onPick(row)}
                 >
                   <span className={contractPart(tagInputContract, 'suggestion-btn-label')}>

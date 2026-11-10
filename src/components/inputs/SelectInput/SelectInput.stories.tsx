@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent } from 'react'
+import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { RiBankCardFill, RiPaypalFill } from '@remixicon/react'
 import {
@@ -11,7 +11,7 @@ import {
   FlagEuropeanUnion,
 } from '@/icons/flags'
 import { SelectInput } from './SelectInput'
-import type { SelectInputMultipleChangeEvent, SelectInputProps } from './SelectInput.types'
+import type { SelectInputProps } from './SelectInput.types'
 import { BASE_INPUT_SIZE_OPTIONS } from '../base/BaseInput'
 import { InfoIcon, GlobeIcon, PersonIcon, FlashIcon } from '@/stories/helpers'
 
@@ -182,7 +182,13 @@ Search filters options; groups with no matches are hidden. **\`variant\`**: **\`
 
 ### Multiple mode
 
-**\`mode="multiple"\`** (**\`variant="full"\`** only): **\`value: string[]\`**, **\`SelectInputMultipleChangeEvent\`**, checkboxes, trigger summary **\`multipleSummaryLabel (N)\`** or **\`multipleSummaryRender\`**; dropdown stays open while toggling.
+**\`mode="multiple"\`** (**\`variant="full"\`** only): **\`value: string[]\`**, **\`onChange(value: string[], options)\`**, checkboxes, trigger summary **\`multipleSummaryLabel (N)\`** or **\`multipleSummaryRender\`**; dropdown stays open while toggling.
+
+### Value, ref, accessibility
+
+**\`onChange(value, option)\`** receives the new value (\`''\` and \`null\` when cleared). **\`ref\`** points to the trigger button; with **\`name\`** the value is submitted via hidden inputs. **\`compact\`** / **\`compact-label\`** / **\`inline\`** require **\`aria-label\`** or **\`aria-labelledby\`**.
+
+Keyboard: ↑ ↓ Home End PageUp PageDown move the active option, Enter / Space select, typing jumps to a matching option (no search field), Escape / Tab close, Delete / Backspace on the trigger clear the value. With a search field, focus moves into it on open and returns to the trigger on close.
 
 ### Stories & docs site
 
@@ -291,7 +297,7 @@ export const Playground: Story = {
         {...({
           ...(args as object),
           value,
-          onChange: (e: ChangeEvent<HTMLSelectElement>) => setValue(e.target.value),
+          onChange: (next: string) => setValue(next),
         } as unknown as SelectInputProps)}
       />
     )
@@ -319,7 +325,7 @@ export const CompletedFull: Story = {
           hint="Рамка оболочки в primary (как у TextInput)."
           options={COUNTRY_OPTIONS}
           value={value}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) => setValue(e.target.value)}
+          onChange={(next) => setValue(next)}
         />
       </div>
     )
@@ -345,8 +351,8 @@ export const CompletedCompact: Story = {
           completedColor="var(--orange-500)"
           options={COUNTRY_OPTIONS}
           value={value}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) => setValue(e.target.value)}
-          triggerAriaLabel="Страна"
+          onChange={(next) => setValue(next)}
+          aria-label="Страна"
         />
       </div>
     )
@@ -370,7 +376,7 @@ export const GroupedOptions: Story = {
           ...(args as object),
           groups: GROUPED_FOOD_OPTIONS,
           value,
-          onChange: (e: ChangeEvent<HTMLSelectElement>) => setValue(e.target.value),
+          onChange: (next: string) => setValue(next),
         } as unknown as SelectInputProps)}
       />
     )
@@ -394,7 +400,6 @@ const MULTI_FIELD_OPTIONS = [
 /** Готовый фрагмент для вкладки Docs (не минифицированный render стори). */
 const MULTIPLE_SUMMARY_DOCS_SOURCE = `import { useState } from 'react'
 import { SelectInput } from '@v-lab/ui-kit'
-import type { SelectInputMultipleChangeEvent } from '@v-lab/ui-kit'
 
 const OPTIONS = [
   { value: 'docDate', label: 'Дата документа', description: 'Входящий' },
@@ -413,7 +418,7 @@ export function ExtraFieldsSelect() {
       hint="Подсказка под полем (скрывается, если задан error)."
       options={OPTIONS}
       value={value}
-      onChange={(e: SelectInputMultipleChangeEvent) => setValue(e.target.value)}
+      onChange={(next) => setValue(next)}
       searchPlaceholder="Поиск поля"
       multipleSummaryLabel="Изменить выбор"
     />
@@ -435,7 +440,7 @@ export const MultipleSummary: Story = {
           hint="Подсказка под полем (скрывается, если задан error)."
           options={MULTI_FIELD_OPTIONS}
           value={value}
-          onChange={(e: SelectInputMultipleChangeEvent) => setValue(e.target.value)}
+          onChange={(next) => setValue(next)}
           searchPlaceholder="Поиск поля"
           multipleSummaryLabel="Изменить выбор"
         />
@@ -447,7 +452,7 @@ export const MultipleSummary: Story = {
     docs: {
       description: {
         story:
-          'Значение — **`string[]`**, **`onChange`** — **`SelectInputMultipleChangeEvent`**. Выпадающая панель **не закрывается** при переключении пунктов. Поле поиска в списке показывается, когда опций **больше одной**.',
+          'Значение — **`string[]`**, **`onChange(value, options)`** получает новый массив. Выпадающая панель **не закрывается** при переключении пунктов. Поле поиска в списке показывается, когда опций **больше одной**.',
       },
       source: {
         type: 'code',
@@ -640,7 +645,7 @@ export const WithPrefix: Story = {
         {...({
           ...(args as object),
           value,
-          onChange: (e: ChangeEvent<HTMLSelectElement>) => setValue(e.target.value),
+          onChange: (next: string) => setValue(next),
         } as unknown as SelectInputProps)}
       />
     )
@@ -667,7 +672,7 @@ export const UserSelect: Story = {
           ...(args as object),
           options: USER_OPTIONS,
           value,
-          onChange: (e: ChangeEvent<HTMLSelectElement>) => setValue(e.target.value),
+          onChange: (next: string) => setValue(next),
         } as unknown as SelectInputProps)}
       />
     )
@@ -693,7 +698,7 @@ export const PaymentMethodSelect: Story = {
           ...(args as object),
           options: PAYMENT_OPTIONS,
           value,
-          onChange: (e: ChangeEvent<HTMLSelectElement>) => setValue(e.target.value),
+          onChange: (next: string) => setValue(next),
         } as unknown as SelectInputProps)}
       />
     )
@@ -800,6 +805,7 @@ export const CompactGallery: Story = {
                 <SelectInput
                   key={`flash-${size}`}
                   variant="compact"
+                  aria-label="Country"
                   size={size}
                   prefix={<FlashIcon />}
                   options={COUNTRY_OPTIONS}
@@ -811,6 +817,7 @@ export const CompactGallery: Story = {
                 <SelectInput
                   key={`globe-${size}`}
                   variant="compact"
+                  aria-label="Country"
                   size={size}
                   prefix={<GlobeIcon />}
                   options={COUNTRY_OPTIONS}
@@ -822,6 +829,7 @@ export const CompactGallery: Story = {
                 <SelectInput
                   key={`text-${size}`}
                   variant="compact"
+                  aria-label="Size"
                   size={size}
                   options={TEXT_OPTIONS}
                   placeholder="—"
@@ -876,6 +884,7 @@ export const CompactWithLabelGallery: Story = {
                 <SelectInput
                   key={`cur-${size}`}
                   variant="compact-label"
+                  aria-label="Currency"
                   size={size}
                   options={CURRENCY_OPTIONS}
                   placeholder="USD"
@@ -887,6 +896,7 @@ export const CompactWithLabelGallery: Story = {
                 <SelectInput
                   key={`lang-${size}`}
                   variant="compact-label"
+                  aria-label="Language"
                   size={size}
                   prefix={<GlobeIcon />}
                   options={LANG_OPTIONS}
@@ -941,6 +951,7 @@ export const InlineGallery: Story = {
                 <SelectInput
                   key={`cur-${size}`}
                   variant="inline"
+                  aria-label="Currency"
                   size={size}
                   options={CURRENCY_OPTIONS}
                   placeholder="USD"
@@ -951,6 +962,7 @@ export const InlineGallery: Story = {
                 <SelectInput
                   key={`lang-${size}`}
                   variant="inline"
+                  aria-label="Language"
                   size={size}
                   prefix={<GlobeIcon />}
                   options={LANG_OPTIONS}
@@ -992,13 +1004,14 @@ export const Compact: Story = {
         {...({
           ...(args as object),
           value,
-          onChange: (e: ChangeEvent<HTMLSelectElement>) => setValue(e.target.value),
+          onChange: (next: string) => setValue(next),
         } as unknown as SelectInputProps)}
       />
     )
   },
   args: {
     variant: 'compact',
+    'aria-label': 'Currency',
     prefix: <GlobeIcon />,
     options: CURRENCY_OPTIONS,
     placeholder: 'USD',
@@ -1029,6 +1042,7 @@ export const Placements: Story = {
         <div style={{ fontSize: 13, fontWeight: 600, color: '#737373' }}>placement="bottom"</div>
         <SelectInput
           variant="compact"
+          aria-label="Country"
           placeholder="Select..."
           options={COUNTRY_OPTIONS}
           placement="bottom"
@@ -1038,6 +1052,7 @@ export const Placements: Story = {
         <div style={{ fontSize: 13, fontWeight: 600, color: '#737373' }}>placement="top"</div>
         <SelectInput
           variant="compact"
+          aria-label="Country"
           placeholder="Select..."
           options={COUNTRY_OPTIONS}
           placement="top"
@@ -1047,6 +1062,7 @@ export const Placements: Story = {
         <div style={{ fontSize: 13, fontWeight: 600, color: '#737373' }}>placement="left"</div>
         <SelectInput
           variant="compact"
+          aria-label="Country"
           placeholder="Select..."
           options={COUNTRY_OPTIONS}
           placement="left"
@@ -1056,6 +1072,7 @@ export const Placements: Story = {
         <div style={{ fontSize: 13, fontWeight: 600, color: '#737373' }}>placement="right"</div>
         <SelectInput
           variant="compact"
+          aria-label="Country"
           placeholder="Select..."
           options={COUNTRY_OPTIONS}
           placement="right"
@@ -1118,7 +1135,7 @@ export const LongLabelsWrapAndMaxHeight: Story = {
         placeholder="Выберите…"
         options={LONG_LABEL_OPTIONS}
         value={value}
-        onChange={(e: ChangeEvent<HTMLSelectElement>) => setValue(e.target.value)}
+        onChange={(next) => setValue(next)}
         optionTextWrap
         dropdownMaxHeight={200}
         hint="optionTextWrap и dropdownMaxHeight — без переопределения классов в CSS приложения"
@@ -1179,7 +1196,7 @@ export const MegaLongLabels: Story = {
         placeholder="Выберите документ…"
         options={MEGA_LONG_OPTIONS}
         value={value}
-        onChange={(e: ChangeEvent<HTMLSelectElement>) => setValue(e.target.value)}
+        onChange={(next) => setValue(next)}
         optionTextWrap
         hint="Проверка dropdown ширины при длинных опциях."
       />

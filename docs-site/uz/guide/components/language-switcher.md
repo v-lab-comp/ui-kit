@@ -40,7 +40,7 @@ export function LocalePicker() {
       value={locale}
       onLocaleChange={setLocale}
       getLocaleLabel={(code) => LABELS[code] ?? code}
-      triggerAriaLabel="Interfeys tili"
+      aria-label="Interfeys tili"
     />
   )
 }
@@ -48,15 +48,15 @@ export function LocalePicker() {
 
 ## Asosiy proplar
 
-| Prop                  | Tip                                         | Tavsif                                                  |
-| --------------------- | ------------------------------------------- | ------------------------------------------------------- |
-| `locales`             | `readonly string[]`                         | Tartibda ko‘rsatiladigan lokal kodlari                  |
-| `value`               | `string`                                    | Joriy lokal (**`locales`** dan biri)                    |
-| `onLocaleChange`      | `(locale: string) => void \| Promise<void>` | Ro‘yxatdan boshqa lokal tanlanganda                     |
-| `getLocaleLabel`      | `(locale: string) => string`                | Tushadigan ro‘yxatdagi to‘liq yozuv                     |
-| `getLocaleShortLabel` | `(locale: string) => string`                | Triggdagi qisqa yozuv (standart — koding bosh harflari) |
-| `prefix`              | `ReactNode`                                 | Triggda chapda ikonka (standart — tarjima ikonkasi)     |
-| `triggerAriaLabel`    | `string`                                    | Ochish tugmasi uchun **`aria-label`**                   |
+| Prop                  | Tip                                         | Tavsif                                                     |
+| --------------------- | ------------------------------------------- | ---------------------------------------------------------- |
+| `locales`             | `readonly string[]`                         | Tartibda ko‘rsatiladigan lokal kodlari                     |
+| `value`               | `string`                                    | Joriy lokal (**`locales`** dan biri)                       |
+| `onLocaleChange`      | `(locale: string) => void \| Promise<void>` | Ro‘yxatdan boshqa lokal tanlanganda                        |
+| `getLocaleLabel`      | `(locale: string) => string`                | Tushadigan ro‘yxatdagi to‘liq yozuv                        |
+| `getLocaleShortLabel` | `(locale: string) => string`                | Triggdagi qisqa yozuv (standart — koding bosh harflari)    |
+| `prefix`              | `ReactNode`                                 | Triggda chapda ikonka (standart — tarjima ikonkasi)        |
+| `aria-label`          | `string`                                    | Ochish tugmasining nomi; majburiy (yoki `aria-labelledby`) |
 
 Qolgan vizual proplar ixcham **`SelectInput`** dan meros (**`variant`**, **`options`**, **`value`**, **`onChange`** berilmaydi — komponent mazmunida hal qilingan). Tip — **`LanguageSwitcherProps`**.
 

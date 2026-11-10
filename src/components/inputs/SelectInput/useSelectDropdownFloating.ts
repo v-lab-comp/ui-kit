@@ -6,34 +6,35 @@ import {
   shift,
   size as sizeMiddleware,
 } from '@floating-ui/react'
-import type { Placement } from '@floating-ui/react'
+import type { OpenChangeReason, Placement } from '@floating-ui/react'
 import { formatSize } from '@/utils/formatSize'
-import type { SelectVariant } from './SelectInput.types'
+import type { SelectPlacement, SelectVariant } from './SelectInput.types'
 
-type PlacementProp = 'bottom' | 'top' | 'left' | 'right'
-
-const placementMap: Record<string, Placement> = {
+const placementMap: Record<SelectPlacement, Placement> = {
   bottom: 'bottom-start',
   top: 'top-start',
   left: 'left-start',
   right: 'right-start',
 }
 
-const flipMap: Record<string, Placement[]> = {
+const flipMap: Record<SelectPlacement, Placement[]> = {
   bottom: ['top-start'],
   top: ['bottom-start'],
   left: ['right-start'],
   right: ['left-start'],
 }
 
+/** Позиционирование выпадающего списка: offset / flip / shift и ширина по якорю */
 export function useSelectDropdownFloating(options: {
   open: boolean
-  placement: PlacementProp
+  /** Открытие / закрытие из interaction-хуков floating-ui (`useClick`, `useDismiss`…) */
+  onOpenChange?: (open: boolean, event?: Event, reason?: OpenChangeReason) => void
+  placement: SelectPlacement
   /** `full` — min ширина по якорю; компактные варианты — только по контенту */
   variant: SelectVariant | undefined
   dropdownWidth?: number
 }) {
-  const { open, placement, variant = 'full', dropdownWidth } = options
+  const { open, onOpenChange, placement, variant = 'full', dropdownWidth } = options
 
   const floatingPlacement: Placement = placementMap[placement] ?? 'bottom-start'
   const flipFallbacks: Placement[] = flipMap[placement] ?? ['top-start']
@@ -41,6 +42,7 @@ export function useSelectDropdownFloating(options: {
 
   const floating = useFloating({
     open,
+    onOpenChange,
     placement: floatingPlacement,
     middleware: [
       offset(6),

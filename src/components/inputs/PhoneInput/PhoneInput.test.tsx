@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { MockInstance } from 'vitest'
@@ -23,7 +23,8 @@ function Controlled(props: PhoneInputProps & { onValue?: (v: string) => void }) 
   )
 }
 
-const input = () => screen.getByLabelText('Phone') as HTMLInputElement
+// Селект страны тоже подписан label поля — поле номера ищем по роли
+const input = () => screen.getByRole('textbox', { name: 'Phone' }) as HTMLInputElement
 const hidden = (name: string) =>
   (document.querySelector(`input[type="hidden"][name="${name}"]`) as HTMLInputElement).value
 
@@ -198,5 +199,59 @@ describe('PhoneInput', () => {
       expect(hidden('country')).toBe('KZ')
       expect(input().value).toBe('')
     })
+  })
+})
+
+describe('PhoneInput: country select', () => {
+  it('is named by the field label', () => {
+    render(<PhoneInput label="Phone" />)
+    const combobox = screen.getByRole('combobox', { name: 'Phone' })
+    expect(combobox).toHaveTextContent('+998')
+    expect(input()).toBeInTheDocument()
+  })
+
+  it('takes the name from countryAriaLabel', () => {
+    render(<PhoneInput label="Phone" countryAriaLabel="Код страны" />)
+    expect(screen.getByRole('combobox', { name: 'Код страны' })).toBeInTheDocument()
+  })
+
+  it('without label is named by the selected country', () => {
+    render(<PhoneInput locale="en" defaultCountry="KZ" />)
+    expect(screen.getByRole('combobox', { name: 'Kazakhstan' })).toHaveTextContent('+7')
+  })
+
+  it('changes the country from the keyboard', async () => {
+    const user = userEvent.setup()
+    const onValue = vi.fn()
+    render(<Controlled value="+998901234567" onValue={onValue} countries={['UZ', 'KZ']} />)
+    const combobox = screen.getByRole('combobox', { name: 'Phone' })
+    combobox.focus()
+    await user.keyboard('{ArrowDown}')
+    expect(screen.getByRole('listbox')).toBeInTheDocument()
+    await user.keyboard('{ArrowDown}{Enter}')
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+    expect(combobox).toHaveFocus()
+    expect(combobox).toHaveTextContent('+7')
+    expect(hidden('country')).toBe('KZ')
+    expect(onValue).toHaveBeenLastCalledWith('')
+  })
+
+  it('finds a country through the search field', async () => {
+    const user = userEvent.setup()
+    render(<PhoneInput label="Phone" name="phone" locale="en" />)
+    await user.click(screen.getByRole('combobox', { name: 'Phone' }))
+    const search = screen.getByRole('combobox', { name: 'Search country...' })
+    await waitFor(() => expect(search).toHaveFocus())
+    await user.keyboard('Kazakh{Enter}')
+    expect(hidden('country')).toBe('KZ')
+    expect(screen.getByRole('combobox', { name: 'Phone' })).toHaveFocus()
+  })
+
+  it('passes InputField props to the field, not to the input', () => {
+    render(<PhoneInput label="Phone" endBlock="ext" wrapperClassName="custom-wrapper" />)
+    expect(screen.getByText('ext')).toBeInTheDocument()
+    expect(input().closest('.custom-wrapper')).not.toBeNull()
+    expect(input()).not.toHaveAttribute('endblock')
+    expect(input()).not.toHaveAttribute('wrapperclassname')
   })
 })

@@ -4,10 +4,10 @@ import type { BaseInputSize } from '../base/BaseInput'
 import type { CountryCode } from 'libphonenumber-js'
 import type { PhoneLocale } from './phoneLocales'
 
-export type PhoneInputProps = Omit<InputFieldProps, 'children'> &
+export type PhoneInputProps = Omit<InputFieldProps, 'children' | 'startBlock'> &
   Omit<
     InputHTMLAttributes<HTMLInputElement>,
-    'value' | 'defaultValue' | 'onChange' | 'name' | 'placeholder' | 'disabled' | 'size'
+    'value' | 'defaultValue' | 'onChange' | 'name' | 'placeholder' | 'disabled' | 'size' | 'prefix'
   > & {
     /** Значение в формате E.164 (напр. +998901234567) */
     value?: string
@@ -23,4 +23,9 @@ export type PhoneInputProps = Omit<InputFieldProps, 'children'> &
     countries?: CountryCode[]
     /** Язык названий стран: 'ru' | 'en' | 'uz'. По умолчанию 'ru' */
     locale?: PhoneLocale
+    /**
+     * Доступное имя селекта страны. По умолчанию селект подписан `label` поля,
+     * без `label` — названием выбранной страны (например «Узбекистан»).
+     */
+    countryAriaLabel?: string
   }

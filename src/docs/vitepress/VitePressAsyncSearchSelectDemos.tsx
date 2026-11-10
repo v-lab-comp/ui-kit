@@ -60,7 +60,7 @@ export function AsyncSearchSelectDocsDemo() {
         hint="Поиск с debounce; список порциями — прокрутите выпадашку вниз для дозагрузки. Превью может обрезать портал."
         searchPlaceholder="Поиск…"
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(next) => setValue(next)}
         loadOptions={loadOptions}
       />
     </div>

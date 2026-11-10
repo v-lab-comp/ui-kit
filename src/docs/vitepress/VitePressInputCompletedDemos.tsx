@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent } from 'react'
+import { useState } from 'react'
 import { SelectInput, TextInput } from '@/components/inputs'
 
 const COUNTRY_OPTIONS = [
@@ -43,7 +43,7 @@ export function InputCompletedDocsDemo() {
         placeholder="Страна…"
         options={COUNTRY_OPTIONS}
         value={selFull}
-        onChange={(e: ChangeEvent<HTMLSelectElement>) => setSelFull(e.target.value)}
+        onChange={(next) => setSelFull(next)}
         hint="Те же пропы, что у **InputField**."
       />
       <SelectInput
@@ -52,8 +52,8 @@ export function InputCompletedDocsDemo() {
         completedColor="var(--orange-500)"
         options={COUNTRY_OPTIONS}
         value={selCompact}
-        onChange={(e: ChangeEvent<HTMLSelectElement>) => setSelCompact(e.target.value)}
-        triggerAriaLabel="Регион (compact)"
+        onChange={(next) => setSelCompact(next)}
+        aria-label="Регион (compact)"
       />
     </div>
   )

@@ -48,7 +48,7 @@ export const Playground: Story = {
     )
   },
   args: {
-    triggerAriaLabel: 'Язык интерфейса',
+    'aria-label': 'Язык интерфейса',
     disabled: false,
   },
 }
@@ -65,7 +65,7 @@ export const Gallery: Story = {
           value={a}
           onLocaleChange={setA}
           getLocaleLabel={(code) => DEMO_LABELS[code] ?? code}
-          triggerAriaLabel="Language"
+          aria-label="Language"
         />
         <LanguageSwitcher
           locales={DEMO_LOCALES}
@@ -73,7 +73,7 @@ export const Gallery: Story = {
           onLocaleChange={setB}
           getLocaleLabel={(code) => DEMO_LABELS[code] ?? code}
           getLocaleShortLabel={(code) => code}
-          triggerAriaLabel="Locale"
+          aria-label="Locale"
           size="medium"
           disabled
         />

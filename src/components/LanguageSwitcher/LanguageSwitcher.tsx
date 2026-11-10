@@ -1,5 +1,4 @@
 import { forwardRef, useCallback, useMemo } from 'react'
-import type { ChangeEvent } from 'react'
 import { RiTranslate2 } from '@remixicon/react'
 import { SelectInput } from '../inputs/SelectInput/SelectInput'
 import type { SelectOptionWithShortLabel } from '../inputs/SelectInput/SelectInput.types'
@@ -7,7 +6,7 @@ import type { LanguageSwitcherProps } from './LanguageSwitcher.types'
 
 const defaultShortLabel = (locale: string) => locale.toUpperCase()
 
-export const LanguageSwitcher = forwardRef<HTMLSelectElement, LanguageSwitcherProps>(
+export const LanguageSwitcher = forwardRef<HTMLButtonElement, LanguageSwitcherProps>(
   function LanguageSwitcher(
     {
       locales,
@@ -32,8 +31,7 @@ export const LanguageSwitcher = forwardRef<HTMLSelectElement, LanguageSwitcherPr
     )
 
     const onChange = useCallback(
-      (e: ChangeEvent<HTMLSelectElement>) => {
-        const next = e.target.value
+      (next: string) => {
         if (next === value) return
         void onLocaleChange(next)
       },

@@ -48,6 +48,8 @@ export function WebsiteField() {
 
 ## Asosiy proplar
 
-To‘liq tip — **`SiteInputProps`**: **`startBlock`** siz **`InputField`** + **`BaseInput`** + **`protocol`** / **`protocolOptions`** (URL ning murakkab qiymati, **`useCompositeInput`** ga qarang). [Kiritish maydonlari](/uz/guide/components/inputs/).
+To‘liq tip — **`SiteInputProps`**: **`startBlock`** siz **`InputField`** + **`BaseInput`** + **`protocol`** / **`protocolOptions`** / **`protocolAriaLabel`** (URL ning murakkab qiymati, **`useCompositeInput`** ga qarang). [Kiritish maydonlari](/uz/guide/components/inputs/).
+
+Protokol tanlovi — **[SelectInput](./select-input)** kabi klaviaturali **combobox**. Nomi: **`protocolAriaLabel`**, aks holda maydon **`label`** i (**`aria-labelledby`** orqali), **`label`** bo‘lmasa — tanlangan opsiyaning **`label`** i.
 
 Manbalar: `src/components/inputs/SiteInput/` · `SiteInput.types.ts`.

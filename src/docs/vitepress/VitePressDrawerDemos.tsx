@@ -1,4 +1,4 @@
-import { useRef, type ChangeEvent, type CSSProperties } from 'react'
+import { useRef, type CSSProperties } from 'react'
 import { RiSettings3Line, RiUserLine } from '@remixicon/react'
 import { Button } from '@/components/Button'
 import { EmailInput } from '@/components/inputs/EmailInput'
@@ -110,7 +110,7 @@ export function DrawerDocsDemo() {
                 placeholder="Выберите роль"
                 options={ROLE_OPTIONS}
                 value=""
-                onChange={(_e: ChangeEvent<HTMLSelectElement>) => {}}
+                onChange={() => {}}
               />
             </div>
           </DrawerBody>
@@ -150,7 +150,7 @@ export function DrawerDocsDemo() {
                 label="Отдел"
                 options={DEPARTMENT_OPTIONS}
                 value="dev"
-                onChange={(_e: ChangeEvent<HTMLSelectElement>) => {}}
+                onChange={() => {}}
               />
             </div>
           </DrawerBody>

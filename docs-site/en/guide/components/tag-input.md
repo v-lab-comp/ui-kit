@@ -78,13 +78,22 @@ export function TagsFromApiExample() {
 
 Use **`suggestionsMatch="server"`** when the API already returns the filtered list.
 
-By default, suggestion rows **stay visible** after selection: a **checkmark** shows on the right; **click** or **Enter** on that row again **removes** the tag. Set **`suggestionsExcludeSelected`** to bring back the old behavior (selected labels are removed from the dropdown; picking only adds).
+By default, suggestion rows **stay visible** after selection: a **checkmark** shows on the right; **click** or **Enter** on the arrow-highlighted row again **removes** the tag. Set **`suggestionsExcludeSelected`** to bring back the old behavior (selected labels are removed from the dropdown; picking only adds).
 
-### Keyboard (with list)
+### Keyboard
 
-- **Enter** / comma / **`;`** — commit **typed** text when the field is non-empty.
-- **Click** / **Tab** (list open) / **Enter** (empty field) on a row: **toggles** the tag when checkmarks are shown; otherwise picks once.
-- **Esc** closes the list.
+With **`suggestions`** the field is a **combobox** with a listbox popup ([WAI-ARIA APG](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/)): focus stays in the field and the highlighted row is exposed via **`aria-activedescendant`**.
+
+- **Enter** / comma / **`;`** — commit the **typed** text when no row is highlighted.
+- **↓** / **↑** — highlight rows (wraps, skips disabled rows); on a closed list they open it at the first / last row.
+- **Enter** on the highlighted row **toggles** it (checkmarks) or picks it once; focus stays in the field. **Tab** picks the highlighted row and moves focus on. Mouse: click a row.
+- **Esc** closes only the list (a parent modal stays open); typing or clicking the field opens it again.
+- **Backspace** in an empty field removes the last tag. **Enter** never submits the surrounding form.
+
+### Accessibility
+
+- The listbox is named by the field **`label`**; rows are not in the Tab order. In checkmark mode the listbox is **`aria-multiselectable`**.
+- Every chip's remove button is named after the tag: **`Remove {label}`** by default, customise with **`removeTagLabel`**; **`renderTag`** receives the same text as **`removeLabel`**. After removing a tag with its button, focus returns to the field.
 
 ### Layout
 

@@ -72,9 +72,10 @@ function FullUrlInput({
   const startBlock = (
     <SelectInput
       variant="inline"
+      aria-label="Протокол"
       options={PROTOCOL_OPTIONS}
       value={protocol}
-      onChange={(e) => notifyParts([e.target.value, namePart, tld])}
+      onChange={(next) => notifyParts([next, namePart, tld])}
       size="medium"
       placement="bottom"
     />
@@ -82,9 +83,10 @@ function FullUrlInput({
   const endBlock = (
     <SelectInput
       variant="inline"
+      aria-label="Доменная зона"
       options={TLD_OPTIONS}
       value={tld}
-      onChange={(e) => notifyParts([protocol, namePart, e.target.value])}
+      onChange={(next) => notifyParts([protocol, namePart, next])}
       size="medium"
       placement="bottom"
     />
@@ -145,9 +147,10 @@ function DomainWithEndBlock({
   const endBlock = endBlockAsSelect ? (
     <SelectInput
       variant="inline"
+      aria-label="Доменная зона"
       options={TLD_OPTIONS}
       value={tld}
-      onChange={(e) => notifyParts([namePart, e.target.value])}
+      onChange={(next) => notifyParts([namePart, next])}
       size="medium"
       placement="bottom"
     />
@@ -203,9 +206,10 @@ const [currentProtocol, currentPath] = parts
 const startBlock = (
   <SelectInput
     variant="inline"
+    aria-label="Протокол"
     options={protocolOptions}
     value={currentProtocol}
-    onChange={(e) => notifyParts([e.target.value, currentPath])}
+    onChange={(next) => notifyParts([next, currentPath])}
     size={size}
     placement="bottom"
   />
@@ -265,9 +269,10 @@ const [namePart, tld] = parts
 const endBlock = (
   <SelectInput
     variant="inline"
+    aria-label="Доменная зона"
     options={TLD_OPTIONS}
     value={tld}
-    onChange={(e) => notifyParts([namePart, e.target.value])}
+    onChange={(next) => notifyParts([namePart, next])}
     size="medium"
     placement="bottom"
   />
@@ -312,12 +317,12 @@ const { parts, notifyParts, hiddenInputs } = useCompositeInput({
 const [protocol, namePart, tld] = parts
 
 const startBlock = (
-  <SelectInput variant="inline" options={PROTOCOL_OPTIONS} value={protocol}
-    onChange={(e) => notifyParts([e.target.value, namePart, tld])} ... />
+  <SelectInput variant="inline" aria-label="Протокол" options={PROTOCOL_OPTIONS} value={protocol}
+    onChange={(next) => notifyParts([next, namePart, tld])} ... />
 )
 const endBlock = (
-  <SelectInput variant="inline" options={TLD_OPTIONS} value={tld}
-    onChange={(e) => notifyParts([protocol, namePart, e.target.value])} ... />
+  <SelectInput variant="inline" aria-label="Доменная зона" options={TLD_OPTIONS} value={tld}
+    onChange={(next) => notifyParts([protocol, namePart, next])} ... />
 )
 
 return (
