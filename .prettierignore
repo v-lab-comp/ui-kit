@@ -1,0 +1,8 @@
+dist/
+storybook-static/
+coverage/
+node_modules/
+
+# lockfiles — форматирование ломает детерминизм
+package-lock.json
+pnpm-lock.yaml

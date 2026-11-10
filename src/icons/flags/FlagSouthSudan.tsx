@@ -1,0 +1,9 @@
+import type { ComponentProps } from 'react'
+import { SvgIcon } from '../SvgIcon'
+
+const svg =
+  '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n<g clip-path="url(#clip0_253_5612)">\n<path d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24Z" fill="#F0F0F0"/>\n<path d="M23.0639 7.3478C21.2466 3.03103 16.9776 0 12 0C8.68622 0 5.68654 1.34339 3.51511 3.51511L6.52026 7.3478H23.0639Z" fill="black"/>\n<path d="M6.55434 16.6088L3.51511 20.4849C5.68654 22.6566 8.68622 24 12 24C16.9943 24 21.2755 20.9487 23.0824 16.6088H6.55434Z" fill="#496E2D"/>\n<path d="M2.60867 8.82605V15.1304H23.5866C23.8558 14.1323 24 13.0831 24 12C24 10.9011 23.852 9.83705 23.5753 8.82605H2.60867Z" fill="#A2001D"/>\n<path d="M3.51468 3.51465C-1.1716 8.20093 -1.1716 15.7989 3.51468 20.4853C5.45123 18.5487 7.31371 16.6862 12 12L3.51468 3.51465Z" fill="#0052B4"/>\n<path d="M3.90871 9.01648L5.37332 11.0603L7.76994 10.2988L6.2788 12.3235L7.74341 14.3674L5.3571 13.5748L3.86591 15.5995L3.88232 13.0849L1.49591 12.2923L3.89235 11.5309L3.90871 9.01648Z" fill="#FFDA44"/>\n</g>\n<defs>\n<clipPath id="clip0_253_5612">\n<rect width="24" height="24" fill="white"/>\n</clipPath>\n</defs>\n</svg>\n'
+
+export function FlagSouthSudan(props: Omit<ComponentProps<typeof SvgIcon>, 'svg' | 'title'>) {
+  return <SvgIcon {...props} svg={svg} title="South Sudan" />
+}

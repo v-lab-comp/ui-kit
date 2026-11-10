@@ -1,0 +1,179 @@
+.root {
+  min-height: 100vh;
+  background: var(--bg-white-0);
+  padding: 40px 24px;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.title {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--text-strong-950);
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.subtitle {
+  margin: 0 0 32px 0;
+  font-size: 14px;
+  color: var(--text-sub-600);
+  line-height: 1.5;
+}
+
+.sectionSeparator {
+  margin: 0;
+  padding: 12px 40px;
+  background: var(--bg-weak-50);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-sub-600);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 24px;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  border-left: 1px solid var(--stroke-soft-200);
+  border-top: 1px solid var(--stroke-soft-200);
+}
+
+.card {
+  flex: 1 1 320px;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 56px 40px;
+  border-right: 1px solid var(--stroke-soft-200);
+  border-bottom: 1px solid var(--stroke-soft-200);
+  background: var(--bg-white-0);
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 500;
+  color: var(--text-strong-950);
+  letter-spacing: -0.005em;
+  line-height: 40px;
+}
+
+.cardDescription {
+  margin: 0 0 -24px 0;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--text-sub-600);
+  letter-spacing: -0.015em;
+  line-height: 24px;
+}
+
+.preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 72px;
+  background: var(--bg-soft-200);
+  border-radius: var(--radius-24);
+}
+
+/* Фоны превью для Colored (как в Figma) */
+.previewBgWeak50 {
+  background: var(--bg-weak-50);
+}
+
+.previewBgBlue50 {
+  background: var(--blue-50);
+}
+
+.previewBgPurple50 {
+  background: var(--purple-50);
+}
+
+.previewBgOrange50 {
+  background: var(--orange-50);
+}
+
+.previewBgGreen50 {
+  background: var(--green-50);
+}
+
+.previewBgPrimaryLighter {
+  background: var(--blue-50);
+}
+
+.previewBox {
+  width: 200px;
+  height: 200px;
+  border-radius: 96px;
+  background: var(--bg-white-0);
+}
+
+/* Regular & Custom: single box-shadow token */
+.regularXSmall {
+  box-shadow: var(--shadow-regular-x-small);
+}
+
+.regularMedium {
+  box-shadow: var(--shadow-regular-medium);
+}
+
+.customXSmall {
+  box-shadow: var(--shadow-x-small), var(--shadow-x-small-inner);
+}
+
+.customSmall {
+  box-shadow: var(--shadow-small), var(--shadow-small-inner);
+}
+
+.customMedium {
+  box-shadow: var(--shadow-medium), var(--shadow-medium-inner);
+}
+
+.customLarge {
+  box-shadow: var(--shadow-large), var(--shadow-large-inner);
+}
+
+/* Colored */
+.coloredGray {
+  box-shadow: var(--shadow-colored-gray);
+}
+
+.coloredPrimary {
+  box-shadow: var(--shadow-colored-primary), var(--shadow-colored-primary-inner);
+}
+
+.coloredBlue {
+  box-shadow: var(--shadow-colored-blue), var(--shadow-colored-blue-inner);
+}
+
+.coloredPurple {
+  box-shadow: var(--shadow-colored-purple), var(--shadow-colored-purple-inner);
+}
+
+.coloredOrange {
+  box-shadow: var(--shadow-colored-orange), var(--shadow-colored-orange-inner);
+}
+
+.coloredGreen {
+  box-shadow: var(--shadow-colored-green), var(--shadow-colored-green-inner);
+}
+
+.cardLarge {
+  box-shadow: var(--shadow-card-large), var(--shadow-card-large-inner);
+}
+
+.tokenName {
+  margin-top: 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-sub-600);
+  font-family: ui-monospace, monospace;
+}

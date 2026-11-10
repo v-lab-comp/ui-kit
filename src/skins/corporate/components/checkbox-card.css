@@ -1,0 +1,58 @@
+:where([data-vl-skin~='corporate']) {
+  .vl-checkbox-card__prefix {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+  }
+
+  /* ── Card ── */
+
+  .vl-checkbox-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px;
+    background-color: var(--bg-white-0);
+    border: 1.5px solid var(--stroke-soft-200);
+    border-radius: var(--radius-12);
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  /* Hover — unchecked, not disabled */
+  .vl-checkbox-card:hover:not(:has(input:checked)):not(:has(input:disabled)) {
+    background-color: var(--bg-weak-50);
+  }
+
+  /* Checked (active selection) */
+  .vl-checkbox-card:has(input:checked):not(:has(input:disabled)) {
+    border-color: var(--primary-base);
+    background-color: var(--bg-white-0);
+  }
+
+  /* Hover on checked */
+  .vl-checkbox-card:hover:has(input:checked):not(:has(input:disabled)) {
+    background-color: var(--primary-alpha-10);
+  }
+
+  /* Disabled */
+  .vl-checkbox-card:has(input:disabled) {
+    cursor: not-allowed;
+    --_checkbox-disabled-color: var(--text-disabled-300);
+  }
+
+  .vl-checkbox-card__card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+  }
+}

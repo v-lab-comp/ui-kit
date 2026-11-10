@@ -1,0 +1,39 @@
+/* Higher specificity (0,1,1) beats BaseInput's (0,1,0) */
+
+:where([data-vl-skin~='corporate']) {
+  input.vl-search-input__input-inner {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    height: auto;
+    padding: 0;
+    border: none;
+    background: transparent;
+    outline: none;
+  }
+
+  /* Hide browser's native clear button for type="search" */
+  input.vl-search-input__input-inner::-webkit-search-cancel-button {
+    display: none;
+  }
+
+  /* ── Keyboard shortcut badge ─────────────────────────────────────────────── */
+
+  .vl-search-input__shortcut {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 6px;
+    border-radius: var(--radius-4);
+    border: 1px solid var(--stroke-soft-200);
+    background-color: var(--bg-white-0);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0;
+    color: var(--text-soft-400);
+    white-space: nowrap;
+    user-select: none;
+  }
+}

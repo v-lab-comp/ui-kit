@@ -1,0 +1,197 @@
+/* Элементы хедера по Figma 3829-27890 — только для демо в сторис */
+
+/* База размера + изоляция от .vp-doc в VitePress (иначе заголовок «раздувается»). */
+
+:where([data-vl-skin~='corporate']) {
+  .vl-page-header-demo {
+    width: 100%;
+    min-width: 0;
+    isolation: isolate;
+    contain: layout style;
+    font-size: 14px;
+    line-height: 20px;
+    /* Если родитель (редкий каскад) растягивает блок по высоте — строка остаётся по центру, не «липнет» к верху. */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /*
+  Явная высота строки = высоте кнопок/иконок (40px). Иначе при «раздувании» левой колонки
+  (VP / line-box) сетка даёт высокую ячейку, текст остаётся сверху, справа блок выглядит центрированным — «криво».
+*/
+  .vl-page-header-demo__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: 40px;
+    align-items: center;
+    align-content: center;
+    column-gap: 12px;
+    min-width: 0;
+  }
+
+  .vl-page-header-demo__title-block {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Одна линия с кнопками: те же 14/20, что и у Schedule / Create Request */
+  .vl-page-header-demo__title {
+    margin: 0;
+    padding: 0;
+    border: none;
+    font-family: var(--font-sans), inherit;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: -0.084px;
+    color: var(--text-strong-950);
+    font-feature-settings:
+      'calt' 0,
+      'liga' 0;
+  }
+
+  .vl-page-header-demo__actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    height: 100%;
+    margin-left: auto;
+  }
+
+  /* Очень узкая колонка (мобильный хедер): два ряда. Порог ниже ширины типичной колонки доков (~640px+), иначе превью ломается визуально. */
+  @container page-header (max-width: 400px) {
+    .vl-page-header-demo__row {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto auto;
+      row-gap: 12px;
+      justify-items: stretch;
+    }
+
+    .vl-page-header-demo__actions {
+      grid-column: 1 / -1;
+      height: auto;
+      margin-left: 0;
+      width: 100%;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+  }
+
+  /* Topbar Item Button: иконка 20×20, padding 10px, radius-10 */
+  .vl-page-header-demo__topbar-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+    border: none;
+    border-radius: var(--radius-10);
+    background: var(--bg-white-0);
+    color: var(--icon-sub-600);
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+
+  .vl-page-header-demo__topbar-btn:hover {
+    background: var(--bg-weak-50);
+  }
+
+  .vl-page-header-demo__topbar-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .vl-page-header-demo__notification-wrap {
+    position: relative;
+  }
+
+  .vl-page-header-demo__notification-dot {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--error-base);
+    pointer-events: none;
+  }
+
+  .vl-page-header-demo__btn-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* Secondary: border, shadow x-small */
+  .vl-page-header-demo__secondary-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 10px;
+    border: 1px solid var(--stroke-soft-200);
+    border-radius: var(--radius-10);
+    background: var(--bg-white-0);
+    color: var(--text-sub-600);
+    font-family: var(--font-sans), inherit;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.084px;
+    font-feature-settings:
+      'calt' 0,
+      'liga' 0;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(10, 13, 20, 0.03);
+  }
+
+  .vl-page-header-demo__secondary-btn:hover {
+    background: var(--bg-weak-50);
+  }
+
+  .vl-page-header-demo__secondary-btn svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  /* Primary */
+  .vl-page-header-demo__primary-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 10px;
+    border: none;
+    border-radius: var(--radius-10);
+    background: var(--primary-base);
+    color: var(--static-white);
+    font-family: var(--font-sans), inherit;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.084px;
+    font-feature-settings:
+      'calt' 0,
+      'liga' 0;
+    cursor: pointer;
+  }
+
+  .vl-page-header-demo__primary-btn:hover {
+    background: var(--primary-darker);
+  }
+
+  .vl-page-header-demo__primary-btn svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+}

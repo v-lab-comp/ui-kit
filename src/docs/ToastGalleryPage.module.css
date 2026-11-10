@@ -1,0 +1,160 @@
+.root {
+  min-height: 100vh;
+  background: var(--bg-weak-50);
+  padding: 48px 24px 64px;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+.inner {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ─── Заголовок ───────────────────────────────────────────────────────────── */
+
+.header {
+  margin-bottom: 40px;
+}
+
+.title {
+  margin: 0 0 8px 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-strong-950);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 15px;
+  color: var(--text-sub-600);
+  line-height: 1.5;
+  max-width: 560px;
+}
+
+/* ─── Секции-карточки ────────────────────────────────────────────────────── */
+
+.section {
+  margin-bottom: 24px;
+  background: var(--bg-white-0);
+  border-radius: var(--radius-12);
+  border: 1px solid var(--stroke-soft-200);
+  padding: 24px 28px;
+  box-shadow: var(--shadow-regular-x-small);
+}
+
+.section:last-of-type {
+  margin-bottom: 0;
+}
+
+.sectionHeader {
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--stroke-soft-200);
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-strong-950);
+  letter-spacing: -0.01em;
+}
+
+.sectionDescription {
+  margin: 6px 0 0 0;
+  font-size: 13px;
+  color: var(--text-sub-600);
+  line-height: 1.45;
+}
+
+.fourColumnsScrollWrap {
+  overflow-x: auto;
+  margin: 0 -4px;
+  padding: 0 4px;
+}
+
+.fourColumns {
+  display: grid;
+  grid-template-columns: 390px 390px 390px 390px;
+  gap: 24px;
+  align-items: start;
+  width: max-content;
+}
+
+.variantsStack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+/* ─── Секция «Вызов» (интерактивная) ──────────────────────────────────────── */
+
+.triggerSection {
+  background: linear-gradient(135deg, var(--bg-white-0) 0%, var(--bg-weak-50) 100%);
+  border-color: var(--stroke-sub-300);
+}
+
+.triggerSection .sectionDescription {
+  margin-bottom: 4px;
+}
+
+.triggerRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: 16px;
+}
+
+/* ─── Controls (живой демо) ──────────────────────────────────────────────── */
+
+.controlsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: var(--bg-white-0);
+  border-radius: var(--radius-8);
+  border: 1px solid var(--stroke-soft-200);
+}
+
+.controlLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.controlName {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-sub-600);
+}
+
+.controlSelect,
+.controlInput {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--stroke-soft-200);
+  font-size: 13px;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  background: var(--bg-white-0);
+  color: var(--text-strong-950);
+  min-width: 140px;
+}
+
+.controlInput {
+  width: 90px;
+  min-width: 0;
+}
+
+.controlCheckbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-bottom: 4px;
+}

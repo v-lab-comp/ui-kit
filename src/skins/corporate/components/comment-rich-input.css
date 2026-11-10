@@ -1,0 +1,244 @@
+/*
+ * Корневая карточка. Высота растёт от контента; при необходимости прежнее поведение
+ * возвращается через CSS-переменные:
+ *   --comment-input-min-height (по умолчанию 0)  — фикс. минимальная высота (было 116px)
+ *   --comment-input-opacity    (по умолчанию 1)  — полупрозрачность неактивного поля (было 0.8)
+ */
+:where([data-vl-skin~='corporate']) {
+  .vl-comment-rich-input {
+    display: flex;
+    min-height: var(--comment-input-min-height, 0);
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    border-radius: var(--radius-12);
+    background: var(--bg-weak-50);
+    opacity: var(--comment-input-opacity, 1);
+  }
+
+  .vl-comment-rich-input__body {
+    display: flex;
+    width: 100%;
+    flex: 1;
+    align-items: flex-start;
+    padding: 8px 10px;
+    box-sizing: border-box;
+  }
+
+  .vl-comment-rich-input__editable-wrap {
+    position: relative;
+    min-height: 2.5rem;
+    width: 100%;
+  }
+
+  .vl-comment-rich-input__editable {
+    position: relative;
+    min-height: 2.5rem;
+    width: 100%;
+    outline: none;
+    font-family: var(--font-sans), inherit;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--text-strong-950);
+  }
+
+  .vl-comment-rich-input__editable[contenteditable='false'] {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .vl-comment-rich-input__editable[data-empty='true']::before {
+    content: attr(data-placeholder);
+    color: var(--text-sub-600);
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  .vl-comment-rich-input__footer {
+    display: flex;
+    width: 100%;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px 8px 10px;
+    box-sizing: border-box;
+  }
+
+  .vl-comment-rich-input__toolbar {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    border-radius: var(--radius-8);
+    padding: 8px 10px;
+    box-shadow: var(--shadow-regular-x-small);
+  }
+
+  .vl-comment-rich-input__toolbar-start {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    margin-right: 4px;
+  }
+
+  .vl-comment-rich-input__toolbar-divider {
+    margin: 0 2px;
+    width: 4px;
+    height: 16px;
+    flex-shrink: 0;
+    border-radius: 2px;
+    background: var(--stroke-soft-200);
+  }
+
+  .vl-comment-rich-input__icon-button {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border: none;
+    border-radius: var(--radius-4);
+    background: transparent;
+    color: var(--text-sub-600);
+    cursor: pointer;
+  }
+
+  .vl-comment-rich-input__icon-button:hover:not(:disabled) {
+    background: var(--bg-soft-200);
+  }
+
+  .vl-comment-rich-input__icon-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  :where(.vl-comment-rich-input__icon-button)[data-active] {
+    background: var(--primary-alpha-16);
+    color: var(--primary-base);
+  }
+
+  .vl-comment-rich-input__align-button {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 4px;
+    border: none;
+    border-radius: var(--radius-4);
+    background: transparent;
+    color: var(--text-sub-600);
+    cursor: pointer;
+  }
+
+  .vl-comment-rich-input__align-button:hover:not(:disabled) {
+    background: var(--bg-soft-200);
+  }
+
+  .vl-comment-rich-input__align-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .vl-comment-rich-input__submit-group {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .vl-comment-rich-input__send-button {
+    display: flex;
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border: none;
+    border-radius: var(--radius-8);
+    background: var(--primary-base);
+    color: var(--text-white-0);
+    cursor: pointer;
+  }
+
+  .vl-comment-rich-input__send-button:hover:not(:disabled) {
+    opacity: 0.9;
+  }
+
+  .vl-comment-rich-input__send-button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .vl-comment-rich-input__send-text-button {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    padding: 0 12px;
+    border: none;
+    border-radius: var(--radius-8);
+    background: var(--primary-base);
+    color: var(--text-white-0);
+    font-family: var(--font-sans), inherit;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .vl-comment-rich-input__send-text-button:hover:not(:disabled) {
+    opacity: 0.9;
+  }
+
+  .vl-comment-rich-input__send-text-button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .vl-comment-rich-input__secondary-button {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    padding: 0 10px;
+    border: none;
+    border-radius: var(--radius-8);
+    background: transparent;
+    color: var(--text-sub-600);
+    font-family: var(--font-sans), inherit;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .vl-comment-rich-input__secondary-button:hover:not(:disabled) {
+    background: var(--bg-soft-200);
+    color: var(--text-strong-950);
+  }
+
+  .vl-comment-rich-input__secondary-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .vl-comment-rich-input__icon-shrink {
+    flex-shrink: 0;
+  }
+
+  .vl-comment-rich-input__counter {
+    flex-shrink: 0;
+    font-family: var(--font-sans), inherit;
+    font-size: 12px;
+    line-height: 1;
+    color: var(--text-sub-600);
+    font-variant-numeric: tabular-nums;
+  }
+
+  :where(.vl-comment-rich-input__counter)[data-error] {
+    color: var(--error-base);
+  }
+}

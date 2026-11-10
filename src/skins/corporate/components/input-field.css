@@ -1,0 +1,278 @@
+/* ── Field container ─────────────────────────────────────────────────────── */
+
+:where([data-vl-skin~='corporate']) {
+  .vl-input-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  /* ── Label row ───────────────────────────────────────────────────────────── */
+
+  .vl-input-field__label-row {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+  }
+
+  .vl-input-field__label {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.084px;
+    color: var(--text-strong-950);
+    cursor: default;
+  }
+
+  .vl-input-field__label[data-disabled] {
+    color: var(--base-input-color-disabled);
+  }
+
+  .vl-input-field__required {
+    margin-left: 3px;
+    color: var(--input-required-color, var(--error-base));
+    vertical-align: super;
+    font-size: 1em;
+    line-height: 1;
+  }
+
+  .vl-input-field__optional {
+    font-weight: 400;
+    color: var(--text-sub-600, #5c5c5c);
+  }
+
+  .vl-input-field__label-tooltip {
+    display: flex;
+    align-items: center;
+    color: var(--icon-soft-400);
+  }
+
+  /* ── Input wrapper ───────────────────────────────────────────────────────── */
+
+  .vl-input-field__wrapper {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    height: var(--base-input-height-medium);
+    gap: var(--base-input-gap-medium);
+    padding: var(--base-input-padding-medium);
+    background-color: var(--bg-white-0);
+    border: var(--base-input-border);
+    border-radius: var(--base-input-radius-medium);
+    box-shadow: var(--base-input-shadow);
+    outline: none;
+    overflow: hidden;
+    transition:
+      var(--base-input-transition),
+      background-color 0.15s ease,
+      box-shadow 0.15s ease;
+    --_input-lh: var(--base-input-height-medium);
+    --_py: 8px;
+    --_px-l: 10px;
+    --_px-r: 8px;
+  }
+
+  .vl-input-field__wrapper:hover:not([data-disabled]):not(:focus-within) {
+    background-color: var(--bg-weak-50);
+    border-color: var(--stroke-sub-300);
+  }
+
+  .vl-input-field__wrapper:focus-within:not([data-disabled]) {
+    border-color: var(--input-focus-border-color, var(--primary-base));
+    background-color: var(--bg-white-0);
+    box-shadow: var(--input-focus-shadow, var(--base-input-focus-shadow));
+  }
+
+  .vl-input-field__wrapper[data-disabled] {
+    background-color: var(--base-input-bg-disabled);
+    border-color: var(--base-input-border-disabled);
+    cursor: not-allowed;
+  }
+
+  /* ── Filled (есть значение) ─────────────────────────────────────────────────── */
+  /* Авто: текстовый input внутри выставляет data-filled. Явно: data-filled на оболочке
+   (Select / AsyncSearchSelect / TagInput, у которых нет обычного input). */
+
+  .vl-input-field__wrapper[data-filled]:not([data-completed]):not([data-error]):not(
+      [data-disabled]
+    ):not(:focus-within),
+  .vl-input-field__wrapper:has(input[data-filled]):not([data-completed]):not([data-error]):not(
+      [data-disabled]
+    ):not(:focus-within) {
+    border-color: var(--base-input-border-filled);
+  }
+
+  /* ── Completed (accent border) ─────────────────────────────────────────────── */
+
+  .vl-input-field__wrapper[data-completed]:not([data-error]):not([data-disabled]) {
+    border-color: var(--input-completed-border, var(--primary-base));
+  }
+
+  .vl-input-field__wrapper[data-completed]:not([data-custom-completed-border]):not(
+      [data-error]
+    ):not([data-disabled]):hover:not(:focus-within) {
+    background-color: var(--bg-white-0);
+    border-color: var(--primary-dark);
+  }
+
+  .vl-input-field__wrapper[data-completed][data-custom-completed-border]:not([data-error]):not(
+      [data-disabled]
+    ):hover:not(:focus-within) {
+    background-color: var(--bg-white-0);
+    border-color: color-mix(in srgb, var(--input-completed-border) 82%, black);
+  }
+
+  .vl-input-field__wrapper[data-completed]:not([data-error]):not([data-disabled]):focus-within {
+    border-color: var(--input-completed-border, var(--primary-base));
+    background-color: var(--bg-white-0);
+    /* Та же фокус-обводка, что у обычного поля — меняется только цвет штатной рамки */
+    box-shadow: var(--input-focus-shadow, var(--base-input-focus-shadow));
+  }
+
+  /* ── Error state ─────────────────────────────────────────────────────────── */
+
+  .vl-input-field__wrapper[data-error],
+  .vl-input-field__wrapper[data-error]:hover,
+  .vl-input-field__wrapper[data-error]:focus-within {
+    border-color: var(--base-input-border-error);
+    background-color: var(--bg-white-0);
+  }
+
+  .vl-input-field__wrapper[data-error]:focus-within {
+    box-shadow: var(--base-input-focus-shadow-error);
+  }
+
+  /* ── Sizes ───────────────────────────────────────────────────────────────── */
+
+  .vl-input-field__wrapper[data-size='big'] {
+    height: var(--base-input-height-big);
+    gap: var(--base-input-gap-big);
+    padding: var(--base-input-padding-big);
+    border-radius: var(--base-input-radius-big);
+    --_input-lh: var(--base-input-height-big);
+    --_py: 10px;
+    --_px-l: 12px;
+    --_px-r: 10px;
+  }
+
+  .vl-input-field__wrapper[data-size='small'] {
+    height: var(--base-input-height-small);
+    gap: var(--base-input-gap-small);
+    padding: var(--base-input-padding-small);
+    border-radius: var(--base-input-radius-small);
+    --_input-lh: var(--base-input-height-small);
+    --_py: 6px;
+    --_px-l: 8px;
+    --_px-r: 6px;
+  }
+
+  /* ── Input line-height (caret height when empty) ───────────────────────────── */
+  /* Inherits --_input-lh from wrapper; ensures caret fills content area */
+
+  .vl-input-field__wrapper input {
+    line-height: var(--_input-lh);
+  }
+
+  /* ── Block sections (startBlock / endBlock) ──────────────────────────────── */
+  /* Visually distinct sections with own background + divider. Works alongside prefix/suffix. */
+
+  .vl-input-field__block-start,
+  .vl-input-field__block-end {
+    display: flex;
+    align-items: center;
+    align-self: stretch;
+    flex-shrink: 0;
+    background-color: var(--bg-weak-50);
+    color: var(--text-sub-600);
+    font-family: var(--base-input-font-family);
+    font-size: var(--base-input-font-size);
+    font-weight: var(--base-input-font-weight);
+    letter-spacing: var(--base-input-letter-spacing);
+    margin-top: calc(-1 * var(--_py));
+    margin-bottom: calc(-1 * var(--_py));
+    padding: 0 10px;
+    transition: background-color 0.15s ease;
+  }
+
+  .vl-input-field__block-start {
+    margin-left: calc(-1 * var(--_px-l));
+    border-right: 1px solid var(--stroke-soft-200);
+  }
+
+  /* When blockStart contains an interactive element (e.g. SelectInput),
+   keep horizontal padding for visual balance — matches static text block. */
+  .vl-input-field__block-start:has(button) {
+    padding: 0 10px;
+  }
+
+  .vl-input-field__block-end {
+    margin-right: calc(-1 * var(--_px-r));
+    border-left: 1px solid var(--stroke-soft-200);
+  }
+
+  .vl-input-field__wrapper:not([data-disabled]) .vl-input-field__block-start:hover,
+  .vl-input-field__wrapper:not([data-disabled]) .vl-input-field__block-end:hover {
+    background-color: var(--neutral-100);
+  }
+
+  .vl-input-field__wrapper:not([data-disabled]) .vl-input-field__block-end:has(button) {
+    cursor: pointer;
+  }
+
+  .vl-input-field__wrapper[data-disabled] .vl-input-field__block-start,
+  .vl-input-field__wrapper[data-disabled] .vl-input-field__block-end {
+    color: var(--text-disabled-300);
+  }
+
+  /* ── Prefix / Suffix ─────────────────────────────────────────────────────── */
+
+  .vl-input-field__addon-start,
+  .vl-input-field__addon-end {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--icon-soft-400);
+  }
+
+  .vl-input-field__wrapper[data-disabled] .vl-input-field__addon-start,
+  .vl-input-field__wrapper[data-disabled] .vl-input-field__addon-end {
+    color: var(--icon-disabled-300);
+  }
+
+  /* ── Hint / Error row ────────────────────────────────────────────────────── */
+
+  .vl-input-field__hint-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .vl-input-field__hint-icon {
+    flex-shrink: 0;
+    color: var(--icon-soft-400);
+  }
+
+  .vl-input-field__hint-text {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0;
+    color: var(--text-sub-600);
+  }
+
+  .vl-input-field__hint-row[data-error] .vl-input-field__hint-icon {
+    color: var(--base-input-border-error);
+  }
+
+  .vl-input-field__hint-row[data-error] .vl-input-field__hint-text {
+    color: var(--base-input-border-error);
+  }
+}

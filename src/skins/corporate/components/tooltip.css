@@ -1,0 +1,31 @@
+/* ── Tooltip ───────────────────────────────────────────────────────────────── */
+
+:where([data-vl-skin~='corporate']) {
+  .vl-tooltip {
+    z-index: var(--z-tooltip);
+    background-color: var(--bg-strong-950);
+    color: var(--text-white-0);
+    border-radius: var(--radius-6);
+    padding: 8px 12px;
+    font-size: 12px;
+    line-height: 1.4;
+    white-space: nowrap;
+    pointer-events: none;
+    max-width: 200px;
+    word-break: break-word;
+    white-space: normal;
+    /* Только opacity: иначе transform в keyframes перебивает translate3d от Floating UI → тултип уезжает в угол viewport */
+    animation: vl-tooltip-tooltipIn 0.2s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+
+  /* ── Animation ─────────────────────────────────────────────────────────────── */
+}
+
+@keyframes vl-tooltip-tooltipIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

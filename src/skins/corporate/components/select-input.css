@@ -1,0 +1,590 @@
+/* ── Container ─────────────────────────────────────────────────────────────── */
+
+:where([data-vl-skin~='corporate']) {
+  .vl-select-input {
+    position: relative;
+  }
+
+  /* ── Hidden native select (form compatibility) ───────────────────────────── */
+
+  .vl-select-input__hidden-select {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* ── Trigger button (looks like input content) ────────────────────────────── */
+
+  .vl-select-input__trigger {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    height: auto;
+    padding: 0;
+    padding-right: 4px;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: var(--base-input-font-family);
+    font-weight: var(--base-input-font-weight);
+    font-size: var(--base-input-font-size);
+    line-height: var(--_input-lh);
+    letter-spacing: var(--base-input-letter-spacing);
+    color: var(--base-input-color);
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    align-items: center;
+  }
+
+  .vl-select-input__trigger:disabled {
+    cursor: not-allowed;
+    color: var(--base-input-color-disabled);
+  }
+
+  .vl-select-input__trigger:focus {
+    outline: none;
+  }
+
+  .vl-select-input__trigger-text {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .vl-select-input__trigger-text[data-placeholder] {
+    color: var(--text-sub-600);
+  }
+
+  /* ── Suffix group (clear + chevron) ──────────────────────────────────────── */
+
+  .vl-select-input__suffix-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .vl-select-input__clear-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--icon-soft-400);
+    cursor: pointer;
+    border-radius: var(--radius-4);
+    transition:
+      color 0.15s ease,
+      background-color 0.15s ease;
+  }
+
+  .vl-select-input__clear-btn:hover:not(:disabled) {
+    color: var(--icon-strong-950);
+    background-color: var(--bg-weak-50);
+  }
+
+  .vl-select-input__clear-btn:disabled {
+    cursor: not-allowed;
+    color: var(--icon-disabled-300);
+  }
+
+  .vl-select-input__chevron {
+    display: block;
+    flex-shrink: 0;
+    color: var(--icon-soft-400);
+    pointer-events: none;
+    transition: transform 0.2s ease;
+  }
+
+  /* ── Compact trigger ─────────────────────────────────────────────────────── */
+
+  .vl-select-input__compact-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 8px;
+    height: 36px;
+    border: 1px solid var(--stroke-soft-200);
+    border-radius: var(--radius-8);
+    background: var(--bg-white-0);
+    box-shadow: var(--base-input-shadow);
+    cursor: pointer;
+    outline: none;
+    white-space: nowrap;
+    transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease,
+      background-color 0.15s ease;
+  }
+
+  .vl-select-input__compact-trigger[data-size='big'] {
+    height: 40px;
+    padding: 0 10px;
+  }
+  .vl-select-input__compact-trigger[data-size='small'] {
+    height: 32px;
+    padding: 0 6px;
+  }
+
+  .vl-select-input__compact-trigger:hover:not(:disabled):not([data-open]) {
+    border-color: var(--stroke-sub-300);
+  }
+
+  .vl-select-input__compact-trigger[data-filled]:not([data-completed]):not([data-error]):not(
+      :disabled
+    ):not([data-open]) {
+    border-color: var(--base-input-border-filled);
+  }
+
+  .vl-select-input__compact-trigger[data-open] {
+    border-color: var(--input-completed-border, var(--primary-base));
+    box-shadow: 0 0 0 3px var(--primary-alpha-16);
+  }
+
+  .vl-select-input__compact-trigger[data-completed]:not([data-error]):not(:disabled) {
+    border-color: var(--input-completed-border, var(--primary-base));
+  }
+
+  .vl-select-input__compact-trigger[data-completed]:not([data-custom-completed-border]):not(
+      [data-error]
+    ):not(:disabled):hover:not([data-open]) {
+    border-color: var(--primary-dark);
+  }
+
+  .vl-select-input__compact-trigger[data-completed][data-custom-completed-border]:not(
+      [data-error]
+    ):not(:disabled):hover:not([data-open]) {
+    border-color: color-mix(in srgb, var(--input-completed-border) 82%, black);
+  }
+
+  .vl-select-input__compact-trigger[data-error] {
+    border-color: var(--error-base);
+  }
+
+  .vl-select-input__compact-trigger[data-error][data-open] {
+    box-shadow: 0 0 0 3px var(--error-lighter);
+  }
+
+  .vl-select-input__compact-trigger:disabled {
+    cursor: not-allowed;
+    background: var(--bg-weak-50);
+    border-color: var(--stroke-soft-200);
+  }
+
+  .vl-select-input__compact-icon {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .vl-select-input__compact-trigger:disabled .vl-select-input__compact-icon {
+    opacity: 0.4;
+  }
+
+  .vl-select-input__compact-text {
+    font-family: var(--base-input-font-family);
+    font-size: var(--base-input-font-size);
+    line-height: var(--_input-lh);
+    letter-spacing: var(--base-input-letter-spacing);
+    color: var(--base-input-color);
+  }
+
+  .vl-select-input__compact-text[data-placeholder] {
+    color: var(--text-sub-600);
+  }
+
+  .vl-select-input__compact-trigger:disabled .vl-select-input__compact-text {
+    color: var(--base-input-color-disabled);
+  }
+
+  /* ── Inline trigger ──────────────────────────────────────────────────────── */
+
+  .vl-select-input__inline-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 4px;
+    height: 36px;
+    /* 1px под ту же рамку, что у compact/full — по умолчанию невидима */
+    border: 1px solid transparent;
+    border-radius: var(--radius-6);
+    background: transparent;
+    cursor: pointer;
+    outline: none;
+    white-space: nowrap;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .vl-select-input__inline-trigger[data-size='big'] {
+    height: 40px;
+  }
+  .vl-select-input__inline-trigger[data-size='small'] {
+    height: 32px;
+  }
+
+  .vl-select-input__inline-trigger:hover:not(:disabled) {
+    background-color: var(--bg-weak-50);
+  }
+
+  .vl-select-input__inline-trigger[data-open] {
+    background-color: var(--bg-weak-50);
+  }
+
+  .vl-select-input__inline-trigger[data-completed]:not([data-error]):not(:disabled) {
+    border-color: var(--input-completed-border, var(--primary-base));
+  }
+
+  .vl-select-input__inline-trigger[data-completed]:not([data-custom-completed-border]):not(
+      [data-error]
+    ):not(:disabled):hover:not([data-open]) {
+    border-color: var(--primary-dark);
+  }
+
+  .vl-select-input__inline-trigger[data-completed][data-custom-completed-border]:not(
+      [data-error]
+    ):not(:disabled):hover:not([data-open]) {
+    border-color: color-mix(in srgb, var(--input-completed-border) 82%, black);
+  }
+
+  .vl-select-input__inline-trigger[data-completed]:not([data-error]):not(:disabled)[data-open] {
+    border-color: var(--input-completed-border, var(--primary-base));
+  }
+
+  .vl-select-input__inline-trigger:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  /* ── Dropdown ─────────────────────────────────────────────────────────────── */
+
+  /* Анимации (фактическое позиционирование через @floating-ui) */
+
+  /* ── Portal wrapper (dropdown in document.body) ───────────────────────────── */
+
+  .vl-select-input__dropdown-portal {
+    /* Positioning via @floating-ui inline style; z-index from token */
+    z-index: var(--z-dropdown);
+  }
+
+  /* ── Base dropdown styles (Figma Dropdown [Overview] 166999-144440) ─────────
+ * Контейнер: padding 4px, radius 8px.
+ * Пункт: padding 8px 16px, min-height 36px, gap 8px, radius 6px.
+ * Текст: 14px Regular, line-height 20px, letter-spacing -0.084px.
+ * Иконка слева: 20×20 или 24×24 по макету.
+ * Hover: bg weak-50. Между пунктами: gap 2px.
+ * -------------------------------------------------------------------------- */
+
+  .vl-select-input__dropdown {
+    z-index: var(--z-dropdown);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: var(--bg-white-0);
+    border: 1px solid var(--stroke-soft-200);
+    border-radius: var(--radius-8);
+    box-shadow: var(--shadow-dropdown);
+    max-height: var(--select-dropdown-max-height, 320px);
+  }
+
+  /* ── Animations by placement ───────────────────────────────────────────────── */
+
+  .vl-select-input__dropdown[data-placement='bottom'] {
+    animation: vl-select-input-dropdownInBottom 0.18s cubic-bezier(0.4, 0, 0.2, 1) both;
+    /* max-content: не растягиваем панель «на 100%» пустыми полями; ширину даёт портал (Floating UI) */
+    width: max-content;
+    max-width: 100%;
+  }
+
+  .vl-select-input__dropdown[data-placement='top'] {
+    animation: vl-select-input-dropdownInTop 0.18s cubic-bezier(0.4, 0, 0.2, 1) both;
+    width: max-content;
+    max-width: 100%;
+  }
+
+  .vl-select-input__dropdown[data-placement='left'] {
+    animation: vl-select-input-dropdownInLeft 0.18s cubic-bezier(0.4, 0, 0.2, 1) both;
+    width: max-content;
+  }
+
+  .vl-select-input__dropdown[data-placement='right'] {
+    animation: vl-select-input-dropdownInRight 0.18s cubic-bezier(0.4, 0, 0.2, 1) both;
+    width: max-content;
+  }
+
+  /* ── Search (компонент SearchInput в SelectDropdownPanel) ─────────────────── */
+
+  .vl-select-input__dropdown-search-field {
+    flex-shrink: 0;
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* ── Options scroll container ─────────────────────────────────────────────── */
+
+  .vl-select-input__options-scroll {
+    flex: 1;
+    min-height: 0;
+    padding: 2px 0 4px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--stroke-soft-200) transparent;
+  }
+
+  .vl-select-input__options-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .vl-select-input__options-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .vl-select-input__options-scroll::-webkit-scrollbar-thumb {
+    background-color: var(--stroke-soft-200);
+    border-radius: var(--radius-full);
+  }
+
+  .vl-select-input__options-scroll::-webkit-scrollbar-thumb:hover {
+    background-color: var(--stroke-sub-300);
+  }
+
+  /* Figma: минимальный зазор между пунктами */
+  .vl-select-input__options-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  /* Заголовок группы (не выбирается), как SelectLabel в shadcn */
+  .vl-select-input__option-group-label {
+    padding: 8px 14px 4px;
+    font-family: var(--font-sans), inherit;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: -0.024px;
+    color: var(--text-sub-600);
+    cursor: default;
+    user-select: none;
+  }
+
+  :where(.vl-select-input__option-group-label)[data-sep] {
+    margin-top: 4px;
+    padding-top: 10px;
+    border-top: 1px solid var(--stroke-soft-200);
+  }
+
+  /* Строка опции: чуть просторнее, в одну линию с полем поиска (padding панели + 14px) */
+
+  .vl-select-input__option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    min-height: 38px;
+    box-sizing: border-box;
+    font-family: var(--font-sans), inherit;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.084px;
+    color: var(--text-strong-950);
+    border-radius: var(--radius-6);
+    cursor: pointer;
+    transition:
+      background-color 0.12s ease,
+      color 0.12s ease;
+  }
+
+  /* Figma Small (36): иконка 20×20 */
+  .vl-select-input__option-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+  }
+
+  .vl-select-input__option-icon svg,
+  .vl-select-input__option-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .vl-select-input__option-text {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  :where(.vl-select-input__option)[data-wrap] {
+    align-items: flex-start;
+  }
+
+  :where(.vl-select-input__option-text)[data-wrap] {
+    white-space: normal;
+    word-break: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .vl-select-input__option:hover,
+  .vl-select-input__option[data-highlighted] {
+    background-color: var(--bg-weak-50);
+  }
+
+  .vl-select-input__option[data-placeholder] {
+    color: var(--text-sub-600);
+  }
+
+  .vl-select-input__option[data-selected] {
+    font-weight: 500;
+  }
+
+  /* ── Multiple mode: checkbox + двухстрочная подпись ───────────────────────── */
+
+  :where(.vl-select-input__option)[data-multi] {
+    align-items: flex-start;
+  }
+
+  .vl-select-input__option-checkbox {
+    flex-shrink: 0;
+    margin-top: 2px;
+    pointer-events: none;
+  }
+
+  .vl-select-input__option-text-stack {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .vl-select-input__option-primary {
+    font-weight: 500;
+    line-height: 20px;
+    color: var(--text-strong-950);
+  }
+
+  :where(.vl-select-input__option-primary)[data-ellipsis] {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .vl-select-input__option-description {
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 400;
+    letter-spacing: -0.045px;
+    color: var(--text-sub-600);
+  }
+
+  :where(.vl-select-input__option-description)[data-ellipsis] {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* ── Lazy load sentinel ──────────────────────────────────────────────────── */
+
+  .vl-select-input__load-more-sentinel {
+    height: 8px;
+    min-height: 8px;
+    padding: 0;
+    margin: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* ── Empty state ──────────────────────────────────────────────────────────── */
+
+  .vl-select-input__empty-state {
+    padding: 22px 20px;
+    font-family: var(--font-sans), inherit;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--text-sub-600);
+    text-align: center;
+  }
+
+  /* ── Async loadOptions (footer hints) ─────────────────────────────────────── */
+
+  .vl-select-input__async-footer-message {
+    padding: 8px 16px 12px;
+    font-family: var(--font-sans), inherit;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--text-sub-600);
+    text-align: center;
+  }
+
+  :where(.vl-select-input__empty-state, .vl-select-input__async-footer-message)[data-error] {
+    color: var(--error-dark);
+  }
+}
+
+@keyframes vl-select-input-dropdownInBottom {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes vl-select-input-dropdownInTop {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes vl-select-input-dropdownInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes vl-select-input-dropdownInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

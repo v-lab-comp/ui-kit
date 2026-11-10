@@ -1,0 +1,59 @@
+/* ============================================================
+   BreadcrumbItem — <li> wrapper
+   ============================================================ */
+
+:where([data-vl-skin~='corporate']) {
+  .vl-breadcrumb-item {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* ============================================================
+   Shared inner layout (icon + label)
+   ============================================================ */
+
+  .vl-breadcrumb-item__inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .vl-breadcrumb-item__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: var(--text-sub-600, #5c5c5c);
+  }
+
+  .vl-breadcrumb-item__label {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.084px; /* -0.6% of 14px */
+    color: var(--text-sub-600, #5c5c5c);
+    white-space: nowrap;
+  }
+
+  /* ============================================================
+   BreadcrumbLink — <a> (clickable, non-current items)
+   ============================================================ */
+
+  .vl-breadcrumb-link {
+    color: var(--text-sub-600, #5c5c5c);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  /* ============================================================
+   BreadcrumbPage — <span> (current page, last item)
+   ============================================================ */
+
+  .vl-breadcrumb-page {
+    color: var(--text-sub-600, #5c5c5c);
+    cursor: default;
+  }
+}

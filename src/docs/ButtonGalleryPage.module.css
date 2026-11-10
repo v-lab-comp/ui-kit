@@ -1,0 +1,130 @@
+/**
+ * Галерея кнопок — только layout.
+ * Hover/Active отображаются через style (getGalleryOverrideStyle) из BUTTON_COLOR_TOKENS.
+ */
+/* ---------- Layout ---------- */
+.root {
+  min-height: 100vh;
+  background: #fff;
+  padding: 40px 24px;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* Встроенное превью в VitePress (полная матрица как в Storybook Docs/ButtonGalleryPage) */
+.rootEmbedded {
+  min-height: auto;
+  padding: 0;
+  background: transparent;
+}
+
+.rootEmbedded .title,
+.rootEmbedded .subtitle {
+  display: none;
+}
+
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Узкое превью VitePress: сетка не сжимает ячейки ниже контента — горизонтальный скролл */
+.rootEmbedded .inner {
+  max-width: none;
+}
+
+.tableScroll {
+  overflow-x: auto;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+.title {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #171717;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.subtitle {
+  margin: 0 0 32px 0;
+  font-size: 14px;
+  color: #5c5c5c;
+  line-height: 1.5;
+}
+
+.section {
+  margin-bottom: 48px;
+}
+
+.sectionTitle {
+  margin: 0 0 16px 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #171717;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.table {
+  min-width: 920px;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.tableHeader {
+  display: grid;
+  grid-template-columns: 120px repeat(4, 1fr);
+  background: #f7f7f7;
+  font-size: 12px;
+  font-weight: 600;
+  color: #5c5c5c;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.cellHeader {
+  padding: 12px 16px;
+  border-right: 1px solid #ebebeb;
+}
+
+.cellHeader:last-child {
+  border-right: none;
+}
+
+.tableRow {
+  display: grid;
+  grid-template-columns: 120px repeat(4, 1fr);
+  border-top: 1px solid #ebebeb;
+}
+
+.tableRow:first-of-type {
+  border-top: none;
+}
+
+.rowLabel {
+  padding: 16px;
+  background: #fafafa;
+  font-size: 13px;
+  font-weight: 500;
+  color: #5c5c5c;
+  border-right: 1px solid #ebebeb;
+}
+
+.cell {
+  padding: 16px;
+  border-right: 1px solid #ebebeb;
+}
+
+.cell:last-child {
+  border-right: none;
+}
+
+.cellButtons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}

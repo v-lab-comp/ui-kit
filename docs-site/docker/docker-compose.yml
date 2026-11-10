@@ -1,0 +1,30 @@
+name: v-lab-ui-kit-docs
+
+# Статика VitePress через nginx внутри контейнера.
+# Сборка с корнем сайта:
+#   DOCS_BASE=/ docker compose -f docs-site/docker/docker-compose.yml up --build -d
+# Подпуть (если сайт не в корне домена):
+#   DOCS_BASE=/my-project/ docker compose -f docs-site/docker/docker-compose.yml up --build -d
+#
+# Образ собирается вручную (CI его не публикует); готовый образ можно подставить в image вместо build.
+
+services:
+  docs:
+    build:
+      context: ../..
+      dockerfile: docs-site/docker/Dockerfile
+      args:
+        DOCS_BASE: ${DOCS_BASE:-/}
+    ports:
+      # Хост-порт выбирает Docker автоматически (свободный). Узнать: docker compose port docs 80
+      - '0:80'
+    restart: unless-stopped
+    environment:
+      DOCS_BASIC_AUTH_PASSWORD: ${DOCS_BASIC_AUTH_PASSWORD:-}
+      DOCS_BASIC_AUTH_USER: ${DOCS_BASIC_AUTH_USER:-docs}
+    healthcheck:
+      test: ['CMD', 'curl', '-fsS', 'http://127.0.0.1/healthz']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s

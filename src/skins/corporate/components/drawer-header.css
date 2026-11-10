@@ -1,0 +1,43 @@
+:where([data-vl-skin~='corporate']) {
+  .vl-drawer-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px var(--drawer-padding-inline, 20px);
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--stroke-soft-200);
+    background: var(--bg-white-0);
+  }
+
+  :where(.vl-drawer-header)[data-close-only] {
+    justify-content: flex-end;
+    border-bottom: none;
+  }
+
+  .vl-drawer-header__icon-slot {
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .vl-drawer-header__text-column {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .vl-drawer-header__title {
+    margin: 0;
+    color: var(--text-strong-950);
+  }
+
+  .vl-drawer-header__subtitle {
+    margin: 0;
+    color: var(--text-sub-600);
+  }
+}

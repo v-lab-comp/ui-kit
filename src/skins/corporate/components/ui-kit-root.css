@@ -1,0 +1,64 @@
+/**
+ * Современный базовый сброс (box-sizing, margin, типографика, медиа, формы).
+ * Ограничен классом .root — глобальные аналоги: reset.css / modern-css-reset.
+ */
+
+/* 1. Use a more-intuitive box-sizing model */
+
+:where([data-vl-skin~='corporate']) {
+  .vl-ui-kit-root,
+  .vl-ui-kit-root *,
+  .vl-ui-kit-root *::before,
+  .vl-ui-kit-root *::after {
+    box-sizing: border-box;
+  }
+
+  /* 2. Remove default margin */
+  .vl-ui-kit-root,
+  .vl-ui-kit-root *:not(dialog) {
+    margin: 0;
+  }
+
+  /* 3. Enable keyword animations */
+  @media (prefers-reduced-motion: no-preference) {
+    .vl-ui-kit-root {
+      interpolate-size: allow-keywords;
+    }
+  }
+
+  .vl-ui-kit-root {
+    /* 4. Increase line-height */
+    line-height: 1.5;
+    /* 5. Improve text rendering */
+    -webkit-font-smoothing: antialiased;
+    /*
+    10. Create a root stacking context
+  */
+    isolation: isolate;
+  }
+
+  /* 6. Improve media defaults */
+  .vl-ui-kit-root :where(img, picture, video, canvas, svg) {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* 7. Inherit fonts for form controls */
+  .vl-ui-kit-root :where(input, button, textarea, select) {
+    font: inherit;
+  }
+
+  /* 8. Avoid text overflows */
+  .vl-ui-kit-root :where(p, h1, h2, h3, h4, h5, h6) {
+    overflow-wrap: break-word;
+  }
+
+  /* 9. Improve line wrapping */
+  .vl-ui-kit-root :where(p) {
+    text-wrap: pretty;
+  }
+
+  .vl-ui-kit-root :where(h1, h2, h3, h4, h5, h6) {
+    text-wrap: balance;
+  }
+}

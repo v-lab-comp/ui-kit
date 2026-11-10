@@ -1,0 +1,40 @@
+/* Figma: Sidebar Header [Sidebar] [1.1] — обёртка 272×88 (expanded) или 80×88 (collapsed) */
+
+:where([data-vl-skin~='corporate']) {
+  .vl-sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px;
+    width: 272px;
+    min-height: 88px;
+    background: var(--bg-white-0);
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  :where(.vl-sidebar-header)[data-collapsed] {
+    flex-direction: column;
+    width: 80px;
+    align-items: center;
+  }
+
+  /* Разделитель внизу: left/right 20px по макету */
+  .vl-sidebar-header__divider {
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    right: 20px;
+    height: 0;
+    border-top: 1px solid var(--stroke-soft-200);
+    pointer-events: none;
+  }
+
+  .vl-sidebar-header__trigger {
+    position: absolute;
+    right: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}

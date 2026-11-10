@@ -1,0 +1,128 @@
+/* Базовая карточка сайдбара: 248×64, рамка, hover, collapsed */
+
+:where([data-vl-skin~='corporate']) {
+  .vl-sidebar-card {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 64px;
+    overflow: hidden;
+    padding: 12px;
+    gap: 12px;
+    border: 1px solid var(--stroke-soft-200);
+    border-radius: var(--radius-10);
+    background: var(--bg-white-0);
+    color: var(--text-strong-950);
+    font-family: var(--font-sans), inherit;
+    cursor: pointer;
+    text-align: left;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease;
+    box-sizing: border-box;
+  }
+
+  :where(.vl-sidebar-card)[data-unbordered] {
+    border: none;
+  }
+
+  .vl-sidebar-card:hover {
+    background: var(--bg-weak-50);
+    border-color: var(--stroke-soft-200);
+  }
+
+  :where(.vl-sidebar-card)[data-unbordered]:hover {
+    border-color: transparent;
+  }
+
+  .vl-sidebar-card:focus-visible {
+    outline-color: var(--primary-base);
+  }
+
+  .vl-sidebar-card__left-slot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    overflow: hidden;
+  }
+
+  .vl-sidebar-card__content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  /* Правый слот: по Figma 3802-10204 — Compact Button 24×24, иконка внутри 20×20 */
+  .vl-sidebar-card__right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    color: var(--icon-sub-600);
+  }
+
+  .vl-sidebar-card__right svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  :where(.vl-sidebar-card)[data-collapsed] {
+    justify-content: center;
+    width: 64px;
+    min-width: 64px;
+    height: 64px;
+    min-height: 64px;
+  }
+
+  :where(.vl-sidebar-card)[data-collapsed] .vl-sidebar-card__content,
+  :where(.vl-sidebar-card)[data-collapsed] .vl-sidebar-card__right {
+    display: none;
+  }
+
+  :where(.vl-sidebar-card)[data-collapsed] .vl-sidebar-card__left-slot {
+    margin: 0;
+  }
+
+  /* По Figma 3802-10203: Label/Small (title), Paragraph/X Small (subtitle) */
+
+  .vl-sidebar-card__title {
+    font-family: var(--font-sans), inherit;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.084px;
+    color: var(--text-strong-950);
+    font-feature-settings:
+      'calt' 0,
+      'liga' 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Подзаголовок: по Figma — более мягкий серый (второстепенный текст) */
+  .vl-sidebar-card__subtitle {
+    font-family: var(--font-sans), inherit;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0;
+    color: var(--text-soft-400);
+    font-feature-settings:
+      'calt' 0,
+      'liga' 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

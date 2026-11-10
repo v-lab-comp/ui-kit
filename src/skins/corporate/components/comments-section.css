@@ -1,0 +1,280 @@
+:where([data-vl-skin~='corporate']) {
+  .vl-comments-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 4px 0;
+    box-sizing: border-box;
+  }
+
+  .vl-comments-section__skeleton-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .vl-comments-section__skeleton-card {
+    height: 72px;
+    width: 100%;
+    border-radius: var(--radius-16);
+    background: linear-gradient(
+      90deg,
+      var(--bg-weak-50) 0%,
+      var(--bg-soft-200) 50%,
+      var(--bg-weak-50) 100%
+    );
+    background-size: 200% 100%;
+    animation: vl-comments-section-shimmer 1.2s ease-in-out infinite;
+  }
+
+  .vl-comments-section__error-row {
+    display: inline;
+  }
+
+  .vl-comments-section__retry-button {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    font: inherit;
+    color: var(--primary-base);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
+
+  .vl-comments-section__retry-button:hover {
+    opacity: 0.9;
+  }
+
+  .vl-comments-section__empty-centered {
+    text-align: center;
+  }
+
+  .vl-comments-section__list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .vl-comments-section__day-divider-row {
+    display: flex;
+    justify-content: center;
+  }
+
+  .vl-comments-section__day-chip {
+    border-radius: var(--radius-8);
+    background: var(--bg-weak-50);
+    padding: 4px 6px;
+    font-family: var(--font-sans), inherit;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    color: var(--text-strong-950);
+  }
+
+  .vl-comments-section__comment-card {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    gap: 12px;
+    overflow: hidden;
+    border-radius: var(--radius-16);
+    background: var(--bg-weak-50);
+    padding: 8px 10px 8px 10px;
+    box-sizing: border-box;
+  }
+
+  .vl-comments-section__avatar-slot {
+    flex-shrink: 0;
+  }
+
+  .vl-comments-section__body {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .vl-comments-section__author-row {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .vl-comments-section__author-name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: var(--font-sans), inherit;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    color: var(--text-strong-950);
+  }
+
+  .vl-comments-section__comment-html {
+    font-family: var(--font-sans), inherit;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    color: var(--text-sub-600);
+  }
+
+  .vl-comments-section__comment-html p {
+    margin: 0 0 4px;
+  }
+
+  .vl-comments-section__comment-html p:last-child {
+    margin-bottom: 0;
+  }
+
+  .vl-comments-section__comment-html a {
+    color: var(--primary-base);
+    text-decoration: underline;
+  }
+
+  .vl-comments-section__comment-html img {
+    max-width: 100%;
+  }
+
+  /* Сворачивание длинных комментариев: пиксельный max-height из JS (--comment-clamp-max) */
+  :where(.vl-comments-section__comment-html)[data-clamped] {
+    max-height: var(--comment-clamp-max);
+    overflow: hidden;
+  }
+
+  .vl-comments-section__show-more-button {
+    align-self: flex-start;
+    margin: 2px 0 0;
+    padding: 0;
+    border: none;
+    background: none;
+    font-family: var(--font-sans), inherit;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 18px;
+    color: var(--primary-base);
+    cursor: pointer;
+  }
+
+  .vl-comments-section__show-more-button:hover {
+    opacity: 0.9;
+  }
+
+  .vl-comments-section__time-meta {
+    flex-shrink: 0;
+    font-family: var(--font-sans), inherit;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    color: var(--text-sub-600);
+  }
+
+  .vl-comments-section__edited-mark {
+    font-style: italic;
+    color: var(--text-soft-400, var(--text-sub-600));
+  }
+
+  .vl-comments-section__deleted-mark {
+    font-style: italic;
+    color: var(--error-base, var(--text-sub-600));
+  }
+
+  :where(.vl-comments-section__comment-card)[data-deleted] {
+    opacity: 0.7;
+    background: var(--bg-soft-200, var(--bg-weak-50));
+  }
+
+  .vl-comments-section__deleted-placeholder {
+    font-family: var(--font-sans), inherit;
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 20px;
+    color: var(--text-soft-400, var(--text-sub-600));
+  }
+
+  .vl-comments-section__edit-input-root {
+    width: 100%;
+    opacity: 1;
+  }
+
+  .vl-comments-section__menu-trigger {
+    display: flex;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-4);
+    background: transparent;
+    color: var(--text-sub-600);
+    cursor: pointer;
+  }
+
+  .vl-comments-section__menu-trigger:hover:not(:disabled),
+  .vl-comments-section__menu-trigger[aria-expanded='true'] {
+    background: var(--bg-soft-200);
+    color: var(--text-strong-950);
+  }
+
+  .vl-comments-section__menu-trigger:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .vl-comments-section__menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 160px;
+    margin: 0;
+    padding: 4px;
+    list-style: none;
+  }
+
+  .vl-comments-section__menu-item {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    border: none;
+    border-radius: var(--radius-4);
+    background: transparent;
+    color: var(--text-strong-950);
+    font-family: var(--font-sans), inherit;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 18px;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .vl-comments-section__menu-item:hover {
+    background: var(--bg-weak-50);
+  }
+
+  :where(.vl-comments-section__menu-item)[data-danger] {
+    color: var(--error-base, var(--text-strong-950));
+  }
+
+  :where(.vl-comments-section__menu-item)[data-danger]:hover {
+    background: var(--error-lighter, var(--bg-weak-50));
+  }
+}
+
+@keyframes vl-comments-section-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}

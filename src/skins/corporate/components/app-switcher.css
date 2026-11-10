@@ -1,0 +1,297 @@
+/* ─── Root ───────────────────────────────────────────────────────────────────── */
+
+:where([data-vl-skin~='corporate']) {
+  .vl-app-switcher {
+    position: relative;
+    display: inline-block;
+  }
+
+  /* ─── Trigger ──────────────────────────────────────────────────────────────── */
+
+  .vl-app-switcher__trigger {
+    display: flex;
+    align-items: center;
+    height: 44px;
+    gap: 0;
+    overflow: hidden;
+    border-radius: var(--radius-10, 10px);
+    border: 1px solid var(--stroke-soft-200);
+    background: var(--bg-white-0);
+    transition:
+      border-color 0.15s,
+      background 0.15s;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .vl-app-switcher__trigger:hover {
+    border-color: var(--stroke-sub-300);
+  }
+
+  .vl-app-switcher__trigger[aria-expanded='true'] {
+    border-color: var(--stroke-strong-950);
+    background: var(--bg-weak-50);
+  }
+
+  /* ─── Trigger: левая часть (иконка + текст) ─────────────────────────────────── */
+
+  .vl-app-switcher__trigger-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 10px;
+  }
+
+  .vl-app-switcher__trigger-labels {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .vl-app-switcher__trigger-name {
+    white-space: nowrap;
+    line-height: 1;
+    color: var(--text-strong-950);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .vl-app-switcher__trigger-description {
+    white-space: nowrap;
+    font-size: 11px;
+    line-height: 1;
+    color: var(--text-soft-400);
+  }
+
+  /* ─── Trigger: разделитель ───────────────────────────────────────────────────── */
+
+  .vl-app-switcher__trigger-divider {
+    width: 1px;
+    height: 20px;
+    flex-shrink: 0;
+    background: var(--stroke-soft-200);
+    margin: 0 4px;
+  }
+
+  /* ─── Trigger: кнопка-сетка ─────────────────────────────────────────────────── */
+
+  .vl-app-switcher__trigger-grid {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 10px;
+    color: var(--text-soft-400);
+    transition:
+      background 0.15s,
+      color 0.15s;
+  }
+
+  .vl-app-switcher__trigger:hover .vl-app-switcher__trigger-grid {
+    background: var(--bg-weak-50);
+  }
+
+  .vl-app-switcher__trigger[aria-expanded='true'] .vl-app-switcher__trigger-grid {
+    color: var(--text-strong-950);
+  }
+
+  /* ─── Promo banner ───────────────────────────────────────────────────────────── */
+
+  .vl-app-switcher__promo {
+    border-radius: var(--radius-10, 10px);
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    background: var(
+      --promo-gradient,
+      linear-gradient(
+        135deg,
+        var(--primary-dark, #0b4fd4),
+        var(--primary-base, #0b5fff),
+        var(--primary-dark, #0b4fd4)
+      )
+    );
+    background-size: 300% 300%;
+    animation: vl-app-switcher-promoShimmer 6s ease infinite;
+    overflow: hidden;
+  }
+
+  .vl-app-switcher__promo-title {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: #fff;
+    margin: 0;
+  }
+
+  .vl-app-switcher__promo-subtitle {
+    font-size: 11px;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 2px 0 0;
+  }
+
+  /* ─── Dropdown ───────────────────────────────────────────────────────────────── */
+
+  .vl-app-switcher__dropdown {
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 8px);
+    z-index: var(--z-dropdown, 5);
+    width: 280px;
+    transform: translateX(-50%);
+    overflow: hidden;
+    border-radius: var(--radius-16, 16px);
+    border: 1px solid var(--stroke-soft-200);
+    background: var(--bg-white-0);
+    padding: 12px;
+    box-shadow: var(--shadow-dropdown);
+  }
+
+  .vl-app-switcher__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+  }
+
+  /* ─── App item ───────────────────────────────────────────────────────────────── */
+
+  .vl-app-switcher__item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    border-radius: var(--radius-10, 10px);
+    padding: 10px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .vl-app-switcher__item:hover:not(:disabled) {
+    background: var(--bg-weak-50);
+  }
+
+  .vl-app-switcher__item[data-active='true'] {
+    background: var(--bg-weak-50);
+  }
+
+  .vl-app-switcher__item:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+    filter: grayscale(1);
+  }
+
+  .vl-app-switcher__item-label {
+    width: 100%;
+    text-align: center;
+    line-height: 1.3;
+    font-size: 13px;
+    color: var(--text-sub-600);
+  }
+
+  .vl-app-switcher__item[data-active='true'] .vl-app-switcher__item-label {
+    color: var(--text-strong-950);
+    font-weight: 500;
+  }
+
+  .vl-app-switcher__item:disabled .vl-app-switcher__item-label {
+    color: var(--text-disabled-300);
+  }
+
+  /* ─── App icon ───────────────────────────────────────────────────────────────── */
+
+  .vl-app-switcher__icon-wrap {
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+  }
+
+  .vl-app-switcher__icon-img {
+    object-fit: cover;
+    display: block;
+  }
+
+  .vl-app-switcher__icon-initial {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-weight: 600;
+    color: var(--bg-white-0);
+    background: var(--app-icon-color, var(--primary-base));
+  }
+
+  /* Обёртка для ReactNode иконки — фиксирует размер и форму */
+  .vl-app-switcher__icon-node {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  /* ─── Active indicator dot ───────────────────────────────────────────────────── */
+
+  .vl-app-switcher__active-dot {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--bg-white-0);
+    background: var(--success-base, #12b76a);
+  }
+
+  /* ─── Badge ──────────────────────────────────────────────────────────────────── */
+
+  .vl-app-switcher__badge {
+    position: absolute;
+    right: 6px;
+    top: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 16px;
+    height: 16px;
+    border-radius: 100px;
+    background: var(--error-base, #f04438);
+    padding: 0 4px;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--bg-white-0);
+  }
+
+  /* ─── "Soon" label ───────────────────────────────────────────────────────────── */
+
+  .vl-app-switcher__soon-label {
+    position: absolute;
+    top: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    border-radius: 100px;
+    background: var(--bg-strong-950, #0d0d12);
+    padding: 1px 6px;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--bg-white-0);
+  }
+}
+
+@keyframes vl-app-switcher-promoShimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

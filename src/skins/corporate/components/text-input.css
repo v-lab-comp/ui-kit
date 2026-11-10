@@ -1,0 +1,14 @@
+/* ── BaseInput override (bare inside InputField wrapper) ──────────────────── */
+/* Higher specificity (0,1,1) beats BaseInput's (0,1,0) — no !important needed */
+:where([data-vl-skin~='corporate']) {
+  input.vl-text-input__input-inner {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    height: auto;
+    padding: 0;
+    border: none;
+    background: transparent;
+    outline: none;
+  }
+}

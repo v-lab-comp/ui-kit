@@ -1,0 +1,345 @@
+/* Растягивается на всю ширину контейнера: и в block, и во flex (flex: 1) */
+:where([data-vl-skin~='corporate']) {
+  .vl-table {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    align-self: stretch;
+    flex: 1 1 0%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-sizing: border-box;
+  }
+
+  .vl-table__root {
+    width: 100%;
+    max-width: 100%;
+    border-radius: var(--radius-8);
+    overflow: hidden;
+    border: 1px solid var(--stroke-soft-200);
+    background-color: var(--bg-white-0);
+    box-sizing: border-box;
+  }
+
+  /* Нативный скролл (верт. + гориз.) при заданном maxHeight */
+  :where(.vl-table__root)[data-scroll] {
+    overflow: auto;
+  }
+
+  /* Sticky-шапка: держится при вертикальном скролле */
+  :where(.vl-table__root)[data-scroll] .vl-table__th {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+  }
+
+  .vl-table__table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  /* Sticky-колонка: держится при горизонтальном скролле.
+   Фон обязателен — иначе сквозь ячейку видно прокручиваемый контент. */
+  :where(.vl-table__th, .vl-table__td)[data-sticky-left] {
+    position: sticky;
+    z-index: var(--z-raised);
+    background-color: var(--bg-white-0);
+  }
+
+  .vl-table__th[data-sticky-left] {
+    background-color: var(--bg-weak-50);
+  }
+
+  /* Угол (sticky-шапка + sticky-колонка) — поверх остальных шапок при гориз. скролле */
+  :where(.vl-table__root)[data-scroll] .vl-table__th[data-sticky-left] {
+    z-index: var(--z-sidebar);
+  }
+
+  /* Разделитель у края последней sticky-колонки */
+  :where(.vl-table__th, .vl-table__td)[data-sticky-left-last] {
+    box-shadow: inset -1px 0 0 0 var(--stroke-soft-200);
+  }
+
+  /* Sticky-ячейки наследуют фон строки. Полупрозрачные подсветки накладываем
+   на белый — иначе сквозь ячейку виден прокручиваемый контент. */
+  :where(.vl-table__tr)[data-clickable]:hover
+    :where(.vl-table__th, .vl-table__td)[data-sticky-left] {
+    background-color: var(--bg-weak-50);
+  }
+
+  :where(.vl-table__tr)[data-active] :where(.vl-table__th, .vl-table__td)[data-sticky-left] {
+    background:
+      linear-gradient(var(--primary-alpha-10), var(--primary-alpha-10)), var(--bg-white-0);
+  }
+
+  :where(.vl-table__tr)[data-active][data-clickable]:hover
+    :where(.vl-table__th, .vl-table__td)[data-sticky-left] {
+    background:
+      linear-gradient(var(--primary-alpha-16), var(--primary-alpha-16)), var(--bg-white-0);
+  }
+
+  .vl-table__th {
+    padding: 8px 12px;
+    background-color: var(--bg-weak-50);
+    font-family: var(--font-sans), inherit;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.084px;
+    color: var(--text-sub-600);
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  :where(.vl-table__th)[data-sortable] {
+    padding: 0;
+  }
+
+  :where(.vl-table__th)[data-reorderable] {
+    cursor: grab;
+  }
+
+  :where(.vl-table__th)[data-reorderable]:active {
+    cursor: grabbing;
+  }
+
+  :where(.vl-table__th)[data-drag-over] {
+    box-shadow: inset 2px 0 0 0 var(--primary-base);
+  }
+
+  .vl-table__sort-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+    padding: 8px 12px;
+    background: none;
+    border: none;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.12s ease;
+    box-sizing: border-box;
+  }
+
+  .vl-table__sort-btn:hover {
+    background-color: var(--bg-soft-200);
+  }
+
+  .vl-table__sort-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  :where(.vl-table__sort-btn)[data-align='right'] {
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  :where(.vl-table__sort-btn)[data-align='center'] {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .vl-table__sort-icons {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    line-height: 0;
+    margin-left: auto;
+  }
+
+  .vl-table__sort-icon {
+    color: var(--text-soft-400);
+    margin: -2px 0;
+  }
+
+  :where(.vl-table__sort-icon)[data-active] {
+    color: var(--text-strong-950);
+  }
+
+  .vl-table__tr {
+    transition: background 0.12s ease;
+  }
+
+  .vl-table__tr:not(:last-child) td {
+    border-bottom: 1px solid var(--stroke-soft-200);
+  }
+
+  :where(.vl-table__tr)[data-clickable] {
+    cursor: pointer;
+  }
+
+  :where(.vl-table__tr)[data-clickable]:hover {
+    background-color: var(--bg-weak-50);
+  }
+
+  :where(.vl-table__tr)[data-active] {
+    background-color: var(--primary-alpha-10);
+  }
+
+  :where(.vl-table__tr)[data-active][data-clickable]:hover {
+    background-color: var(--primary-alpha-16);
+  }
+
+  .vl-table__td {
+    padding: 12px 20px 12px 12px;
+    font-family: var(--font-sans), inherit;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.084px;
+    color: var(--text-sub-600);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  :where(.vl-table__td)[data-strong] {
+    color: var(--text-strong-950);
+    font-weight: 500;
+  }
+
+  /* Pagination */
+
+  .vl-table__pagination {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .vl-table__pagination-left {
+    display: flex;
+    align-items: center;
+    width: 200px;
+    flex-shrink: 0;
+  }
+
+  .vl-table__pagination-info {
+    font-family: var(--font-sans), inherit;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.084px;
+    color: var(--text-sub-600);
+    white-space: nowrap;
+  }
+
+  .vl-table__pagination-center {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: min-content;
+  }
+
+  .vl-table__btn-group {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--stroke-soft-200);
+    border-radius: var(--radius-8);
+    overflow: hidden;
+    background-color: var(--bg-white-0);
+  }
+
+  .vl-table__page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 32px;
+    padding: 6px;
+    border: none;
+    border-right: 1px solid var(--stroke-soft-200);
+    background-color: var(--bg-white-0);
+    font-family: var(--font-sans), inherit;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    color: var(--text-sub-600);
+    cursor: pointer;
+    transition: background 0.12s ease;
+    flex-shrink: 0;
+  }
+
+  .vl-table__page-btn:last-child {
+    border-right: none;
+  }
+
+  .vl-table__page-btn:hover:not(:disabled):not([data-active]) {
+    background: var(--bg-weak-50);
+  }
+
+  .vl-table__page-btn:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  :where(.vl-table__page-btn)[data-active] {
+    background-color: var(--bg-weak-50);
+    font-weight: 500;
+  }
+
+  .vl-table__ellipsis {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 32px;
+    font-size: 14px;
+    color: var(--text-sub-600);
+    border-right: 1px solid var(--stroke-soft-200);
+    user-select: none;
+  }
+
+  .vl-table__pagination-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    width: 200px;
+    flex-shrink: 0;
+  }
+
+  .vl-table__compact-select {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 6px 6px 6px 10px;
+    background-color: var(--bg-white-0);
+    border: 1px solid var(--stroke-soft-200);
+    border-radius: var(--radius-8);
+    box-shadow: var(--shadow-regular-x-small);
+    font-family: var(--font-sans), inherit;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    color: var(--text-sub-600);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.12s ease;
+  }
+
+  .vl-table__compact-select:hover {
+    background: var(--bg-weak-50);
+  }
+
+  .vl-table__select-overlay {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    cursor: pointer;
+    width: 100%;
+  }
+}

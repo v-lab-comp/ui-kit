@@ -1,0 +1,159 @@
+/*
+ * Оболочка InputField переводится в колонку: тулбар / текст / счётчик.
+ * Специфичность (0,3,0) — размерные правила InputField `.wrapper[data-size='…']` (0,2,0)
+ * задают фиксированную height и padding; иначе поле схлопывалось бы при size big/small.
+ */
+:where([data-vl-skin~='corporate']) {
+  .vl-rich-input__wrapper.vl-rich-input__wrapper.vl-rich-input__wrapper {
+    height: auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0;
+  }
+
+  .vl-rich-input__wrapper {
+    --_rich-line: 1.5em;
+    --_rich-pad-y: 8px;
+    --_rich-pad-x: 10px;
+  }
+
+  .vl-rich-input__wrapper[data-size='big'] {
+    --_rich-pad-y: 10px;
+    --_rich-pad-x: 12px;
+  }
+
+  .vl-rich-input__wrapper[data-size='small'] {
+    --_rich-pad-y: 6px;
+    --_rich-pad-x: 8px;
+  }
+
+  /* ── Тулбар ──────────────────────────────────────────────────────────────── */
+
+  .vl-rich-input__toolbar {
+    display: flex;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2px;
+    padding: 4px var(--_rich-pad-x);
+    border-bottom: 1px solid var(--stroke-soft-200);
+    background: var(--bg-weak-50);
+  }
+
+  :where(.vl-rich-input__toolbar)[data-placement='bottom'] {
+    border-top: 1px solid var(--stroke-soft-200);
+    border-bottom: none;
+  }
+
+  .vl-rich-input__tool-button {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border: none;
+    border-radius: var(--radius-4);
+    background: transparent;
+    color: var(--text-sub-600);
+    cursor: pointer;
+  }
+
+  .vl-rich-input__tool-button:hover:not(:disabled) {
+    background: var(--bg-soft-200);
+  }
+
+  .vl-rich-input__tool-button:disabled {
+    color: var(--icon-disabled-300);
+    cursor: not-allowed;
+  }
+
+  .vl-rich-input__wrapper[data-disabled] .vl-rich-input__toolbar {
+    background: transparent;
+    border-color: var(--base-input-border-disabled);
+  }
+
+  :where(.vl-rich-input__tool-button)[data-on] {
+    background: var(--primary-alpha-16);
+    color: var(--primary-base);
+  }
+
+  /* ── Редактируемая область ───────────────────────────────────────────────── */
+
+  .vl-rich-input__editable {
+    position: relative;
+    box-sizing: border-box;
+    flex: 1;
+    min-height: calc(var(--rich-input-min-rows, 3) * var(--_rich-line) + 2 * var(--_rich-pad-y));
+    padding: var(--_rich-pad-y) var(--_rich-pad-x);
+    overflow-y: auto;
+    outline: none;
+    font-family: var(--base-input-font-family);
+    font-size: var(--base-input-font-size);
+    font-weight: var(--base-input-font-weight);
+    letter-spacing: var(--base-input-letter-spacing);
+    line-height: 1.5;
+    color: var(--base-input-color);
+    overflow-wrap: break-word;
+  }
+
+  .vl-rich-input__editable[data-max-rows] {
+    max-height: calc(var(--rich-input-max-rows) * var(--_rich-line) + 2 * var(--_rich-pad-y));
+  }
+
+  .vl-rich-input__editable[data-empty]::before {
+    content: attr(data-placeholder);
+    position: absolute;
+    top: var(--_rich-pad-y);
+    left: var(--_rich-pad-x);
+    pointer-events: none;
+    color: var(--text-soft-400);
+  }
+
+  /*
+ * Список (и другая структура) создаётся без текста: `data-empty` остаётся — поле правда пустое
+ * по содержимому, — но плейсхолдер лёг бы поверх маркера списка. Убираем именно его.
+ */
+  .vl-rich-input__editable[data-empty]:has(li, img, table, hr)::before {
+    content: none;
+  }
+
+  .vl-rich-input__editable :is(ul, ol) {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  /* Внешний HTML (в т.ч. из Markdown) приходит с блочной разметкой — гасим внешние отступы браузера */
+  .vl-rich-input__editable :is(p, h1, h2, h3, h4, h5, h6, blockquote, pre) {
+    margin: 0;
+  }
+
+  .vl-rich-input__wrapper[data-disabled] .vl-rich-input__editable {
+    color: var(--base-input-color-disabled);
+  }
+
+  .vl-rich-input__wrapper[data-disabled] .vl-rich-input__editable[data-empty]::before {
+    color: var(--base-input-color-disabled);
+  }
+
+  /* ── Счётчик ─────────────────────────────────────────────────────────────── */
+
+  .vl-rich-input__footer {
+    display: flex;
+    flex-shrink: 0;
+    justify-content: flex-end;
+    padding: 0 var(--_rich-pad-x) var(--_rich-pad-y);
+  }
+
+  .vl-rich-input__counter {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--text-sub-600);
+    font-variant-numeric: tabular-nums;
+  }
+
+  :where(.vl-rich-input__counter)[data-error] {
+    color: var(--error-base);
+  }
+}

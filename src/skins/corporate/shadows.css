@@ -1,0 +1,94 @@
+/**
+ * Семантические тени по Figma Design-system—Main—Copy (Shadow Overview 2767-1801).
+ * Regular Shadow, Custom Shadow, Colored Shadows, Card Shadow.
+ */
+[data-vl-skin~='corporate'],
+:where([data-vl-skin~='corporate']) [data-theme='light'] {
+  /* ----- Regular Shadow ----- */
+  --shadow-regular-x-small: 0 1px 2px 0 rgba(10, 13, 20, 0.03);
+  --shadow-regular-small: 0 2px 6px 0 rgba(14, 18, 27, 0.08);
+  --shadow-regular-medium: 0 16px 32px -12px rgba(14, 18, 27, 0.1);
+  --shadow-regular-x-small-soft: 0 1px 4px 0 rgba(14, 18, 27, 0.06);
+  --shadow-dropdown: 0 4px 12px rgba(14, 18, 27, 0.08), 0 2px 4px rgba(14, 18, 27, 0.04);
+
+  /* ----- Custom Shadow (multi-layer) ----- */
+  --shadow-x-small:
+    0 4px 8px -2px rgba(51, 51, 51, 0.06), 0 2px 4px 0 rgba(51, 51, 51, 0.04),
+    0 1px 2px 0 rgba(51, 51, 51, 0.04), 0 0 0 1px var(--faded-lighter, var(--neutral-100));
+  --shadow-x-small-inner: inset 0 -1px 1px -0.5px rgba(51, 51, 51, 0.06);
+
+  --shadow-small:
+    0 0 0 1px rgba(51, 51, 51, 0.04), 0 16px 8px -8px rgba(51, 51, 51, 0.01),
+    0 12px 6px -6px rgba(51, 51, 51, 0.02), 0 5px 5px -2.5px rgba(51, 51, 51, 0.08),
+    0 1px 3px -1.5px rgba(51, 51, 51, 0.16);
+  --shadow-small-inner: inset 0 -0.5px 0.5px 0 rgba(51, 51, 51, 0.08);
+
+  --shadow-medium:
+    0 0 0 1px var(--faded-lighter, var(--neutral-100)), 0 1px 1px 0.5px rgba(51, 51, 51, 0.04),
+    0 3px 3px -1.5px rgba(51, 51, 51, 0.02), 0 6px 6px -3px rgba(51, 51, 51, 0.04),
+    0 12px 12px -6px rgba(51, 51, 51, 0.04), 0 24px 24px -12px rgba(51, 51, 51, 0.04),
+    0 48px 48px -24px rgba(51, 51, 51, 0.04);
+  --shadow-medium-inner: inset 0 -1px 1px -0.5px rgba(51, 51, 51, 0.06);
+
+  --shadow-large:
+    0 0 0 1px rgba(51, 51, 51, 0.04), 0 1px 1px 0.5px rgba(51, 51, 51, 0.04),
+    0 3px 3px -1.5px rgba(51, 51, 51, 0.02), 0 6px 6px -3px rgba(51, 51, 51, 0.04),
+    0 12px 12px -6px rgba(51, 51, 51, 0.04), 0 24px 24px -12px rgba(51, 51, 51, 0.04),
+    0 48px 48px -24px rgba(51, 51, 51, 0.04), 0 96px 96px -32px rgba(51, 51, 51, 0.06);
+  --shadow-large-inner: inset 0 -1px 1px -0.5px rgba(51, 51, 51, 0.06);
+
+  /* ----- Colored shadow base (opacity layers) ----- */
+  --shadow-gray-4: rgba(23, 23, 23, 0.04);
+  --shadow-gray-6: rgba(23, 23, 23, 0.06);
+  --shadow-gray-8: rgba(23, 23, 23, 0.08);
+  --shadow-primary-4: rgba(18, 35, 104, 0.04);
+  --shadow-primary-6: rgba(18, 35, 104, 0.06);
+  --shadow-blue-4: rgba(18, 35, 104, 0.04);
+  --shadow-purple-4: rgba(53, 26, 117, 0.04);
+  --shadow-orange-4: rgba(113, 51, 10, 0.04);
+  --shadow-green-4: rgba(11, 70, 39, 0.04);
+
+  /* ----- Colored Shadows (composite) ----- */
+  --shadow-colored-gray:
+    0 20px 20px -10px var(--shadow-gray-4), 0 10px 10px -5px var(--shadow-gray-4),
+    0 6px 6px -3px var(--shadow-gray-4), 0 3px 3px -1.5px var(--shadow-gray-4),
+    0 1px 1px -0.5px var(--shadow-gray-4), 0 0 0 1px var(--shadow-gray-4);
+  --shadow-colored-gray-inner: inset 0 -1px 1px -0.5px var(--shadow-gray-6);
+
+  --shadow-colored-primary:
+    0 20px 20px -10px var(--shadow-primary-4), 0 10px 10px -5px var(--shadow-primary-4),
+    0 6px 6px -3px var(--shadow-primary-4), 0 3px 3px -1.5px var(--shadow-primary-4),
+    0 1px 1px -0.5px var(--shadow-primary-4), 0 0 0 1px var(--shadow-primary-4);
+  --shadow-colored-primary-inner: inset 0 -1px 1px -0.5px var(--shadow-primary-4);
+
+  --shadow-colored-blue:
+    0 20px 20px -10px var(--shadow-primary-6), 0 10px 10px -5px var(--shadow-primary-4),
+    0 6px 6px -3px var(--shadow-blue-4), 0 3px 3px -1.5px var(--shadow-blue-4),
+    0 1px 1px -0.5px var(--shadow-blue-4), 0 0 0 1px var(--shadow-blue-4);
+  --shadow-colored-blue-inner: inset 0 -1px 1px -0.5px var(--shadow-blue-4);
+
+  --shadow-colored-purple:
+    0 20px 20px -10px var(--shadow-purple-4), 0 10px 10px -5px var(--shadow-purple-4),
+    0 6px 6px -3px var(--shadow-purple-4), 0 3px 3px -1.5px var(--shadow-purple-4),
+    0 1px 1px -0.5px var(--shadow-purple-4), 0 0 0 1px var(--shadow-purple-4);
+  --shadow-colored-purple-inner: inset 0 -1px 1px -0.5px var(--shadow-purple-4);
+
+  --shadow-colored-orange:
+    0 20px 20px -10px var(--shadow-orange-4), 0 10px 10px -5px var(--shadow-orange-4),
+    0 6px 6px -3px var(--shadow-orange-4), 0 3px 3px -1.5px var(--shadow-orange-4),
+    0 1px 1px -0.5px var(--shadow-orange-4), 0 0 0 1px var(--shadow-orange-4);
+  --shadow-colored-orange-inner: inset 0 -1px 1px -0.5px var(--shadow-orange-4);
+
+  --shadow-colored-green:
+    0 20px 20px -10px var(--shadow-green-4), 0 10px 10px -5px var(--shadow-green-4),
+    0 6px 6px -3px var(--shadow-green-4), 0 3px 3px -1.5px var(--shadow-green-4),
+    0 1px 1px -0.5px var(--shadow-green-4), 0 0 0 1px var(--shadow-green-4);
+  --shadow-colored-green-inner: inset 0 -1px 1px -0.5px var(--shadow-green-4);
+
+  /* ----- Card Shadow ----- */
+  --shadow-card-large:
+    0 20px 20px -10px var(--shadow-gray-4), 0 10px 10px -5px var(--shadow-gray-4),
+    0 6px 6px -3px var(--shadow-gray-4), 0 3px 3px -1.5px var(--shadow-gray-4),
+    0 1px 1px -0.5px var(--shadow-gray-4), 0 0 0 1px var(--shadow-gray-8);
+  --shadow-card-large-inner: inset 0 -1px 1px -0.5px var(--shadow-gray-6);
+}

@@ -1,0 +1,8 @@
+:where([data-vl-skin~='corporate']) {
+  .vl-confirm-modal__content {
+    margin-bottom: 0;
+    color: var(--text-sub-600);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+}

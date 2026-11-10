@@ -1,0 +1,39 @@
+:where([data-vl-skin~='corporate']) {
+  .vl-button-group {
+    display: inline-flex;
+  }
+
+  /* Все кнопки внутри группы — убираем скругления через CSS переменную, схлопываем двойные бордеры.
+   Button читает --btn-radius через var(--btn-radius, var(--radius-10)) в skins/corporate/components/button.css */
+  .vl-button-group > * {
+    --btn-radius: 0px 0px 0px 0px;
+    position: relative;
+    z-index: 0;
+  }
+
+  /* Левые скругления — только первый элемент */
+  .vl-button-group > *:first-child {
+    --btn-radius: var(--radius-8) 0px 0px var(--radius-8);
+  }
+
+  /* Правые скругления — только последний элемент */
+  .vl-button-group > *:last-child {
+    --btn-radius: 0px var(--radius-8) var(--radius-8) 0px;
+  }
+
+  /* Одиночный элемент — все скругления */
+  .vl-button-group > *:first-child:last-child {
+    --btn-radius: var(--radius-8);
+  }
+
+  /* Схлопываем двойную границу между соседними кнопками */
+  .vl-button-group > * + * {
+    margin-left: -1px;
+  }
+
+  /* При hover/focus поднимаем z-index чтобы бордер был поверх соседних */
+  .vl-button-group > *:hover,
+  .vl-button-group > *:focus-visible {
+    z-index: 1;
+  }
+}

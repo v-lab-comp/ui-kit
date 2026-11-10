@@ -1,0 +1,3 @@
+# Dev/staging — не индексировать (Storybook static + preview)
+User-agent: *
+Disallow: /

@@ -1,0 +1,196 @@
+/* ============================================================
+   Base
+   ============================================================ */
+
+:where([data-vl-skin~='corporate']) {
+  .vl-button {
+    /* position: relative + hover-ореол (кольцо в цвет палитры) */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 9px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    line-height: 20px;
+    letter-spacing: -0.006em;
+    border-radius: var(--btn-radius, var(--radius-10));
+    cursor: pointer;
+    border: 1px solid transparent;
+    /* Без «placeholder»-outline и без transition на outline — иначе при blur кольцо мигает (анимация к transparent / offset). */
+    outline: none;
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      border-color var(--motion-duration-fast) var(--motion-ease-standard),
+      color var(--motion-duration-fast) var(--motion-ease-standard);
+    white-space: nowrap;
+    user-select: none;
+    text-decoration: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vl-button {
+      transition: none;
+    }
+  }
+
+  /* Shape */
+  :where(.vl-button)[data-shape='circle'] {
+    border-radius: var(--radius-full);
+  }
+  :where(.vl-button)[data-shape='square'] {
+    border-radius: 0;
+  }
+
+  /* Размеры: medium=40 (по умолчанию в .vl-button), small=36, x-small=32, 2x-small=28. Шрифт всегда 14px. */
+  :where(.vl-button)[data-size='small'] {
+    padding: 7px 8px;
+    gap: 4px;
+  }
+
+  :where(.vl-button)[data-size='x-small'] {
+    padding: 5px 8px;
+    gap: 4px;
+  }
+
+  :where(.vl-button)[data-size='2x-small'] {
+    padding: 3px 6px;
+    gap: 2px;
+  }
+
+  /* Клик мышью: фокус есть, :focus-visible нет — не показываем кольцо (избегаем вспышки при уводе фокуса). */
+  .vl-button:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  .vl-button:focus-visible {
+    outline: 2px solid var(--pal-bg-hover);
+    outline-offset: 2px;
+  }
+
+  .vl-button:disabled {
+    cursor: not-allowed;
+    background-color: var(--bg-soft-200);
+    border-color: var(--stroke-soft-200);
+    color: var(--text-disabled-300);
+  }
+
+  /* ============================================================
+   Variants — используют только --pal-* переменные, не знают о цветах.
+   Цвета задаются атрибутом [data-color='{name}'] из palettes.css.
+   ============================================================ */
+
+  /**
+ * Нейтральная палитра — исключение для hover-ореола (как и для рамки stroke ниже).
+ *
+ * Для кольца непригодны обе её переменные: `--pal-base` здесь `--bg-surface-800`
+ * (#262626 — читается как чёрная обводка), а `--pal-bg-hover` это `--bg-weak-50`
+ * (#f7f7f7 — совпадает с фоном страницы и кольцо пропадает). Поэтому у всех
+ * нейтральных вариантов тихая кромка среднего тона.
+ *
+ * Специфичность (0,2,0) перекрывает переменные вариантов (0,1,0) независимо от порядка.
+ */
+  .vl-button[data-color='neutral'] {
+    --halo-offset: 0px;
+    --halo-ring-size: 1px;
+    --halo-ring-color: var(--halo-neutral);
+    --halo-glow-color: transparent;
+  }
+
+  /* Filled */
+  :where(.vl-button)[data-variant='filled'] {
+    background-color: var(--pal-base);
+    border-color: var(--pal-base);
+    /* На насыщенных палитрах — всегда белый текст; иначе в dark `--text-white-0` = ink и получается «чёрный на синем». */
+    color: var(--static-white);
+    /* Тело насыщенное → бледная широкая аура (на нём она и читается). */
+    --halo-offset: -3px;
+    --halo-ring-size: 3px;
+    --halo-ring-color: var(--pal-bg-hover);
+    --halo-glow-color: var(--pal-base);
+  }
+
+  :where(.vl-button)[data-color='neutral'][data-variant='filled'] {
+    color: var(--text-white-0);
+  }
+
+  :where(.vl-button)[data-variant='filled']:hover:not(:disabled) {
+    background-color: var(--pal-hover);
+    border-color: var(--pal-hover);
+  }
+
+  :where(.vl-button)[data-variant='filled']:active:not(:disabled) {
+    background-color: var(--pal-active);
+    border-color: var(--pal-active);
+  }
+
+  /* Stroke */
+  :where(.vl-button)[data-variant='stroke'] {
+    background-color: transparent;
+    border-color: var(--pal-base);
+    color: var(--pal-base);
+    /* На hover рамка уходит в transparent, а фон становится `--pal-bg-hover`.
+     Бледное кольцо слилось бы с этим фоном, поэтому здесь тонкая акцентная
+     кромка: обводка как будто перешла с рамки на внешний край. */
+    --halo-glow-color: var(--pal-base);
+  }
+
+  /* neutral + stroke: нейтральная обводка вместо цветной (исключение из общего правила).
+   Паттерн [data-color='neutral'][data-variant='stroke'] описан в src/skins/corporate/README.md */
+  :where(.vl-button)[data-color='neutral'][data-variant='stroke'] {
+    border-color: var(--stroke-soft-200);
+    color: var(--text-sub-600);
+  }
+
+  :where(.vl-button)[data-variant='stroke']:hover:not(:disabled) {
+    background-color: var(--pal-bg-hover);
+    border-color: transparent;
+  }
+
+  :where(.vl-button)[data-variant='stroke']:active:not(:disabled) {
+    background-color: var(--pal-bg-active);
+    border-color: transparent;
+  }
+
+  /* Lighter */
+  :where(.vl-button)[data-variant='lighter'] {
+    background-color: var(--pal-bg-hover);
+    border-color: transparent;
+    color: var(--pal-base);
+    /* Обратная картина к stroke: на hover фон уходит в transparent и появляется
+     рамка. Бледная аура снаружи читается как «заливка вышла за край», а тонкая
+     кромка удвоила бы появившуюся рамку. */
+    --halo-offset: -3px;
+    --halo-ring-size: 3px;
+    --halo-ring-color: var(--pal-bg-hover);
+  }
+
+  /* hover/active: только рамочка, фон прозрачный (как на макете для всех цветов) */
+  :where(.vl-button)[data-variant='lighter']:hover:not(:disabled) {
+    background-color: transparent;
+    border-color: var(--pal-base);
+  }
+
+  :where(.vl-button)[data-variant='lighter']:active:not(:disabled) {
+    background-color: transparent;
+    border-color: var(--pal-base);
+  }
+
+  /* Ghost */
+  :where(.vl-button)[data-variant='ghost'] {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--pal-base);
+    /* Самый тихий вариант (плотные тулбары) — только кромка, без свечения:
+     наследует дефолт утилиты `halo`. */
+  }
+
+  :where(.vl-button)[data-variant='ghost']:hover:not(:disabled) {
+    background-color: var(--pal-bg-hover);
+  }
+
+  :where(.vl-button)[data-variant='ghost']:active:not(:disabled) {
+    background-color: var(--pal-bg-active);
+  }
+}

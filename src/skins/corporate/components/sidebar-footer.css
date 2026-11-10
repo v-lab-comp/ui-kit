@@ -1,0 +1,33 @@
+/* Figma: Sidebar Footer — обёртка 272px (expanded) или 80px (collapsed) */
+
+:where([data-vl-skin~='corporate']) {
+  .vl-sidebar-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px;
+    width: 272px;
+    min-height: 88px;
+    background: var(--bg-white-0);
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  :where(.vl-sidebar-footer)[data-collapsed] {
+    flex-direction: column;
+    width: 80px;
+    align-items: center;
+  }
+
+  /* Разделитель сверху: left/right 20px по макету. height: 1px + background для стабильного отображения. */
+  .vl-sidebar-footer__divider {
+    position: absolute;
+    top: 0;
+    left: 20px;
+    right: 20px;
+    height: 1px;
+    background: var(--stroke-soft-200, #ebebeb);
+    pointer-events: none;
+  }
+}

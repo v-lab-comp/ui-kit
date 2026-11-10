@@ -1,0 +1,257 @@
+/**
+ * Semantic design tokens.
+ * Sync with Figma: Design-system--Old (node 2645-344).
+ * Primitives (raw scale) → primitives.css; use these tokens in components.
+ */
+
+[data-vl-skin~='corporate'],
+:where([data-vl-skin~='corporate']) [data-theme='light'] {
+  /* Типографика */
+  --font-sans: 'Google Sans', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-sans);
+
+  /* Radius */
+  --radius-0: 0;
+  --radius-2: 2px;
+  --radius-4: 4px;
+  --radius-6: 6px;
+  --radius-8: 8px;
+  --radius-10: 10px;
+  --radius-12: 12px;
+  --radius-16: 16px;
+  --radius-20: 20px;
+  --radius-24: 24px;
+  --radius-28: 28px;
+  --radius-full: 999px;
+
+  /* Static (unchanged in light & dark) */
+  --static-black: var(--neutral-950);
+  --static-white: var(--neutral-0);
+
+  /* Primary */
+  --primary-base: var(--blue-500);
+  --primary-darker: var(--blue-700);
+  --primary-dark: var(--blue-800);
+  --primary-alpha-16: var(--blue-alpha-16);
+  --primary-alpha-10: var(--blue-alpha-10);
+
+  /* Background */
+  --bg-strong-950: var(--neutral-950);
+  --bg-surface-800: var(--neutral-800);
+  --bg-sub-300: var(--neutral-300);
+  --bg-soft-200: var(--neutral-200);
+  --bg-weak-50: var(--neutral-50);
+  --bg-white-0: var(--neutral-0);
+
+  /* Text */
+  --text-strong-950: var(--neutral-950);
+  --text-sub-600: var(--neutral-600);
+  --text-soft-400: var(--neutral-400);
+  --text-disabled-300: var(--neutral-300);
+  --text-white-0: var(--neutral-0);
+
+  /* Stroke */
+  --stroke-strong-950: var(--neutral-950);
+  --stroke-sub-300: var(--neutral-300);
+  --stroke-soft-200: var(--neutral-200);
+  --stroke-white-0: var(--neutral-0);
+
+  /* Icon */
+  --icon-strong-950: var(--neutral-950);
+  --icon-sub-600: var(--neutral-600);
+  --icon-soft-400: var(--neutral-400);
+  --icon-disabled-300: var(--neutral-300);
+  --icon-white-0: var(--neutral-0);
+
+  /* State: Warning */
+  --warning-dark: var(--orange-950);
+  --warning-base: var(--orange-500);
+  --warning-light: var(--orange-200);
+  --warning-lighter: var(--orange-50);
+
+  /* State: Error */
+  --error-dark: var(--red-950);
+  --error-base: var(--red-500);
+  --error-light: var(--red-200);
+  --error-lighter: var(--red-50);
+
+  /* State: Faded */
+  --faded-dark: var(--neutral-800);
+  --faded-base: var(--neutral-500);
+  --faded-light: var(--neutral-200);
+  --faded-lighter: var(--neutral-100);
+
+  /* State: Information */
+  --information-dark: var(--blue-950);
+  --information-base: var(--blue-500);
+  --information-light: var(--blue-200);
+  --information-lighter: var(--blue-50);
+
+  /* State: Success */
+  --success-dark: var(--green-950);
+  --success-base: var(--green-500);
+  --success-light: var(--green-200);
+  --success-lighter: var(--green-50);
+
+  /* State: Away */
+  --away-dark: var(--yellow-950);
+  --away-base: var(--yellow-500);
+  --away-light: var(--yellow-200);
+  --away-lighter: var(--yellow-50);
+
+  /* State: Feature */
+  --feature-dark: var(--purple-950);
+  --feature-base: var(--purple-500);
+  --feature-light: var(--purple-200);
+  --feature-lighter: var(--purple-50);
+
+  /* State: Verified */
+  --verified-dark: var(--sky-950);
+  --verified-base: var(--sky-500);
+  --verified-light: var(--sky-200);
+  --verified-lighter: var(--sky-50);
+
+  /* State: Highlighted */
+  --highlighted-dark: var(--pink-950);
+  --highlighted-base: var(--pink-500);
+  --highlighted-light: var(--pink-200);
+  --highlighted-lighter: var(--pink-50);
+
+  /* State: Stable */
+  --stable-dark: var(--teal-950);
+  --stable-base: var(--teal-500);
+  --stable-light: var(--teal-200);
+  --stable-lighter: var(--teal-50);
+
+  /* ============================================================
+     Z-index scale
+     ============================================================ */
+  --z-base: 0;
+  --z-raised: 1; /* ButtonGroup hover, overlapping siblings */
+  --z-dropdown: 5; /* SelectInput / DateInput */
+  --z-sticky: 10; /* PageHeader */
+  --z-sidebar: 20; /* Sidebar panel */
+  --z-overlay: 1000; /* dropdowns above sidebar */
+  --z-modal: 1000; /* Modal dialog (same layer as overlay UI) */
+  --z-tooltip: 10050; /* FloatingPortal tooltips above layout/sticky layers (docs site, app chrome) */
+  --z-toast: 99999;
+
+  /* Overlay scrim (Figma: overlay-gray) */
+  --overlay-overlay-gray: rgba(51, 51, 51, 0.24);
+  --overlay-bg: var(--overlay-overlay-gray);
+
+  /* Motion. Длительности и кривая для интерактивных состояний (hover / active).
+     Не зависят от темы, поэтому объявлены только здесь. */
+  --motion-duration-fast: 150ms; /* смена цвета фона / рамки / текста (де-факто стандарт кита) */
+  --motion-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Hover-ореол вокруг кнопки. Тайминг асимметричный: появление быстрее ухода —
+     интерфейс охотно откликается и неохотно «отпускает». */
+  --motion-duration-halo-in: 130ms;
+  --motion-duration-halo-out: 280ms;
+  --motion-duration-halo-press: 60ms;
+
+  /* Кольцо hover-ореола для нейтральных кнопок и кнопок без класса палитры.
+     Средний тон намеренно: он контрастирует и с тёмным телом нейтральной
+     кнопки (#262626), и со светлым фоном страницы (--bg-weak-50 = #f7f7f7).
+     Бледный тон на таком фоне пропадает, тёмный читается как чёрная обводка. */
+  --halo-neutral: var(--neutral-400);
+}
+
+/* Каждая ветка весит (0,1,0), как прежний [data-theme='dark']: блок бьёт светлый порядком в файле,
+   а переопределение токенов на :root у потребителя по-прежнему выигрывает и в тёмной схеме. */
+:where([data-vl-skin~='corporate'])[data-vl-scheme='dark'],
+:where([data-vl-skin~='corporate'])[data-theme='dark'],
+:where([data-vl-skin~='corporate']) [data-theme='dark'] {
+  /* Background */
+  --bg-strong-950: var(--neutral-0);
+  --bg-surface-800: var(--neutral-200);
+  --bg-sub-300: var(--neutral-600);
+  --bg-soft-200: var(--neutral-700);
+  --bg-weak-50: var(--neutral-800);
+  --bg-white-0: var(--neutral-950);
+
+  /* Text */
+  --text-strong-950: var(--neutral-0);
+  --text-sub-600: var(--neutral-400);
+  --text-soft-400: var(--neutral-500);
+  --text-disabled-300: var(--neutral-600);
+  --text-white-0: var(--neutral-950);
+
+  /* Stroke */
+  --stroke-strong-950: var(--neutral-0);
+  --stroke-sub-300: var(--neutral-600);
+  --stroke-soft-200: var(--neutral-700);
+  --stroke-white-0: var(--neutral-950);
+
+  /* Icon */
+  --icon-strong-950: var(--neutral-0);
+  --icon-sub-600: var(--neutral-400);
+  --icon-soft-400: var(--neutral-500);
+  --icon-disabled-300: var(--neutral-600);
+  --icon-white-0: var(--neutral-950);
+
+  /* State: Warning */
+  --warning-dark: var(--orange-400);
+  --warning-base: var(--orange-600);
+  --warning-light: var(--orange-alpha-24);
+  --warning-lighter: var(--orange-alpha-16);
+
+  /* State: Error */
+  --error-dark: var(--red-400);
+  --error-base: var(--red-600);
+  --error-light: var(--red-alpha-24);
+  --error-lighter: var(--red-alpha-16);
+
+  /* State: Faded */
+  --faded-dark: var(--neutral-300);
+  --faded-base: var(--neutral-500);
+  --faded-light: var(--neutral-alpha-24);
+  --faded-lighter: var(--neutral-alpha-16);
+
+  /* State: Information */
+  --information-dark: var(--blue-400);
+  --information-base: var(--blue-500);
+  --information-light: var(--blue-alpha-24);
+  --information-lighter: var(--blue-alpha-16);
+
+  /* State: Success */
+  --success-dark: var(--green-400);
+  --success-base: var(--green-600);
+  --success-light: var(--green-alpha-24);
+  --success-lighter: var(--green-alpha-16);
+
+  /* State: Away */
+  --away-dark: var(--yellow-400);
+  --away-base: var(--yellow-600);
+  --away-light: var(--yellow-alpha-24);
+  --away-lighter: var(--yellow-alpha-16);
+
+  /* State: Feature */
+  --feature-dark: var(--purple-400);
+  --feature-base: var(--purple-500);
+  --feature-light: var(--purple-alpha-24);
+  --feature-lighter: var(--purple-alpha-16);
+
+  /* State: Verified */
+  --verified-dark: var(--sky-400);
+  --verified-base: var(--sky-600);
+  --verified-light: var(--sky-alpha-24);
+  --verified-lighter: var(--sky-alpha-16);
+
+  /* State: Highlighted */
+  --highlighted-dark: var(--pink-400);
+  --highlighted-base: var(--pink-600);
+  --highlighted-light: var(--pink-alpha-24);
+  --highlighted-lighter: var(--pink-alpha-16);
+
+  /* State: Stable */
+  --stable-dark: var(--teal-400);
+  --stable-base: var(--teal-600);
+  --stable-light: var(--teal-alpha-24);
+  --stable-lighter: var(--teal-alpha-16);
+
+  /* На тёмных поверхностях средний тон берётся на ступень темнее, чтобы кромка
+     не выбивалась яркостью. */
+  --halo-neutral: var(--neutral-500);
+}

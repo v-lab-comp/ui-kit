@@ -1,0 +1,7 @@
+:where([data-vl-skin~='corporate']) {
+  .vl-toggle-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+}

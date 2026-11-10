@@ -1,0 +1,25 @@
+test-results
+playwright-report
+.playwright-mcp/
+blob-report
+playwright/.auth
+
+node_modules/
+dist/
+storybook-static/
+docs-site/.vitepress/cache
+docs-site/.vitepress/dist
+coverage/
+*.local
+.env
+.env.*
+!.env.example
+.DS_Store
+.claude
+
+# MCP config may contain API keys
+.cursor/mcp.json
+.ci-home/
+
+# graphify — граф знаний по проекту (graphify-out/graph.html и др.)
+graphify-out/

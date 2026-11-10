@@ -1,0 +1,104 @@
+/* ============================================================
+   Shared color palette — используется всеми компонентами (Button, Badge, Tag и др.).
+   Чтобы добавить новый цвет — объяви здесь 5 переменных.
+
+   --pal-base        основной цвет (фон filled, обводка/текст stroke и др.)
+   --pal-hover       тёмный (hover у filled)
+   --pal-active      ещё темнее (active у filled)
+   --pal-bg-hover    полупрозрачный фон (hover у stroke/lighter/ghost, фон lighter)
+   --pal-bg-active   полупрозрачный фон потемнее (active у stroke/lighter/ghost)
+
+   Применение в компоненте:
+     CSS: @import '../../skins/corporate/palettes.css';  (подключает глобальные классы)
+     TSX: className={`color-${color}`}
+   ============================================================ */
+
+:where([data-vl-skin~='corporate']) {
+  [data-color='primary'] {
+    --pal-base: var(--primary-base);
+    --pal-hover: var(--primary-dark);
+    --pal-active: var(--primary-darker);
+    --pal-bg-hover: var(--primary-alpha-10);
+    --pal-bg-active: var(--primary-alpha-16);
+  }
+
+  [data-color='neutral'] {
+    --pal-base: var(--bg-surface-800);
+    --pal-hover: var(--bg-strong-950);
+    --pal-active: var(--bg-strong-950);
+    --pal-bg-hover: var(--bg-weak-50);
+    --pal-bg-active: var(--bg-weak-50);
+  }
+
+  [data-color='error'] {
+    --pal-base: var(--error-base);
+    --pal-hover: var(--red-700);
+    --pal-active: var(--red-700);
+    --pal-bg-hover: var(--red-alpha-10);
+    --pal-bg-active: var(--red-alpha-16);
+  }
+
+  [data-color='information'] {
+    --pal-base: var(--information-base);
+    --pal-hover: var(--information-dark);
+    --pal-active: var(--information-dark);
+    --pal-bg-hover: var(--information-lighter);
+    --pal-bg-active: var(--information-light);
+  }
+
+  [data-color='warning'] {
+    --pal-base: var(--warning-base);
+    --pal-hover: var(--warning-dark);
+    --pal-active: var(--warning-dark);
+    --pal-bg-hover: var(--warning-lighter);
+    --pal-bg-active: var(--warning-light);
+  }
+
+  [data-color='success'] {
+    --pal-base: var(--success-base);
+    --pal-hover: var(--success-dark);
+    --pal-active: var(--success-dark);
+    --pal-bg-hover: var(--success-lighter);
+    --pal-bg-active: var(--success-light);
+  }
+
+  [data-color='away'] {
+    --pal-base: var(--away-base);
+    --pal-hover: var(--away-dark);
+    --pal-active: var(--away-dark);
+    --pal-bg-hover: var(--away-lighter);
+    --pal-bg-active: var(--away-light);
+  }
+
+  [data-color='feature'] {
+    --pal-base: var(--feature-base);
+    --pal-hover: var(--feature-dark);
+    --pal-active: var(--feature-dark);
+    --pal-bg-hover: var(--feature-lighter);
+    --pal-bg-active: var(--feature-light);
+  }
+
+  [data-color='verified'] {
+    --pal-base: var(--verified-base);
+    --pal-hover: var(--verified-dark);
+    --pal-active: var(--verified-dark);
+    --pal-bg-hover: var(--verified-lighter);
+    --pal-bg-active: var(--verified-light);
+  }
+
+  [data-color='highlighted'] {
+    --pal-base: var(--highlighted-base);
+    --pal-hover: var(--highlighted-dark);
+    --pal-active: var(--highlighted-dark);
+    --pal-bg-hover: var(--highlighted-lighter);
+    --pal-bg-active: var(--highlighted-light);
+  }
+
+  [data-color='stable'] {
+    --pal-base: var(--stable-base);
+    --pal-hover: var(--stable-dark);
+    --pal-active: var(--stable-dark);
+    --pal-bg-hover: var(--stable-lighter);
+    --pal-bg-active: var(--stable-light);
+  }
+}

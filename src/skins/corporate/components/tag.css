@@ -1,0 +1,413 @@
+/* Палитра: классы .color-* из color-palette.css (подключаются в Tag.tsx). */
+
+/* ============================================================
+   Base — все размеры/паддинги/радиус через --tag-* vars,
+   что даёт пробросить style={{ '--tag-height': '28px', ... }}.
+   ============================================================ */
+
+:where([data-vl-skin~='corporate']) {
+  .vl-tag {
+    --_tag-h: 24px;
+    --_tag-px: 8px;
+    --_tag-fs: 12px;
+    --_tag-lh: 16px;
+    --_tag-radius: var(--radius-6);
+
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    max-width: 100%;
+    min-height: var(--tag-height, var(--_tag-h));
+    padding-block: 0;
+    padding-inline: var(--tag-padding-x, var(--_tag-px));
+    border-radius: var(--tag-radius, var(--_tag-radius));
+    font-family: var(--font-sans), inherit;
+    font-size: var(--tag-font-size, var(--_tag-fs));
+    line-height: var(--_tag-lh);
+    font-weight: 500;
+    letter-spacing: 0;
+    white-space: nowrap;
+    user-select: none;
+    vertical-align: middle;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease;
+  }
+
+  .vl-tag[data-with-dismiss]:not([data-has-prefix]) {
+    padding-right: 4px;
+  }
+
+  .vl-tag[data-has-prefix] {
+    padding: 4px;
+  }
+
+  :where(.vl-tag)[data-interactive]:not([data-disabled]) {
+    cursor: pointer;
+  }
+
+  /* ============================================================
+   Size
+   ============================================================ */
+
+  :where(.vl-tag)[data-size='small'] {
+    --_tag-h: 20px;
+    --_tag-px: 6px;
+    --_tag-fs: 11px;
+    --_tag-lh: 14px;
+  }
+  :where(.vl-tag)[data-size='medium'] {
+    --_tag-h: 24px;
+    --_tag-px: 8px;
+    --_tag-fs: 12px;
+    --_tag-lh: 16px;
+  }
+  :where(.vl-tag)[data-size='large'] {
+    --_tag-h: 28px;
+    --_tag-px: 10px;
+    --_tag-fs: 13px;
+    --_tag-lh: 18px;
+  }
+
+  /* ============================================================
+   Shape
+   ============================================================ */
+
+  :where(.vl-tag)[data-shape='rounded'] {
+    --_tag-radius: var(--radius-6);
+  }
+  :where(.vl-tag)[data-shape='pill'] {
+    --_tag-radius: var(--radius-full);
+  }
+
+  .vl-tag__cluster {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .vl-tag__main-hit {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    font: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    border-radius: var(--radius-4);
+  }
+
+  .vl-tag__main-hit:disabled,
+  .vl-tag[data-disabled] .vl-tag__main-hit {
+    cursor: not-allowed;
+  }
+
+  .vl-tag__main-static {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .vl-tag__main-hit:focus-visible {
+    outline: 2px solid var(--primary-base);
+    outline-offset: 1px;
+  }
+
+  /* ============================================================
+   Neutral variants (без палитры)
+   ============================================================ */
+
+  :where(.vl-tag)[data-variant='stroke']:where(:not([data-color], [data-custom-color])) {
+    border: 1px solid var(--stroke-soft-200);
+    background-color: var(--bg-white-0);
+    color: var(--text-sub-600);
+  }
+  :where(.vl-tag)[data-variant='stroke']:where(:not([data-color], [data-custom-color])):not(
+      [data-disabled]
+    ):hover {
+    border-color: var(--stroke-sub-300);
+    background-color: var(--bg-weak-50);
+  }
+  :where(.vl-tag)[data-variant='stroke']:where(:not([data-color], [data-custom-color])):not(
+      [data-disabled]
+    ):active {
+    border-color: var(--stroke-sub-300);
+    background-color: var(--bg-soft-200);
+  }
+
+  :where(.vl-tag)[data-variant='gray']:where(:not([data-color], [data-custom-color])) {
+    border: 1px solid transparent;
+    background-color: var(--bg-weak-50);
+    color: var(--text-sub-600);
+  }
+  :where(.vl-tag)[data-variant='gray']:where(:not([data-color], [data-custom-color])):not(
+      [data-disabled]
+    ):hover {
+    background-color: var(--bg-soft-200);
+  }
+  :where(.vl-tag)[data-variant='gray']:where(:not([data-color], [data-custom-color])):not(
+      [data-disabled]
+    ):active {
+    background-color: var(--bg-sub-300);
+  }
+
+  :where(.vl-tag)[data-variant='filled']:where(:not([data-color], [data-custom-color])) {
+    border: 1px solid transparent;
+    background-color: var(--bg-surface-800);
+    color: var(--static-white);
+  }
+  :where(.vl-tag)[data-variant='filled']:where(:not([data-color], [data-custom-color])):not(
+      [data-disabled]
+    ):hover {
+    background-color: var(--bg-strong-950);
+  }
+
+  :where(.vl-tag)[data-variant='light']:where(:not([data-color], [data-custom-color])) {
+    border: 1px solid transparent;
+    background-color: var(--bg-weak-50);
+    color: var(--text-strong-950);
+  }
+  :where(.vl-tag)[data-variant='light']:where(:not([data-color], [data-custom-color])):not(
+      [data-disabled]
+    ):hover {
+    background-color: var(--bg-soft-200);
+  }
+
+  /* ============================================================
+   Palette / customColor variants
+   ============================================================ */
+
+  :where(.vl-tag)[data-variant='stroke']:where([data-color], [data-custom-color]) {
+    border: 1px solid var(--pal-base);
+    background-color: var(--bg-white-0);
+    color: var(--pal-base);
+  }
+  :where(.vl-tag)[data-variant='stroke']:where([data-color], [data-custom-color]):not(
+      [data-disabled]
+    ):hover {
+    border-color: var(--pal-hover);
+    background-color: var(--pal-bg-hover);
+    color: var(--pal-hover);
+  }
+  :where(.vl-tag)[data-variant='stroke']:where([data-color], [data-custom-color]):not(
+      [data-disabled]
+    ):active {
+    border-color: var(--pal-active);
+    background-color: var(--pal-bg-active);
+    color: var(--pal-active);
+  }
+  :where(.vl-tag)[data-color='neutral'][data-variant='stroke']:where(
+      [data-color],
+      [data-custom-color]
+    ) {
+    border-color: var(--faded-base);
+    color: var(--faded-base);
+  }
+  :where(.vl-tag)[data-color='neutral'][data-variant='stroke']:where(
+      [data-color],
+      [data-custom-color]
+    ):not([data-disabled]):hover {
+    border-color: var(--faded-dark);
+    background-color: var(--pal-bg-hover);
+    color: var(--faded-dark);
+  }
+
+  :where(.vl-tag)[data-variant='gray']:where([data-color], [data-custom-color]) {
+    border: 1px solid transparent;
+    background-color: var(--pal-bg-hover);
+    color: var(--pal-base);
+  }
+  :where(.vl-tag)[data-variant='gray']:where([data-color], [data-custom-color]):not(
+      [data-disabled]
+    ):hover {
+    background-color: var(--pal-bg-active);
+  }
+  :where(.vl-tag)[data-variant='gray']:where([data-color], [data-custom-color]):not(
+      [data-disabled]
+    ):active {
+    background-color: var(--pal-bg-active);
+  }
+  :where(.vl-tag)[data-color='neutral'][data-variant='gray']:where(
+      [data-color],
+      [data-custom-color]
+    ) {
+    background-color: var(--faded-lighter);
+    color: var(--faded-base);
+  }
+  :where(.vl-tag)[data-color='neutral'][data-variant='gray']:where(
+      [data-color],
+      [data-custom-color]
+    ):not([data-disabled]):hover {
+    background-color: var(--faded-light);
+  }
+
+  :where(.vl-tag)[data-variant='filled']:where([data-color], [data-custom-color]) {
+    border: 1px solid var(--pal-base);
+    background-color: var(--pal-base);
+    color: var(--static-white);
+  }
+  :where(.vl-tag)[data-variant='filled']:where([data-color], [data-custom-color]):not(
+      [data-disabled]
+    ):hover {
+    background-color: var(--pal-hover);
+    border-color: var(--pal-hover);
+  }
+  :where(.vl-tag)[data-variant='filled']:where([data-color], [data-custom-color]):not(
+      [data-disabled]
+    ):active {
+    background-color: var(--pal-active);
+    border-color: var(--pal-active);
+  }
+  :where(.vl-tag)[data-color='neutral'][data-variant='filled']:where(
+      [data-color],
+      [data-custom-color]
+    ) {
+    --pal-base: var(--faded-base);
+    border-color: var(--pal-base);
+    color: var(--text-white-0);
+  }
+
+  :where(.vl-tag)[data-variant='light']:where([data-color], [data-custom-color]) {
+    border: 1px solid transparent;
+    background-color: var(--pal-bg-active);
+    color: var(--pal-hover);
+  }
+  :where(.vl-tag)[data-variant='light']:where([data-color], [data-custom-color]):not(
+      [data-disabled]
+    ):hover {
+    background-color: var(--pal-bg-hover);
+  }
+  :where(.vl-tag)[data-color='neutral'][data-variant='light']:where(
+      [data-color],
+      [data-custom-color]
+    ) {
+    background-color: var(--faded-light);
+    color: var(--faded-dark);
+  }
+
+  /* ============================================================
+   Disabled — всегда в конце
+   ============================================================ */
+
+  :where(.vl-tag)[data-disabled] {
+    cursor: not-allowed;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  /* ============================================================
+   Slots
+   ============================================================ */
+
+  .vl-tag__prefix {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+  }
+
+  .vl-tag__prefix > * {
+    max-width: 16px;
+    max-height: 16px;
+  }
+
+  :where(.vl-tag__prefix)[data-rounded] {
+    overflow: hidden;
+    border-radius: var(--radius-full);
+  }
+
+  :where(.vl-tag__prefix)[data-rounded] img {
+    width: 16px;
+    height: 16px;
+    object-fit: cover;
+  }
+
+  .vl-tag__suffix {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .vl-tag__suffix > * {
+    max-width: 16px;
+    max-height: 16px;
+  }
+
+  .vl-tag__text-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .vl-tag__label {
+    flex-shrink: 0;
+  }
+
+  .vl-tag__sublabel {
+    flex-shrink: 0;
+    font-weight: 400;
+    color: color-mix(in srgb, currentColor 60%, transparent);
+  }
+
+  .vl-tag__dismiss {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-4);
+    background: transparent;
+    color: currentColor;
+    cursor: pointer;
+    opacity: 0.72;
+  }
+
+  .vl-tag__dismiss:hover {
+    opacity: 1;
+    background-color: var(--bg-soft-200);
+  }
+
+  :where(.vl-tag)[data-variant='stroke']:where([data-color], [data-custom-color])
+    .vl-tag__dismiss:hover,
+  :where(.vl-tag)[data-variant='gray']:where([data-color], [data-custom-color])
+    .vl-tag__dismiss:hover,
+  :where(.vl-tag)[data-variant='light']:where([data-color], [data-custom-color])
+    .vl-tag__dismiss:hover {
+    background-color: var(--pal-bg-active);
+  }
+
+  :where(.vl-tag)[data-variant='filled']:where([data-color], [data-custom-color])
+    .vl-tag__dismiss:hover,
+  :where(.vl-tag)[data-variant='filled']:where(:not([data-color], [data-custom-color]))
+    .vl-tag__dismiss:hover {
+    background-color: color-mix(in srgb, currentColor 18%, transparent);
+  }
+
+  .vl-tag__dismiss:focus-visible {
+    outline: 2px solid var(--primary-base);
+    outline-offset: 1px;
+  }
+
+  .vl-tag[data-disabled] .vl-tag__dismiss {
+    cursor: not-allowed;
+  }
+}

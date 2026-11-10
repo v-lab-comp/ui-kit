@@ -1,0 +1,3 @@
+# Dev/staging — не индексировать
+User-agent: *
+Disallow: /

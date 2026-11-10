@@ -1,0 +1,54 @@
+/* ── Outer container ─────────────────────────────────────────────────────── */
+
+:where([data-vl-skin~='corporate']) {
+  .vl-date-input {
+    position: relative;
+    cursor: pointer;
+  }
+
+  /* ── IMaskInput override (bare inside InputField wrapper) ──────────────────  */
+  /* Higher specificity (0,1,1) beats BaseInput's (0,1,0) — no !important needed */
+
+  input.vl-date-input__input-inner {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    height: auto;
+    padding: 0;
+    border: none;
+    background: transparent;
+    outline: none;
+    cursor: text;
+  }
+
+  /* ── Calendar icon button ────────────────────────────────────────────────── */
+
+  .vl-date-input__calendar-btn {
+    display: flex;
+    cursor: pointer;
+  }
+
+  :where(.vl-date-input__calendar-btn)[data-disabled] {
+    cursor: not-allowed;
+  }
+
+  /* ── Calendar popover ────────────────────────────────────────────────────── */
+
+  /* Только opacity: transform в keyframes ломает позицию от Floating UI (translate3d на том же узле) */
+
+  .vl-date-input__popover {
+    /* Позицию (position: fixed, top/left) задаёт Floating UI через inline-стиль. */
+    /* Портал в document.body — нужен слой как у overlay, иначе под chrome / sticky. */
+    z-index: var(--z-overlay);
+    animation: vl-date-input-popoverIn 0.18s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+}
+
+@keyframes vl-date-input-popoverIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,132 @@
+/* ── Container ── */
+
+:where([data-vl-skin~='corporate']) {
+  .vl-pdf-preview {
+    flex: 1;
+    position: relative;
+    /* rounded-2xl в макете клиента */
+    border-radius: var(--radius-16);
+    border: 1px solid var(--stroke-soft-200);
+    background-color: var(--bg-weak-50);
+    overflow: hidden;
+    min-height: 690px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 16px;
+    gap: 16px;
+    box-sizing: border-box;
+  }
+
+  /* ── Navigation Buttons ── */
+
+  .vl-pdf-preview__nav-button {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    border-radius: var(--radius-8);
+    border: none;
+    background-color: var(--bg-white-0);
+    color: var(--text-sub-600);
+    cursor: pointer;
+    transition: background-color 200ms ease;
+  }
+
+  .vl-pdf-preview__nav-button:hover:not(:disabled) {
+    background-color: var(--bg-weak-50);
+  }
+
+  .vl-pdf-preview__nav-button:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+
+  /* ── Canvas Wrapper ── */
+
+  .vl-pdf-preview__canvas-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    min-height: 0;
+    margin: 0 8px;
+  }
+
+  .vl-pdf-preview__canvas {
+    max-width: 100%;
+    max-height: 615px;
+    border-radius: var(--radius-6);
+    background-color: var(--bg-white-0);
+    box-shadow: var(--shadow-regular-x-small);
+    width: auto;
+    height: auto;
+    display: block;
+    object-fit: contain;
+  }
+
+  /* ── Filename Badge (Top-Right) ── */
+
+  .vl-pdf-preview__filename-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    /* pl-1.5 pr-2.5 py-1 (Tailwind) как на клиенте */
+    padding: 4px 10px 4px 6px;
+    margin: 0;
+    background-color: var(--bg-white-0);
+    border-top: none;
+    border-right: none;
+    border-bottom: 1px solid var(--stroke-soft-200);
+    border-left: 1px solid var(--stroke-soft-200);
+    border-bottom-left-radius: var(--radius-8);
+    color: var(--text-sub-600);
+    font-family: var(--font-sans), inherit;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.084px;
+    cursor: pointer;
+    transition: background-color 200ms ease;
+  }
+
+  .vl-pdf-preview__filename-badge:hover {
+    background-color: var(--bg-weak-50);
+  }
+
+  .vl-pdf-preview__filename-badge-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: var(--text-sub-600);
+  }
+
+  .vl-pdf-preview__filename-badge-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ── Page Counter (Bottom-Center) ── */
+
+  .vl-pdf-preview__page-counter {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--text-sub-600);
+    color: var(--text-white-0);
+    font-size: 14px;
+    /* px-1 py-0.5 на клиенте */
+    padding: 2px 4px;
+    border-radius: 20px;
+    line-height: 20px;
+    letter-spacing: -0.084px;
+  }
+}

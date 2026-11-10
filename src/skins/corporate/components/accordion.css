@@ -1,0 +1,107 @@
+:where([data-vl-skin~='corporate']) {
+  .vl-accordion {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    border-radius: var(--radius-10);
+    border: 1px solid var(--stroke-soft-200, #ebebeb);
+    background: var(--bg-white-0, #ffffff);
+    box-shadow: var(--shadow-regular-x-small);
+    overflow: hidden;
+    font-family: var(--font-sans), inherit;
+  }
+
+  .vl-accordion:hover {
+    box-shadow: none; /* по макету: тень только в default */
+  }
+
+  .vl-accordion[data-open] {
+    box-shadow: none; /* по макету: тень только в default */
+  }
+
+  .vl-accordion[data-disabled] {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .vl-accordion__trigger {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 48px;
+    padding: 14px;
+    box-sizing: border-box;
+    border: none;
+    background: none;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    color: var(--text-strong-950);
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.006em;
+  }
+
+  .vl-accordion[data-disabled] .vl-accordion__trigger {
+    cursor: default;
+  }
+
+  .vl-accordion__left-icon,
+  .vl-accordion__right-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .vl-accordion__left-icon {
+    color: var(--icon-sub-600, #5c5c5c);
+  }
+
+  /* Иконка +/- слева (flipIcon): по макету #A3A3A3 */
+  :where(.vl-accordion__left-icon)[data-toggle] {
+    color: var(--icon-soft-400, #a3a3a3);
+  }
+
+  .vl-accordion__right-icon {
+    color: var(--icon-strong-950);
+  }
+
+  .vl-accordion__toggle-icon {
+    color: var(--icon-soft-400, #a3a3a3);
+  }
+
+  /* Обёртка иконки +/-: по макету Figma fill #A3A3A3 (не strong) */
+  :where(.vl-accordion__right-icon)[data-toggle] {
+    color: var(--icon-soft-400, #a3a3a3);
+  }
+
+  .vl-accordion__title {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .vl-accordion__content {
+    overflow: hidden;
+    height: 0;
+    transition: height 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .vl-accordion__content-inner {
+    padding: 0 14px 14px 14px;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.006em;
+    color: var(--text-sub-600);
+  }
+
+  .vl-accordion[data-has-left-icon] .vl-accordion__content-inner {
+    padding-left: 44px;
+  }
+}

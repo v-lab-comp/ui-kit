@@ -1,0 +1,71 @@
+:where([data-vl-skin~='corporate']) {
+  .vl-checkbox-field {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .vl-checkbox-field[data-flip] {
+    display: flex;
+  }
+
+  .vl-checkbox-field__label {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 8px;
+    cursor: pointer;
+  }
+
+  .vl-checkbox-field__label:has(input:disabled) {
+    cursor: not-allowed;
+  }
+
+  /* Align 16px small checkbox with 20px label row */
+  .vl-checkbox-field__label input[data-size='small'] {
+    margin-top: 2px;
+  }
+
+  :where(.vl-checkbox-field__label)[data-flipped] {
+    flex-direction: row-reverse;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .vl-checkbox-field__label-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .vl-checkbox-field__label:has(input:disabled) {
+    --_checkbox-disabled-color: var(--text-disabled-300);
+  }
+
+  .vl-checkbox-field__description {
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--_checkbox-disabled-color, var(--text-sub-600));
+  }
+
+  .vl-checkbox-field__link {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+  }
+
+  .vl-checkbox-field__description + .vl-checkbox-field__link {
+    margin-top: 6px; /* description gap(4px) + 6px = 10px total */
+  }
+
+  .vl-checkbox-field__hint {
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--_checkbox-disabled-color, var(--text-soft-400));
+  }
+
+  .vl-checkbox-field__error {
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--error-base);
+  }
+}

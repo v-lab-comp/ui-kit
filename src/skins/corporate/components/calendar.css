@@ -1,0 +1,56 @@
+:where([data-vl-skin~='corporate']) {
+  .vl-calendar {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    width: 368px;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: var(--bg-white-0);
+    border: 1px solid var(--stroke-soft-200);
+    border-radius: var(--radius-20);
+    box-shadow: var(--shadow-regular-medium);
+  }
+
+  /* ── Month / year picker grid ────────────────────────────────────────────── */
+
+  .vl-calendar__option-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 4px 0;
+  }
+
+  .vl-calendar__option {
+    height: 40px;
+    border: none;
+    border-radius: var(--radius-8);
+    background: none;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.084px;
+    color: var(--text-sub-600);
+
+    transition:
+      background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .vl-calendar__option:hover {
+    background-color: var(--bg-soft-200);
+    color: var(--text-strong-950);
+  }
+
+  .vl-calendar__option:active {
+    transform: scale(0.96);
+  }
+
+  .vl-calendar__option[data-active] {
+    background-color: var(--primary-base);
+    color: var(--text-white-0);
+  }
+}

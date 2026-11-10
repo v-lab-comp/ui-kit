@@ -1,0 +1,34 @@
+:where([data-vl-skin~='corporate']) {
+  .vl-checkbox-label-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+
+  .vl-checkbox-label-row__label-text {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.084px;
+    color: var(--_checkbox-disabled-color, var(--text-strong-950));
+  }
+
+  .vl-checkbox-label-row__sublabel-text {
+    font-size: 12px;
+    line-height: 20px;
+    color: var(--_checkbox-disabled-color, var(--text-sub-600));
+  }
+
+  .vl-checkbox-label-row__tag-wrapper {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .vl-checkbox-label-row__description {
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--_checkbox-disabled-color, var(--text-sub-600));
+  }
+}

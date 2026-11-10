@@ -1,0 +1,3 @@
+/* SidebarUserProfileCard не имеет собственных стилей — использует sidebar-card. */
+:where([data-vl-skin~='corporate']) {
+}

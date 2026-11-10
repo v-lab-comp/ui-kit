@@ -1,0 +1,27 @@
+/* ── Popover container ─────────────────────────────────────────────────────── */
+
+:where([data-vl-skin~='corporate']) {
+  .vl-popover {
+    position: fixed;
+    /* Портал в document.body — нужен слой как у overlay, иначе под chrome VitePress / sticky (не «внутренний» dropdown в поле). */
+    z-index: var(--z-overlay);
+    background-color: var(--bg-white-0);
+    border: 1px solid var(--stroke-soft-200);
+    border-radius: var(--radius-8);
+    box-shadow: var(--shadow-dropdown);
+    padding: 4px;
+    /* Только opacity: transform в keyframes ломает позицию от Floating UI (translate3d на том же узле) */
+    animation: vl-popover-popoverIn 0.2s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+
+  /* ── Entrance animation ────────────────────────────────────────────────────── */
+}
+
+@keyframes vl-popover-popoverIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,183 @@
+:where([data-vl-skin~='corporate']) {
+  .vl-typography {
+    margin: 0;
+    font-family: var(--font-sans);
+    /* Толщина по умолчанию задаётся в компоненте: title/label → medium, paragraph → regular */
+  }
+
+  :where(.vl-typography)[data-weight='thin'] {
+    font-weight: 100;
+  }
+  :where(.vl-typography)[data-weight='extralight'] {
+    font-weight: 200;
+  }
+  :where(.vl-typography)[data-weight='light'] {
+    font-weight: 300;
+  }
+  :where(.vl-typography)[data-weight='regular'] {
+    font-weight: 400;
+  }
+  :where(.vl-typography)[data-weight='medium'] {
+    font-weight: 500;
+  }
+  :where(.vl-typography)[data-weight='semibold'] {
+    font-weight: 600;
+  }
+  :where(.vl-typography)[data-weight='bold'] {
+    font-weight: 700;
+  }
+  :where(.vl-typography)[data-weight='extrabold'] {
+    font-weight: 800;
+  }
+  :where(.vl-typography)[data-weight='black'] {
+    font-weight: 900;
+  }
+
+  /* Title */
+
+  :where(.vl-typography)[data-variant='title']:where([data-size='h1']) {
+    font-size: 56px;
+    line-height: 64px;
+    letter-spacing: -0.01em;
+  }
+
+  :where(.vl-typography)[data-variant='title']:where([data-size='h2']) {
+    font-size: 48px;
+    line-height: 56px;
+    letter-spacing: -0.01em;
+  }
+
+  :where(.vl-typography)[data-variant='title']:where([data-size='h3']) {
+    font-size: 40px;
+    line-height: 48px;
+    letter-spacing: -0.01em;
+  }
+
+  :where(.vl-typography)[data-variant='title']:where([data-size='h4']) {
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: -0.005em;
+  }
+
+  :where(.vl-typography)[data-variant='title']:where([data-size='h5']) {
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: 0;
+  }
+
+  :where(.vl-typography)[data-variant='title']:where([data-size='h6']) {
+    font-size: 20px;
+    line-height: 28px;
+    letter-spacing: 0;
+  }
+
+  /* Label — Google Sans 500 */
+
+  :where(.vl-typography)[data-variant='label']:where([data-size='x-large']) {
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: -0.015em;
+  }
+
+  :where(.vl-typography)[data-variant='label']:where([data-size='large']) {
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: -0.015em;
+  }
+
+  :where(.vl-typography)[data-variant='label']:where([data-size='medium']) {
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.011em;
+  }
+
+  :where(.vl-typography)[data-variant='label']:where([data-size='small']) {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.006em;
+  }
+
+  :where(.vl-typography)[data-variant='label']:where([data-size='x-small']) {
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0;
+  }
+
+  /* Paragraph — толщина по умолчанию regular (задаётся в компоненте) */
+
+  :where(.vl-typography)[data-variant='paragraph']:where([data-size='x-large']) {
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: -0.015em;
+  }
+
+  :where(.vl-typography)[data-variant='paragraph']:where([data-size='large']) {
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: -0.015em;
+  }
+
+  :where(.vl-typography)[data-variant='paragraph']:where([data-size='medium']) {
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.011em;
+  }
+
+  :where(.vl-typography)[data-variant='paragraph']:where([data-size='small']) {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.006em;
+  }
+
+  :where(.vl-typography)[data-variant='paragraph']:where([data-size='x-small']) {
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0;
+  }
+
+  /* Subheading — Google Sans 500, uppercase */
+
+  :where(.vl-typography)[data-variant='subheading']:where([data-size='medium']) {
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  :where(.vl-typography)[data-variant='subheading']:where([data-size='small']) {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  :where(.vl-typography)[data-variant='subheading']:where([data-size='x-small']) {
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  :where(.vl-typography)[data-variant='subheading']:where([data-size='2x-small']) {
+    font-size: 11px;
+    line-height: 12px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  /* Docs — Label 500, Paragraph 400; оба 18px / 32px / −1.5% */
+
+  :where(.vl-typography)[data-variant='docs']:where([data-size='label']) {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 32px;
+    letter-spacing: -0.015em;
+  }
+
+  :where(.vl-typography)[data-variant='docs']:where([data-size='paragraph']) {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 32px;
+    letter-spacing: -0.015em;
+  }
+}

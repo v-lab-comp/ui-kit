@@ -1,0 +1,72 @@
+:where([data-vl-skin~='corporate']) {
+  .vl-base-checkbox {
+    --icon-size: 12px 10px;
+    --dash-size: 12px 2px;
+
+    appearance: none;
+    -webkit-appearance: none;
+    margin: 0;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    border-radius: var(--radius-6);
+    border: 1.5px solid var(--stroke-sub-300);
+    background-color: var(--bg-white-0);
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      outline-color 0.15s ease;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+
+  :where(.vl-base-checkbox)[data-size='small'] {
+    --icon-size: 10px 8px;
+    --dash-size: 10px 2px;
+
+    width: 16px;
+    height: 16px;
+    border-radius: var(--radius-4);
+  }
+
+  .vl-base-checkbox:hover:not(:disabled) {
+    border-color: var(--primary-base);
+  }
+
+  .vl-base-checkbox:focus-visible {
+    outline-color: var(--primary-alpha-16);
+  }
+
+  .vl-base-checkbox:checked,
+  .vl-base-checkbox:indeterminate {
+    background-color: var(--primary-base);
+    border-color: var(--primary-base);
+  }
+
+  /* Checkmark icon */
+  .vl-base-checkbox:checked {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 10' fill='none'%3E%3Cpath d='M1 5l3.5 3.5L11 1' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-size: var(--icon-size);
+  }
+
+  /* Indeterminate (dash) icon */
+  .vl-base-checkbox:indeterminate {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 2' fill='none'%3E%3Cpath d='M1 1h10' stroke='white' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-size: var(--dash-size);
+  }
+
+  .vl-base-checkbox:disabled {
+    cursor: not-allowed;
+    background-color: var(--bg-soft-200);
+    border-color: var(--stroke-soft-200);
+  }
+
+  .vl-base-checkbox:checked:disabled,
+  .vl-base-checkbox:indeterminate:disabled {
+    background-color: var(--bg-soft-200);
+    border-color: var(--stroke-soft-200);
+  }
+}

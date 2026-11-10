@@ -1,0 +1,117 @@
+:where([data-vl-skin~='corporate']) {
+  .vl-avatar-card {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .vl-avatar-card__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .vl-avatar-card__title {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 32px;
+    letter-spacing: 0;
+    color: var(--text-strong-950, #171717);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .vl-avatar-card__subtitle {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: -0.015em;
+    color: var(--text-sub-600, #5c5c5c);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .vl-avatar-card__right {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  /* avatarSize=20, 24 */
+  .vl-avatar-card[data-avatar-size='20'],
+  .vl-avatar-card[data-avatar-size='24'] {
+    gap: 8px;
+  }
+  .vl-avatar-card[data-avatar-size='20'] .vl-avatar-card__title,
+  .vl-avatar-card[data-avatar-size='24'] .vl-avatar-card__title {
+    font-size: 12px;
+    line-height: 16px;
+  }
+  .vl-avatar-card[data-avatar-size='20'] .vl-avatar-card__subtitle,
+  .vl-avatar-card[data-avatar-size='24'] .vl-avatar-card__subtitle {
+    font-size: 10px;
+    line-height: 14px;
+    letter-spacing: 0;
+  }
+
+  /* avatarSize=32, 40 */
+  .vl-avatar-card[data-avatar-size='32'],
+  .vl-avatar-card[data-avatar-size='40'] {
+    gap: 12px;
+  }
+  .vl-avatar-card[data-avatar-size='32'] .vl-avatar-card__title,
+  .vl-avatar-card[data-avatar-size='40'] .vl-avatar-card__title {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.084px;
+  }
+  .vl-avatar-card[data-avatar-size='32'] .vl-avatar-card__subtitle,
+  .vl-avatar-card[data-avatar-size='40'] .vl-avatar-card__subtitle {
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0;
+  }
+
+  /* avatarSize=48, 56 */
+  .vl-avatar-card[data-avatar-size='48'],
+  .vl-avatar-card[data-avatar-size='56'] {
+    gap: 16px;
+  }
+  .vl-avatar-card[data-avatar-size='48'] .vl-avatar-card__title,
+  .vl-avatar-card[data-avatar-size='56'] .vl-avatar-card__title {
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: -0.27px;
+  }
+  .vl-avatar-card[data-avatar-size='48'] .vl-avatar-card__subtitle,
+  .vl-avatar-card[data-avatar-size='56'] .vl-avatar-card__subtitle {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0;
+  }
+
+  /* avatarSize=72, 80 */
+  .vl-avatar-card[data-avatar-size='72'],
+  .vl-avatar-card[data-avatar-size='80'] {
+    gap: 28px;
+  }
+  .vl-avatar-card[data-avatar-size='72'] .vl-avatar-card__title,
+  .vl-avatar-card[data-avatar-size='80'] .vl-avatar-card__title {
+    font-size: 28px;
+    line-height: 36px;
+  }
+  .vl-avatar-card[data-avatar-size='72'] .vl-avatar-card__subtitle,
+  .vl-avatar-card[data-avatar-size='80'] .vl-avatar-card__subtitle {
+    font-size: 20px;
+    line-height: 28px;
+  }
+}

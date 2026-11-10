@@ -1,0 +1,111 @@
+/* Корень без фона: затемнение только на .backdrop — как в Figma */
+:where([data-vl-skin~='corporate']) {
+  .vl-modal {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-modal);
+    padding: 20px;
+    box-sizing: border-box;
+    pointer-events: none;
+  }
+
+  .vl-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: var(--overlay-overlay-gray, rgba(51, 51, 51, 0.24));
+    animation: vl-modal-backdropFadeIn 0.22s ease-out;
+    pointer-events: auto;
+  }
+
+  .vl-modal__center {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    box-sizing: border-box;
+    pointer-events: none;
+  }
+
+  .vl-modal__panel {
+    /* Единый горизонтальный отступ для шапки / тела / футера */
+    --modal-padding-inline: 20px;
+    position: relative;
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    min-width: min(520px, 100vw - 40px);
+    max-width: min(100vw - 40px, 720px);
+    width: fit-content;
+    box-sizing: border-box;
+    border-radius: var(--radius-20);
+    border: 1px solid var(--stroke-soft-200);
+    background: var(--bg-white-0);
+    /* regular-shadow/medium — Figma */
+    box-shadow: var(--shadow-regular-medium);
+    overflow: hidden;
+    outline: none;
+    /* Default: scale animation */
+    animation: vl-modal-panelEnter var(--modal-animation-duration, 0.28s)
+      cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .vl-modal__panel[data-animation='slide'] {
+    animation: vl-modal-panelSlide var(--modal-animation-duration, 0.28s)
+      cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .vl-modal__panel[data-animation='fade'] {
+    animation: vl-modal-panelFade var(--modal-animation-duration, 0.28s) ease-out;
+  }
+
+  .vl-modal__panel[data-animation='none'] {
+    animation: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vl-modal__backdrop,
+    .vl-modal__panel {
+      animation: none;
+    }
+  }
+}
+@keyframes vl-modal-backdropFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes vl-modal-panelEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+@keyframes vl-modal-panelSlide {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes vl-modal-panelFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

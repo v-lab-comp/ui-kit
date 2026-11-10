@@ -1,0 +1,74 @@
+:where([data-vl-skin~='corporate']) {
+  .vl-toast-provider {
+    position: fixed;
+    z-index: var(--z-toast);
+    display: flex;
+    flex-direction: column;
+    pointer-events: none;
+    width: 390px;
+  }
+
+  .vl-toast-provider > * {
+    pointer-events: auto;
+  }
+
+  /* ─── Positions ─────────────────────────────────────────────────────────── */
+
+  :where(.vl-toast-provider)[data-position='top-right'] {
+    top: var(--toast-offset);
+    right: var(--toast-offset);
+    align-items: flex-end;
+  }
+
+  :where(.vl-toast-provider)[data-position='top-left'] {
+    top: var(--toast-offset);
+    left: var(--toast-offset);
+    align-items: flex-start;
+  }
+
+  :where(.vl-toast-provider)[data-position='top-center'] {
+    top: var(--toast-offset);
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+  }
+
+  :where(.vl-toast-provider)[data-position='bottom-right'] {
+    bottom: var(--toast-offset);
+    right: var(--toast-offset);
+    align-items: flex-end;
+    flex-direction: column-reverse;
+  }
+
+  :where(.vl-toast-provider)[data-position='bottom-left'] {
+    bottom: var(--toast-offset);
+    left: var(--toast-offset);
+    align-items: flex-start;
+    flex-direction: column-reverse;
+  }
+
+  :where(.vl-toast-provider)[data-position='bottom-center'] {
+    bottom: var(--toast-offset);
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+    flex-direction: column-reverse;
+  }
+
+  /* ─── Mobile: full-width toasts ──────────────────────────────────────────── */
+
+  @media (max-width: 440px) {
+    :where(.vl-toast-provider)[data-position='top-right'],
+    :where(.vl-toast-provider)[data-position='top-left'],
+    :where(.vl-toast-provider)[data-position='top-center'],
+    :where(.vl-toast-provider)[data-position='bottom-right'],
+    :where(.vl-toast-provider)[data-position='bottom-left'],
+    :where(.vl-toast-provider)[data-position='bottom-center'] {
+      left: var(--toast-offset);
+      right: var(--toast-offset);
+      transform: none;
+      align-items: stretch;
+      width: auto;
+    }
+  }
+}

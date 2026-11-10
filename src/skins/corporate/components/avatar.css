@@ -1,0 +1,96 @@
+:where([data-vl-skin~='corporate']) {
+  .vl-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    background: var(--neutral-200, #ebebeb);
+    font-family: var(--font-sans), inherit;
+    color: var(--neutral-950, #171717);
+    font-weight: 500;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .vl-avatar[data-color='primary'],
+  .vl-avatar[data-color='information'] {
+    background: var(--blue-200);
+    color: var(--blue-950);
+  }
+
+  .vl-avatar[data-color='neutral'] {
+    background: var(--neutral-200);
+    color: var(--neutral-950);
+  }
+
+  .vl-avatar[data-color='error'] {
+    background: var(--red-200);
+    color: var(--red-950);
+  }
+
+  .vl-avatar[data-color='warning'],
+  .vl-avatar[data-color='away'] {
+    background: var(--yellow-200);
+    color: var(--yellow-950);
+  }
+
+  .vl-avatar[data-color='success'],
+  .vl-avatar[data-color='stable'] {
+    background: var(--green-200);
+    color: var(--green-950);
+  }
+
+  .vl-avatar[data-color='feature'] {
+    background: var(--purple-200);
+    color: var(--purple-950);
+  }
+
+  .vl-avatar[data-color='verified'] {
+    background: var(--sky-200);
+    color: var(--sky-950);
+  }
+
+  .vl-avatar[data-color='highlighted'] {
+    background: var(--pink-200);
+    color: var(--pink-950);
+  }
+
+  .vl-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .vl-avatar span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .vl-avatar span:not(.vl-avatar__icon) {
+    width: 100%;
+    height: 100%;
+    line-height: 1;
+  }
+
+  .vl-avatar__default-icon {
+    width: 100%;
+    height: 100%;
+    display: block;
+    flex-shrink: 0;
+  }
+
+  .vl-avatar__default-icon-head {
+    fill: var(--bg-white-0);
+    fill-opacity: 0.9;
+  }
+
+  .vl-avatar__default-icon-shoulders {
+    fill: var(--bg-white-0);
+    fill-opacity: 0.72;
+  }
+}

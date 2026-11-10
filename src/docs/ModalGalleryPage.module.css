@@ -1,0 +1,65 @@
+.root {
+  min-height: 100vh;
+  background: var(--bg-white-0);
+  padding: 40px 24px;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+.rootEmbedded {
+  min-height: auto;
+  padding: 0;
+  background: transparent;
+}
+
+.rootEmbedded .title,
+.rootEmbedded .subtitle {
+  display: none;
+}
+
+.inner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.title {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-strong-950);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.subtitle {
+  margin: 0 0 32px 0;
+  font-size: 14px;
+  color: var(--text-sub-600);
+  line-height: 1.5;
+}
+
+.section {
+  margin-bottom: 36px;
+}
+
+.sectionTitle {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-sub-600);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.itemLabel {
+  margin: 0 0 10px 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-sub-600);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}

@@ -1,0 +1,32 @@
+:where([data-vl-skin~='corporate']) {
+  .vl-breadcrumbs {
+    display: block;
+  }
+
+  .vl-breadcrumbs__list {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Разделитель через CSS — не попадает в DOM, скринридеры не читают */
+  .vl-breadcrumbs__list > li + li::before {
+    content: var(--breadcrumb-sep, '>');
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin: 0 6px;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.084px; /* -0.6% of 14px */
+    color: var(--text-disabled-300, #cacaca);
+    speak: none;
+  }
+}

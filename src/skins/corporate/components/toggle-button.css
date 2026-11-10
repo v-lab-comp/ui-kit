@@ -1,0 +1,99 @@
+:where([data-vl-skin~='corporate']) {
+  .vl-toggle-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 9px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    line-height: 20px;
+    letter-spacing: -0.006em;
+    border-radius: var(--btn-radius, var(--radius-10));
+    cursor: pointer;
+    border: 1px solid var(--stroke-soft-200);
+    background-color: var(--bg-white-0);
+    color: var(--text-sub-600);
+    box-shadow: var(--shadow-regular-x-small);
+    outline: none;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease,
+      box-shadow 0.15s ease;
+    white-space: nowrap;
+    user-select: none;
+    text-decoration: none;
+  }
+
+  /* ---- States ---- */
+
+  .vl-toggle-button:hover:not(:disabled) {
+    background-color: var(--bg-weak-50);
+  }
+
+  .vl-toggle-button:active:not(:disabled) {
+    background-color: var(--bg-weak-50);
+  }
+
+  /* Pressed / on */
+  .vl-toggle-button[data-state='on'] {
+    background-color: var(--bg-weak-50);
+    border-color: var(--stroke-sub-300);
+    color: var(--text-strong-950);
+    box-shadow: none;
+  }
+
+  .vl-toggle-button[data-state='on']:hover:not(:disabled) {
+    background-color: var(--bg-weak-50);
+  }
+
+  /* Focus */
+  .vl-toggle-button:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  .vl-toggle-button:focus-visible {
+    outline: 2px solid var(--primary-base);
+    outline-offset: 2px;
+  }
+
+  /* Disabled */
+  .vl-toggle-button:disabled {
+    cursor: not-allowed;
+    background-color: var(--bg-soft-200);
+    border-color: var(--stroke-soft-200);
+    color: var(--text-disabled-300);
+    box-shadow: none;
+  }
+
+  /* ---- Sizes ---- */
+
+  /* medium = default (40px height via padding) */
+
+  :where(.vl-toggle-button)[data-size='small'] {
+    padding: 7px 8px;
+    gap: 4px;
+  }
+
+  :where(.vl-toggle-button)[data-size='x-small'] {
+    padding: 5px 8px;
+    gap: 4px;
+  }
+
+  :where(.vl-toggle-button)[data-size='2x-small'] {
+    padding: 3px 6px;
+    gap: 2px;
+  }
+
+  /* ---- Shapes ---- */
+
+  :where(.vl-toggle-button)[data-shape='circle'] {
+    border-radius: var(--radius-full);
+  }
+
+  :where(.vl-toggle-button)[data-shape='square'] {
+    border-radius: 0;
+  }
+}

@@ -1,0 +1,239 @@
+/* Палитры подключаются скином (palettes.css) — не здесь. */
+
+/* ============================================================
+   Base — все размеры/паддинги/радиус идут через --badge-* vars,
+   что даёт пробросить style={{ '--badge-height': '24px', ... }}.
+   ============================================================ */
+
+:where([data-vl-skin~='corporate']) {
+  .vl-badge {
+    --_badge-h: 20px;
+    --_badge-py: 1px;
+    --_badge-px: 8px;
+    --_badge-fs: 12px;
+    --_badge-lh: 18px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    gap: 2px;
+    height: var(--badge-height, var(--_badge-h));
+    padding-block: var(--_badge-py);
+    padding-inline: var(--badge-padding-x, var(--_badge-px));
+    font-size: var(--badge-font-size, var(--_badge-fs));
+    font-weight: 500;
+    font-family: inherit;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+    border-radius: var(--badge-radius, var(--radius-full));
+    line-height: var(--_badge-lh);
+    white-space: nowrap;
+    user-select: none;
+    overflow: hidden;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.12s ease;
+  }
+
+  button.vl-badge {
+    margin: 0;
+    cursor: default;
+    font: inherit;
+    font-size: var(--badge-font-size, var(--_badge-fs));
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  .vl-badge * {
+    line-height: inherit;
+    min-height: 0;
+  }
+
+  /* ============================================================
+   Size
+   ============================================================ */
+
+  :where(.vl-badge)[data-size='xsmall'] {
+    --_badge-h: 14px;
+    --_badge-py: 0;
+    --_badge-px: 6px;
+    --_badge-fs: 10px;
+    --_badge-lh: 12px;
+  }
+  :where(.vl-badge)[data-size='small'] {
+    --_badge-h: 16px;
+    --_badge-py: 1px;
+    --_badge-px: 8px;
+    --_badge-fs: 11px;
+    --_badge-lh: 14px;
+  }
+  :where(.vl-badge)[data-size='medium'] {
+    --_badge-h: 20px;
+    --_badge-py: 1px;
+    --_badge-px: 8px;
+    --_badge-fs: 12px;
+    --_badge-lh: 18px;
+  }
+  :where(.vl-badge)[data-size='large'] {
+    --_badge-h: 24px;
+    --_badge-py: 2px;
+    --_badge-px: 10px;
+    --_badge-fs: 13px;
+    --_badge-lh: 20px;
+  }
+
+  :where(.vl-badge)[data-has-left-node] {
+    padding-left: 4px;
+  }
+  :where(.vl-badge)[data-has-right-node] {
+    padding-right: 4px;
+  }
+
+  /* ============================================================
+   Node + dot
+   ============================================================ */
+
+  .vl-badge__node {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+  }
+
+  :where(.vl-badge)[data-size='large'] .vl-badge__node {
+    width: 14px;
+    height: 14px;
+  }
+  :where(.vl-badge)[data-size='xsmall'] .vl-badge__node {
+    width: 10px;
+    height: 10px;
+  }
+
+  .vl-badge__dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: currentColor;
+  }
+
+  /* ============================================================
+   Shape
+   ============================================================ */
+
+  :where(.vl-badge)[data-shape='rounded'] {
+    border-radius: var(--badge-radius, var(--radius-6));
+  }
+
+  :where(.vl-badge)[data-shape='circle'] {
+    box-sizing: border-box;
+    padding: 4px;
+    width: max-content;
+    min-width: var(--badge-height, var(--_badge-h));
+  }
+
+  /* ============================================================
+   Variants — используют --pal-* (palettes.css или customColor)
+   ============================================================ */
+
+  :where(.vl-badge)[data-variant='filled'] {
+    background-color: var(--pal-base);
+    border-color: var(--pal-base);
+    color: var(--static-white);
+  }
+
+  :where(.vl-badge)[data-color='neutral'][data-variant='filled'] {
+    --pal-base: var(--faded-base);
+    color: var(--text-white-0);
+  }
+
+  :where(.vl-badge)[data-variant='light'] {
+    background-color: var(--pal-bg-active);
+    color: var(--pal-hover);
+  }
+
+  :where(.vl-badge)[data-color='neutral'][data-variant='light'] {
+    background-color: var(--faded-light);
+    color: var(--faded-dark);
+  }
+
+  :where(.vl-badge)[data-variant='lighter'] {
+    background-color: var(--pal-bg-hover);
+    color: var(--pal-base);
+  }
+
+  :where(.vl-badge)[data-color='neutral'][data-variant='lighter'] {
+    background-color: var(--faded-lighter);
+    color: var(--faded-base);
+  }
+
+  :where(.vl-badge)[data-variant='stroke'] {
+    background-color: transparent;
+    border-color: var(--pal-base);
+    color: var(--pal-base);
+  }
+
+  :where(.vl-badge)[data-color='neutral'][data-variant='stroke'] {
+    border-color: var(--faded-base);
+    color: var(--faded-base);
+  }
+
+  /* ============================================================
+   Clickable — hover/active анимация
+   ============================================================ */
+
+  :where(.vl-badge)[data-interactive] {
+    cursor: pointer;
+  }
+
+  :where(.vl-badge)[data-interactive][data-variant='filled']:hover {
+    background-color: var(--pal-hover);
+    border-color: var(--pal-hover);
+  }
+  :where(.vl-badge)[data-interactive][data-variant='filled']:active {
+    background-color: var(--pal-active);
+    border-color: var(--pal-active);
+    transform: scale(0.97);
+  }
+
+  :where(.vl-badge)[data-interactive][data-variant='light']:hover,
+  :where(.vl-badge)[data-interactive][data-variant='lighter']:hover {
+    background-color: var(--pal-bg-active);
+  }
+  :where(.vl-badge)[data-interactive][data-variant='light']:active,
+  :where(.vl-badge)[data-interactive][data-variant='lighter']:active {
+    transform: scale(0.97);
+  }
+
+  :where(.vl-badge)[data-interactive][data-variant='stroke']:hover {
+    background-color: var(--pal-bg-hover);
+  }
+  :where(.vl-badge)[data-interactive][data-variant='stroke']:active {
+    background-color: var(--pal-bg-active);
+    transform: scale(0.97);
+  }
+
+  :where(.vl-badge)[data-interactive]:focus-visible {
+    outline: 2px solid var(--pal-base);
+    outline-offset: 2px;
+  }
+
+  /* ============================================================
+   Disabled — всегда в конце
+   ============================================================ */
+
+  :where(.vl-badge)[data-disabled] {
+    cursor: not-allowed;
+    background-color: transparent;
+    border-color: var(--stroke-soft-200);
+    color: var(--text-disabled-300);
+    transform: none;
+  }
+}

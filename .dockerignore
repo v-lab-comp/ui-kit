@@ -1,0 +1,21 @@
+.git
+node_modules
+dist
+docs-site/.vitepress/dist
+docs-site/.vitepress/cache
+**/.DS_Store
+**/*.log
+
+# Не нужны для сборки в Docker (Storybook собирается из .storybook — не исключаем)
+e2e
+playwright-report
+playwright/.auth
+blob-report
+test-results
+coverage
+storybook-static
+.playwright-mcp
+
+playwright.config.ts
+playwright.docs.config.ts
+vitest.config.ts

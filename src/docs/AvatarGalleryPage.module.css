@@ -1,0 +1,84 @@
+.root {
+  min-height: 100vh;
+  background: #fff;
+  padding: 40px 24px;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+.rootEmbedded {
+  min-height: auto;
+  padding: 0;
+  background: transparent;
+}
+
+.rootEmbedded .title {
+  display: none;
+}
+
+.inner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.title {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #171717;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+.sectionTitle {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #5c5c5c;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.sizesRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.sizeItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.sizeLabel {
+  font-size: 13px;
+  font-weight: 500;
+  color: #5c5c5c;
+}
+
+.variantsRow {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.variantItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.variantLabel {
+  font-size: 13px;
+  font-weight: 500;
+  color: #5c5c5c;
+}

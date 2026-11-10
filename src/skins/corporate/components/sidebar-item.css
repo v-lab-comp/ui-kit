@@ -1,0 +1,157 @@
+/* Figma: Sidebar Items [Sidebar] [1.1] — holder хранит полоску и кнопку */
+
+/* По Figma: полоска left -20px от кнопки (у левого края сайдбара), между полоской и кнопкой 16px */
+
+:where([data-vl-skin~='corporate']) {
+  .vl-sidebar-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 36px;
+    gap: 16px;
+    box-sizing: border-box;
+    position: relative;
+  }
+
+  :where(.vl-sidebar-item)[data-collapsed] {
+    width: fit-content;
+    min-width: 36px;
+    justify-content: flex-start;
+  }
+
+  /* Полоска: по Figma absolute left -20px, top 8px, 4×20px — не участвует в потоке */
+  .vl-sidebar-item__bar-slot {
+    position: absolute;
+    left: -20px;
+    top: 8px;
+    width: 4px;
+    height: 20px;
+    border-radius: 0 var(--radius-2) var(--radius-2) 0;
+    background: transparent;
+    flex-shrink: 0;
+    pointer-events: none;
+  }
+
+  :where(.vl-sidebar-item__bar-slot)[data-active] {
+    background: var(--primary-base);
+  }
+
+  /* Кнопка — по Figma 3741-45019: px-12 py-8, gap-8, Label/Small (14px Medium, line-height 20, tracking -0.084px) */
+  .vl-sidebar-item__item {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    min-height: 36px;
+    padding: 8px 12px;
+    gap: 8px;
+    border: none;
+    border-radius: var(--radius-8);
+    background: var(--bg-white-0);
+    color: var(--text-sub-600);
+    font-family: var(--font-sans), inherit;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.084px;
+    font-feature-settings:
+      'calt' 0,
+      'liga' 0;
+    cursor: pointer;
+    text-align: left;
+    text-decoration: none;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease;
+    box-sizing: border-box;
+  }
+
+  .vl-sidebar-item__item:hover {
+    background: var(--bg-weak-50);
+  }
+
+  .vl-sidebar-item__item:focus-visible {
+    outline-color: var(--primary-base);
+  }
+
+  /* Active expanded: по Figma фон weak-50 (как hover), текст strong-950 */
+  :where(.vl-sidebar-item__item)[data-active] {
+    background: var(--bg-weak-50);
+    color: var(--text-strong-950);
+  }
+
+  :where(.vl-sidebar-item__item)[data-active]:hover {
+    background: var(--bg-weak-50);
+  }
+
+  /* Collapsed + Active: кнопка — светлый фон, полоска уже снаружи */
+  :where(.vl-sidebar-item__item)[data-collapsed][data-active] {
+    background: var(--bg-weak-50);
+  }
+
+  :where(.vl-sidebar-item__item)[data-collapsed][data-active]:hover {
+    background: var(--bg-weak-50);
+  }
+
+  /* Collapsed: по Figma p-[8px], только иконка */
+  :where(.vl-sidebar-item__item)[data-collapsed] {
+    justify-content: center;
+    flex: 1;
+    min-width: 0;
+    padding: 8px;
+  }
+
+  :where(.vl-sidebar-item)[data-collapsed] .vl-sidebar-item__item[data-collapsed] {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+  }
+
+  :where(.vl-sidebar-item__item)[data-collapsed] .vl-sidebar-item__label,
+  :where(.vl-sidebar-item__item)[data-collapsed] .vl-sidebar-item__right {
+    display: none;
+  }
+
+  /* Слоты: блок с иконкой в collapsed — 36×36 (кнопка), сама иконка — 20×20 */
+  .vl-sidebar-item__left {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    color: inherit;
+  }
+
+  .vl-sidebar-item__left svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .vl-sidebar-item__label {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .vl-sidebar-item__right {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    color: var(--icon-sub-600);
+  }
+
+  .vl-sidebar-item__right svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Active: по Figma синяя только левая иконка, текст strong-950, стрелка не синяя */
+  :where(.vl-sidebar-item__item)[data-active] .vl-sidebar-item__left {
+    color: var(--primary-base);
+  }
+}

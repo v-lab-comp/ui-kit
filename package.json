@@ -1,0 +1,186 @@
+{
+  "name": "@v-lab/ui-kit",
+  "version": "0.15.0",
+  "description": "V-Lab React UI Kit",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "style": "dist/style.css",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./icons": {
+      "types": "./dist/icons.d.ts",
+      "default": "./dist/icons.js"
+    },
+    "./flags": {
+      "types": "./dist/flags.d.ts",
+      "default": "./dist/flags.js"
+    },
+    "./phone": {
+      "types": "./dist/phone.d.ts",
+      "default": "./dist/phone.js"
+    },
+    "./date": {
+      "types": "./dist/date.d.ts",
+      "default": "./dist/date.js"
+    },
+    "./pdf": {
+      "types": "./dist/pdf.d.ts",
+      "default": "./dist/pdf.js"
+    },
+    "./markdown": {
+      "types": "./dist/markdown.d.ts",
+      "default": "./dist/markdown.js"
+    },
+    "./adapters": {
+      "types": "./dist/adapters.d.ts",
+      "default": "./dist/adapters.js"
+    },
+    "./skins/*.css": "./dist/skins/*.css",
+    "./skins/*": {
+      "types": "./dist/skins/*.d.ts",
+      "default": "./dist/skins/*.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "pnpm": {
+    "overrides": {
+      "acorn": "8.10.0"
+    }
+  },
+  "scripts": {
+    "gen:sample-pdf": "node scripts/generate-sample-pdf.mjs",
+    "gen:primitives": "tsx scripts/parse-primitives-from-css.mts",
+    "gen:flags": "tsx scripts/fetch-flags-from-figma.mts",
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "typecheck": "tsc",
+    "test": "vitest src",
+    "test:run": "vitest run src",
+    "test:e2e": "playwright test",
+    "test:e2e:docs": "playwright test --config=playwright.docs.config.ts",
+    "coverage": "vitest run --coverage",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "STORYBOOK_DISABLE_DTS=1 storybook build",
+    "docs:dev": "vitepress dev docs-site",
+    "docs:build": "vitepress build docs-site",
+    "docs:preview": "vitepress preview docs-site",
+    "docs:docker": "docker compose -f docs-site/docker/docker-compose.yml up --build",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\" \"e2e/**/*.ts\" \"scripts/**/*.{ts,mts,mjs,js}\" \"eslint.config.js\" \"vite.config.ts\" \"vitest.config.ts\" \"playwright.config.ts\" \"tsconfig.json\" \".storybook/**/*.{ts,tsx,js}\" \"docs-site/**/*.{ts,md,vue}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\" \"e2e/**/*.ts\" \"scripts/**/*.{ts,mts,mjs,js}\" \"eslint.config.js\" \"vite.config.ts\" \"vitest.config.ts\" \"playwright.config.ts\" \"tsconfig.json\" \".storybook/**/*.{ts,tsx,js}\" \"docs-site/**/*.{ts,md,vue}\"",
+    "prebuild": "npm run format:check",
+    "prepare": "husky || true",
+    "postbuild": "node scripts/check-dist-css.mjs",
+    "verify:halo": "node scripts/verify-halo.mjs"
+  },
+  "peerDependencies": {
+    "@floating-ui/react": "^0.27.19",
+    "@remixicon/react": ">=4",
+    "clsx": ">=2",
+    "imask": ">=7",
+    "libphonenumber-js": ">=1.11",
+    "marked": ">=12",
+    "react": ">=17",
+    "react-dom": ">=17",
+    "react-hook-form": ">=7",
+    "react-imask": ">=7",
+    "react-pdf": ">=7",
+    "react-phone-number-input": ">=3",
+    "turndown": ">=7"
+  },
+  "peerDependenciesMeta": {
+    "imask": {
+      "optional": true
+    },
+    "libphonenumber-js": {
+      "optional": true
+    },
+    "marked": {
+      "optional": true
+    },
+    "react-hook-form": {
+      "optional": true
+    },
+    "react-imask": {
+      "optional": true
+    },
+    "react-pdf": {
+      "optional": true
+    },
+    "react-phone-number-input": {
+      "optional": true
+    },
+    "turndown": {
+      "optional": true
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{css,json,md,mjs,mts,js,cjs}": [
+      "prettier --write"
+    ]
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.3",
+    "@floating-ui/react": "^0.27.19",
+    "@fontsource/google-sans": "^5.2.1",
+    "@playwright/test": "^1.49.1",
+    "@storybook/addon-essentials": "^8.6.18",
+    "@storybook/preview-api": "^8.6.18",
+    "@storybook/react": "^8.6.18",
+    "@storybook/react-vite": "^8.6.18",
+    "@storybook/test": "^8.6.18",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^22.10.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "@types/turndown": "^5.0.6",
+    "@vitejs/plugin-react": "^4.3.0",
+    "@vitest/coverage-v8": "^4.0.18",
+    "eslint": "^9.39.3",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "globals": "^17.3.0",
+    "husky": "^9.1.7",
+    "imask": "^7.6.1",
+    "jsdom": "^28.1.0",
+    "libphonenumber-js": "^1.12.39",
+    "lint-staged": "^16.2.7",
+    "marked": "^18.0.9",
+    "pdfjs-dist": "^5.6.205",
+    "prettier": "^3.8.1",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "react-hook-form": "^7.71.2",
+    "react-imask": "^7.6.1",
+    "react-pdf": "^10.4.1",
+    "react-phone-number-input": "^3.4.16",
+    "storybook": "^8.6.18",
+    "storybook-mcp": "^0.5.0",
+    "tsx": "^4.19.2",
+    "turndown": "^7.2.4",
+    "typescript": "^5.5.0",
+    "typescript-eslint": "^8.56.1",
+    "vite": "^5.4.0",
+    "vite-plugin-dts": "^4.3.0",
+    "vitepress": "^1.6.3",
+    "vitest": "^4.0.18",
+    "vue": "^3.5.13"
+  }
+}

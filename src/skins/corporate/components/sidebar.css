@@ -1,0 +1,145 @@
+/* Позиционирование как в shadcn: fixed слева, на всю высоту экрана. Основной контент — с margin-left равным ширине сайдбара. */
+
+:where([data-vl-skin~='corporate']) {
+  .vl-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: var(--z-sidebar);
+    display: flex;
+    flex-direction: column;
+    width: 272px;
+    min-width: 272px;
+    /* Не 100vh: во вложенном превью (доки VitePress, transform) колонка должна заполнять контейнер превью, а не окно браузера — иначе перекрывает текст ниже. */
+    background: var(--bg-white-0);
+    /* Дублируем линию через box-shadow для стабильного отображения */
+    box-shadow: 1px 0 0 0 var(--stroke-soft-200, #ebebeb);
+    box-sizing: border-box;
+  }
+
+  :where(.vl-sidebar)[data-collapsed='true'] {
+    width: 80px;
+    min-width: 80px;
+  }
+
+  /* Прокручиваемая середина (навигация) */
+  .vl-sidebar-content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px 20px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-sizing: border-box;
+  }
+
+  :where(.vl-sidebar)[data-collapsed='true'] .vl-sidebar-content {
+    padding: 12px 12px 16px;
+    align-items: center;
+  }
+
+  :where(.vl-sidebar)[data-collapsed='true'] .vl-sidebar-section {
+    align-items: center;
+  }
+
+  :where(.vl-sidebar)[data-collapsed='true'] .vl-sidebar-section__items {
+    align-items: center;
+  }
+
+  /* Секция: по Figma gap 8px между лейблом и навигацией, 4px между пунктами */
+  .vl-sidebar-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-sizing: border-box;
+  }
+
+  .vl-sidebar-section__items {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    box-sizing: border-box;
+  }
+
+  /* По Figma 3802:11756 — Subheading/X Small: 12px Medium, text/soft-400, tracking 0.48px, uppercase */
+  .vl-sidebar-section__label {
+    font-family: var(--font-sans), inherit;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0.48px;
+    color: var(--text-soft-400);
+    padding: 4px;
+    text-transform: uppercase;
+    text-align: left;
+    box-sizing: border-box;
+  }
+
+  /* В свёрнутом состоянии заголовок секции по центру */
+  :where(.vl-sidebar)[data-collapsed='true'] .vl-sidebar-section__label {
+    text-align: center;
+  }
+
+  /* Кнопка сворачивания/разворачивания — тот же размер, что и dropdown: 24×24, иконка 20×20 */
+  .vl-sidebar-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 24px;
+    min-width: 24px;
+    max-width: 24px;
+    height: 24px;
+    min-height: 24px;
+    max-height: 24px;
+    padding: 2px;
+    border: 1px solid var(--stroke-soft-200);
+    border-radius: var(--radius-6);
+    background: var(--bg-white-0);
+    color: var(--icon-sub-600);
+    cursor: pointer;
+    box-sizing: border-box;
+    box-shadow: var(--shadow-regular-x-small);
+  }
+
+  .vl-sidebar-trigger:hover {
+    background: var(--bg-weak-50);
+  }
+
+  .vl-sidebar-trigger:focus-visible {
+    outline: 2px solid var(--primary-base);
+    outline-offset: 2px;
+  }
+
+  .vl-sidebar-trigger svg,
+  .vl-sidebar-trigger__icon {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.2s ease;
+  }
+
+  :where(.vl-sidebar-trigger__icon)[data-collapsed] {
+    transform: rotate(180deg);
+  }
+
+  /* SidebarLayout — обёртка: sidebar + main content */
+  .vl-sidebar-layout {
+    display: flex;
+    /* Родитель задаёт высоту (LayoutRoot, обёртка сториса, превью docs); не привязываемся к окну. */
+    min-height: 100%;
+  }
+
+  .vl-sidebar-main {
+    flex: 1;
+    min-width: 0;
+    margin-left: 272px;
+    transition: margin-left 0.2s ease;
+  }
+
+  :where(.vl-sidebar-main)[data-collapsed] {
+    margin-left: 80px;
+  }
+}

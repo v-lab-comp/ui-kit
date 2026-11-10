@@ -1,0 +1,13 @@
+/**
+ * Корневая обёртка для layout с сайдбаром и контентом.
+ * height: 100vh + overflow: hidden — скролл только внутри SidebarInsetContent, хедер не уезжает.
+ * Без этой обёртки скроллится вся страница и хедер уезжает вместе с контентом.
+ */
+:where([data-vl-skin~='corporate']) {
+  .vl-layout-root {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+}

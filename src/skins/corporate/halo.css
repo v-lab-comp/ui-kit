@@ -1,0 +1,209 @@
+/**
+ * Общие интерактивные эффекты для кнопок кита.
+ *
+ * ВАЖНО: здесь НЕ должно быть `@import './tokens.css'`. Файл лежит рядом с
+ * `tokens.css`, поэтому спецификатор получается `./tokens.css`, и Vite оставляет
+ * такой импорт внешним вместо инлайна — в `dist/style.css` он всплывает как
+ * висячий `@import "./tokens.css"`, а самого файла в пакете нет (см. 0.13.0 →
+ * 0.13.1). Токены и не нужны: `:where([data-vl-skin~='corporate']) :is(.vl-password-input__eye-btn, .vl-share-link-input__copy-button, .vl-date-input__calendar-btn, .vl-rich-input__tool-button, .vl-tag__dismiss, .vl-select-input__clear-btn, .vl-sidebar-trigger, .vl-calendar-header__nav-btn, .vl-modal-header__close, .vl-toast__close, .vl-comment-rich-input__icon-button, .vl-comment-rich-input__align-button, .vl-comment-rich-input__send-button, .vl-comments-section__menu-trigger, .vl-button, .vl-file-upload__file-item-action, .vl-pdf-preview__nav-button, .vl-table__page-btn, .vl-app-switcher__trigger-grid)` только читает `var(--…)`, а значения
+ * приезжают из `:root` вместе с общим `style.css`.
+ *
+ * Подключается через CSS Modules `composes` (не глобальный класс — чтобы имена
+ * оставались хешированными и не конфликтовали в приложении-потребителе):
+ *
+ * ```css
+ * .iconButton {
+ *   composes: halo from '../../styles/interactions.module.css';
+ * }
+ * ```
+ */
+
+/**
+ * Hover-ореол: вокруг кнопки мягко раскрывается кольцо в цвет палитры.
+ *
+ * Геометрия и размер не меняются — кольцо живёт на псевдоэлементе и не влияет
+ * на layout (ни `scale`, ни `padding`, ни сдвига соседей).
+ *
+ * Почему псевдоэлемент, а не `box-shadow` на самой кнопке: у многих кнопок кита
+ * уже есть свои `box-shadow` и `transition` (Calendar, Table, FileUpload, AppSwitcher).
+ * Правило утилиты затирало бы их целиком, и итог зависел бы от порядка правил
+ * в собранном CSS. У псевдоэлемента собственные тень и переход — пересечений нет.
+ *
+ * Тайминг асимметричный: появление быстрое, уход медленный — так интерфейс
+ * «охотно откликается и неохотно уходит».
+ */
+
+/**
+ * Ключевое правило: кольцо всегда контрастирует с телом кнопки.
+ *
+ * Иначе оно сливается с заливкой и кнопка читается просто как «раздувшаяся».
+ * Так и было бы у `stroke` / `ghost` / иконочных кнопок: их hover-фон — это
+ * ровно `--pal-bg-hover` / `--bg-soft-200`, то есть цвет кольца.
+ *
+ * Отсюда две трактовки, переключаются переменными:
+ *   - насыщенное тело (filled, lighter) → бледная широкая аура;
+ *   - бледное / прозрачное тело (stroke, ghost, иконочные) → тонкая кромка 1px
+ *     в акцентном цвете, вплотную к краю.
+ *
+ * По умолчанию здесь — вариант «тонкая кромка»: он рассчитан на иконочные кнопки,
+ * которых в ките большинство и у которых нет класса палитры.
+ *
+ * ВАЖНО — `:where([data-vl-skin~='corporate']) :is(.vl-password-input__eye-btn, .vl-share-link-input__copy-button, .vl-date-input__calendar-btn, .vl-rich-input__tool-button, .vl-tag__dismiss, .vl-select-input__clear-btn, .vl-sidebar-trigger, .vl-calendar-header__nav-btn, .vl-modal-header__close, .vl-toast__close, .vl-comment-rich-input__icon-button, .vl-comment-rich-input__align-button, .vl-comment-rich-input__send-button, .vl-comments-section__menu-trigger, .vl-button, .vl-file-upload__file-item-action, .vl-pdf-preview__nav-button, .vl-table__page-btn, .vl-app-switcher__trigger-grid)` НЕ должен объявлять `--halo-*` у себя в блоке.
+ * Дефолты живут только в `var(…, fallback)` ниже. Причина: `:where([data-vl-skin~='corporate']) :is(.vl-password-input__eye-btn, .vl-share-link-input__copy-button, .vl-date-input__calendar-btn, .vl-rich-input__tool-button, .vl-tag__dismiss, .vl-select-input__clear-btn, .vl-sidebar-trigger, .vl-calendar-header__nav-btn, .vl-modal-header__close, .vl-toast__close, .vl-comment-rich-input__icon-button, .vl-comment-rich-input__align-button, .vl-comment-rich-input__send-button, .vl-comments-section__menu-trigger, .vl-button, .vl-file-upload__file-item-action, .vl-pdf-preview__nav-button, .vl-table__page-btn, .vl-app-switcher__trigger-grid)` и классы
+ * вариантов (`.filled`, `.lighter`) имеют одинаковую специфичность (0,1,0), а в
+ * собранном `style.css` утилита оказывается сильно позже вариантов — при равной
+ * специфичности побеждает она, и переменные вариантов молча теряются. Так сломалась
+ * 0.13.1: у `filled` / `lighter` вместо ауры 3px + свечение выходила кромка 1px.
+ * Пока дефолт задан фолбэком, объявлять переменную некому — конфликта нет вовсе,
+ * а порядок правил перестаёт что-либо решать. Проверяется в `postbuild`
+ * (`scripts/check-dist-css.mjs`).
+ *
+ * Побочная польза: `--halo-*` теперь переопределяются из `:root` в приложении —
+ * раньше объявление на самом элементе било унаследованное значение.
+ */
+
+:where([data-vl-skin~='corporate']) {
+  :is(
+    .vl-password-input__eye-btn,
+    .vl-share-link-input__copy-button,
+    .vl-date-input__calendar-btn,
+    .vl-rich-input__tool-button,
+    .vl-tag__dismiss,
+    .vl-select-input__clear-btn,
+    .vl-sidebar-trigger,
+    .vl-calendar-header__nav-btn,
+    .vl-modal-header__close,
+    .vl-toast__close,
+    .vl-comment-rich-input__icon-button,
+    .vl-comment-rich-input__align-button,
+    .vl-comment-rich-input__send-button,
+    .vl-comments-section__menu-trigger,
+    .vl-button,
+    .vl-file-upload__file-item-action,
+    .vl-pdf-preview__nav-button,
+    .vl-table__page-btn,
+    .vl-app-switcher__trigger-grid
+  ) {
+    position: relative;
+  }
+
+  :is(
+    .vl-password-input__eye-btn,
+    .vl-share-link-input__copy-button,
+    .vl-date-input__calendar-btn,
+    .vl-rich-input__tool-button,
+    .vl-tag__dismiss,
+    .vl-select-input__clear-btn,
+    .vl-sidebar-trigger,
+    .vl-calendar-header__nav-btn,
+    .vl-modal-header__close,
+    .vl-toast__close,
+    .vl-comment-rich-input__icon-button,
+    .vl-comment-rich-input__align-button,
+    .vl-comment-rich-input__send-button,
+    .vl-comments-section__menu-trigger,
+    .vl-button,
+    .vl-file-upload__file-item-action,
+    .vl-pdf-preview__nav-button,
+    .vl-table__page-btn,
+    .vl-app-switcher__trigger-grid
+  )::after {
+    content: '';
+    position: absolute;
+    /* Кольцо рисуется снаружи: псевдоэлемент прозрачный и не перекрывает текст.
+     Кромка вплотную к краю (0) — не путается с :focus-visible (тот с отступом 2px). */
+    inset: var(--halo-offset, 0px);
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    /* `--pal-*` есть только у элементов с классом палитры (Button, Tag, Badge, Toast);
+     для остальных — нейтральная кромка без свечения. `--halo-neutral` (средний тон)
+     виден и на белой карточке, и на сером фоне страницы `--bg-weak-50` (#f7f7f7). */
+    box-shadow:
+      0 0 0 var(--halo-ring-size, 1px) var(--halo-ring-color, var(--pal-base, var(--halo-neutral))),
+      0 2px 10px -3px var(--halo-glow-color, transparent);
+    transition:
+      opacity var(--motion-duration-halo-out) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-halo-out) var(--motion-ease-standard);
+  }
+
+  :is(
+      .vl-password-input__eye-btn,
+      .vl-share-link-input__copy-button,
+      .vl-date-input__calendar-btn,
+      .vl-rich-input__tool-button,
+      .vl-tag__dismiss,
+      .vl-select-input__clear-btn,
+      .vl-sidebar-trigger,
+      .vl-calendar-header__nav-btn,
+      .vl-modal-header__close,
+      .vl-toast__close,
+      .vl-comment-rich-input__icon-button,
+      .vl-comment-rich-input__align-button,
+      .vl-comment-rich-input__send-button,
+      .vl-comments-section__menu-trigger,
+      .vl-button,
+      .vl-file-upload__file-item-action,
+      .vl-pdf-preview__nav-button,
+      .vl-table__page-btn,
+      .vl-app-switcher__trigger-grid
+    ):hover:not(:disabled)::after {
+    opacity: 1;
+    transition-duration: var(--motion-duration-halo-in);
+  }
+
+  /* Нажатие: свечение уходит, остаётся только кромка — кнопка «прижимается». */
+  :is(
+      .vl-password-input__eye-btn,
+      .vl-share-link-input__copy-button,
+      .vl-date-input__calendar-btn,
+      .vl-rich-input__tool-button,
+      .vl-tag__dismiss,
+      .vl-select-input__clear-btn,
+      .vl-sidebar-trigger,
+      .vl-calendar-header__nav-btn,
+      .vl-modal-header__close,
+      .vl-toast__close,
+      .vl-comment-rich-input__icon-button,
+      .vl-comment-rich-input__align-button,
+      .vl-comment-rich-input__send-button,
+      .vl-comments-section__menu-trigger,
+      .vl-button,
+      .vl-file-upload__file-item-action,
+      .vl-pdf-preview__nav-button,
+      .vl-table__page-btn,
+      .vl-app-switcher__trigger-grid
+    ):active:not(:disabled)::after {
+    opacity: 1;
+    box-shadow: 0 0 0 var(--halo-ring-size, 1px)
+      var(--halo-ring-color, var(--pal-base, var(--halo-neutral)));
+    transition-duration: var(--motion-duration-halo-press);
+  }
+
+  /* Состояние остаётся считываемым, исчезает только анимация. */
+  @media (prefers-reduced-motion: reduce) {
+    :is(
+      .vl-password-input__eye-btn,
+      .vl-share-link-input__copy-button,
+      .vl-date-input__calendar-btn,
+      .vl-rich-input__tool-button,
+      .vl-tag__dismiss,
+      .vl-select-input__clear-btn,
+      .vl-sidebar-trigger,
+      .vl-calendar-header__nav-btn,
+      .vl-modal-header__close,
+      .vl-toast__close,
+      .vl-comment-rich-input__icon-button,
+      .vl-comment-rich-input__align-button,
+      .vl-comment-rich-input__send-button,
+      .vl-comments-section__menu-trigger,
+      .vl-button,
+      .vl-file-upload__file-item-action,
+      .vl-pdf-preview__nav-button,
+      .vl-table__page-btn,
+      .vl-app-switcher__trigger-grid
+    )::after {
+      transition: none;
+    }
+  }
+}

@@ -1,0 +1,47 @@
+/* ── BaseInput override (bare inside InputField wrapper) ──────────────────── */
+
+:where([data-vl-skin~='corporate']) {
+  input.vl-share-link-input__input-inner {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    height: auto;
+    padding: 0;
+    border: none;
+    background: transparent;
+    outline: none;
+  }
+
+  /* ── Copy button (endBlock) ──────────────────────────────────────────────── */
+
+  .vl-share-link-input__copy-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    cursor: pointer;
+    border-radius: var(--radius-4);
+    transition: background-color 0.15s ease;
+  }
+
+  /* Hover on whole blockEnd — see InputField.module.css */
+
+  .vl-share-link-input__copy-button:disabled {
+    cursor: not-allowed;
+  }
+
+  .vl-share-link-input__copy-icon {
+    flex-shrink: 0;
+  }
+
+  .vl-share-link-input__copy-label {
+    white-space: nowrap;
+  }
+}

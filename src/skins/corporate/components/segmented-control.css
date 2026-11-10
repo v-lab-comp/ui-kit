@@ -1,0 +1,96 @@
+/* ---- Root container ---- */
+:where([data-vl-skin~='corporate']) {
+  .vl-segmented-control {
+    display: inline-flex;
+    align-items: center;
+    /* No gap — items are tightly packed; only thumb provides visual separation */
+    padding: 3px;
+    background-color: var(--bg-weak-50);
+    border: 1px solid var(--stroke-soft-200);
+    border-radius: var(--radius-10);
+    position: relative;
+  }
+
+  /* ---- Sliding thumb ---- */
+  .vl-segmented-control__thumb {
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    border-radius: var(--radius-8);
+    background-color: var(--primary-base);
+    box-shadow: var(--shadow-regular-x-small);
+    pointer-events: none;
+    transition:
+      left 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      width 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.15s ease;
+    will-change: left, width;
+  }
+
+  /* ---- Item ---- */
+  .vl-segmented-control__item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    position: relative;
+    z-index: 1;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    line-height: 20px;
+    letter-spacing: -0.006em;
+    white-space: nowrap;
+    user-select: none;
+    cursor: pointer;
+    border: none;
+    /* Always transparent — thumb provides the background */
+    background: transparent;
+    outline: none;
+    border-radius: var(--radius-8);
+    padding: 5px 10px;
+    color: var(--text-sub-600);
+    transition: color 0.15s ease;
+  }
+
+  /* Hover: only color change, no background — background comes only from the thumb */
+  .vl-segmented-control__item:hover:not(:disabled):not([data-selected='true']) {
+    color: var(--text-strong-950);
+  }
+
+  /* Selected item — white text on top of the primary thumb */
+  .vl-segmented-control__item[data-selected='true'] {
+    color: var(--text-white-0);
+    cursor: default;
+  }
+
+  .vl-segmented-control__item:disabled {
+    cursor: not-allowed;
+    color: var(--text-disabled-300);
+  }
+
+  .vl-segmented-control__item:focus-visible {
+    outline: 2px solid var(--primary-base);
+    outline-offset: 2px;
+  }
+
+  /* ---- Sizes ---- */
+
+  /* medium = default (30px item height via padding 5px 10px + 20px lh) */
+
+  :where(.vl-segmented-control)[data-size='small'] .vl-segmented-control__item {
+    padding: 3px 8px;
+    font-size: 13px;
+  }
+
+  :where(.vl-segmented-control)[data-size='x-small'] .vl-segmented-control__item {
+    padding: 1px 6px;
+    font-size: 12px;
+  }
+
+  /* ---- Disabled root ---- */
+  :where(.vl-segmented-control)[data-disabled] {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+}

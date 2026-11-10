@@ -1,0 +1,51 @@
+/**
+ * Base input design tokens (Figma specs).
+ * Единственный источник правды для размеров, отступов, рамки input.
+ * Используется BaseInput (standalone) и обёртками (TextInput и др.)
+ */
+[data-vl-skin~='corporate'] {
+  /* Heights */
+  --base-input-height-big: 40px;
+  --base-input-height-medium: 36px;
+  --base-input-height-small: 32px;
+
+  /* Padding (top right bottom left — left больше для выравнивания текста) */
+  --base-input-padding-big: 10px 10px 10px 12px;
+  --base-input-padding-medium: 8px 8px 8px 10px;
+  --base-input-padding-small: 6px 6px 6px 8px;
+
+  /* Border & radius */
+  --base-input-border: 1px solid var(--stroke-soft-200, #ebebeb);
+  --base-input-shadow: var(--shadow-regular-x-small);
+  --base-input-radius-big: var(--radius-10);
+  --base-input-radius-medium: var(--radius-8);
+  --base-input-radius-small: var(--radius-8);
+
+  /* Gap (между prefix/suffix и input) */
+  --base-input-gap-big: 8px;
+  --base-input-gap-medium: 8px;
+  --base-input-gap-small: 6px;
+
+  /* Typography */
+  --base-input-font-family: var(--font-sans);
+  --base-input-font-weight: 400;
+  --base-input-font-size: 14px;
+  --base-input-line-height: 20px;
+  --base-input-letter-spacing: -0.084px; /* -0.6% of 14px */
+  --base-input-color: var(--text-strong-950, #171717);
+
+  /* States */
+  --base-input-border-filled: var(--blue-400);
+  --base-input-border-error: var(--error-base, #fb3748);
+  --base-input-outline-error: var(--error-lighter);
+  /* Figma important-focus: 2px white + 4px primary alpha */
+  --base-input-focus-shadow: 0 0 0 2px var(--bg-white-0), 0 0 0 4px var(--primary-alpha-16);
+  --base-input-focus-shadow-error: 0 0 0 2px var(--bg-white-0), 0 0 0 4px var(--error-lighter);
+  --base-input-bg-disabled: var(--bg-weak-50);
+  --base-input-border-disabled: var(--stroke-soft-200);
+  --base-input-color-disabled: var(--text-disabled-300);
+
+  /* Transitions */
+  --base-input-transition:
+    border-color 0.15s ease, outline-color 0.15s ease, outline-offset 0.15s ease;
+}

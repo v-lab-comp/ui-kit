@@ -1,0 +1,23 @@
+/* Область контента рядом с сайдбаром (аналог SidebarInset в shadcn — рендерится как <main>).
+   overflow: hidden — скролл только в .content, хедер не уезжает. */
+:where([data-vl-skin~='corporate']) {
+  .vl-sidebar-inset {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow: hidden;
+    transition: margin-left 0.2s ease;
+    box-sizing: border-box;
+  }
+
+  /* Прокручиваемая область контента под хедером. Скролл только здесь — хедер остаётся на месте. */
+  .vl-sidebar-inset-content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    box-sizing: border-box;
+    position: relative;
+  }
+}

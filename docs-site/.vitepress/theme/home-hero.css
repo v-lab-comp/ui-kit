@@ -1,0 +1,240 @@
+/**
+ * Главная (layout: home): крупнее лого в hero и шире блок относительно дефолта VitePress.
+ * Только `.VPHome`, чтобы не затронуть другие страницы при возможном переиспользовании VPHero.
+ */
+
+/*
+  Одна ширина контентной колонки на главной: hero, features, markdown.
+  У VPHomeContent `.vp-doc.container` по умолчанию задаёт и max-width, и горизонтальный padding
+  на одном узле — при border-box контент уже на 2×padding, чем у VPFeatures/.VPHero (у них padding снаружи).
+*/
+.VPHome .VPHero .container,
+.VPHome .VPFeatures .container {
+  max-width: min(1320px, 100%);
+}
+
+.VPHome .vp-doc.container {
+  box-sizing: border-box;
+  max-width: 1320px;
+  padding-left: 0;
+  padding-right: 0;
+  width: calc(100% - 48px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 640px) {
+  .VPHome .vp-doc.container {
+    width: calc(100% - 96px);
+  }
+}
+
+@media (min-width: 960px) {
+  .VPHome .vp-doc.container {
+    width: calc(100% - 128px);
+  }
+}
+
+/*
+  Заголовок + бейдж: одна flex-строка по центру по вертикали (иначе inline-block + vertical-align даёт «кривой» бейдж у крупного градиентного текста).
+*/
+.VPHome .VPHero .heading .name.clip {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Бейдж Beta: v-html внутри .name.clip — без градиента на самом бейдже */
+.VPHome .VPHero .name.clip .vp-home-beta {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 0.2em 0.6em;
+  font-size: max(11px, 0.24em);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  text-transform: uppercase;
+  border-radius: 999px;
+  border: 1px solid var(--vp-c-divider);
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-2);
+  -webkit-text-fill-color: currentColor;
+  background-clip: border-box;
+  -webkit-background-clip: border-box;
+}
+
+html.dark .VPHome .VPHero .name.clip .vp-home-beta {
+  background: var(--vp-c-bg-alt);
+}
+
+/* Десктоп: текст слева, иллюстрация справа, промежуток между ними — как space-between по всей ширине контейнера. */
+@media (min-width: 960px) {
+  .VPHome .VPHero.has-image .container {
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  /* У темы у .main стоит flex-grow: 1 — он съедает ширину и ломает «край в край». */
+  .VPHome .VPHero.has-image .main {
+    flex: 0 1 auto;
+    flex-grow: 0;
+    width: auto;
+    max-width: min(592px, 58%);
+  }
+
+  .VPHome .VPHero .image {
+    flex: 0 1 auto;
+    flex-grow: 0;
+    min-height: auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .VPHome .VPHero .image-container {
+    transform: none;
+  }
+}
+
+/* Область под картинку + декоративный круг (чуть компактнее — проще сбалансировать с текстом при разном aspect ratio) */
+.VPHome .VPHero .image-container {
+  width: min(360px, 88vw);
+  height: min(360px, 88vw);
+}
+
+@media (min-width: 640px) {
+  .VPHome .VPHero .image-container {
+    width: min(420px, 72vw);
+    height: min(420px, 72vw);
+  }
+}
+
+@media (min-width: 960px) {
+  .VPHome .VPHero .image-container {
+    width: min(400px, 40vw);
+    height: min(400px, 40vw);
+  }
+}
+
+.VPHome .VPHero .image-bg {
+  width: 220px;
+  height: 220px;
+}
+
+@media (min-width: 640px) {
+  .VPHome .VPHero .image-bg {
+    width: 280px;
+    height: 280px;
+  }
+}
+
+@media (min-width: 960px) {
+  .VPHome .VPHero .image-bg {
+    width: 340px;
+    height: 340px;
+  }
+}
+
+/* Картинка: предсказуемый баланс с текстовым блоком */
+.VPHome .VPHero img.image-src {
+  max-width: min(260px, 78vw);
+  max-height: min(260px, 55vh);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+@media (min-width: 640px) {
+  .VPHome .VPHero img.image-src {
+    max-width: min(340px, 58vw);
+    max-height: min(340px, 52vh);
+  }
+}
+
+@media (min-width: 960px) {
+  .VPHome .VPHero img.image-src {
+    max-width: min(380px, 36vw);
+    max-height: min(380px, 48vh);
+  }
+}
+
+@media (min-width: 1200px) {
+  .VPHome .VPHero img.image-src {
+    max-width: min(420px, 34vw);
+    max-height: min(420px, 46vh);
+  }
+}
+
+.VPHome .vp-doc.container {
+  padding-top: 48px;
+  padding-bottom: 56px;
+}
+
+@media (min-width: 960px) {
+  .VPHome .vp-doc.container {
+    padding-top: 56px;
+    padding-bottom: 72px;
+  }
+}
+
+/* Блок features — чуть отступить от hero */
+.VPHome .VPHomeFeatures {
+  padding-top: 32px;
+}
+
+@media (min-width: 640px) {
+  .VPHome .VPHomeFeatures {
+    padding-top: 40px;
+  }
+}
+
+/* Карточки features: одинаковая высота в ряд + иконки SVG вместо эмодзи */
+.VPHome .VPFeatures .items {
+  align-items: stretch;
+}
+
+.VPHome .VPFeatures .items .item {
+  display: flex;
+}
+
+.VPHome .VPFeatures .VPFeature.link {
+  width: 100%;
+}
+
+.VPHome .VPFeatures .VPFeature .box {
+  flex: 1;
+}
+
+.VPHome .VPFeatures .VPFeature .box > :deep(.VPImage) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  background-color: var(--vp-c-default-soft);
+}
+
+.VPHome .VPFeatures .VPFeature .box > :deep(.VPImage img) {
+  display: block;
+  width: 26px !important;
+  height: 26px !important;
+  max-width: 26px !important;
+  max-height: 26px !important;
+  object-fit: contain;
+}
+
+html.dark .VPHome .VPFeatures .VPFeature .box > :deep(.VPImage img) {
+  filter: brightness(1.35);
+}
+
+.VPHome .VPFeatures .VPFeature .details {
+  flex-grow: 1;
+}

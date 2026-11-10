@@ -1,0 +1,99 @@
+:where([data-vl-skin~='corporate']) {
+  .vl-base-input {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    font-family: var(--base-input-font-family);
+    font-weight: var(--base-input-font-weight);
+    font-size: var(--base-input-font-size);
+    line-height: var(--base-input-line-height);
+    letter-spacing: var(--base-input-letter-spacing);
+    color: var(--base-input-color);
+    background-color: var(--bg-white-0);
+    border: var(--base-input-border);
+    box-shadow: var(--base-input-shadow);
+    outline: 2px solid transparent;
+    outline-offset: 6px;
+    transition: var(--base-input-transition);
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .vl-base-input::placeholder {
+    color: var(--text-soft-400);
+  }
+
+  .vl-base-input:focus::placeholder {
+    color: transparent;
+  }
+
+  /* Filled (есть значение) — рамка темнее, чем у пустого поля с placeholder.
+   Меняем только border-color: внутри InputField у input border-style: none, поэтому невидимо. */
+  .vl-base-input[data-filled]:not(:disabled):not(:focus-visible) {
+    border-color: var(--base-input-border-filled);
+  }
+
+  .vl-base-input:hover:not(:disabled):not(:focus-visible) {
+    border-color: var(--stroke-sub-300);
+  }
+
+  .vl-base-input:focus-visible {
+    border-color: var(--primary-base);
+    outline-color: var(--primary-alpha-16);
+    outline-offset: 2px;
+  }
+
+  .vl-base-input:disabled {
+    cursor: not-allowed;
+    background-color: var(--base-input-bg-disabled);
+    color: var(--base-input-color-disabled);
+    border-color: var(--base-input-border-disabled);
+  }
+
+  .vl-base-input:disabled::placeholder {
+    color: var(--base-input-color-disabled);
+  }
+
+  /* ── Error state (data-error from props) ── */
+
+  .vl-base-input[data-error] {
+    border-color: var(--base-input-border-error);
+  }
+
+  .vl-base-input[data-error]:hover:not(:disabled):not(:focus-visible) {
+    border-color: var(--base-input-border-error);
+  }
+
+  .vl-base-input[data-error]:focus-visible {
+    border-color: var(--base-input-border-error);
+    outline-color: var(--base-input-outline-error);
+    outline-offset: 2px;
+  }
+
+  /* ── Read-only ── */
+
+  .vl-base-input:read-only:not(:disabled) {
+    background-color: var(--bg-white-0);
+    cursor: default;
+  }
+
+  /* ── Sizes: big 40px, medium 36px (default), small 32px ── */
+
+  :where(.vl-base-input)[data-size='medium'] {
+    height: var(--base-input-height-medium);
+    padding: var(--base-input-padding-medium);
+    border-radius: var(--base-input-radius-medium);
+  }
+
+  :where(.vl-base-input)[data-size='big'] {
+    height: var(--base-input-height-big);
+    padding: var(--base-input-padding-big);
+    border-radius: var(--base-input-radius-big);
+  }
+
+  :where(.vl-base-input)[data-size='small'] {
+    height: var(--base-input-height-small);
+    padding: var(--base-input-padding-small);
+    border-radius: var(--base-input-radius-small);
+  }
+}

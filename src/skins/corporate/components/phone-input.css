@@ -1,0 +1,55 @@
+/* PhoneInput: startBlock (Select страны) + поле номера (только national, без кода) */
+
+/* Селект страны внутри startBlock — без своей рамки/фона, визуально часть одного инпута */
+
+:where([data-vl-skin~='corporate']) {
+  .vl-phone-input__phone-country-select {
+    display: flex;
+    align-items: stretch;
+    height: 100%;
+  }
+  .vl-phone-input__phone-country-select button {
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    height: 100%;
+    min-height: 36px;
+    padding-left: 0;
+    padding-right: 8px;
+  }
+  .vl-phone-input__phone-country-select button:hover:not(:disabled):not([data-open]) {
+    background: rgba(0, 0, 0, 0.04);
+  }
+  .vl-phone-input__phone-country-select button[data-open] {
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  .vl-phone-input__phone-input {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    align-items: center;
+  }
+
+  .vl-phone-input__phone-input-field {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.084px;
+    color: var(--text-strong-950);
+  }
+
+  .vl-phone-input__phone-input-field::placeholder {
+    color: var(--text-soft-400);
+  }
+
+  .vl-phone-input__phone-input-field:disabled {
+    color: var(--text-disabled-300);
+  }
+}
