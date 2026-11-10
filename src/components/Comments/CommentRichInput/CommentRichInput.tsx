@@ -1,4 +1,4 @@
-import { useCallback, type KeyboardEvent, type MouseEvent, type ReactNode } from 'react'
+import { useCallback, useId, type KeyboardEvent } from 'react'
 import {
   RiBold,
   RiItalic,
@@ -12,6 +12,8 @@ import clsx from 'clsx'
 import {
   getHtmlTextLength,
   isHtmlEffectivelyEmpty,
+  RichTextToolButton,
+  RichTextToolbar,
   stripScriptsFromHtml,
   useRichTextEditor,
 } from '../../inputs/base/richText'
@@ -23,36 +25,8 @@ import type { CommentRichInputAriaLabels, CommentRichInputProps } from './Commen
 const FORMAT_ICONS = [RiBold, RiItalic, RiUnderline, RiStrikethrough] as const
 const FORMAT_COMMANDS = ['bold', 'italic', 'underline', 'strikeThrough'] as const
 
-const DEFAULT_ARIA: Required<CommentRichInputAriaLabels> = {
+const DEFAULT_ARIA: CommentRichInputAriaLabels = {
   ...DEFAULT_COMMENT_RICH_INPUT_ARIA_EN,
-}
-
-function ToolbarIconButton({
-  children,
-  disabled,
-  isActive,
-  ariaLabel,
-  onMouseDown,
-}: {
-  children: ReactNode
-  disabled?: boolean
-  isActive?: boolean
-  ariaLabel: string
-  onMouseDown: (e: MouseEvent<HTMLButtonElement>) => void
-}) {
-  return (
-    <button
-      type="button"
-      disabled={disabled}
-      aria-label={ariaLabel}
-      aria-pressed={isActive}
-      className={contractPart(c, 'icon-button')}
-      data-active={isActive || undefined}
-      onMouseDown={onMouseDown}
-    >
-      {children}
-    </button>
-  )
 }
 
 export function CommentRichInput({
@@ -73,6 +47,7 @@ export function CommentRichInput({
   const a11y = { ...DEFAULT_ARIA, ...ariaLabels }
   const isDisabled = disabled || isPending
   const hasMaxLength = typeof maxLength === 'number' && maxLength > 0
+  const counterId = useId()
 
   const { editorRef, isEmpty, length, activeFormats, editorProps, exec, setHtml } =
     useRichTextEditor({
@@ -108,14 +83,6 @@ export function CommentRichInput({
     [submit]
   )
 
-  const runFormatMouseDown = useCallback(
-    (e: MouseEvent<HTMLButtonElement>, command: string) => {
-      e.preventDefault()
-      exec(command)
-    },
-    [exec]
-  )
-
   const hasTextSubmit = typeof submitLabel === 'string' && submitLabel.length > 0
   const canSubmit = !isDisabled && !isEmpty && !overLimit
 
@@ -128,6 +95,12 @@ export function CommentRichInput({
             ref={editorRef}
             role="textbox"
             aria-multiline
+            // Имя поля: явный ariaLabels.input, иначе — текст плейсхолдера (он обязателен)
+            aria-label={a11y.input ?? placeholder}
+            aria-placeholder={placeholder}
+            aria-disabled={isDisabled || undefined}
+            aria-invalid={overLimit || undefined}
+            aria-describedby={hasMaxLength ? counterId : undefined}
             contentEditable={!isDisabled}
             suppressContentEditableWarning
             data-placeholder={placeholder}
@@ -139,40 +112,41 @@ export function CommentRichInput({
       </div>
 
       <div className={contractPart(c, 'footer')}>
-        <div className={contractPart(c, 'toolbar')}>
+        <RichTextToolbar className={contractPart(c, 'toolbar')} aria-label={a11y.toolbar}>
           {toolbarStartSlot ? (
             <span className={contractPart(c, 'toolbar-start')}>{toolbarStartSlot}</span>
           ) : null}
           {FORMAT_ICONS.map((Icon, i) => (
-            <ToolbarIconButton
+            <RichTextToolButton
               key={FORMAT_COMMANDS[i]!}
               disabled={isDisabled}
-              isActive={activeFormats.has(FORMAT_COMMANDS[i]!)}
-              ariaLabel={[a11y.bold, a11y.italic, a11y.underline, a11y.strikethrough][i]!}
-              onMouseDown={(e) => runFormatMouseDown(e, FORMAT_COMMANDS[i]!)}
+              pressed={activeFormats.has(FORMAT_COMMANDS[i]!)}
+              data-active={activeFormats.has(FORMAT_COMMANDS[i]!)}
+              aria-label={[a11y.bold, a11y.italic, a11y.underline, a11y.strikethrough][i]!}
+              className={contractPart(c, 'icon-button')}
+              onExec={() => exec(FORMAT_COMMANDS[i]!)}
             >
               <Icon size={20} className={contractPart(c, 'icon-shrink')} aria-hidden />
-            </ToolbarIconButton>
+            </RichTextToolButton>
           ))}
           <div className={contractPart(c, 'toolbar-divider')} aria-hidden />
-          <button
-            type="button"
+          <RichTextToolButton
             disabled={isDisabled}
             aria-label={a11y.align}
             className={contractPart(c, 'align-button')}
-            onMouseDown={(e) => runFormatMouseDown(e, 'justifyLeft')}
+            onExec={() => exec('justifyLeft')}
           >
             <RiAlignLeft size={20} aria-hidden />
             <RiArrowDownSLine size={20} aria-hidden />
-          </button>
-        </div>
+          </RichTextToolButton>
+        </RichTextToolbar>
 
         <div className={contractPart(c, 'submit-group')}>
           {hasMaxLength ? (
             <span
+              id={counterId}
               className={contractPart(c, 'counter')}
               data-error={overLimit || undefined}
-              aria-live="polite"
             >
               {length}/{maxLength}
             </span>

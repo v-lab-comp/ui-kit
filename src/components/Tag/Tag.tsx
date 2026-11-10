@@ -1,5 +1,6 @@
 import clsx from 'clsx'
-import type { KeyboardEvent, MouseEvent } from 'react'
+import { forwardRef, useId } from 'react'
+import type { Ref } from 'react'
 import { RiCloseLine } from '@remixicon/react'
 import { customPaletteStyle } from '@/utils/customPalette'
 import { contractAttrs, contractPart } from '@/theme/contract'
@@ -14,147 +15,126 @@ export {
   TAG_SHAPE_OPTIONS,
 } from './Tag.types'
 
-export function Tag({
-  children,
-  variant = 'stroke',
-  size = 'medium',
-  shape = 'rounded',
-  color,
-  customColor,
-  sublabel,
-  prefix,
-  prefixRounded = true,
-  suffix,
-  onDismiss,
-  dismissLabel = 'Remove',
-  disabled,
-  className,
-  style,
-  onClick,
-  onKeyDown,
-  ...props
-}: TagProps) {
+/**
+ * Тег. Корень — `button`, если есть только `onClick`; иначе `span`.
+ * С `onDismiss` основная часть и крестик — отдельные элементы (`cluster`):
+ * основная часть — `button` при `onClick`, иначе статичный `span`.
+ */
+export const Tag = forwardRef<HTMLElement, TagProps>(function Tag(
+  {
+    children,
+    variant = 'stroke',
+    size = 'medium',
+    shape = 'rounded',
+    color,
+    customColor,
+    sublabel,
+    prefix,
+    prefixRounded = true,
+    suffix,
+    onDismiss,
+    dismissLabel = 'Remove',
+    disabled,
+    className,
+    style,
+    onClick,
+    ...props
+  },
+  ref
+) {
+  const labelId = useId()
+  const dismissId = useId()
   const hasDismiss = Boolean(onDismiss)
-  const hasPrefix = Boolean(prefix)
-  const interactive = Boolean(onClick) && !disabled
+  // Текст тега дописывается к имени кнопки, только если dismissLabel его ещё не содержит
+  // (TagInput передаёт готовое «Remove <тег>»)
+  const plainText =
+    typeof children === 'string' || typeof children === 'number' ? String(children) : null
+  const labelHasText = plainText !== null && plainText !== '' && dismissLabel.includes(plainText)
   const customVars = customColor ? customPaletteStyle(customColor) : undefined
-  const tagClassName = clsx(tagContract.className, className)
-  const tagAttrs = contractAttrs(tagContract, {
-    variant,
-    size,
-    shape,
-    color: customVars ? undefined : color,
-    'custom-color': Boolean(customVars),
-    'with-dismiss': hasDismiss,
-    'has-prefix': hasPrefix,
-    interactive,
-    disabled: Boolean(disabled),
-  })
 
-  const mergedStyle = { ...customVars, ...style }
-
-  const prefixEl =
-    prefix != null ? (
-      <span
-        className={contractPart(tagContract, 'prefix')}
-        data-rounded={prefixRounded || undefined}
-      >
-        {prefix}
-      </span>
-    ) : null
-
-  const textRow = (
-    <span className={contractPart(tagContract, 'text-row')}>
-      <span className={contractPart(tagContract, 'label')}>{children}</span>
-      {sublabel != null && sublabel !== '' ? (
-        <span className={contractPart(tagContract, 'sublabel')}>{sublabel}</span>
-      ) : null}
-      {suffix != null ? (
-        <span className={contractPart(tagContract, 'suffix')}>{suffix}</span>
-      ) : null}
-    </span>
-  )
-
-  const dismissBtn = hasDismiss ? (
-    <button
-      type="button"
-      className={contractPart(tagContract, 'dismiss')}
-      aria-label={dismissLabel}
-      disabled={disabled}
-      onClick={(e) => {
-        e.stopPropagation()
-        onDismiss?.()
-      }}
-    >
-      <RiCloseLine size={16} aria-hidden />
-    </button>
-  ) : null
-
-  const handleMainKeyDown = (e: KeyboardEvent<HTMLSpanElement>) => {
-    onKeyDown?.(e)
-    if (e.defaultPrevented || disabled || !onClick) return
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault()
-      onClick(e as unknown as MouseEvent<HTMLSpanElement>)
-    }
-  }
-
-  const mainRegion = (
+  const content = (
     <>
-      {prefixEl}
-      {textRow}
+      {prefix != null ? (
+        <span
+          className={contractPart(tagContract, 'prefix')}
+          data-rounded={prefixRounded || undefined}
+        >
+          {prefix}
+        </span>
+      ) : null}
+      <span className={contractPart(tagContract, 'text-row')}>
+        <span id={labelId} className={contractPart(tagContract, 'label')}>
+          {children}
+        </span>
+        {sublabel != null && sublabel !== '' ? (
+          <span className={contractPart(tagContract, 'sublabel')}>{sublabel}</span>
+        ) : null}
+        {suffix != null ? (
+          <span className={contractPart(tagContract, 'suffix')}>{suffix}</span>
+        ) : null}
+      </span>
     </>
   )
 
-  if (onClick && !hasDismiss) {
-    return (
-      <button
-        type="button"
-        className={tagClassName}
-        {...tagAttrs}
-        style={mergedStyle}
-        disabled={disabled}
-        onClick={onClick}
-        onKeyDown={onKeyDown}
-        {...props}
-      >
-        {mainRegion}
-        {dismissBtn}
-      </button>
-    )
-  }
-
-  if (onClick && hasDismiss) {
-    return (
-      <span className={tagClassName} {...tagAttrs} style={mergedStyle} {...props}>
-        <span className={contractPart(tagContract, 'cluster')}>
-          <span
-            role="button"
-            tabIndex={disabled ? -1 : 0}
-            className={contractPart(tagContract, 'main-hit')}
-            onClick={disabled ? undefined : onClick}
-            onKeyDown={handleMainKeyDown}
-          >
-            {mainRegion}
-          </span>
-          {dismissBtn}
-        </span>
-      </span>
-    )
-  }
+  // Корень-кнопка — только onClick без крестика (вложенные кнопки недопустимы)
+  const Root = onClick && !hasDismiss ? 'button' : 'span'
+  const rootButtonProps =
+    Root === 'button' ? { type: 'button' as const, disabled, onClick } : undefined
 
   return (
-    <span className={tagClassName} {...tagAttrs} style={mergedStyle} {...props}>
+    <Root
+      ref={ref as Ref<HTMLButtonElement & HTMLSpanElement>}
+      className={clsx(tagContract.className, className)}
+      {...contractAttrs(tagContract, {
+        variant,
+        size,
+        shape,
+        color: customVars ? undefined : color,
+        'custom-color': Boolean(customVars),
+        'with-dismiss': hasDismiss,
+        'has-prefix': prefix != null,
+        interactive: Boolean(onClick) && !disabled,
+        disabled: Boolean(disabled),
+      })}
+      style={{ ...customVars, ...style }}
+      {...rootButtonProps}
+      {...props}
+    >
       {hasDismiss ? (
         <span className={contractPart(tagContract, 'cluster')}>
-          <span className={contractPart(tagContract, 'main-static')}>{mainRegion}</span>
-          {dismissBtn}
+          {onClick ? (
+            <button
+              type="button"
+              className={contractPart(tagContract, 'main-hit')}
+              disabled={disabled}
+              onClick={onClick}
+            >
+              {content}
+            </button>
+          ) : (
+            <span className={contractPart(tagContract, 'main-static')}>{content}</span>
+          )}
+          <button
+            type="button"
+            id={dismissId}
+            className={contractPart(tagContract, 'dismiss')}
+            // Имя «<dismissLabel> <текст тега>»: aria-label кнопки + подпись тега
+            aria-label={dismissLabel}
+            aria-labelledby={labelHasText ? undefined : `${dismissId} ${labelId}`}
+            disabled={disabled}
+            onClick={(e) => {
+              e.stopPropagation()
+              onDismiss?.()
+            }}
+          >
+            <RiCloseLine size={16} aria-hidden />
+          </button>
         </span>
       ) : (
-        mainRegion
+        content
       )}
-    </span>
+    </Root>
   )
-}
+})
 
 Tag.displayName = 'Tag'

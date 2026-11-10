@@ -141,12 +141,14 @@ Constants **`MODAL_SIZES`**, **`MODAL_ANIMATIONS`** — for **`Modal`** **`size`
 
 ## Main props (Modal)
 
-| Prop                   | Type                   | Description                           |
-| ---------------------- | ---------------------- | ------------------------------------- |
-| `width` / `maxHeight`  | number or CSS          | Panel size                            |
-| `closeOnBackdropClick` | `boolean`              | Close on backdrop click, default true |
-| `size`                 | **`MODAL_SIZES`**      | Preset width                          |
-| `animation`            | **`MODAL_ANIMATIONS`** | Enter animation                       |
+| Prop                   | Type                          | Description                                        |
+| ---------------------- | ----------------------------- | -------------------------------------------------- |
+| `width` / `maxHeight`  | number or CSS                 | Panel size                                         |
+| `closeOnBackdropClick` | `boolean`                     | Close on backdrop click, default true              |
+| `size`                 | **`MODAL_SIZES`**             | Preset width                                       |
+| `animation`            | **`MODAL_ANIMATIONS`**        | Enter animation                                    |
+| `role`                 | `'dialog'` \| `'alertdialog'` | Panel role; `alertdialog` for urgent confirmations |
+| `initialFocus`         | index or ref                  | Element focused on open                            |
 
 ## Gallery
 

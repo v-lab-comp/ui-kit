@@ -1,25 +1,13 @@
-import type { ReactNode } from 'react'
-
-type DrawerHeaderBase = {
-  /** Скрыть кнопку закрытия */
-  hideCloseButton?: boolean
-}
+import type {
+  DialogHeaderCloseOnlyProps,
+  DialogHeaderDefaultProps,
+  DialogHeaderProps,
+} from '@/components/overlays/Modal/dialog/DialogHeader'
 
 /** Обычная шапка: заголовок + опциональный подзаголовок и иконка слева */
-export type DrawerHeaderDefaultProps = DrawerHeaderBase & {
-  closeOnly?: false
-  title: ReactNode
-  subtitle?: ReactNode
-  /** Слот 40×40 слева */
-  icon?: ReactNode
-}
+export type DrawerHeaderDefaultProps = DialogHeaderDefaultProps
 
 /** Только кнопка закрытия — заголовок ставится отдельно (например, в DrawerBody) */
-export type DrawerHeaderCloseOnlyProps = DrawerHeaderBase & {
-  closeOnly: true
-  title?: never
-  subtitle?: never
-  icon?: never
-}
+export type DrawerHeaderCloseOnlyProps = DialogHeaderCloseOnlyProps
 
-export type DrawerHeaderProps = DrawerHeaderDefaultProps | DrawerHeaderCloseOnlyProps
+export type DrawerHeaderProps = DialogHeaderProps

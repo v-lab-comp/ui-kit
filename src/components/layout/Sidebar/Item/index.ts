@@ -1,2 +1,2 @@
 export { SidebarItem } from './Item'
-export type { SidebarItemProps } from './Item.types'
+export type { SidebarItemProps, SidebarItemButtonProps, SidebarItemLinkProps } from './Item.types'

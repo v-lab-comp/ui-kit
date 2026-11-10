@@ -8,9 +8,7 @@ export interface ToggleGroupContextValue {
   size?: ToggleButtonSize
   shape?: ToggleButtonShape
   disabled?: boolean
-  /** Which item currently holds tabIndex=0 (roving focus rover). */
-  rovingValue: string | undefined
-  setRovingValue: (value: string) => void
+  /** Элементы участвуют в roving tabindex (Composite из floating-ui). */
   rovingFocus: boolean
 }
 

@@ -176,7 +176,8 @@ const statusRef = useRef<ModalHandle>(null)
 
 - Uncontrolled: internal `useState`; controlled: `open` prop (`onOpenChange` fires in both modes)
 - Inside `ModalProvider` the modal registers in the stack (`useLayoutEffect`) and gets its z-index from it
-- Body scroll lock: without `ModalProvider` — an effect calls `setBodyScrollLocked(open)`; with it — the provider locks on the first modal and unlocks after the last
+- Body scroll lock: every open Modal/Drawer holds a ref-counted `lockBodyScroll()` (src/utils/scrollLock.ts), released on close and on unmount — with or without `ModalProvider`
+- Shared logic of Modal and Drawer lives in `dialog/useOverlayDialog.ts`; the shared header part is `dialog/DialogHeader.tsx`
 
 ### Event Flow
 

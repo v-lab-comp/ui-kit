@@ -17,7 +17,7 @@ export function FileUploadDocsDemo() {
         label="Загрузить документы"
         required
         multiple
-        initialFiles={files}
+        files={files}
         onFilesChange={setFiles}
       />
     </div>

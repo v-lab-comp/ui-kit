@@ -1,3 +1,4 @@
+import { forwardRef } from 'react'
 import clsx from 'clsx'
 import { RiLoader4Line } from '@remixicon/react'
 import { Button } from '@/components/Button'
@@ -6,16 +7,15 @@ import { modalFooterContract } from '@/theme/contracts/modal-footer'
 import type { ModalFooterConfirmActionsProps, ModalFooterProps } from './ModalFooter.types'
 
 /** Подвал: `startContent` слева + произвольные кнопки в `children`. */
-export function ModalFooter({
-  startContent,
-  fullWidth = false,
-  className,
-  children,
-}: ModalFooterProps) {
+export const ModalFooter = forwardRef<HTMLDivElement, ModalFooterProps>(function ModalFooter(
+  { startContent, fullWidth = false, className, children },
+  ref
+) {
   const hasStart = startContent != null && startContent !== false
 
   return (
     <div
+      ref={ref}
       className={clsx(modalFooterContract.className, className)}
       {...contractAttrs(modalFooterContract, { 'with-start': hasStart, 'full-width': fullWidth })}
     >
@@ -30,7 +30,7 @@ export function ModalFooter({
       </div>
     </div>
   )
-}
+})
 
 ModalFooter.displayName = 'ModalFooter'
 

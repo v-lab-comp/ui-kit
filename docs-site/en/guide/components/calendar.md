@@ -52,13 +52,14 @@ export function RangePicker() {
 
 ## Main props
 
-| Prop         | Type                                                                    | Description                             |
-| ------------ | ----------------------------------------------------------------------- | --------------------------------------- |
-| `mode`       | `'single' \| 'range'` (default `single`)                                | Single date or date range               |
-| `value`      | `single`: `Date \| null`; `range`: `DateRange`                          | Selected date or `{ start, end }` range |
-| `onChange`   | `single`: `(date: Date) => void`; `range`: `(range: DateRange) => void` | Day click in the month                  |
-| `locale`     | `CalendarLocale`                                                        | Weekday/month labels, prev/next buttons |
-| `getDotDays` | `(date: Date) => boolean` (optional)                                    | Show a dot under the day number         |
+| Prop         | Type                                                                    | Description                                                                                                                                            |
+| ------------ | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `mode`       | `'single' \| 'range'` (default `single`)                                | Single date or date range                                                                                                                              |
+| `value`      | `single`: `Date \| null`; `range`: `DateRange`                          | Selected date or `{ start, end }` range                                                                                                                |
+| `onChange`   | `single`: `(date: Date) => void`; `range`: `(range: DateRange) => void` | Day click in the month                                                                                                                                 |
+| `locale`     | `CalendarLocale`                                                        | Weekday/month labels, prev/next buttons                                                                                                                |
+| `getDotDays` | `(date: Date) => boolean` (optional)                                    | Show a dot under the day number                                                                                                                        |
+| `autoFocus`  | `boolean` (optional)                                                    | Focus a day (selected, else today) on mount. The grid is `role="grid"`: Arrows / Home / End / PageUp / PageDown (+Shift = year), Enter / Space selects |
 
 ## Lower-level pieces
 

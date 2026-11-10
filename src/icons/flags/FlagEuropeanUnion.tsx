@@ -1,9 +1,13 @@
-import type { ComponentProps } from 'react'
-import { SvgIcon } from '../SvgIcon'
+import { forwardRef } from 'react'
+import { SvgIcon, type FlagProps } from '../SvgIcon'
 
 const svg =
   '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n<g clip-path="url(#clip0_253_6853)">\n<path d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24Z" fill="#0052B4"/>\n<path d="M12 4.69568L12.3886 5.89141H13.6458L12.6286 6.6304L13.0172 7.82613L12 7.0871L10.9828 7.82613L11.3714 6.6304L10.3542 5.89141H11.6115L12 4.69568Z" fill="#FFDA44"/>\n<path d="M6.83499 6.83503L7.9553 7.40578L8.84428 6.51685L8.64755 7.75856L9.76781 8.32936L8.52605 8.52605L8.32936 9.76786L7.75856 8.6476L6.51685 8.84433L7.40583 7.95535L6.83499 6.83503Z" fill="#FFDA44"/>\n<path d="M4.69568 12L5.89141 11.6115V10.3542L6.63035 11.3714L7.82613 10.9829L7.08705 12L7.82613 13.0172L6.63035 12.6287L5.89141 13.6458V12.3886L4.69568 12Z" fill="#FFDA44"/>\n<path d="M6.83499 17.165L7.40578 16.0446L6.51685 15.1557L7.75861 15.3524L8.32931 14.2322L8.52605 15.4739L9.76777 15.6706L8.64764 16.2414L8.84428 17.4831L7.9553 16.5942L6.83499 17.165Z" fill="#FFDA44"/>\n<path d="M12 19.3043L11.6114 18.1086H10.3542L11.3714 17.3696L10.9828 16.174L12 16.9129L13.0172 16.174L12.6286 17.3696L13.6458 18.1086H12.3885L12 19.3043Z" fill="#FFDA44"/>\n<path d="M17.165 17.165L16.0447 16.5942L15.1557 17.4832L15.3524 16.2414L14.2322 15.6706L15.474 15.4739L15.6706 14.2322L16.2414 15.3524L17.4831 15.1557L16.5941 16.0447L17.165 17.165Z" fill="#FFDA44"/>\n<path d="M19.3043 12L18.1086 12.3886V13.6458L17.3696 12.6286L16.174 13.0172L16.9129 12L16.174 10.9829L17.3696 11.3714L18.1086 10.3542V11.6115L19.3043 12Z" fill="#FFDA44"/>\n<path d="M17.165 6.83511L16.5942 7.95542L17.4832 8.84441L16.2413 8.64762L15.6706 9.76789L15.474 8.52612L14.2322 8.32939L15.3524 7.75864L15.1557 6.51697L16.0448 7.40591L17.165 6.83511Z" fill="#FFDA44"/>\n</g>\n<defs>\n<clipPath id="clip0_253_6853">\n<rect width="24" height="24" fill="white"/>\n</clipPath>\n</defs>\n</svg>\n'
 
-export function FlagEuropeanUnion(props: Omit<ComponentProps<typeof SvgIcon>, 'svg' | 'title'>) {
-  return <SvgIcon {...props} svg={svg} title="European Union" />
-}
+export const FlagEuropeanUnion = forwardRef<HTMLSpanElement, FlagProps>(
+  function FlagEuropeanUnion(props, ref) {
+    return <SvgIcon title="European Union" {...props} ref={ref} svg={svg} />
+  }
+)
+
+FlagEuropeanUnion.displayName = 'FlagEuropeanUnion'

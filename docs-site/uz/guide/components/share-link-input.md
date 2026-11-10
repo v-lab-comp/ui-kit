@@ -5,7 +5,7 @@ description: Suffiksda nusxa olish harakati bilan havola maydoni.
 
 # ShareLinkInput
 
-Tayyor **`endBlock`** va buferga nusxa olish; kerak bo‘lsa **`onCopy`** callback.
+Tayyor **`endBlock`** va buferga nusxa olish; kerak bo‘lsa **`onCopied`** callback.
 
 ## Preview
 
@@ -38,6 +38,6 @@ export function ShareField() {
 
 ## Asosiy proplar
 
-To‘liq tip — **`ShareLinkInputProps`**: **`InputField`** + **`BaseInput`** + muvaffaqiyatli nusxalashdan keyin ixtiyoriy **`onCopy`**. [Kiritish maydonlari](/uz/guide/components/inputs/).
+To‘liq tip — **`ShareLinkInputProps`**: **`InputField`** + **`BaseInput`** + muvaffaqiyatli nusxalashdan keyin ixtiyoriy **`onCopied`**. [Kiritish maydonlari](/uz/guide/components/inputs/).
 
 Manbalar: `src/components/inputs/ShareLinkInput/` · `ShareLinkInput.types.ts`.

@@ -1,151 +1,87 @@
-import { useState } from 'react'
+import { forwardRef, useState } from 'react'
 import clsx from 'clsx'
 import { CalendarHeader } from '../CalendarHeader'
 import { CalendarGrid } from '../CalendarGrid'
 import { defaultLocale } from '../calendarLocales'
 import type { CalendarProps } from './Calendar.types'
-import { contractAttrs, contractPart } from '@/theme/contract'
+import { applyRangeClick, normalizeCalendarValue } from './calendarValue'
+import { useCalendarView, YEARS_PER_PAGE } from './useCalendarView'
+import { CalendarOptionGrid } from './CalendarOptionGrid'
+import { contractAttrs } from '@/theme/contract'
 import { calendarContract } from '@/theme/contracts/calendar'
 
-const YEARS_PER_PAGE = 12
-type View = 'days' | 'months' | 'years'
-
-export const Calendar = (props: CalendarProps) => {
-  const { getDotDays, locale = defaultLocale, className } = props
+export const Calendar = forwardRef<HTMLDivElement, CalendarProps>((props, ref) => {
+  const { getDotDays, locale = defaultLocale, className, autoFocus } = props
   const mode = props.mode ?? 'single'
-
-  // Начальный месяц/год выводим из текущего значения, иначе из сегодня.
-  const today = new Date()
-  const initial =
-    (props.mode === 'range' ? (props.value?.start ?? props.value?.end) : props.value) ?? today
-
-  const [viewMonth, setViewMonth] = useState(initial.getMonth())
-  const [viewYear, setViewYear] = useState(initial.getFullYear())
-  const [view, setView] = useState<View>('days')
-  const [yearPage, setYearPage] = useState(
-    initial.getFullYear() - (initial.getFullYear() % YEARS_PER_PAGE)
-  )
+  const value = normalizeCalendarValue(props)
+  const nav = useCalendarView(value.anchor, locale)
   const [hovered, setHovered] = useState<Date | null>(null)
-
-  const goPrev = () => {
-    if (view === 'years') {
-      setYearPage((p) => p - YEARS_PER_PAGE)
-    } else if (view === 'months') {
-      setViewYear((y) => y - 1)
-    } else if (viewMonth === 0) {
-      setViewMonth(11)
-      setViewYear((y) => y - 1)
-    } else setViewMonth((m) => m - 1)
-  }
-
-  const goNext = () => {
-    if (view === 'years') {
-      setYearPage((p) => p + YEARS_PER_PAGE)
-    } else if (view === 'months') {
-      setViewYear((y) => y + 1)
-    } else if (viewMonth === 11) {
-      setViewMonth(0)
-      setViewYear((y) => y + 1)
-    } else setViewMonth((m) => m + 1)
-  }
-
-  // Клик по заголовку переключает уровень детализации: дни → месяцы → годы → дни.
-  const cycleView = () =>
-    setView((v) => (v === 'days' ? 'months' : v === 'months' ? 'years' : 'days'))
-
-  const pickMonth = (m: number) => {
-    setViewMonth(m)
-    setView('days')
-  }
-
-  const pickYear = (y: number) => {
-    setViewYear(y)
-    setYearPage(y - (y % YEARS_PER_PAGE))
-    setView('months')
-  }
+  const [focusedDate, setFocusedDate] = useState<Date | null>(null)
 
   const handleDayClick = (date: Date) => {
-    if (props.mode === 'range') {
-      const r = props.value ?? { start: null, end: null }
-      if (!r.start || r.end) props.onChange?.({ start: date, end: null })
-      else if (date < r.start) props.onChange?.({ start: date, end: r.start })
-      else props.onChange?.({ start: r.start, end: date })
-    } else {
-      props.onChange?.(date)
-    }
+    if (props.mode === 'range') props.onChange?.(applyRangeClick(props.value, date))
+    else props.onChange?.(date)
   }
 
-  const title =
-    view === 'days'
-      ? `${locale.months[viewMonth]} ${viewYear}`
-      : view === 'months'
-        ? `${viewYear}`
-        : `${yearPage} — ${yearPage + YEARS_PER_PAGE - 1}`
+  // Клавиатура увела фокус в другой месяц — листаем вид за ним.
+  const handleFocusedDateChange = (date: Date) => {
+    setFocusedDate(date)
+    if (date.getMonth() !== nav.month || date.getFullYear() !== nav.year) nav.showDate(date)
+  }
 
   return (
     <div
+      ref={ref}
       className={clsx(calendarContract.className, className)}
       {...contractAttrs(calendarContract, {})}
     >
       <CalendarHeader
-        month={viewMonth}
-        year={viewYear}
+        month={nav.month}
+        year={nav.year}
         locale={locale}
-        title={title}
-        onLabelClick={cycleView}
-        onPrev={goPrev}
-        onNext={goNext}
+        title={nav.title}
+        onLabelClick={nav.cycleView}
+        onPrev={() => nav.step(-1)}
+        onNext={() => nav.step(1)}
       />
 
-      {view === 'days' && (
+      {nav.view === 'days' && (
         <CalendarGrid
-          year={viewYear}
-          month={viewMonth}
+          year={nav.year}
+          month={nav.month}
           mode={mode}
-          selectedDate={props.mode === 'range' ? null : (props.value ?? null)}
-          rangeStart={props.mode === 'range' ? (props.value?.start ?? null) : null}
-          rangeEnd={props.mode === 'range' ? (props.value?.end ?? null) : null}
+          selectedDate={value.selected}
+          rangeStart={value.rangeStart}
+          rangeEnd={value.rangeEnd}
           previewDate={hovered}
           onDayClick={handleDayClick}
           onDayHover={mode === 'range' ? setHovered : undefined}
           getDotDays={getDotDays}
           locale={locale}
+          focusedDate={focusedDate}
+          onFocusedDateChange={handleFocusedDateChange}
+          autoFocus={autoFocus}
         />
       )}
 
-      {view === 'months' && (
-        <div className={contractPart(calendarContract, 'option-grid')}>
-          {locale.months.map((m, i) => (
-            <button
-              key={m}
-              type="button"
-              className={contractPart(calendarContract, 'option')}
-              data-active={i === viewMonth || undefined}
-              onClick={() => pickMonth(i)}
-            >
-              {m}
-            </button>
-          ))}
-        </div>
+      {nav.view === 'months' && (
+        <CalendarOptionGrid
+          options={locale.months.map((m, i) => ({ key: m, label: m, active: i === nav.month }))}
+          onPick={nav.pickMonth}
+        />
       )}
 
-      {view === 'years' && (
-        <div className={contractPart(calendarContract, 'option-grid')}>
-          {Array.from({ length: YEARS_PER_PAGE }, (_, i) => yearPage + i).map((y) => (
-            <button
-              key={y}
-              type="button"
-              className={contractPart(calendarContract, 'option')}
-              data-active={y === viewYear || undefined}
-              onClick={() => pickYear(y)}
-            >
-              {y}
-            </button>
-          ))}
-        </div>
+      {nav.view === 'years' && (
+        <CalendarOptionGrid
+          options={Array.from({ length: YEARS_PER_PAGE }, (_, i) => {
+            const y = nav.yearPage + i
+            return { key: y, label: y, active: y === nav.year }
+          })}
+          onPick={(i) => nav.pickYear(nav.yearPage + i)}
+        />
       )}
     </div>
   )
-}
+})
 
 Calendar.displayName = 'Calendar'

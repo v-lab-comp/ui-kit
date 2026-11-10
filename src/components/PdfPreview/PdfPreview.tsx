@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
 import { RiArrowLeftSLine, RiArrowRightSLine, RiAttachment2 } from '@remixicon/react'
 import type { pdfjs } from 'react-pdf'
 import { contractPart } from '@/theme/contract'
 import { pdfPreviewContract } from '@/theme/contracts/pdf-preview'
 import type { PdfPreviewProps } from './PdfPreview.types'
 import { getPdfWorkerUrl } from './pdfWorker'
+import { downloadFile } from '@/utils/downloadFile'
 
 type PdfJs = typeof pdfjs
 
@@ -29,7 +30,10 @@ const loadPdfJs = (): Promise<PdfJs> =>
 /** pdf.js VerbosityLevel.ERRORS — без «Indexing all PDF objects» в воркере на простых PDF. */
 const PDF_VERBOSITY_ERRORS_ONLY = 0
 
-export const PdfPreview = ({ file, fileUrl, fileName, onError }: PdfPreviewProps) => {
+export const PdfPreview = forwardRef<HTMLDivElement, PdfPreviewProps>(function PdfPreview(
+  { file, fileUrl, fileName, onError },
+  ref
+) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const pageRenderTaskRef = useRef<ReturnType<pdfjs.PDFPageProxy['render']> | null>(null)
   const [page, setPage] = useState(1)
@@ -135,28 +139,16 @@ export const PdfPreview = ({ file, fileUrl, fileName, onError }: PdfPreviewProps
   const goPrev = useCallback(() => setPage((p) => Math.max(1, p - 1)), [])
   const goNext = useCallback(() => setPage((p) => Math.min(totalPages, p + 1)), [totalPages])
 
-  const handleDownload = useCallback(() => {
-    if (fileUrl) {
-      const a = document.createElement('a')
-      a.href = fileUrl
-      a.download = fileName
-      a.target = '_blank'
-      a.rel = 'noopener noreferrer'
-      a.click()
-      return
-    }
+  const handleDownload = useCallback(
+    () => downloadFile({ url: fileUrl, blob: file, fileName }),
+    [file, fileName, fileUrl]
+  )
 
-    if (!file) return
-    const blobUrl = URL.createObjectURL(file)
-    const a = document.createElement('a')
-    a.href = blobUrl
-    a.download = fileName
-    a.click()
-    URL.revokeObjectURL(blobUrl)
-  }, [file, fileName, fileUrl])
+  // Счётчик «1/3» — уже существующий текст; переиспользуем его и в имени холста
+  const pageLabel = totalPages > 0 ? `${page}/${totalPages}` : null
 
   return (
-    <div className={pdfPreviewContract.className}>
+    <div ref={ref} className={pdfPreviewContract.className}>
       {/* Left arrow */}
       <button
         type="button"
@@ -165,12 +157,17 @@ export const PdfPreview = ({ file, fileUrl, fileName, onError }: PdfPreviewProps
         className={contractPart(pdfPreviewContract, 'nav-button')}
         aria-label="Previous page"
       >
-        <RiArrowLeftSLine size={20} />
+        <RiArrowLeftSLine size={20} aria-hidden="true" />
       </button>
 
       {/* Page canvas */}
       <div className={contractPart(pdfPreviewContract, 'canvas-wrapper')}>
-        <canvas ref={canvasRef} className={contractPart(pdfPreviewContract, 'canvas')} />
+        <canvas
+          ref={canvasRef}
+          className={contractPart(pdfPreviewContract, 'canvas')}
+          role="img"
+          aria-label={pageLabel ? `${fileName} ${pageLabel}` : fileName}
+        />
       </div>
 
       {/* Right arrow */}
@@ -181,7 +178,7 @@ export const PdfPreview = ({ file, fileUrl, fileName, onError }: PdfPreviewProps
         className={contractPart(pdfPreviewContract, 'nav-button')}
         aria-label="Next page"
       >
-        <RiArrowRightSLine size={20} />
+        <RiArrowRightSLine size={20} aria-hidden="true" />
       </button>
 
       {/* Filename badge (top-right) */}
@@ -193,19 +190,24 @@ export const PdfPreview = ({ file, fileUrl, fileName, onError }: PdfPreviewProps
       >
         <RiAttachment2
           size={20}
+          aria-hidden="true"
           className={contractPart(pdfPreviewContract, 'filename-badge-icon')}
         />
         <span className={contractPart(pdfPreviewContract, 'filename-badge-text')}>{fileName}</span>
       </button>
 
       {/* Page counter (bottom-center) */}
-      {totalPages > 0 && (
-        <div className={contractPart(pdfPreviewContract, 'page-counter')}>
-          {page}/{totalPages}
+      {pageLabel && (
+        <div
+          className={contractPart(pdfPreviewContract, 'page-counter')}
+          role="status"
+          aria-live="polite"
+        >
+          {pageLabel}
         </div>
       )}
     </div>
   )
-}
+})
 
 PdfPreview.displayName = 'PdfPreview'

@@ -36,14 +36,14 @@ export function UserAvatar() {
 
 ## Main props
 
-| Prop    | Type              | Description                             |
-| ------- | ----------------- | --------------------------------------- |
-| `src`   | `string`          | Image URL                               |
-| `alt`   | `string`          | Alternative text                        |
-| `text`  | `ReactNode`       | Initials (usually 1–2 chars)            |
-| `icon`  | `ReactNode`       | Icon when no photo or text              |
-| `size`  | number from scale | 20 … 80 (see **`AVATAR_SIZE_OPTIONS`**) |
-| `color` | from palette      | See **`AVATAR_COLOR_OPTIONS`**          |
+| Prop    | Type              | Description                                                                                                                     |
+| ------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `src`   | `string`          | Image URL                                                                                                                       |
+| `alt`   | `string`          | Accessible name (person’s name): `alt` on `<img>` for photos, `role="img"` + `aria-label` for initials/icon. Empty — decorative |
+| `text`  | `ReactNode`       | Initials (usually 1–2 chars)                                                                                                    |
+| `icon`  | `ReactNode`       | Icon when no photo or text                                                                                                      |
+| `size`  | number from scale | 20 … 80 (see **`AVATAR_SIZE_OPTIONS`**)                                                                                         |
+| `color` | from palette      | See **`AVATAR_COLOR_OPTIONS`**                                                                                                  |
 
 ## Gallery
 

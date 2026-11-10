@@ -18,7 +18,7 @@ export type {
 export { useSidebar } from './SidebarContext'
 
 export { SidebarItem } from './Item'
-export type { SidebarItemProps } from './Item'
+export type { SidebarItemProps, SidebarItemButtonProps, SidebarItemLinkProps } from './Item'
 
 export { SidebarCard } from './Card'
 export type { SidebarCardProps } from './Card'

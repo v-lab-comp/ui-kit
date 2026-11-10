@@ -35,5 +35,10 @@ export type DateInputProps = Omit<InputFieldProps, 'children'> &
      */
     valueFormat?: DateInputValueFormat
     locale?: CalendarLocale
+    /**
+     * Доступное имя кнопки календаря (и диалога, если у поля нет `label`).
+     * Без него кнопка и диалог именуются подписью поля (`label`).
+     */
+    calendarButtonLabel?: string
     getDotDays?: (date: Date) => boolean
   }

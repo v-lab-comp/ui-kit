@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { Key, ReactNode } from 'react'
 import type { ContractValue } from '@/theme/contract'
 import type { tableContract } from '@/theme/contracts/table'
 
@@ -34,8 +34,10 @@ export interface TableProps<T extends object = object> {
   data: T[]
   /** Общее число элементов (с сервера). Включает пагинацию. Количество страниц = ceil(totalItems / pageSize). */
   totalItems?: number
-  /** Размер страницы. По умолчанию 20. */
+  /** Размер страницы (контролируемый режим, вместе с `onPageSizeChange`). */
   pageSize?: number
+  /** Начальный размер страницы (неконтролируемый режим). По умолчанию 20. */
+  defaultPageSize?: number
   /**
    * Максимальная высота области таблицы. При заданном значении включается нативный скролл
    * (вертикальный + горизонтальный) и шапка становится sticky (`top: 0`).
@@ -43,12 +45,24 @@ export interface TableProps<T extends object = object> {
   maxHeight?: number | string
   /** Текущая страница (1-based). Контролируемый режим: при смене страницы вызывается onPageChange. */
   page?: number
-  /** Вызывается при смене страницы (клик по пагинации) и при первом появлении пагинации (с page=1), чтобы родитель мог загрузить данные. */
+  /** Начальная страница (неконтролируемый режим). По умолчанию 1. */
+  defaultPage?: number
+  /** Вызывается при смене страницы (клик по пагинации, сброс на 1 при смене размера страницы). */
   onPageChange?: (page: number) => void
   /** Варианты размера страницы в селекте. По умолчанию [20, 50, 100, 200]. */
   pageSizeOptions?: number[]
   onPageSizeChange?: (size: number) => void
+  /** Клик по строке. Строка становится фокусируемой и срабатывает по Enter/Space. */
   onRowClick?: (row: T) => void
+  /** Стабильный ключ строки (id записи). По умолчанию — индекс; задайте при сортировке/обновлении данных. */
+  getRowKey?: (row: T, index: number) => Key
+  /**
+   * Доступное имя таблицы. При `maxHeight` им же называется прокручиваемая область
+   * (она фокусируется с клавиатуры) — задайте `aria-label` или `aria-labelledby`.
+   */
+  'aria-label'?: string
+  /** id элемента-заголовка таблицы (альтернатива `aria-label`). */
+  'aria-labelledby'?: string
   /** Скрыть строку заголовка (thead). Удобно для списков в сайдбаре и т.п. */
   hideHeader?: boolean
   /**
@@ -65,8 +79,8 @@ export interface TableProps<T extends object = object> {
   /** Колбэк при изменении сортировки. Сериализация в query — на стороне потребителя. */
   onSortChange?: (sort: SortState[]) => void
   /**
-   * Включает drag-and-drop переупорядочивания колонок за заголовок.
-   * Порядок сохраняется в localStorage по ключу `storageKey`. Если prop не задан — фича выключена.
+   * Включает drag-and-drop переупорядочивания колонок за заголовок;
+   * с клавиатуры — Alt+Shift+←/→ на заголовке. Порядок сохраняется в localStorage по ключу `storageKey`. Если prop не задан — фича выключена.
    */
   reorder?: { storageKey: string }
 }

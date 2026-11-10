@@ -52,13 +52,14 @@ export function RangePicker() {
 
 ## Asosiy proplar
 
-| Prop         | Tip                                                                     | Tavsif                                        |
-| ------------ | ----------------------------------------------------------------------- | --------------------------------------------- |
-| `mode`       | `'single' \| 'range'` (standart `single`)                               | Yagona sana yoki oraliq tanlash               |
-| `value`      | `single`: `Date \| null`; `range`: `DateRange`                          | Tanlangan sana yoki `{ start, end }` oralig‘i |
-| `onChange`   | `single`: `(date: Date) => void`; `range`: `(range: DateRange) => void` | Oy kuniga bosish                              |
-| `locale`     | `CalendarLocale`                                                        | Hafta kuni, oy yozuvlari, «orqaga» tugmalari  |
-| `getDotDays` | `(date: Date) => boolean` (ixtiyoriy)                                   | Raqam ostida nuqta ko‘rsatish                 |
+| Prop         | Tip                                                                     | Tavsif                                                                                                                                                          |
+| ------------ | ----------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `mode`       | `'single' \| 'range'` (standart `single`)                               | Yagona sana yoki oraliq tanlash                                                                                                                                 |
+| `value`      | `single`: `Date \| null`; `range`: `DateRange`                          | Tanlangan sana yoki `{ start, end }` oralig‘i                                                                                                                   |
+| `onChange`   | `single`: `(date: Date) => void`; `range`: `(range: DateRange) => void` | Oy kuniga bosish                                                                                                                                                |
+| `locale`     | `CalendarLocale`                                                        | Hafta kuni, oy yozuvlari, «orqaga» tugmalari                                                                                                                    |
+| `getDotDays` | `(date: Date) => boolean` (ixtiyoriy)                                   | Raqam ostida nuqta ko‘rsatish                                                                                                                                   |
+| `autoFocus`  | `boolean` (ixtiyoriy)                                                   | Montajda kunni (tanlangan, aks holda bugun) fokuslash. Setka `role="grid"`: strelkalar / Home / End / PageUp / PageDown (+Shift — yil), Enter / Space — tanlash |
 
 ## Pastki darajali qismlar
 

@@ -11,6 +11,7 @@ export type {
   UploadFile,
   UploadFileStatus,
   FileUploadFieldProps,
+  FileUploadItemProps,
   FileUploadFilesChangeHandler,
   FileDropZoneProps,
   FileDropZoneSize,

@@ -49,6 +49,8 @@ export const ToastAction = ({
     </button>
   ) as ToastActionElement
 
+const ASSERTIVE_COLORS = new Set<ToastColor>(['error', 'warning'])
+
 const isCompactSize = (size: ToastSize | undefined) => size === 'x-small' || size === 'small'
 
 export const Toast = ({
@@ -70,7 +72,8 @@ export const Toast = ({
 
   return (
     <div
-      role="alert"
+      // Одна озвучка на тост: ошибка и предупреждение — assertive (alert), остальное — polite (status)
+      role={ASSERTIVE_COLORS.has(color) ? 'alert' : 'status'}
       className={clsx(toastContract.className, className)}
       {...contractAttrs(toastContract, { variant, color: COLOR_PALETTE[color], size })}
       {...props}
@@ -112,7 +115,7 @@ export const Toast = ({
           onClick={onClose}
           aria-label="Close"
         >
-          <RiCloseLine size={compact ? 16 : 20} />
+          <RiCloseLine size={compact ? 16 : 20} aria-hidden />
         </button>
       )}
     </div>

@@ -8,44 +8,32 @@ import {
 } from '@remixicon/react'
 import { Typography } from '@/components/Typography'
 import { useModalContext } from '../../ModalContext'
+import { useDialogPart } from '../../dialog/DialogContext'
 import type { ModalHandle } from '../../Modal.types'
 import { Modal } from '../../Modal'
 import { ModalBody } from '../ModalBody'
 import { ModalHeader } from '../ModalHeader'
-import { contractPart } from '@/theme/contract'
+import { contractAttrs, contractPart } from '@/theme/contract'
 import { modalStatusContract } from '@/theme/contracts/modal-status'
 import type { ModalStatusProps, ModalStatusVariant } from './ModalStatus.types'
 
-const STATUS_ICONS: Record<
-  ModalStatusVariant,
-  { bg: string; Icon: typeof RiAlertLine; color: string }
-> = {
-  error: { bg: 'var(--error-lighter)', Icon: RiAlertLine, color: 'var(--error-base)' },
-  warning: {
-    bg: 'var(--warning-lighter)',
-    Icon: RiErrorWarningLine,
-    color: 'var(--warning-base)',
-  },
-  success: {
-    bg: 'var(--success-lighter)',
-    Icon: RiCheckboxCircleLine,
-    color: 'var(--success-base)',
-  },
-  info: {
-    bg: 'var(--information-lighter)',
-    Icon: RiInformationLine,
-    color: 'var(--information-base)',
-  },
+const STATUS_ICONS: Record<ModalStatusVariant, typeof RiAlertLine> = {
+  error: RiAlertLine,
+  warning: RiErrorWarningLine,
+  success: RiCheckboxCircleLine,
+  info: RiInformationLine,
 }
 
+/** Декоративная иконка статуса: вариант — data-variant, цвета задаёт скин. */
 function StatusIcon({ variant, className }: { variant: ModalStatusVariant; className?: string }) {
-  const { bg, Icon, color } = STATUS_ICONS[variant]
+  const Icon = STATUS_ICONS[variant]
   return (
     <div
       className={clsx(contractPart(modalStatusContract, 'status-icon'), className)}
-      style={{ background: bg }}
+      {...contractAttrs(modalStatusContract, { variant })}
+      aria-hidden
     >
-      <Icon size={20} color={color} />
+      <Icon size={20} />
     </div>
   )
 }
@@ -56,8 +44,10 @@ function CenterBlock({
   subtitle,
   children,
 }: Pick<ModalStatusProps, 'variant' | 'title' | 'subtitle' | 'children'>) {
-  const { titleId } = useModalContext()
+  const { titleId, descriptionId } = useModalContext()
   const showSubtitle = subtitle != null && subtitle !== ''
+  useDialogPart('title')
+  useDialogPart('description', showSubtitle)
 
   return (
     <div className={contractPart(modalStatusContract, 'status-center')}>
@@ -73,6 +63,7 @@ function CenterBlock({
       </Typography>
       {showSubtitle ? (
         <Typography
+          id={descriptionId}
           variant="paragraph"
           size="x-small"
           component="p"

@@ -169,6 +169,17 @@
     transition: background 0.15s;
   }
 
+  /* Пункт-ссылка (<a href>) выглядит как пункт-кнопка: сбрасываем стили ссылки и задаём то,
+     что у <button> идёт из UA. :where — нулевая специфичность, скин pixel перекрывает шрифт */
+  :where(a.vl-app-switcher__item) {
+    box-sizing: border-box;
+    color: inherit;
+    font-family: system-ui, sans-serif;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+  }
+
   .vl-app-switcher__item:hover:not(:disabled) {
     background: var(--bg-weak-50);
   }

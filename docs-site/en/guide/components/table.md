@@ -112,25 +112,27 @@ const cols: TableColumn<Row>[] = [
 
 ## Main props (`Table`)
 
-| Prop                 | Type                          | Description                                                                         |
-| -------------------- | ----------------------------- | ----------------------------------------------------------------------------------- |
-| `columns`            | **`TableColumn<T>[]`**        | Columns: key, title, width, **`render`**, alignment, **`sortable`**                 |
-| `data`               | **`T[]`**                     | Current page rows                                                                   |
-| `totalItems`         | `number`                      | Total from backend (enables pagination)                                             |
-| `pageSize`           | `number`                      | Page size (default **20**)                                                          |
-| `page`               | `number`                      | Current page (1-based) with **`onPageChange`**                                      |
-| `onPageChange`       | `(page: number) => void`      | Page change                                                                         |
-| `pageSizeOptions`    | `number[]`                    | Page size select options (default `[20, 50, 100, 200]`)                             |
-| `onPageSizeChange`   | `(size: number) => void`      | Page size change                                                                    |
-| `onRowClick`         | `(row: T) => void`            | Row click                                                                           |
-| `maxHeight`          | `number` \| `string`          | Max height: enables native scroll and sticky header                                 |
-| `hideHeader`         | `boolean`                     | Hide table header                                                                   |
-| `paginationPosition` | `top` \| `bottom`             | Pagination placement                                                                |
-| `activeRowIndex`     | `number`                      | Highlighted row index (0-based in **`data`**)                                       |
-| `sort`               | `SortState[]`                 | Controlled sort state (multi-sort: array order = priority)                          |
-| `defaultSort`        | `SortState[]`                 | Initial sort state (uncontrolled mode)                                              |
-| `onSortChange`       | `(sort: SortState[]) => void` | Sort change callback                                                                |
-| `reorder`            | `{ storageKey: string }`      | Enables column drag-and-drop reordering; order stored in `localStorage[storageKey]` |
+| Prop                             | Type                             | Description                                                                                                |
+| -------------------------------- | -------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `columns`                        | **`TableColumn<T>[]`**           | Columns: key, title, width, **`render`**, alignment, **`sortable`**                                        |
+| `data`                           | **`T[]`**                        | Current page rows                                                                                          |
+| `totalItems`                     | `number`                         | Total from backend (enables pagination)                                                                    |
+| `pageSize`                       | `number`                         | Page size (controlled, with **`onPageSizeChange`**); uncontrolled — **`defaultPageSize`** (default **20**) |
+| `page`                           | `number`                         | Current page (1-based) with **`onPageChange`**; uncontrolled — **`defaultPage`**                           |
+| `onPageChange`                   | `(page: number) => void`         | Page change                                                                                                |
+| `pageSizeOptions`                | `number[]`                       | Page size select options (default `[20, 50, 100, 200]`)                                                    |
+| `onPageSizeChange`               | `(size: number) => void`         | Page size change                                                                                           |
+| `onRowClick`                     | `(row: T) => void`               | Row click; the row is focusable and activates on Enter/Space                                               |
+| `getRowKey`                      | `(row: T, index: number) => Key` | Stable row key (default: index)                                                                            |
+| `aria-label` / `aria-labelledby` | `string`                         | Table name; with `maxHeight` also names the focusable scroll region                                        |
+| `maxHeight`                      | `number` \| `string`             | Max height: enables native scroll and sticky header                                                        |
+| `hideHeader`                     | `boolean`                        | Hide table header                                                                                          |
+| `paginationPosition`             | `top` \| `bottom`                | Pagination placement                                                                                       |
+| `activeRowIndex`                 | `number`                         | Highlighted row index (0-based in **`data`**)                                                              |
+| `sort`                           | `SortState[]`                    | Controlled sort state (multi-sort: array order = priority)                                                 |
+| `defaultSort`                    | `SortState[]`                    | Initial sort state (uncontrolled mode)                                                                     |
+| `onSortChange`                   | `(sort: SortState[]) => void`    | Sort change callback                                                                                       |
+| `reorder`                        | `{ storageKey: string }`         | Column reordering: drag-and-drop or Alt+Shift+←/→ on a header; order stored in `localStorage[storageKey]`  |
 
 ### Column `TableColumn<T>`
 

@@ -1,7 +1,6 @@
 /* modal-status: 8-битный вид поверх corporate/components/modal-status.css — раскладка приходит оттуда, здесь только оформление.
-   Иконка статуса — квадратная плашка с рамкой и объёмом. Фон плашки задан инлайн-стилем
-   (var(--<variant>-lighter)) и из CSS без !important не меняется, поэтому цвет варианта
-   передаёт рамка: вариант читается по подстроке инлайн-стиля. */
+   Иконка статуса — квадратная плашка с рамкой и объёмом. Фон плашки приходит из corporate
+   (var(--<variant>-lighter)), цвет варианта дополнительно передаёт рамка — по data-variant. */
 :where([data-vl-skin~='pixel']) {
   .vl-modal-status__status-icon {
     --pixel-unit: 2px;
@@ -9,16 +8,16 @@
     border-radius: 0;
     box-shadow: var(--pixel-frame), var(--pixel-bevel-sm);
   }
-  .vl-modal-status__status-icon[style*='error'] {
+  .vl-modal-status__status-icon[data-variant='error'] {
     --pixel-frame-color: var(--error-base);
   }
-  .vl-modal-status__status-icon[style*='warning'] {
+  .vl-modal-status__status-icon[data-variant='warning'] {
     --pixel-frame-color: var(--warning-base);
   }
-  .vl-modal-status__status-icon[style*='success'] {
+  .vl-modal-status__status-icon[data-variant='success'] {
     --pixel-frame-color: var(--success-base);
   }
-  .vl-modal-status__status-icon[style*='information'] {
+  .vl-modal-status__status-icon[data-variant='info'] {
     --pixel-frame-color: var(--information-base);
   }
 

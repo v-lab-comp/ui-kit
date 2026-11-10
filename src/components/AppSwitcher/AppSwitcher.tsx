@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react'
-import type { CSSProperties, ReactNode } from 'react'
+import { forwardRef, useId, useState } from 'react'
+import type { CSSProperties, MouseEvent, ReactNode } from 'react'
+import { FloatingFocusManager } from '@floating-ui/react'
 import { RiLayoutGridLine } from '@remixicon/react'
 import { Box } from '@/components/Box'
-import { useClickOutside } from '@/hooks'
+import { useDropdownMenu } from '@/components/overlays/Menu'
 import { contractPart } from '@/theme/contract'
 import { appSwitcherContract } from '@/theme/contracts/app-switcher'
 import type { AppItem, AppSwitcherProps, AppSwitcherPromo } from './AppSwitcher.types'
@@ -48,7 +49,8 @@ function hashColor(label: string): string {
   return COLOR_VALUES[name]
 }
 
-// ─── AppIcon ──────────────────────────────────────────────────────────────────
+// ─── AppIcon ───
+// Иконка декоративная: рядом всегда видна подпись приложения, поэтому alt=""───────────────────────────────────────────────────────────────
 
 type AppIconProps = { icon?: string | ReactNode; label: string; size: number }
 
@@ -61,7 +63,7 @@ function AppIcon({ icon, label, size }: AppIconProps) {
     return (
       <img
         src={icon}
-        alt={label}
+        alt=""
         width={size}
         height={size}
         className={contractPart(appSwitcherContract, 'icon-img')}
@@ -75,6 +77,7 @@ function AppIcon({ icon, label, size }: AppIconProps) {
   if (icon != null && typeof icon !== 'string') {
     return (
       <span
+        aria-hidden
         className={contractPart(appSwitcherContract, 'icon-node')}
         style={{ width: size, height: size, borderRadius: radius } as CSSProperties}
       >
@@ -85,6 +88,7 @@ function AppIcon({ icon, label, size }: AppIconProps) {
 
   return (
     <span
+      aria-hidden
       className={contractPart(appSwitcherContract, 'icon-initial')}
       style={
         {
@@ -108,119 +112,172 @@ const DEFAULT_PROMO: AppSwitcherPromo = {
   subtitle: 'Один аккаунт — единый рабочий стол',
 }
 
-export function AppSwitcher({ apps, promo = DEFAULT_PROMO }: AppSwitcherProps) {
-  const [open, setOpen] = useState(false)
-  const containerRef = useRef<HTMLDivElement>(null)
+type MenuItemProps = {
+  app: AppItem
+  itemProps: Record<string, unknown>
+}
 
-  useClickOutside(containerRef, () => setOpen(false), open)
+/** Обычный клик без модификаторов — его перехватывает onClick; Ctrl/⌘/средняя кнопка открывают href */
+function isPlainClick(event: MouseEvent) {
+  return event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey
+}
 
-  const activeApp = apps.find((a) => a.isActive) ?? apps[0]
+function AppSwitcherMenuItem({ app, itemProps }: MenuItemProps) {
+  const soonId = useId()
+  const isActive = app.isActive && !app.disabled
+  const content = (
+    <>
+      <span className={contractPart(appSwitcherContract, 'icon-wrap')}>
+        <AppIcon icon={app.icon} label={app.label} size={44} />
+        {isActive && (
+          <span className={contractPart(appSwitcherContract, 'active-dot')} aria-hidden />
+        )}
+      </span>
 
-  function handleItemClick(app: AppItem) {
-    setOpen(false)
-    if (app.onClick) {
-      app.onClick()
-    } else if (app.href) {
-      const { href } = app
-      setTimeout(() => window.location.assign(href), 0)
-    }
+      <span className={contractPart(appSwitcherContract, 'item-label')}>{app.label}</span>
+
+      {app.disabled && (
+        <span id={soonId} className={contractPart(appSwitcherContract, 'soon-label')}>
+          Скоро
+        </span>
+      )}
+
+      {!app.disabled && app.badge != null && app.badge > 0 && (
+        <span
+          className={contractPart(appSwitcherContract, 'badge')}
+          aria-label={`${app.badge} уведомлений`}
+        >
+          {app.badge > 99 ? '99+' : app.badge}
+        </span>
+      )}
+    </>
+  )
+  const common = {
+    role: 'menuitem',
+    'data-active': isActive ? 'true' : undefined,
+    'aria-current': isActive ? ('page' as const) : undefined,
+    className: contractPart(appSwitcherContract, 'item'),
+    ...itemProps,
+  }
+
+  // Настоящая ссылка: работает открытие в новой вкладке и семантика ссылки
+  if (app.href && !app.disabled) {
+    return (
+      <a href={app.href} {...common}>
+        {content}
+      </a>
+    )
   }
 
   return (
-    <Box ref={containerRef} className={appSwitcherContract.className}>
-      {/* ── Trigger ── */}
-      <button
-        type="button"
-        aria-expanded={open}
-        aria-haspopup="true"
-        aria-label="App switcher"
-        className={contractPart(appSwitcherContract, 'trigger')}
-        onClick={() => setOpen((v) => !v)}
-      >
-        <span className={contractPart(appSwitcherContract, 'trigger-info')}>
-          {activeApp && <AppIcon icon={activeApp.icon} label={activeApp.label} size={30} />}
-          {activeApp && (
-            <span className={contractPart(appSwitcherContract, 'trigger-labels')}>
-              <span className={contractPart(appSwitcherContract, 'trigger-name')}>
-                {activeApp.label}
-              </span>
-              {activeApp.description && (
-                <span className={contractPart(appSwitcherContract, 'trigger-description')}>
-                  {activeApp.description}
-                </span>
-              )}
-            </span>
-          )}
-        </span>
-
-        <span className={contractPart(appSwitcherContract, 'trigger-divider')} aria-hidden />
-
-        <span className={contractPart(appSwitcherContract, 'trigger-grid')}>
-          <RiLayoutGridLine size={15} />
-        </span>
-      </button>
-
-      {/* ── Dropdown ── */}
-      {open && (
-        <Box role="menu" className={contractPart(appSwitcherContract, 'dropdown')}>
-          {promo && (
-            <div
-              className={contractPart(appSwitcherContract, 'promo')}
-              style={
-                promo.gradient
-                  ? ({ '--promo-gradient': promo.gradient } as CSSProperties)
-                  : undefined
-              }
-            >
-              <p className={contractPart(appSwitcherContract, 'promo-title')}>{promo.title}</p>
-              {promo.subtitle && (
-                <p className={contractPart(appSwitcherContract, 'promo-subtitle')}>
-                  {promo.subtitle}
-                </p>
-              )}
-            </div>
-          )}
-          <div className={contractPart(appSwitcherContract, 'grid')}>
-            {apps.map((app) => (
-              <button
-                key={app.id}
-                type="button"
-                role="menuitem"
-                disabled={app.disabled}
-                data-active={app.isActive && !app.disabled ? 'true' : undefined}
-                className={contractPart(appSwitcherContract, 'item')}
-                onClick={() => !app.disabled && handleItemClick(app)}
-              >
-                <span className={contractPart(appSwitcherContract, 'icon-wrap')}>
-                  <AppIcon icon={app.icon} label={app.label} size={44} />
-                  {app.isActive && !app.disabled && (
-                    <span className={contractPart(appSwitcherContract, 'active-dot')} aria-hidden />
-                  )}
-                </span>
-
-                <span className={contractPart(appSwitcherContract, 'item-label')}>{app.label}</span>
-
-                {app.disabled && (
-                  <span className={contractPart(appSwitcherContract, 'soon-label')} aria-hidden>
-                    Скоро
-                  </span>
-                )}
-
-                {!app.disabled && app.badge != null && app.badge > 0 && (
-                  <span
-                    className={contractPart(appSwitcherContract, 'badge')}
-                    aria-label={`${app.badge} уведомлений`}
-                  >
-                    {app.badge > 99 ? '99+' : app.badge}
-                  </span>
-                )}
-              </button>
-            ))}
-          </div>
-        </Box>
-      )}
-    </Box>
+    <button
+      type="button"
+      disabled={app.disabled}
+      aria-describedby={app.disabled ? soonId : undefined}
+      {...common}
+    >
+      {content}
+    </button>
   )
 }
+
+export const AppSwitcher = forwardRef<HTMLDivElement, AppSwitcherProps>(
+  ({ apps, promo = DEFAULT_PROMO }, ref) => {
+    const activeApp = apps.find((a) => a.isActive) ?? apps[0]
+    const selectedIndex = apps.findIndex((a) => a.isActive && !a.disabled)
+
+    const {
+      open,
+      context,
+      setReference,
+      setFloating,
+      getReferenceProps,
+      getMenuProps,
+      getItemProps,
+    } = useDropdownMenu({
+      labels: apps.map((a) => (a.disabled ? null : a.label)),
+      selectedIndex: selectedIndex >= 0 ? selectedIndex : null,
+      // Пункты идут сеткой 3×N — стрелки в любую сторону двигают фокус по порядку
+      orientation: 'both',
+    })
+
+    return (
+      <Box ref={ref} className={appSwitcherContract.className}>
+        {/* ── Trigger ── */}
+        <button
+          ref={setReference}
+          type="button"
+          aria-label="App switcher"
+          className={contractPart(appSwitcherContract, 'trigger')}
+          {...getReferenceProps()}
+        >
+          <span className={contractPart(appSwitcherContract, 'trigger-info')}>
+            {activeApp && <AppIcon icon={activeApp.icon} label={activeApp.label} size={30} />}
+            {activeApp && (
+              <span className={contractPart(appSwitcherContract, 'trigger-labels')}>
+                <span className={contractPart(appSwitcherContract, 'trigger-name')}>
+                  {activeApp.label}
+                </span>
+                {activeApp.description && (
+                  <span className={contractPart(appSwitcherContract, 'trigger-description')}>
+                    {activeApp.description}
+                  </span>
+                )}
+              </span>
+            )}
+          </span>
+
+          <span className={contractPart(appSwitcherContract, 'trigger-divider')} aria-hidden />
+
+          <span className={contractPart(appSwitcherContract, 'trigger-grid')}>
+            <RiLayoutGridLine size={15} aria-hidden />
+          </span>
+        </button>
+
+        {/* ── Dropdown: промо вне role="menu", меню — сетка пунктов ── */}
+        {open && (
+          <FloatingFocusManager context={context} modal={false} initialFocus={-1}>
+            <div ref={setFloating} className={contractPart(appSwitcherContract, 'dropdown')}>
+              {promo && (
+                <div
+                  className={contractPart(appSwitcherContract, 'promo')}
+                  style={
+                    promo.gradient
+                      ? ({ '--promo-gradient': promo.gradient } as CSSProperties)
+                      : undefined
+                  }
+                >
+                  <p className={contractPart(appSwitcherContract, 'promo-title')}>{promo.title}</p>
+                  {promo.subtitle && (
+                    <p className={contractPart(appSwitcherContract, 'promo-subtitle')}>
+                      {promo.subtitle}
+                    </p>
+                  )}
+                </div>
+              )}
+              <div className={contractPart(appSwitcherContract, 'grid')} {...getMenuProps()}>
+                {apps.map((app, index) => (
+                  <AppSwitcherMenuItem
+                    key={app.id}
+                    app={app}
+                    itemProps={getItemProps(index, {
+                      onClick: (event) => {
+                        if (app.onClick) {
+                          // onClick важнее href, как и раньше; href остаётся для Ctrl/⌘-клика
+                          if (isPlainClick(event)) event.preventDefault()
+                          if (!app.href || isPlainClick(event)) app.onClick()
+                        }
+                      },
+                    })}
+                  />
+                ))}
+              </div>
+            </div>
+          </FloatingFocusManager>
+        )}
+      </Box>
+    )
+  }
+)
 
 AppSwitcher.displayName = 'AppSwitcher'

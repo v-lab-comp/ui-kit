@@ -1,9 +1,11 @@
-import type { ComponentProps } from 'react'
-import { SvgIcon } from '../SvgIcon'
+import { forwardRef } from 'react'
+import { SvgIcon, type FlagProps } from '../SvgIcon'
 
 const svg =
   '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n<g clip-path="url(#clip0_253_6216)">\n<path d="M12 0C10.5321 0 9.12602 0.264047 7.82609 0.746391L7.30432 12L7.82604 23.2536C9.12602 23.736 10.5321 24 12 24C13.4678 24 14.8739 23.736 16.1739 23.2536L16.6956 12L16.1739 0.746391C14.8739 0.264047 13.4678 0 12 0V0Z" fill="#FFDA44"/>\n<path d="M24.0001 11.9999C24.0001 6.84037 20.7436 2.44185 16.174 0.746338V23.2536C20.7436 21.558 24.0001 17.1595 24.0001 11.9999Z" fill="#D80027"/>\n<path d="M7.82611 23.2536V0.746338C3.2565 2.44185 0 6.84037 0 11.9999C0 17.1595 3.2565 21.558 7.82611 23.2536Z" fill="#0052B4"/>\n</g>\n<defs>\n<clipPath id="clip0_253_6216">\n<rect width="24" height="24" fill="white"/>\n</clipPath>\n</defs>\n</svg>\n'
 
-export function FlagChad(props: Omit<ComponentProps<typeof SvgIcon>, 'svg' | 'title'>) {
-  return <SvgIcon {...props} svg={svg} title="Chad" />
-}
+export const FlagChad = forwardRef<HTMLSpanElement, FlagProps>(function FlagChad(props, ref) {
+  return <SvgIcon title="Chad" {...props} ref={ref} svg={svg} />
+})
+
+FlagChad.displayName = 'FlagChad'

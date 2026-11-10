@@ -36,14 +36,14 @@ export function UserAvatar() {
 
 ## Asosiy proplar
 
-| Prop    | Tip           | Tavsif                                        |
-| ------- | ------------- | --------------------------------------------- |
-| `src`   | `string`      | Rasm URL                                      |
-| `alt`   | `string`      | Muqobil matn                                  |
-| `text`  | `ReactNode`   | Bosh harflar (odatda 1–2 belgi)               |
-| `icon`  | `ReactNode`   | Rasm va matn bo‘lmasa ikonka                  |
-| `size`  | shkaladan son | 20 … 80 (**`AVATAR_SIZE_OPTIONS`** ga qarang) |
-| `color` | palitradan    | **`AVATAR_COLOR_OPTIONS`** ga qarang          |
+| Prop    | Tip           | Tavsif                                                                                                             |
+| ------- | ------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `src`   | `string`      | Rasm URL                                                                                                           |
+| `alt`   | `string`      | Ochiq nom (inson ismi): rasmda `<img>` `alt`, bosh harflar/ikonkada `role="img"` + `aria-label`. Bo‘sh — dekorativ |
+| `text`  | `ReactNode`   | Bosh harflar (odatda 1–2 belgi)                                                                                    |
+| `icon`  | `ReactNode`   | Rasm va matn bo‘lmasa ikonka                                                                                       |
+| `size`  | shkaladan son | 20 … 80 (**`AVATAR_SIZE_OPTIONS`** ga qarang)                                                                      |
+| `color` | palitradan    | **`AVATAR_COLOR_OPTIONS`** ga qarang                                                                               |
 
 ## Galereya
 

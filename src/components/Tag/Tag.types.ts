@@ -19,7 +19,8 @@ export const TAG_COLOR_OPTIONS = tagContract.attributes.color
 
 /**
  * Корневой элемент — **`span`** или **`button`** (только **`onClick`** без **`onDismiss`**).
- * С **`onDismiss`** крестик изолирован; **`onClick`** обрабатывает клик по основной части (prefix + текст + suffix).
+ * С **`onDismiss`** крестик изолирован; **`onClick`** обрабатывает клик по основной части (prefix + текст + suffix),
+ * которая тогда рендерится нативной кнопкой. ref — на корневой элемент.
  */
 export interface TagProps extends Omit<
   HTMLAttributes<HTMLSpanElement>,
@@ -46,7 +47,10 @@ export interface TagProps extends Omit<
   suffix?: ReactNode
   /** Показать крестик удаления; по клику вызывается этот колбэк. */
   onDismiss?: () => void
-  /** `aria-label` для кнопки удаления. */
+  /**
+   * Действие кнопки удаления для её доступного имени. Имя кнопки — «dismissLabel + текст тега»
+   * (например «Remove Design»). По умолчанию `'Remove'`.
+   */
   dismissLabel?: string
   disabled?: boolean
 }

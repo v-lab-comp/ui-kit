@@ -5,7 +5,7 @@ description: Link field with copy action in the suffix.
 
 # ShareLinkInput
 
-Built-in **`endBlock`** with clipboard copy; optional **`onCopy`** callback.
+Built-in **`endBlock`** with clipboard copy; optional **`onCopied`** callback.
 
 ## Preview
 
@@ -40,11 +40,11 @@ export function ShareField() {
 
 Same as **[TextInput](./text-input)** plus copy UI in the suffix / **`endBlock`**.
 
-| Prop         | Type                          | Description                                                                  |
-| ------------ | ----------------------------- | ---------------------------------------------------------------------------- |
-| **`onCopy`** | **`(value: string) => void`** | Called after **successful** copy to clipboard; argument is the copied string |
+| Prop           | Type                          | Description                                                                  |
+| -------------- | ----------------------------- | ---------------------------------------------------------------------------- |
+| **`onCopied`** | **`(value: string) => void`** | Called after **successful** copy to clipboard; argument is the copied string |
 
-Without **`onCopy`**, copy still works.
+Without **`onCopied`**, copy still works.
 
 ### Full type
 

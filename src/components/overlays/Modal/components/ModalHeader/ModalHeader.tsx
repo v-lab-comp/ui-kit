@@ -1,68 +1,51 @@
+import { forwardRef } from 'react'
 import { RiCloseLine } from '@remixicon/react'
-import { Typography } from '@/components/Typography'
-import { useModalContext } from '../../ModalContext'
 import { contractAttrs, contractPart } from '@/theme/contract'
 import { modalHeaderContract } from '@/theme/contracts/modal-header'
+import { useModalContext } from '../../ModalContext'
+import { DialogHeader, type DialogHeaderClasses } from '../../dialog/DialogHeader'
 import type { ModalHeaderProps } from './ModalHeader.types'
 
-function CloseButton({ onClick }: { onClick: () => void }) {
+const CLASSES: DialogHeaderClasses = {
+  root: modalHeaderContract.className,
+  iconSlot: contractPart(modalHeaderContract, 'icon-slot'),
+  textColumn: contractPart(modalHeaderContract, 'text-column'),
+  title: contractPart(modalHeaderContract, 'title'),
+  subtitle: contractPart(modalHeaderContract, 'subtitle'),
+}
+
+const CLOSE_ONLY_ATTRS = contractAttrs(modalHeaderContract, { 'close-only': true })
+
+function renderClose(onClose: () => void) {
   return (
     <button
       type="button"
       className={contractPart(modalHeaderContract, 'close')}
-      onClick={onClick}
+      onClick={onClose}
       aria-label="Закрыть"
     >
-      <RiCloseLine size={20} />
+      <RiCloseLine size={20} aria-hidden />
     </button>
   )
 }
 
-export function ModalHeader(props: ModalHeaderProps) {
-  const { titleId, onClose } = useModalContext()
-  const hideClose = props.hideCloseButton ?? false
-
-  if ('closeOnly' in props && props.closeOnly) {
+/** Шапка модалки: заголовок даёт имя диалогу, подзаголовок — описание. */
+export const ModalHeader = forwardRef<HTMLDivElement, ModalHeaderProps>(
+  function ModalHeader(props, ref) {
+    // Проверка, что шапка внутри Modal (бросает ошибку вне контекста)
+    useModalContext()
     return (
-      <div
-        className={modalHeaderContract.className}
-        {...contractAttrs(modalHeaderContract, { 'close-only': true })}
-      >
-        {!hideClose ? <CloseButton onClick={onClose} /> : null}
-      </div>
+      <DialogHeader
+        ref={ref}
+        {...props}
+        classes={CLASSES}
+        closeOnlyAttrs={CLOSE_ONLY_ATTRS}
+        titleLook={{ size: 'small' }}
+        subtitleLook={{ size: 'x-small' }}
+        renderClose={renderClose}
+      />
     )
   }
-
-  const { title, subtitle, icon } = props
-  const hasSubtitle = subtitle != null && subtitle !== ''
-
-  return (
-    <div className={modalHeaderContract.className}>
-      {icon ? <div className={contractPart(modalHeaderContract, 'icon-slot')}>{icon}</div> : null}
-      <div className={contractPart(modalHeaderContract, 'text-column')}>
-        <Typography
-          id={titleId}
-          variant="label"
-          size="small"
-          component="h2"
-          className={contractPart(modalHeaderContract, 'title')}
-        >
-          {title}
-        </Typography>
-        {hasSubtitle ? (
-          <Typography
-            variant="paragraph"
-            size="x-small"
-            component="p"
-            className={contractPart(modalHeaderContract, 'subtitle')}
-          >
-            {subtitle}
-          </Typography>
-        ) : null}
-      </div>
-      {!hideClose ? <CloseButton onClick={onClose} /> : null}
-    </div>
-  )
-}
+)
 
 ModalHeader.displayName = 'ModalHeader'

@@ -28,7 +28,7 @@ export type AppItem = {
   description?: string
   /** Иконка: URL/путь к изображению, ReactNode; undefined или пустая строка → авто-инициал */
   icon?: string | ReactNode
-  /** URL для перехода (window.location.assign) */
+  /** URL перехода: пункт рендерится ссылкой `<a href>`. Если есть и `onClick` — обычный клик вызывает только `onClick`, Ctrl/⌘/средняя кнопка открывают `href` */
   href?: string
   onClick?: () => void
   /** Пометить как текущее активное приложение */

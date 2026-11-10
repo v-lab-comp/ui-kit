@@ -5,6 +5,10 @@ import type { ReactNode } from 'react'
  * при необходимости передайте свои строки снаружи.
  */
 export type CommentRichInputAriaLabels = {
+  /** Имя поля ввода. По умолчанию — `placeholder`. */
+  input?: string
+  /** Имя тулбара форматирования (`role="toolbar"`). По умолчанию не задано. */
+  toolbar?: string
   bold?: string
   italic?: string
   underline?: string

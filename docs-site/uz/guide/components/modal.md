@@ -141,12 +141,14 @@ Qo‘shimcha ssenariylar (sarlavhada ikonka, **`ConfirmModal`**, **`ModalStatus`
 
 ## Asosiy proplar (Modal)
 
-| Prop                   | Tip                        | Tavsif                               |
-| ---------------------- | -------------------------- | ------------------------------------ |
-| `width` / `maxHeight`  | son yoki CSS               | Panel o‘lchami                       |
-| `closeOnBackdropClick` | `boolean`                  | Fon bosilganda yopish, standart true |
-| `size`                 | **`MODAL_SIZES`** dan      | Oldindan belgilangan kenglik         |
-| `animation`            | **`MODAL_ANIMATIONS`** dan | Paydo bo‘lish animatsiyasi           |
+| Prop                   | Tip                           | Tavsif                                                  |
+| ---------------------- | ----------------------------- | ------------------------------------------------------- |
+| `width` / `maxHeight`  | son yoki CSS                  | Panel o‘lchami                                          |
+| `closeOnBackdropClick` | `boolean`                     | Fon bosilganda yopish, standart true                    |
+| `size`                 | **`MODAL_SIZES`** dan         | Oldindan belgilangan kenglik                            |
+| `animation`            | **`MODAL_ANIMATIONS`** dan    | Paydo bo‘lish animatsiyasi                              |
+| `role`                 | `'dialog'` \| `'alertdialog'` | Panel roli; `alertdialog` — shoshilinch tasdiqlar uchun |
+| `initialFocus`         | indeks yoki ref               | Ochilganda fokus qo‘yiladigan element                   |
 
 ## Galereya
 

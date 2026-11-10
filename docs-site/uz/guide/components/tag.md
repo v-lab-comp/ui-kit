@@ -54,21 +54,21 @@ export function TagsRow() {
 
 ## Proplar
 
-| Prop           | Tip                                       | Tavsif                                                                                                |
-| -------------- | ----------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `children`     | `ReactNode`                               | Asosiy matn                                                                                           |
-| `variant`      | `stroke` \| `gray` \| `filled` \| `light` | **stroke** — oq fon + chegara; **gray** — weak fon; **filled** — to'liq rang; **light** — yumshoq fon |
-| `size`         | `small` \| `medium` \| `large`            | Balandlik: 20 / 24 / 28px                                                                             |
-| `shape`        | `rounded` \| `pill`                       | `rounded` — `--radius-6`; `pill` — to'liq yumaloq                                                     |
-| `color`        | **`TAG_COLOR_OPTIONS`**                   | Dizayn tizimi rangi                                                                                   |
-| `customColor`  | `string`                                  | O'z hex; **`color`** ustun                                                                            |
-| `sublabel`     | `ReactNode`                               | Qo'shimcha matn, `color-mix(currentColor, transparent)` orqali yumshatilgan                           |
-| `prefix`       | `ReactNode`                               | Chap 16×16 slot                                                                                       |
-| `suffix`       | `ReactNode`                               | O'ng tugun, krestikgacha                                                                              |
-| `onClick`      | `MouseEventHandler`                       | Tagni bosilishi mumkin qilib qo'yadi                                                                  |
-| `onDismiss`    | `() => void`                              | Yopish tugmasi                                                                                        |
-| `dismissLabel` | `string`                                  | Tugma **`aria-label`** (standart **`'Remove'`**)                                                      |
-| `disabled`     | `boolean`                                 | O'chirilgan                                                                                           |
+| Prop           | Tip                                       | Tavsif                                                                                                           |
+| -------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `children`     | `ReactNode`                               | Asosiy matn                                                                                                      |
+| `variant`      | `stroke` \| `gray` \| `filled` \| `light` | **stroke** — oq fon + chegara; **gray** — weak fon; **filled** — to'liq rang; **light** — yumshoq fon            |
+| `size`         | `small` \| `medium` \| `large`            | Balandlik: 20 / 24 / 28px                                                                                        |
+| `shape`        | `rounded` \| `pill`                       | `rounded` — `--radius-6`; `pill` — to'liq yumaloq                                                                |
+| `color`        | **`TAG_COLOR_OPTIONS`**                   | Dizayn tizimi rangi                                                                                              |
+| `customColor`  | `string`                                  | O'z hex; **`color`** ustun                                                                                       |
+| `sublabel`     | `ReactNode`                               | Qo'shimcha matn, `color-mix(currentColor, transparent)` orqali yumshatilgan                                      |
+| `prefix`       | `ReactNode`                               | Chap 16×16 slot                                                                                                  |
+| `suffix`       | `ReactNode`                               | O'ng tugun, krestikgacha                                                                                         |
+| `onClick`      | `MouseEventHandler`                       | Tagni bosilishi mumkin qilib qo'yadi                                                                             |
+| `onDismiss`    | `() => void`                              | Yopish tugmasi                                                                                                   |
+| `dismissLabel` | `string`                                  | O‘chirish tugmasi nomi boshlanishi: nom = `dismissLabel` + teg matni (standart **`'Remove'`** → «Remove Design») |
+| `disabled`     | `boolean`                                 | O'chirilgan                                                                                                      |
 
 Qo'shimcha **`HTMLAttributes<HTMLSpanElement>`**, **`children`**, **`prefix`** va **`suffix`** dan tashqari.
 

@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { forwardRef, useState } from 'react'
+import { forwardRef, useId, useState } from 'react'
 import { RiLockLine, RiEyeLine, RiEyeOffLine } from '@remixicon/react'
 import { InputField, splitInputFieldProps } from '../base/InputField'
 import { BaseInput } from '../base/BaseInput'
@@ -11,6 +11,8 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>((p
   const [field, inputProps] = splitInputFieldProps(props)
   const size = field.size ?? 'medium'
   const [showPassword, setShowPassword] = useState(false)
+  const generatedId = useId()
+  const inputId = field.id ?? generatedId
 
   const defaultPrefix = field.prefix ?? <RiLockLine size={20} />
 
@@ -20,8 +22,10 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>((p
       className={contractPart(passwordInputContract, 'eye-btn')}
       onClick={() => setShowPassword((v) => !v)}
       disabled={field.disabled}
-      tabIndex={-1}
-      aria-label={showPassword ? 'Hide password' : 'Show password'}
+      // Toggle button: имя постоянное, состояние — через aria-pressed
+      aria-label="Show password"
+      aria-pressed={showPassword}
+      aria-controls={inputId}
     >
       {showPassword ? <RiEyeOffLine size={20} /> : <RiEyeLine size={20} />}
     </button>
@@ -30,6 +34,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>((p
   return (
     <InputField
       {...field}
+      id={inputId}
       prefix={defaultPrefix}
       suffix={defaultSuffix}
       size={size}

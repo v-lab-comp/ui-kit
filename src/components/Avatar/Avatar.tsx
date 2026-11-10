@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { useState } from 'react'
+import { forwardRef, useState } from 'react'
 import { contractAttrs, contractPart } from '@/theme/contract'
 import { avatarContract } from '@/theme/contracts/avatar'
 import type { AvatarProps, AvatarSize } from './Avatar.types'
@@ -37,27 +37,28 @@ function DefaultAvatarIcon() {
   )
 }
 
-export function Avatar({
-  src,
-  alt = '',
-  text,
-  icon,
-  size = 56,
-  color,
-  style,
-  className,
-  ...props
-}: AvatarProps) {
+/**
+ * Аватар: фото, инициалы или иконка. Доступное имя — `alt`:
+ * у фото его несёт `<img alt>`, у инициалов/иконки — корень (`role="img"` + `aria-label`).
+ * Пустой `alt` — аватар декоративный. ref — на корневой span.
+ */
+export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(
+  { src, alt = '', text, icon, size = 56, color, style, className, ...props },
+  ref
+) {
   const [brokenSrc, setBrokenSrc] = useState<string | null>(null)
   const canShowImage = Boolean(src) && brokenSrc !== src
   const hasText = text != null && String(text).trim().length > 0
+  // Имя ставим в одно место: у фото — только на <img>, иначе — на корень
+  const named = !canShowImage && alt.trim() !== ''
 
   return (
     <span
+      ref={ref}
       className={clsx(avatarContract.className, className)}
       style={{ width: size, height: size, fontSize: FONT_SIZE[size], ...style }}
-      role={canShowImage ? 'img' : undefined}
-      aria-label={canShowImage ? alt : undefined}
+      role={named ? 'img' : undefined}
+      aria-label={named ? alt : undefined}
       {...contractAttrs(avatarContract, { color })}
       {...props}
     >
@@ -77,6 +78,6 @@ export function Avatar({
       )}
     </span>
   )
-}
+})
 
 Avatar.displayName = 'Avatar'

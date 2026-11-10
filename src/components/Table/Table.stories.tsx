@@ -26,7 +26,7 @@ const meta: Meta<typeof RowTable> = {
   ],
   argTypes: {
     totalItems: { control: 'number', description: 'Total items (enables pagination)' },
-    pageSize: { control: 'number' },
+    defaultPageSize: { control: 'number' },
     hideHeader: { control: 'boolean' },
     paginationPosition: { control: 'select', options: ['top', 'bottom'] },
     activeRowIndex: { control: 'number' },
@@ -58,7 +58,7 @@ export const Playground: Story = {
     columns,
     data,
     totalItems: undefined,
-    pageSize: 10,
+    defaultPageSize: 10,
     hideHeader: false,
   },
   render: function Render(args) {
@@ -79,7 +79,7 @@ export const WithPagination: Story = {
     columns,
     data,
     totalItems: 42,
-    pageSize: 20,
+    defaultPageSize: 20,
   },
 }
 
@@ -106,7 +106,7 @@ export const PaginationBelowTable: Story = {
     columns,
     data,
     totalItems: 42,
-    pageSize: 20,
+    defaultPageSize: 20,
     paginationPosition: 'bottom',
   },
 }

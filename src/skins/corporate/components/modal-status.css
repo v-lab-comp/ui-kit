@@ -10,6 +10,24 @@
     flex-shrink: 0;
   }
 
+  /* Цвета варианта: плашка — lighter, иконка (currentColor) — base */
+  .vl-modal-status__status-icon[data-variant='error'] {
+    background: var(--error-lighter);
+    color: var(--error-base);
+  }
+  .vl-modal-status__status-icon[data-variant='warning'] {
+    background: var(--warning-lighter);
+    color: var(--warning-base);
+  }
+  .vl-modal-status__status-icon[data-variant='success'] {
+    background: var(--success-lighter);
+    color: var(--success-base);
+  }
+  .vl-modal-status__status-icon[data-variant='info'] {
+    background: var(--information-lighter);
+    color: var(--information-base);
+  }
+
   /* layout="center": блок под шапкой с одной кнопкой закрытия */
   .vl-modal-status__status-center {
     display: flex;

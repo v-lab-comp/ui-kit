@@ -1,26 +1,13 @@
-import type { ReactNode } from 'react'
+import type {
+  DialogHeaderCloseOnlyProps,
+  DialogHeaderDefaultProps,
+  DialogHeaderProps,
+} from '../../dialog/DialogHeader'
 
-type ModalHeaderBase = {
-  hideCloseButton?: boolean
-}
-
-/** Обычная шапка: заголовок, опционально подзаголовок и иконка 40×40 слева */
-export type ModalHeaderDefaultProps = ModalHeaderBase & {
-  closeOnly?: false
-  /** Label/Small */
-  title: ReactNode
-  /** Paragraph/X Small */
-  subtitle?: ReactNode
-  /** Слот 40×40 слева (иконка или статус-круг) */
-  icon?: ReactNode
-}
+/** Обычная шапка: заголовок (Label/Small), подзаголовок (Paragraph/X Small), иконка 40×40 слева */
+export type ModalHeaderDefaultProps = DialogHeaderDefaultProps
 
 /** Только кнопка закрытия — заголовок в `ModalBody` (см. `useModalContext().titleId`) */
-export type ModalHeaderCloseOnlyProps = ModalHeaderBase & {
-  closeOnly: true
-  title?: never
-  subtitle?: never
-  icon?: never
-}
+export type ModalHeaderCloseOnlyProps = DialogHeaderCloseOnlyProps
 
-export type ModalHeaderProps = ModalHeaderDefaultProps | ModalHeaderCloseOnlyProps
+export type ModalHeaderProps = DialogHeaderProps

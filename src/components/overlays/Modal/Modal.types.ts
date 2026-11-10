@@ -1,4 +1,5 @@
-import type { CSSProperties, ReactNode } from 'react'
+import type { CSSProperties, MutableRefObject, ReactNode } from 'react'
+import type { OverlayDialogHandle, OverlayDialogRole } from './dialog/useOverlayDialog'
 import type { ModalAnimation, ModalSize } from './Modal.constants'
 
 export type ModalProps = {
@@ -32,9 +33,13 @@ export type ModalProps = {
   animation?: ModalAnimation
   /** Animation duration in milliseconds. Default: 280 */
   animationDuration?: number
+  /**
+   * Роль панели. `alertdialog` — для срочных подтверждений (деструктивные действия):
+   * вместе с `initialFocus` на наименее опасной кнопке. По умолчанию `dialog`.
+   */
+  role?: OverlayDialogRole
+  /** Куда поставить фокус при открытии: индекс табстопа или ref элемента (FloatingFocusManager). */
+  initialFocus?: number | MutableRefObject<HTMLElement | null>
 }
 
-export type ModalHandle = {
-  open: () => void
-  close: () => void
-}
+export type ModalHandle = OverlayDialogHandle

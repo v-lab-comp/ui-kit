@@ -112,25 +112,27 @@ const cols: TableColumn<Row>[] = [
 
 ## Asosiy proplar (`Table`)
 
-| Prop                 | Tip                           | Tavsif                                                                               |
-| -------------------- | ----------------------------- | ------------------------------------------------------------------------------------ |
-| `columns`            | **`TableColumn<T>[]`**        | Ustunlar: kalit, sarlavha, kenglik, **`render`**, tekislash, **`sortable`**          |
-| `data`               | **`T[]`**                     | Joriy sahifa qatorlari                                                               |
-| `totalItems`         | `number`                      | Backend dan jami elementlar (sahifalashni yoqadi)                                    |
-| `pageSize`           | `number`                      | Sahifa hajmi (standart **20**)                                                       |
-| `page`               | `number`                      | Joriy sahifa (1-based), **`onPageChange`** bilan                                     |
-| `onPageChange`       | `(page: number) => void`      | Sahifa almashtirish                                                                  |
-| `pageSizeOptions`    | `number[]`                    | Sahifa hajmi selekt variantlari (standart `[20, 50, 100, 200]`)                      |
-| `onPageSizeChange`   | `(size: number) => void`      | Sahifa hajmi o‘zgarishi                                                              |
-| `onRowClick`         | `(row: T) => void`            | Qator bosilganda                                                                     |
-| `maxHeight`          | `number` \| `string`          | Maks. balandlik: tabiiy skroll va yopishqoq sarlavhani yoqadi                        |
-| `hideHeader`         | `boolean`                     | Jadval sarlavhasini yashirish                                                        |
-| `paginationPosition` | `top` \| `bottom`             | Sahifalash qayerda ko‘rsatiladi                                                      |
-| `activeRowIndex`     | `number`                      | Chiroqlangan qator indeksi (**`data`** da 0-based)                                   |
-| `sort`               | `SortState[]`                 | Boshqariladigan saralash holati (multi-sort: massiv tartibi = ustuvorlik)            |
-| `defaultSort`        | `SortState[]`                 | Boshlang‘ich saralash holati (boshqarilmagan rejim)                                  |
-| `onSortChange`       | `(sort: SortState[]) => void` | Saralash o‘zgarganda chaqiriladi                                                     |
-| `reorder`            | `{ storageKey: string }`      | Ustunlarni DnD bilan qayta tartiblashni yoqadi; tartib `localStorage[storageKey]` da |
+| Prop                             | Tip                              | Tavsif                                                                                                                 |
+| -------------------------------- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `columns`                        | **`TableColumn<T>[]`**           | Ustunlar: kalit, sarlavha, kenglik, **`render`**, tekislash, **`sortable`**                                            |
+| `data`                           | **`T[]`**                        | Joriy sahifa qatorlari                                                                                                 |
+| `totalItems`                     | `number`                         | Backend dan jami elementlar (sahifalashni yoqadi)                                                                      |
+| `pageSize`                       | `number`                         | Sahifa hajmi (nazorat qilinadigan, **`onPageSizeChange`** bilan); nazoratsiz — **`defaultPageSize`** (standart **20**) |
+| `page`                           | `number`                         | Joriy sahifa (1-based), **`onPageChange`** bilan; nazoratsiz — **`defaultPage`**                                       |
+| `onPageChange`                   | `(page: number) => void`         | Sahifa almashtirish                                                                                                    |
+| `pageSizeOptions`                | `number[]`                       | Sahifa hajmi selekt variantlari (standart `[20, 50, 100, 200]`)                                                        |
+| `onPageSizeChange`               | `(size: number) => void`         | Sahifa hajmi o‘zgarishi                                                                                                |
+| `onRowClick`                     | `(row: T) => void`               | Qator bosilganda; qator fokuslanadi va Enter/Space bilan ishlaydi                                                      |
+| `getRowKey`                      | `(row: T, index: number) => Key` | Qatorning barqaror kaliti (standart — indeks)                                                                          |
+| `aria-label` / `aria-labelledby` | `string`                         | Jadval nomi; `maxHeight` da fokuslanadigan aylantirish hududi nomi ham                                                 |
+| `maxHeight`                      | `number` \| `string`             | Maks. balandlik: tabiiy skroll va yopishqoq sarlavhani yoqadi                                                          |
+| `hideHeader`                     | `boolean`                        | Jadval sarlavhasini yashirish                                                                                          |
+| `paginationPosition`             | `top` \| `bottom`                | Sahifalash qayerda ko‘rsatiladi                                                                                        |
+| `activeRowIndex`                 | `number`                         | Chiroqlangan qator indeksi (**`data`** da 0-based)                                                                     |
+| `sort`                           | `SortState[]`                    | Boshqariladigan saralash holati (multi-sort: massiv tartibi = ustuvorlik)                                              |
+| `defaultSort`                    | `SortState[]`                    | Boshlang‘ich saralash holati (boshqarilmagan rejim)                                                                    |
+| `onSortChange`                   | `(sort: SortState[]) => void`    | Saralash o‘zgarganda chaqiriladi                                                                                       |
+| `reorder`                        | `{ storageKey: string }`         | Ustunlarni qayta tartiblash: DnD yoki sarlavhada Alt+Shift+←/→; tartib `localStorage[storageKey]` da                   |
 
 ### `TableColumn<T>` ustuni
 

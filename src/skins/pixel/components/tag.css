@@ -165,6 +165,7 @@
     opacity: 0.75;
   }
 
+  /* Зона нажатия 24×24 (::before, inset: -4px) наследуется из corporate — здесь не переопределять */
   .vl-tag__dismiss {
     border-radius: 0;
     opacity: 1;

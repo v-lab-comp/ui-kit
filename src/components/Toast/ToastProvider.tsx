@@ -1,6 +1,13 @@
-import { useState, useMemo, useCallback, useRef, type ReactNode } from 'react'
+import {
+  useState,
+  useMemo,
+  useCallback,
+  useEffect,
+  useRef,
+  type FocusEvent,
+  type ReactNode,
+} from 'react'
 import { createPortal } from 'react-dom'
-import { formatSize } from '@/utils/formatSize'
 import { ToastSlot } from './ui/ToastSlot'
 import { useToastQueue } from './hooks/useToastQueue'
 import { ToastContext } from './ToastContext'
@@ -10,36 +17,8 @@ import { contractAttrs } from '@/theme/contract'
 import { toastProviderContract } from '@/theme/contracts/toast-provider'
 import { useToastSlotHeights } from './hooks/useToastSlotHeights'
 import { useSwipeDismiss } from './hooks/useSwipeDismiss'
-import {
-  STACK_PEEK,
-  STACK_SCALE_STEP,
-  STACK_OPACITY_STEP,
-  STACK_MAX_VISIBLE,
-  DURATION,
-  EASE,
-  SLOT_TRANSITION,
-} from './toastConstants'
-
-function anchorStyle(isBottom: boolean, value: number | string): React.CSSProperties {
-  const v = formatSize(value)
-  return isBottom ? { bottom: v } : { top: v }
-}
-
-function baseSlotStyle(
-  isBottom: boolean,
-  zIndex: number,
-  pointerEvents?: 'none'
-): React.CSSProperties {
-  const style: React.CSSProperties = {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    ...anchorStyle(isBottom, 0),
-    zIndex,
-  }
-  if (pointerEvents !== undefined) style.pointerEvents = pointerEvents
-  return style
-}
+import { computeToastLayout } from './toastLayout'
+import { DURATION, EASE } from './toastConstants'
 
 interface ToastProviderProps extends ToastConfig {
   children: ReactNode
@@ -70,7 +49,12 @@ function ToastProvider({
     typeof window === 'undefined' ? true : window.matchMedia('(hover: hover)').matches
   )
   const stackEnabled = stacking && canHover
-  const [expanded, setExpanded] = useState(false)
+  const [hovered, setHovered] = useState(false)
+  const [focusWithin, setFocusWithin] = useState(false)
+  // Раскрытие стопки — по наведению и по фокусу; пауза — по наведению (pauseOnHover)
+  // и всегда по фокусу внутри (WCAG 2.2.1: клавиатурный пользователь не теряет тост)
+  const expanded = hovered || focusWithin
+  const paused = (pauseOnHover && hovered) || focusWithin
 
   const slotElsRef = useRef<Map<number, HTMLDivElement>>(new Map())
   const swipeElsRef = useRef<Map<number, HTMLDivElement>>(new Map())
@@ -97,59 +81,30 @@ function ToastProvider({
 
   const isBottom = position.startsWith('bottom')
   const displayToasts = useMemo(() => [...toasts].reverse(), [toasts])
-  const visibleToasts = useMemo(() => displayToasts.filter((t) => t.mounted), [displayToasts])
-  const shouldStack = stackEnabled && !expanded && visibleToasts.length > 1
-
-  const getSlotStyle = useCallback(
-    (toastId: number, exiting: boolean, mounted: boolean): React.CSSProperties => {
-      const vi = visibleToasts.findIndex((t) => t.id === toastId)
-      const total = visibleToasts.length
-
-      if ((!mounted && !exiting) || vi < 0) {
-        return baseSlotStyle(isBottom, vi < 0 ? 0 : total + 1, 'none')
-      }
-
-      const y = shouldStack
-        ? vi * STACK_PEEK
-        : visibleToasts.slice(0, vi).reduce((sum, t) => sum + (heights[t.id] || 0) + gap, 0)
-
-      const scale = shouldStack && vi > 0 ? Math.max(1 - vi * STACK_SCALE_STEP, 0.85) : 1
-      const hidden = shouldStack && vi >= STACK_MAX_VISIBLE
-      const opacity = hidden ? 0 : shouldStack && vi > 0 ? 1 - vi * STACK_OPACITY_STEP : 1
-      const interactive = !exiting && (vi === 0 || expanded)
-
-      return {
-        ...baseSlotStyle(isBottom, total - vi, interactive ? undefined : 'none'),
-        ...anchorStyle(isBottom, y),
-        zIndex: total - vi,
-        transform: `scale(${scale})`,
-        transformOrigin: isBottom ? 'bottom center' : 'top center',
-        opacity,
-        transition: SLOT_TRANSITION,
-      }
-    },
-    [visibleToasts, shouldStack, isBottom, heights, gap, expanded]
+  const layout = useMemo(
+    () => computeToastLayout(displayToasts, heights, { stackEnabled, expanded, gap, isBottom }),
+    [displayToasts, heights, stackEnabled, expanded, gap, isBottom]
   )
 
-  const containerHeight = useMemo(() => {
-    if (visibleToasts.length === 0) return undefined
-    if (shouldStack) {
-      const frontH = heights[visibleToasts[0]?.id] || 0
-      const peekCount = Math.min(visibleToasts.length, STACK_MAX_VISIBLE) - 1
-      return frontH + Math.max(0, peekCount) * STACK_PEEK
-    }
-    return visibleToasts.reduce((sum, t, i) => sum + (heights[t.id] || 0) + (i > 0 ? gap : 0), 0)
-  }, [shouldStack, visibleToasts, heights, gap])
+  useEffect(() => {
+    if (!paused) return
+    pauseAll()
+    return resumeAll
+  }, [paused, pauseAll, resumeAll])
 
-  const handleMouseEnter = useCallback(() => {
-    setExpanded(true)
-    if (pauseOnHover) pauseAll()
-  }, [pauseOnHover, pauseAll])
+  // Закрытие тоста с фокусом: focusout при удалении узла приходит не всегда — снимаем флаг сами
+  const handleDismiss = useCallback(
+    (id: number) => {
+      const el = slotElsRef.current.get(id)
+      if (el?.contains(el.ownerDocument.activeElement)) setFocusWithin(false)
+      dismiss(id)
+    },
+    [dismiss]
+  )
 
-  const handleMouseLeave = useCallback(() => {
-    setExpanded(false)
-    if (pauseOnHover) resumeAll()
-  }, [pauseOnHover, resumeAll])
+  const handleBlur = useCallback((e: FocusEvent<HTMLDivElement>) => {
+    if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setFocusWithin(false)
+  }, [])
 
   const container = (
     <div
@@ -158,28 +113,31 @@ function ToastProvider({
       style={
         {
           '--toast-offset': `${offset}px`,
-          height: containerHeight != null ? `${containerHeight}px` : undefined,
+          height: layout.containerHeight != null ? `${layout.containerHeight}px` : undefined,
           transition: `height ${DURATION} ${EASE}`,
         } as React.CSSProperties
       }
+      // Озвучивает каждый тост сам (role status / alert) — без вложенной live-области, без дублей
       role="region"
-      aria-live="polite"
       aria-label="Notifications"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocus={() => setFocusWithin(true)}
+      onBlur={handleBlur}
     >
       {displayToasts.map((t) => (
         <ToastSlot
           key={t.id}
           toast={t}
           position={position}
-          slotStyle={getSlotStyle(t.id, t.exiting, t.mounted)}
+          slotStyle={layout.slots[t.id]?.style ?? {}}
+          inactive={layout.slots[t.id]?.inactive ?? false}
           onRegisterSlot={registerSlot}
           onRegisterSwipe={registerSwipe}
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
-          onDismiss={dismiss}
+          onDismiss={handleDismiss}
         />
       ))}
     </div>

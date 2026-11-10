@@ -40,8 +40,8 @@
     text-underline-offset: 3px;
   }
 
-  /* Ошибка — рамка чекбокса красная (у самого input атрибута ошибки нет) */
-  .vl-checkbox-field:has(.vl-checkbox-field__error) .vl-base-checkbox:not(:disabled) {
+  /* Ошибка — рамка чекбокса красная (data-error ставит CheckboxField) */
+  .vl-checkbox-field[data-error] .vl-base-checkbox:not(:disabled) {
     --pixel-frame-color: var(--pixel-input-error);
   }
 }

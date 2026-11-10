@@ -5,7 +5,7 @@ description: Fayl yuklash maydoni — FileUploadField / FileUploadItem.
 
 # FileUpload
 
-**`FileUploadField`** komponenti: drop zonasi, fayllar ro‘yxati, storisda progress simulyatsiyasi.
+**`FileUploadField`** komponenti: drop zonasi, fayllar ro‘yxati, yuklash progressi va holatini ilova `files` orqali beradi.
 
 ## Preview
 
@@ -32,7 +32,7 @@ export function DocumentsUpload() {
       required
       multiple
       accept=".pdf,.doc,.docx"
-      initialFiles={files}
+      files={files}
       onFilesChange={(next) => setFiles(next)}
     />
   )
@@ -50,7 +50,9 @@ export function DocumentsUpload() {
 | `multiple`          | `boolean`                                                  | Bir nechta fayl (standart `true`)                                                       |
 | `size`              | `default` \| `compact`                                     | Zona o‘lchami (**`FileDropZone`**)                                                      |
 | `texts`             | **`FileUploadTexts`**                                      | Barcha ko‘rinadigan matnlar (ko‘p tillilik); standart — **`DEFAULT_FILE_UPLOAD_TEXTS`** |
-| `initialFiles`      | **`UploadFile[]`**                                         | Maydon holatining boshlang‘ich fayl ro‘yxati                                            |
+| `files`             | **`UploadFile[]`**                                         | Fayllar ro‘yxati (boshqariladigan): ilova `progress` / `status` ni yangilaydi           |
+| `defaultFiles`      | **`UploadFile[]`**                                         | Boshlang‘ich ro‘yxat (boshqarilmaydigan)                                                |
+| `newFileStatus`     | `uploading` \| `done` \| `error`                           | Qo‘shilgan fayllar holati (standart `done`; o‘zingiz yuklasangiz `uploading`)           |
 | `onFilesChange`     | `(uploadFiles: UploadFile[], nativeFiles: File[]) => void` | Ro‘yxat yangilandi (ikkinchi argument — **`FormData` uchun `File[]`**)                  |
 | `className`         | `string`                                                   | Maydon konteyner sinfi                                                                  |
 | `dropZoneClassName` | `string`                                                   | Drop zona sinfi                                                                         |

@@ -1,13 +1,25 @@
+import { forwardRef } from 'react'
 import { RiCloseLine } from '@remixicon/react'
-import { Box } from '@/components/Box'
 import { Button } from '@/components/Button'
-import { Typography } from '@/components/Typography'
-import { useDrawerContext } from '../../DrawerContext'
+import {
+  DialogHeader,
+  type DialogHeaderClasses,
+} from '@/components/overlays/Modal/dialog/DialogHeader'
 import { contractAttrs, contractPart } from '@/theme/contract'
 import { drawerHeaderContract } from '@/theme/contracts/drawer-header'
 import type { DrawerHeaderProps } from './DrawerHeader.types'
 
-function CloseButton({ onClick }: { onClick: () => void }) {
+const CLASSES: DialogHeaderClasses = {
+  root: drawerHeaderContract.className,
+  iconSlot: contractPart(drawerHeaderContract, 'icon-slot'),
+  textColumn: contractPart(drawerHeaderContract, 'text-column'),
+  title: contractPart(drawerHeaderContract, 'title'),
+  subtitle: contractPart(drawerHeaderContract, 'subtitle'),
+}
+
+const CLOSE_ONLY_ATTRS = contractAttrs(drawerHeaderContract, { 'close-only': true })
+
+function renderClose(onClose: () => void) {
   return (
     <Button
       variant="ghost"
@@ -15,59 +27,28 @@ function CloseButton({ onClick }: { onClick: () => void }) {
       shape="square"
       size="small"
       aria-label="Закрыть"
-      onClick={onClick}
+      onClick={onClose}
     >
       <RiCloseLine size={18} aria-hidden />
     </Button>
   )
 }
 
-export function DrawerHeader(props: DrawerHeaderProps) {
-  const { titleId, onClose } = useDrawerContext()
-  const hideClose = props.hideCloseButton ?? false
-
-  if ('closeOnly' in props && props.closeOnly) {
+/** Шапка Drawer: заголовок даёт имя диалогу, подзаголовок — описание. */
+export const DrawerHeader = forwardRef<HTMLDivElement, DrawerHeaderProps>(
+  function DrawerHeader(props, ref) {
     return (
-      <Box
-        className={drawerHeaderContract.className}
-        {...contractAttrs(drawerHeaderContract, { 'close-only': true })}
-      >
-        {!hideClose && <CloseButton onClick={onClose} />}
-      </Box>
+      <DialogHeader
+        ref={ref}
+        {...props}
+        classes={CLASSES}
+        closeOnlyAttrs={CLOSE_ONLY_ATTRS}
+        titleLook={{ size: 'large', weight: 'medium' }}
+        subtitleLook={{ size: 'small' }}
+        renderClose={renderClose}
+      />
     )
   }
-
-  const { title, subtitle, icon } = props
-  const hasSubtitle = subtitle != null && subtitle !== ''
-
-  return (
-    <Box className={drawerHeaderContract.className}>
-      {icon && <Box className={contractPart(drawerHeaderContract, 'icon-slot')}>{icon}</Box>}
-      <Box className={contractPart(drawerHeaderContract, 'text-column')}>
-        <Typography
-          id={titleId}
-          variant="label"
-          size="large"
-          weight="medium"
-          component="h2"
-          className={contractPart(drawerHeaderContract, 'title')}
-        >
-          {title}
-        </Typography>
-        {hasSubtitle && (
-          <Typography
-            variant="paragraph"
-            size="small"
-            component="p"
-            className={contractPart(drawerHeaderContract, 'subtitle')}
-          >
-            {subtitle}
-          </Typography>
-        )}
-      </Box>
-      {!hideClose && <CloseButton onClick={onClose} />}
-    </Box>
-  )
-}
+)
 
 DrawerHeader.displayName = 'DrawerHeader'

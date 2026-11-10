@@ -1,4 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { act, render, screen, fireEvent } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeAll } from 'vitest'
 import { RichInput } from './RichInput'
 
@@ -59,10 +60,65 @@ describe('RichInput', () => {
     expect(editorOf()).toHaveAttribute('aria-invalid', 'true')
   })
 
-  it('runs the matching execCommand for a toolbar button', () => {
+  it('runs the matching execCommand on click without stealing focus on mousedown', () => {
     render(<RichInput tools={['bold', 'bulletList']} />)
-    fireEvent.mouseDown(screen.getByLabelText('Bulleted list'))
+    const button = screen.getByLabelText('Bulleted list')
+    // mousedown только сохраняет выделение — команда не выполняется
+    expect(fireEvent.mouseDown(button)).toBe(false)
+    expect(document.execCommand).not.toHaveBeenCalledWith('insertUnorderedList', false)
+    fireEvent.click(button)
     expect(document.execCommand).toHaveBeenCalledWith('insertUnorderedList', false)
+  })
+
+  it('toolbar: one tab stop, arrow keys move focus, Enter / Space run the command', async () => {
+    const user = userEvent.setup()
+    render(<RichInput label="Notes" tools={['bold', 'italic', 'underline']} />)
+    const [bold, italic, underline] = screen.getAllByRole('button')
+    expect(screen.getByRole('toolbar')).toHaveAttribute('aria-orientation', 'horizontal')
+    expect(bold).toHaveAttribute('tabindex', '0')
+    expect(italic).toHaveAttribute('tabindex', '-1')
+
+    await user.click(editorOf())
+    await user.tab({ shift: true })
+    expect(bold).toHaveFocus()
+
+    await user.keyboard('{ArrowRight}')
+    expect(italic).toHaveFocus()
+    expect(italic).toHaveAttribute('tabindex', '0')
+    await user.keyboard('{ArrowLeft}{ArrowLeft}')
+    expect(underline).toHaveFocus()
+
+    vi.mocked(document.execCommand).mockClear()
+    await user.keyboard('{Enter}')
+    expect(document.execCommand).toHaveBeenCalledWith('underline', false)
+    act(() => italic!.focus())
+    await user.keyboard(' ')
+    expect(document.execCommand).toHaveBeenCalledWith('italic', false)
+  })
+
+  it('exposes pressed state of format buttons', () => {
+    vi.mocked(document.queryCommandState).mockImplementation((cmd) => cmd === 'bold')
+    render(<RichInput tools={['bold', 'italic']} />)
+    fireEvent.click(screen.getByLabelText('Italic'))
+    expect(screen.getByLabelText('Bold')).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByLabelText('Italic')).toHaveAttribute('aria-pressed', 'false')
+    vi.mocked(document.queryCommandState).mockImplementation(() => false)
+  })
+
+  it('names the textbox by label and describes it by hint and counter', () => {
+    render(<RichInput label="Notes" hint="Markdown-free" maxLength={10} placeholder="Type…" />)
+    const editor = screen.getByRole('textbox', { name: 'Notes' })
+    expect(editor).toHaveAttribute('aria-placeholder', 'Type…')
+    expect(editor).toHaveAccessibleDescription('Markdown-free 0/10')
+    expect(screen.getByText('0/10')).not.toHaveAttribute('aria-live')
+  })
+
+  it('keeps readOnly textbox focusable and marks disabled', () => {
+    const { rerender } = render(<RichInput label="Notes" readOnly />)
+    expect(editorOf()).toHaveAttribute('tabindex', '0')
+    rerender(<RichInput label="Notes" disabled />)
+    expect(editorOf()).toHaveAttribute('aria-disabled', 'true')
+    expect(editorOf()).not.toHaveAttribute('tabindex')
   })
 
   it('renders only the requested tools, in order', () => {

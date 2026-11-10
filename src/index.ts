@@ -120,6 +120,7 @@ export type {
   FileDropZoneSize,
   FileUploadFieldProps,
   FileUploadFilesChangeHandler,
+  FileUploadItemProps,
 } from './components/FileUpload'
 
 export { Avatar, AVATAR_SIZE_OPTIONS, AVATAR_COLOR_OPTIONS } from './components/Avatar'
@@ -159,6 +160,8 @@ export type {
   SidebarSectionProps,
   SidebarTriggerProps,
   SidebarItemProps,
+  SidebarItemButtonProps,
+  SidebarItemLinkProps,
   SidebarCardProps,
   SidebarHeaderCardProps,
   SidebarHeaderCardOption,
@@ -255,7 +258,7 @@ export type {
 } from './components/ToggleButton'
 
 export { Tabs } from './components/Tabs'
-export type { TabsProps, TabsTabProps, TabsPanelProps } from './components/Tabs'
+export type { TabsProps, TabsListProps, TabsTabProps, TabsPanelProps } from './components/Tabs'
 
 export { Table } from './components/Table'
 export type { TableProps, TableColumn } from './components/Table'
@@ -363,7 +366,7 @@ export type {
 
 // ── Overlays ───────────────────────────────────────────────────────────────
 export { Popover } from './components/overlays'
-export type { PopoverProps } from './components/overlays'
+export type { PopoverProps, PopoverRole } from './components/overlays'
 
 export {
   Modal,

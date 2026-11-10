@@ -23,7 +23,7 @@ const copyToClipboard = async (text: string): Promise<boolean> => {
 export const ShareLinkInput = forwardRef<HTMLInputElement, ShareLinkInputProps>(
   (props, forwardedRef) => {
     const [field, rest] = splitInputFieldProps(props)
-    const { value, onCopy, ...inputProps } = rest
+    const { value, onCopied, ...inputProps } = rest
     const { disabled } = field
     const size = field.size ?? 'medium'
     const inputRef = useRef<HTMLInputElement | null>(null)
@@ -44,7 +44,7 @@ export const ShareLinkInput = forwardRef<HTMLInputElement, ShareLinkInputProps>(
       const text = value !== undefined ? String(value) : (inputRef.current?.value ?? '')
       copyToClipboard(text).then((ok) => {
         if (ok) {
-          onCopy?.(text)
+          onCopied?.(text)
           if (timeoutRef.current) clearTimeout(timeoutRef.current)
           setCopied(true)
           timeoutRef.current = setTimeout(() => {
@@ -66,7 +66,6 @@ export const ShareLinkInput = forwardRef<HTMLInputElement, ShareLinkInputProps>(
           onClick={handleCopy}
           disabled={disabled}
           aria-label={copied ? 'Copied' : 'Copy link'}
-          tabIndex={-1}
         >
           {copied ? (
             <>
@@ -74,7 +73,12 @@ export const ShareLinkInput = forwardRef<HTMLInputElement, ShareLinkInputProps>(
                 size={20}
                 className={contractPart(shareLinkInputContract, 'copy-icon')}
               />
-              <span className={contractPart(shareLinkInputContract, 'copy-label')}>Copied!</span>
+              <span
+                className={contractPart(shareLinkInputContract, 'copy-label')}
+                aria-live="polite"
+              >
+                Copied!
+              </span>
             </>
           ) : (
             <>
@@ -82,7 +86,12 @@ export const ShareLinkInput = forwardRef<HTMLInputElement, ShareLinkInputProps>(
                 size={20}
                 className={contractPart(shareLinkInputContract, 'copy-icon')}
               />
-              <span className={contractPart(shareLinkInputContract, 'copy-label')}>Copy</span>
+              <span
+                className={contractPart(shareLinkInputContract, 'copy-label')}
+                aria-live="polite"
+              >
+                Copy
+              </span>
             </>
           )}
         </button>

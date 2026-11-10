@@ -28,19 +28,22 @@ export const CalendarHeader = ({
         onClick={onPrev}
         aria-label="Previous"
       >
-        <RiArrowLeftSLine size={20} />
+        <RiArrowLeftSLine size={20} aria-hidden />
       </button>
       {onLabelClick ? (
         <button
           type="button"
           className={contractPart(calendarHeaderContract, 'label')}
           data-clickable=""
+          aria-live="polite"
           onClick={onLabelClick}
         >
           {label}
         </button>
       ) : (
-        <span className={contractPart(calendarHeaderContract, 'label')}>{label}</span>
+        <span className={contractPart(calendarHeaderContract, 'label')} aria-live="polite">
+          {label}
+        </span>
       )}
       <button
         type="button"
@@ -48,7 +51,7 @@ export const CalendarHeader = ({
         onClick={onNext}
         aria-label="Next"
       >
-        <RiArrowRightSLine size={20} />
+        <RiArrowRightSLine size={20} aria-hidden />
       </button>
     </div>
   )

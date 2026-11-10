@@ -1,9 +1,11 @@
-import type { ComponentProps } from 'react'
-import { SvgIcon } from '../SvgIcon'
+import { forwardRef } from 'react'
+import { SvgIcon, type FlagProps } from '../SvgIcon'
 
 const svg =
   '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n<g clip-path="url(#clip0_253_5632)">\n<path d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24Z" fill="#FFDA44"/>\n<path d="M19.3043 5.73914C19.1967 6.25641 19.1478 6.80733 19.1478 7.35652C19.1478 10.5222 21.035 13.2621 23.7394 14.4955C23.9097 13.6904 24 12.8558 24 12C24 5.37262 18.6274 0 12 0C5.37262 0 0 5.37262 0 12C0 18.6274 5.37262 24 12 24C16.1101 24 19.7371 21.9332 21.8998 18.7826H6.78263V17.2174H22.8093C22.9733 16.8782 23.1215 16.53 23.2537 16.1739H6.78263L19.3043 5.73914Z" fill="#0052B4"/>\n<path d="M8.81583 6.26086L9.07486 7.05802H9.91299L9.23494 7.55072L9.49397 8.34783L8.81583 7.85522L8.13778 8.34783L8.39677 7.55072L7.71863 7.05802H8.5568L8.81583 6.26086Z" fill="#F0F0F0"/>\n<path d="M5.41116 12L5.73497 12.9965H6.78262L5.93498 13.6122L6.2588 14.6087L5.41116 13.9928L4.56356 14.6087L4.88733 13.6122L4.03973 12.9965H5.08739L5.41116 12Z" fill="#F0F0F0"/>\n<path d="M5.41116 3.65222L5.73497 4.64874H6.78262L5.93498 5.26444L6.2588 6.26091L5.41116 5.64507L4.56356 6.26091L4.88733 5.26444L4.03973 4.64874H5.08739L5.41116 3.65222Z" fill="#F0F0F0"/>\n<path d="M2.80245 8.3479L3.12626 9.34442H4.17387L3.32628 9.96012L3.65009 10.9566L2.80245 10.3407L1.95486 10.9566L2.27862 9.96012L1.43103 9.34442H2.47864L2.80245 8.3479Z" fill="#F0F0F0"/>\n</g>\n<defs>\n<clipPath id="clip0_253_5632">\n<rect width="24" height="24" fill="white"/>\n</clipPath>\n</defs>\n</svg>\n'
 
-export function FlagTokelau(props: Omit<ComponentProps<typeof SvgIcon>, 'svg' | 'title'>) {
-  return <SvgIcon {...props} svg={svg} title="Tokelau" />
-}
+export const FlagTokelau = forwardRef<HTMLSpanElement, FlagProps>(function FlagTokelau(props, ref) {
+  return <SvgIcon title="Tokelau" {...props} ref={ref} svg={svg} />
+})
+
+FlagTokelau.displayName = 'FlagTokelau'

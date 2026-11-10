@@ -228,22 +228,24 @@ const handleAction = async () => {
 
 ## 🔧 Props Reference
 
-| Prop                   | Type             | Default | Notes                                         |
-| ---------------------- | ---------------- | ------- | --------------------------------------------- |
-| `children`             | ReactNode        | -       | Modal content                                 |
-| `open`                 | boolean          | -       | Controlled open state                         |
-| `onOpenChange`         | (open) => void   | -       | Fires on open / close                         |
-| `size`                 | ModalSize        | -       | 'small' \| 'medium' \| 'large' \| 'fullWidth' |
-| `width`                | number \| string | -       | 500 → '500px', '80vw' → as-is                 |
-| `maxHeight`            | number \| string | -       | Limits modal height                           |
-| `closeOnBackdropClick` | boolean          | true    | Allow dismissing via backdrop                 |
-| `className`            | string           | -       | Custom root class                             |
-| `panelClassName`       | string           | -       | Custom modal panel class                      |
-| `zIndex`               | number           | -       | Z-index override                              |
-| `style`                | CSSProperties    | -       | Inline styles for root                        |
-| `ariaLabel`            | string           | -       | A11y label (fallback if no title)             |
-| `animation`            | ModalAnimation   | 'scale' | 'scale' \| 'slide' \| 'fade' \| 'none'        |
-| `animationDuration`    | number           | 280     | Milliseconds                                  |
+| Prop                   | Type                      | Default  | Notes                                                                 |
+| ---------------------- | ------------------------- | -------- | --------------------------------------------------------------------- |
+| `children`             | ReactNode                 | -        | Modal content                                                         |
+| `open`                 | boolean                   | -        | Controlled open state                                                 |
+| `onOpenChange`         | (open) => void            | -        | Fires on open / close                                                 |
+| `size`                 | ModalSize                 | -        | 'small' \| 'medium' \| 'large' \| 'fullWidth'                         |
+| `width`                | number \| string          | -        | 500 → '500px', '80vw' → as-is                                         |
+| `maxHeight`            | number \| string          | -        | Limits modal height                                                   |
+| `closeOnBackdropClick` | boolean                   | true     | Allow dismissing via backdrop                                         |
+| `className`            | string                    | -        | Custom root class                                                     |
+| `panelClassName`       | string                    | -        | Custom modal panel class                                              |
+| `zIndex`               | number                    | -        | Z-index override                                                      |
+| `style`                | CSSProperties             | -        | Inline styles for root                                                |
+| `ariaLabel`            | string                    | -        | A11y label (fallback if no title)                                     |
+| `animation`            | ModalAnimation            | 'scale'  | 'scale' \| 'slide' \| 'fade' \| 'none'                                |
+| `animationDuration`    | number                    | 280      | Milliseconds                                                          |
+| `role`                 | 'dialog' \| 'alertdialog' | 'dialog' | `alertdialog` for urgent confirmations (ConfirmModal `isDestructive`) |
+| `initialFocus`         | number \| ref             | -        | Element focused on open (FloatingFocusManager)                        |
 
 ## 🎨 Styling
 
@@ -403,6 +405,8 @@ type ModalProps = {
   size?: ModalSize // 'small' | 'medium' | 'large' | 'fullWidth'
   animation?: ModalAnimation // 'scale' | 'slide' | 'fade' | 'none'
   animationDuration?: number
+  role?: 'dialog' | 'alertdialog'
+  initialFocus?: number | MutableRefObject<HTMLElement | null>
 }
 ```
 

@@ -11,6 +11,7 @@ export const AVATAR_COLOR_OPTIONS = avatarContract.attributes.color
 
 export interface AvatarProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'children'> {
   src?: string | null
+  /** Доступное имя (имя человека). Для фото — `alt` у `<img>`, для инициалов/иконки — `aria-label` корня. Пусто — декоративный. */
   alt?: string
   text?: ReactNode
   icon?: ReactNode

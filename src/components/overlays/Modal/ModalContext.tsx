@@ -1,14 +1,12 @@
-import { createContext, useContext } from 'react'
+import { useDialogContext, DialogContext, type DialogContextValue } from './dialog/DialogContext'
 
-export type ModalContextValue = {
-  titleId: string
-  onClose: () => void
-}
+export type ModalContextValue = DialogContextValue
 
-export const ModalContext = createContext<ModalContextValue | null>(null)
+/** Контекст модалки — общий с Drawer (`DialogContext`), чтобы шапки и статус-блоки работали в обоих. */
+export const ModalContext = DialogContext
 
 export function useModalContext() {
-  const ctx = useContext(ModalContext)
+  const ctx = useDialogContext()
   if (!ctx) {
     throw new Error(
       'Компоненты ModalHeader и связанные с модалкой должны рендериться внутри Modal.'

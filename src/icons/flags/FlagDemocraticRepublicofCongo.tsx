@@ -1,11 +1,13 @@
-import type { ComponentProps } from 'react'
-import { SvgIcon } from '../SvgIcon'
+import { forwardRef } from 'react'
+import { SvgIcon, type FlagProps } from '../SvgIcon'
 
 const svg =
   '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n<g clip-path="url(#clip0_253_4785)">\n<path d="M22.6675 6.49763C22.113 5.4233 21.3862 4.41493 20.4857 3.51436C19.5851 2.61375 18.5766 1.88696 17.5024 1.33252L9.0485 9.04843L1.33255 17.5023C1.88703 18.5766 2.61383 19.585 3.51439 20.4856C4.41496 21.3862 5.42338 22.113 6.49766 22.6674L14.9515 14.9515L22.6675 6.49763Z" fill="#FFDA44"/>\n<path d="M3.5144 20.4857C4.01779 20.9891 4.55493 21.438 5.11832 21.8333L21.8332 5.11835C21.438 4.55496 20.989 4.01782 20.4856 3.51443C19.9822 3.01104 19.4451 2.56212 18.8817 2.16687L2.16684 18.8817C2.56204 19.445 3.01096 19.9823 3.5144 20.4857Z" fill="#D80027"/>\n<path d="M3.51441 3.51431C-0.271541 7.30026 -0.998338 12.9861 1.33257 17.5023L17.5024 1.33251C12.9862 -0.998347 7.30032 -0.271457 3.51441 3.51431Z" fill="#338AF3"/>\n<path d="M20.4856 20.4857C24.2715 16.6998 24.9983 11.0139 22.6675 6.49774L6.49771 22.6675C11.0139 24.9984 16.6998 24.2716 20.4856 20.4857Z" fill="#338AF3"/>\n<path d="M6.39498 3.65179L7.04251 5.64478H9.13801L7.44273 6.87647L8.09026 8.8694L6.39498 7.63767L4.69961 8.8694L5.34723 6.87647L3.65186 5.64478H5.74736L6.39498 3.65179Z" fill="#FFDA44"/>\n</g>\n<defs>\n<clipPath id="clip0_253_4785">\n<rect width="24" height="24" fill="white"/>\n</clipPath>\n</defs>\n</svg>\n'
 
-export function FlagDemocraticRepublicofCongo(
-  props: Omit<ComponentProps<typeof SvgIcon>, 'svg' | 'title'>
-) {
-  return <SvgIcon {...props} svg={svg} title="Democratic Republic of Congo" />
-}
+export const FlagDemocraticRepublicofCongo = forwardRef<HTMLSpanElement, FlagProps>(
+  function FlagDemocraticRepublicofCongo(props, ref) {
+    return <SvgIcon title="Democratic Republic of Congo" {...props} ref={ref} svg={svg} />
+  }
+)
+
+FlagDemocraticRepublicofCongo.displayName = 'FlagDemocraticRepublicofCongo'

@@ -10,6 +10,8 @@ interface CalendarBaseProps {
   /** Return true for dates that should show a dot */
   getDotDays?: (date: Date) => boolean
   locale?: CalendarLocale
+  /** Сфокусировать день (выбранный, иначе сегодня) при монтировании — для попапов. */
+  autoFocus?: boolean
   className?: string
 }
 

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { forwardRef, useCallback, useId, useState } from 'react'
 import clsx from 'clsx'
 import { RiArrowLeftSLine } from '@remixicon/react'
 import { contractAttrs, contractPart } from '@/theme/contract'
@@ -94,48 +94,58 @@ export function SidebarTrigger({
   )
 }
 
-/** Корневой контейнер сайдбара: layout (колонка, ширина, высота, бордер). */
-export function Sidebar({ collapsed: propCollapsed, className, children, ...props }: SidebarProps) {
-  const { collapsed } = useSidebar(propCollapsed)
-  return (
-    <aside
-      className={clsx(sidebarContract.className, className)}
-      data-collapsed={collapsed}
-      {...props}
-    >
-      {children}
-    </aside>
-  )
-}
+/** Корневой контейнер сайдбара (`<aside>`): layout (колонка, ширина, высота, бордер). */
+export const Sidebar = forwardRef<HTMLElement, SidebarProps>(
+  ({ collapsed: propCollapsed, className, children, ...props }, ref) => {
+    const { collapsed } = useSidebar(propCollapsed)
+    return (
+      <aside
+        ref={ref}
+        className={clsx(sidebarContract.className, className)}
+        data-collapsed={collapsed}
+        {...props}
+      >
+        {children}
+      </aside>
+    )
+  }
+)
 
-/** Прокручиваемая область для навигации (между header и footer). */
-export function SidebarContent({ className, children, ...props }: SidebarContentProps) {
-  return (
-    <div className={clsx(sidebarContentContract.className, className)} {...props}>
+/**
+ * Прокручиваемая область навигации (между header и footer) — landmark `<nav>`.
+ * Имя landmark задаётся через `aria-label` / `aria-labelledby`, если навигаций на странице несколько.
+ */
+export const SidebarContent = forwardRef<HTMLElement, SidebarContentProps>(
+  ({ className, children, ...props }, ref) => (
+    <nav ref={ref} className={clsx(sidebarContentContract.className, className)} {...props}>
       {children}
-    </div>
+    </nav>
   )
-}
+)
 
-/** Секция навигации с опциональным заголовком. */
-export function SidebarSection({
-  label,
-  collapsed: _collapsed,
-  className,
-  children,
-  ...props
-}: SidebarSectionProps) {
-  return (
-    <div className={clsx(sidebarSectionContract.className, className)} {...props}>
-      {label != null && (
-        <div className={contractPart(sidebarSectionContract, 'label')} aria-hidden>
-          {label}
-        </div>
-      )}
-      <div className={contractPart(sidebarSectionContract, 'items')}>{children}</div>
-    </div>
-  )
-}
+/** Секция навигации с опциональным заголовком: `role="group"`, имя группы — её заголовок. */
+export const SidebarSection = forwardRef<HTMLDivElement, SidebarSectionProps>(
+  ({ label, collapsed: _collapsed, className, children, ...props }, ref) => {
+    const labelId = useId()
+    const hasLabel = label != null
+    return (
+      <div
+        ref={ref}
+        role={hasLabel ? 'group' : undefined}
+        aria-labelledby={hasLabel ? labelId : undefined}
+        className={clsx(sidebarSectionContract.className, className)}
+        {...props}
+      >
+        {hasLabel && (
+          <div id={labelId} className={contractPart(sidebarSectionContract, 'label')}>
+            {label}
+          </div>
+        )}
+        <div className={contractPart(sidebarSectionContract, 'items')}>{children}</div>
+      </div>
+    )
+  }
+)
 
 SidebarLayout.displayName = 'SidebarLayout'
 SidebarMain.displayName = 'SidebarMain'

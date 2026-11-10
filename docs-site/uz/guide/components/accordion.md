@@ -44,6 +44,7 @@ export function FaqBlock() {
 | `disabled`     | `boolean`                 | Yoyishni o‘chirish                                                                        |
 | `leftIcon`     | `ReactNode`               | Sarlavha chapidagi ikonka (`flipIcon === false` da)                                       |
 | `flipIcon`     | `boolean`                 | `true` — «plus/minus» chapda; `false` — o‘ngda (`leftIcon` bo‘lsa tartib dizayn bo‘yicha) |
+| `region`       | `boolean`                 | Panelga sarlavha nomi bilan `role="region"` (standart — o‘chiq)                           |
 
 To‘liq tip — paket manbasidagi **`AccordionProps`**.
 

@@ -1,9 +1,13 @@
-import type { ComponentProps } from 'react'
-import { SvgIcon } from '../SvgIcon'
+import { forwardRef } from 'react'
+import { SvgIcon, type FlagProps } from '../SvgIcon'
 
 const svg =
   '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n<g clip-path="url(#clip0_253_6758)">\n<path d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24Z" fill="#F0F0F0"/>\n<path d="M12 24C16.7574 24 20.8682 21.2314 22.8092 17.2174H1.19067C3.13167 21.2314 7.24242 24 12 24Z" fill="#338AF3"/>\n<path d="M12 0C7.24242 0 3.13167 2.76867 1.19067 6.78263H22.8092C20.8682 2.76867 16.7574 0 12 0Z" fill="#338AF3"/>\n<path d="M7.38492 7.82605L7.77342 9.02178H9.03065L8.01356 9.76072L8.4021 10.9565L7.38492 10.2175L6.36773 10.9565L6.75628 9.76072L5.73914 9.02178H6.99637L7.38492 7.82605Z" fill="#338AF3"/>\n<path d="M7.38492 13.0435L7.77342 14.2392H9.03065L8.01356 14.9782L8.4021 16.1739L7.38492 15.4349L6.36773 16.1739L6.75628 14.9782L5.73914 14.2392H6.99637L7.38492 13.0435Z" fill="#338AF3"/>\n<path d="M16.615 7.82605L17.0036 9.02178H18.2608L17.2437 9.76072L17.6322 10.9565L16.615 10.2175L15.5978 10.9565L15.9864 9.76072L14.9692 9.02178H16.2265L16.615 7.82605Z" fill="#338AF3"/>\n<path d="M16.615 13.0435L17.0036 14.2392H18.2608L17.2437 14.9782L17.6322 16.1739L16.615 15.4349L15.5978 16.1739L15.9864 14.9782L14.9692 14.2392H16.2265L16.615 13.0435Z" fill="#338AF3"/>\n<path d="M11.9999 10.4348L12.3885 11.6306H13.6457L12.6285 12.3695L13.0171 13.5652L11.9999 12.8262L10.9827 13.5652L11.3713 12.3695L10.3541 11.6306H11.6114L11.9999 10.4348Z" fill="#338AF3"/>\n</g>\n<defs>\n<clipPath id="clip0_253_6758">\n<rect width="24" height="24" fill="white"/>\n</clipPath>\n</defs>\n</svg>\n'
 
-export function FlagHonduras(props: Omit<ComponentProps<typeof SvgIcon>, 'svg' | 'title'>) {
-  return <SvgIcon {...props} svg={svg} title="Honduras" />
-}
+export const FlagHonduras = forwardRef<HTMLSpanElement, FlagProps>(
+  function FlagHonduras(props, ref) {
+    return <SvgIcon title="Honduras" {...props} ref={ref} svg={svg} />
+  }
+)
+
+FlagHonduras.displayName = 'FlagHonduras'

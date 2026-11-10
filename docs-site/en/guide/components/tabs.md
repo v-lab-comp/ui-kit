@@ -60,14 +60,23 @@ export function ControlledTabs() {
 
 ### `Tabs` (root)
 
-| Prop           | Type                      | Description                                                  |
-| -------------- | ------------------------- | ------------------------------------------------------------ |
-| `children`     | `ReactNode`               | **`Tabs.Tab`** and **`Tabs.Panel`** in any order in the tree |
-| `defaultValue` | `string`                  | Active tab when uncontrolled                                 |
-| `value`        | `string`                  | Active tab when controlled                                   |
-| `onChange`     | `(value: string) => void` | Tab change (with **`value`** — controlled)                   |
+| Prop                             | Type                      | Description                                                               |
+| -------------------------------- | ------------------------- | ------------------------------------------------------------------------- |
+| `children`                       | `ReactNode`               | **`Tabs.Tab`** and **`Tabs.Panel`** in any order in the tree              |
+| `defaultValue`                   | `string`                  | Active tab when uncontrolled                                              |
+| `value`                          | `string`                  | Active tab when controlled                                                |
+| `onChange`                       | `(value: string) => void` | Controlled when **`value`** is passed; receive changes via **`onChange`** |
+| `aria-label` / `aria-labelledby` | `string`                  | Tab list name when **`Tabs.List`** is not used                            |
 
 Type — **`TabsProps`**.
+
+### `Tabs.List`
+
+Optional tab wrapper (`role="tablist"`): takes `aria-label` / `aria-labelledby`, `className`, `ref` and other `div` props. Tabs inside may be wrapped in your own components. Without **`Tabs.List`** every root child except **`Tabs.Panel`** goes into the list automatically.
+
+Keyboard (WAI-ARIA APG): only the active tab is in the Tab order; ←/→, Home/End move focus and activate the tab. `Tabs.Tab` and `Tabs.Panel` take `ref`, `className` and other HTML props.
+
+Type — **`TabsListProps`**.
 
 ### `Tabs.Tab`
 

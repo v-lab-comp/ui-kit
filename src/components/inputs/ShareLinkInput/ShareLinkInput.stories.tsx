@@ -45,7 +45,7 @@ const meta: Meta<typeof ShareLinkInput> = {
     suffix: { table: { disable: true } },
     endBlock: { table: { disable: true } },
     labelTooltip: { table: { disable: true } },
-    onCopy: { table: { disable: true } },
+    onCopied: { table: { disable: true } },
   },
 }
 
@@ -61,7 +61,7 @@ export const Playground: Story = {
         {...args}
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        onCopy={fn()}
+        onCopied={fn()}
       />
     )
   },

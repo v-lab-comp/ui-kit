@@ -143,7 +143,7 @@
     letter-spacing: 0;
   }
 
-  .vl-comments-section__menu-item:hover,
+  .vl-comments-section__menu-item[data-active],
   .vl-comments-section__menu-item:focus-visible {
     background: var(--primary-base);
     color: var(--static-white);
@@ -153,14 +153,14 @@
     color: var(--error-dark);
   }
 
-  :where(.vl-comments-section__menu-item)[data-danger]:hover,
+  :where(.vl-comments-section__menu-item)[data-danger][data-active],
   :where(.vl-comments-section__menu-item)[data-danger]:focus-visible {
     background: var(--error-base);
     color: var(--static-white);
   }
 
-  /* RPG-курсор ▶ на подсвеченном пункте */
-  .vl-comments-section__menu-item:hover::before,
+  /* RPG-курсор ▶ на подсвеченном пункте (data-active — мышь и стрелки) */
+  .vl-comments-section__menu-item[data-active]::before,
   .vl-comments-section__menu-item:focus-visible::before {
     content: '';
     position: absolute;

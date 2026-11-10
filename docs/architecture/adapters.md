@@ -18,23 +18,31 @@ src/adapters/rhf/
 Все адаптеры строятся через единую фабрику `createRHFAdapter`. Она принимает:
 
 1. **компонент** (`TextInput`, `CheckboxField`, …),
-2. **маппер** `(field, fieldState) => Partial<Props>` — превращает `field` и `fieldState` из RHF в пропы компонента,
+2. **маппер** `(field, fieldState) => Partial<Props> & { ref? }` — **полностью** решает, какие ключи `field` попадут в компонент (фабрика `field` сама не раскладывает),
 3. **`displayName`** для React DevTools.
+
+Второй type-параметр фабрики — ключи, которые выставляет маппер и которые нельзя передать снаружи. Публичный тип пропсов выводится из того же `RHFAdapterProps`, что использует фабрика, — разойтись они не могут.
 
 Эталонный пример — `RHFTextInput`:
 
 ```tsx
-import type { FieldValues, UseControllerProps } from 'react-hook-form'
+import type { FieldValues } from 'react-hook-form'
 import { TextInput } from '@/components/inputs/TextInput'
 import type { TextInputProps } from '@/components/inputs/TextInput'
-import { createRHFAdapter } from './createRHFAdapter'
+import { createRHFAdapter, type RHFAdapterProps } from './createRHFAdapter'
 
-export type RHFTextInputProps<T extends FieldValues> = UseControllerProps<T> &
-  Omit<TextInputProps, 'value' | 'defaultValue' | 'name'>
+type Controlled = 'defaultValue'
 
-export const RHFTextInput = createRHFAdapter<TextInputProps>(
+export type RHFTextInputProps<T extends FieldValues> = RHFAdapterProps<
+  TextInputProps,
+  T,
+  Controlled
+>
+
+export const RHFTextInput = createRHFAdapter<TextInputProps, Controlled>(
   TextInput,
   (field, fieldState) => ({
+    ...field,
     value: field.value ?? '',
     error: fieldState.error?.message,
   }),
@@ -44,15 +52,20 @@ export const RHFTextInput = createRHFAdapter<TextInputProps>(
 
 Что обязательно делает маппер:
 
-- **Передаёт `value` со значением по умолчанию (`?? ''` для строк, `?? false` для чекбоксов).** RHF может вернуть `undefined`, а контролируемый input не должен переходить в uncontrolled.
+- **Передаёт `value` со значением по умолчанию (`?? ''` для строк).** RHF может вернуть `undefined`, а контролируемый input не должен переходить в uncontrolled.
 - **Прокидывает `error` из `fieldState.error?.message`**. Никаких ручных проверок `formState.errors[name]`.
-- Не прокидывает `onChange` и `name` явно — это делает обёртка внутри `createRHFAdapter` через spread `field`.
+- Прокидывает `name`, `ref`, `onChange`, `onBlur` из `field` (для текстовых полей проще всего `...field`).
 
-Для чекбоксов маппер другой — вместо `value` используется `checked`:
+Для чекбоксов маппер другой — `value` из `field` **не передаётся** (у `<input type="checkbox">` это отправляемое значение, а не состояние), вместо него `checked`:
 
 ```tsx
-;(field, fieldState) => ({
-  checked: !!field.value,
+;({ name, ref, onChange, onBlur, disabled, value }, fieldState) => ({
+  name,
+  ref,
+  onChange,
+  onBlur,
+  ...(disabled !== undefined && { disabled }),
+  checked: !!value,
   error: fieldState.error?.message,
 })
 ```

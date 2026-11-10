@@ -49,14 +49,15 @@ Base — **[InputField](./input-field)** and masked input with calendar. Import 
 
 ### Value and format
 
-| Prop              | Description                                                                                                                           |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| **`value`**       | Controlled value: with **`valueFormat: 'iso'`** — **`YYYY-MM-DD`** or **`''`**; the visible mask stays **DD / MM / YYYY**             |
-| **`valueFormat`** | **`masked`** (default) — **`onChange`** matches mask string; **`iso`** — **`YYYY-MM-DD`** in **`onChange`** / **`onAccept`** for APIs |
-| **`onChange`**    | Native change event; meaning of **`target.value`** depends on **`valueFormat`**                                                       |
-| **`onAccept`**    | Fires when the mask accepts a full value or a date is picked in the calendar                                                          |
-| **`locale`**      | **`CalendarLocale`** for the calendar                                                                                                 |
-| **`getDotDays`**  | **`(date: Date) => boolean`** — dot markers on days                                                                                   |
+| Prop                      | Description                                                                                                                                                                                                                             |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`value`**               | Controlled value: with **`valueFormat: 'iso'`** — **`YYYY-MM-DD`** or **`''`**; the visible mask stays **DD / MM / YYYY**                                                                                                               |
+| **`valueFormat`**         | **`masked`** (default) — **`onChange`** matches mask string; **`iso`** — **`YYYY-MM-DD`** in **`onChange`** / **`onAccept`** for APIs                                                                                                   |
+| **`onChange`**            | Native change event; meaning of **`target.value`** depends on **`valueFormat`**                                                                                                                                                         |
+| **`onAccept`**            | Fires when the mask accepts a full value or a date is picked in the calendar                                                                                                                                                            |
+| **`locale`**              | **`CalendarLocale`** for the calendar                                                                                                                                                                                                   |
+| **`getDotDays`**          | **`(date: Date) => boolean`** — dot markers on days                                                                                                                                                                                     |
+| **`calendarButtonLabel`** | Accessible name of the calendar button (and of the dialog when there is no **`label`**); defaults to the field label. The button and **Alt+↓** in the field open the dialog with focus on a day; **Escape** closes it and returns focus |
 
 Plus **InputField** props and attributes from the type.
 

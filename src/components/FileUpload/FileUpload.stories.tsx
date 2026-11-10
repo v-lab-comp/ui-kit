@@ -27,7 +27,7 @@ export const Playground: Story = {
   render: function Render(args) {
     const [files, setFiles] = useState<UploadFile[]>([])
 
-    return <FileUploadField {...args} initialFiles={files} onFilesChange={setFiles} />
+    return <FileUploadField {...args} files={files} onFilesChange={setFiles} />
   },
   args: {
     label: 'Загрузить документы',

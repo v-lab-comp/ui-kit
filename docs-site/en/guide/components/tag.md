@@ -67,7 +67,7 @@ export function TagsRow() {
 | `suffix`       | `ReactNode`                               | Trailing node, before dismiss                                                                                     |
 | `onClick`      | `MouseEventHandler`                       | Makes the tag clickable                                                                                           |
 | `onDismiss`    | `() => void`                              | Shows dismiss button                                                                                              |
-| `dismissLabel` | `string`                                  | Dismiss **`aria-label`** (default **`'Remove'`**)                                                                 |
+| `dismissLabel` | `string`                                  | Dismiss name prefix: name = `dismissLabel` + tag text (default **`'Remove'`** → “Remove Design”)                  |
 | `disabled`     | `boolean`                                 | Disabled state                                                                                                    |
 
 Plus **`HTMLAttributes<HTMLSpanElement>`**, except **`children`**, **`prefix`**, and **`suffix`**.

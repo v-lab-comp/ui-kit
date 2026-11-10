@@ -1,24 +1,17 @@
+import { forwardRef } from 'react'
 import clsx from 'clsx'
 import { Avatar } from '@/components/Avatar'
 import { contractAttrs, contractPart } from '@/theme/contract'
 import { avatarCardContract } from '@/theme/contracts/avatar-card'
 import type { AvatarCardProps } from './AvatarCard.types'
 
-export function AvatarCard({
-  src,
-  alt,
-  text,
-  icon,
-  color,
-  title,
-  subtitle,
-  rightSlot,
-  avatarSize = 64,
-  className,
-  ...props
-}: AvatarCardProps) {
+export const AvatarCard = forwardRef<HTMLDivElement, AvatarCardProps>(function AvatarCard(
+  { src, alt, text, icon, color, title, subtitle, rightSlot, avatarSize = 64, className, ...props },
+  ref
+) {
   return (
     <div
+      ref={ref}
       className={clsx(avatarCardContract.className, className)}
       {...contractAttrs(avatarCardContract, {
         'avatar-size': String(avatarSize) as `${typeof avatarSize}`,
@@ -28,7 +21,8 @@ export function AvatarCard({
       <Avatar
         size={avatarSize}
         src={src}
-        alt={alt ?? (typeof title === 'string' ? title : '')}
+        // По умолчанию аватар декоративный: имя уже есть в видимом title рядом
+        alt={alt ?? ''}
         text={text}
         icon={icon}
         color={color}
@@ -42,6 +36,6 @@ export function AvatarCard({
       {rightSlot && <div className={contractPart(avatarCardContract, 'right')}>{rightSlot}</div>}
     </div>
   )
-}
+})
 
 AvatarCard.displayName = 'AvatarCard'

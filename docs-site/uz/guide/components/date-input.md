@@ -45,6 +45,6 @@ export function BirthDateField() {
 
 ## Asosiy proplar
 
-To‘liq tip — **`DateInputProps`**: **`InputField`** + maska/taqvim; **`valueFormat`** `'masked'` \| `'iso'`; **`onAccept`**; **`locale`**, **`getDotDays`**, … Qarang **`DateInput.types.ts`** JSDoc.
+To‘liq tip — **`DateInputProps`**: **`InputField`** + maska/taqvim; **`valueFormat`** `'masked'` \| `'iso'`; **`onAccept`**; **`locale`**, **`getDotDays`**, **`calendarButtonLabel`** (taqvim tugmasi va dialogning nomi; sukut bo‘yicha — maydon **`label`**i), … Qarang **`DateInput.types.ts`** JSDoc.
 
 Manbalar: `src/components/inputs/DateInput/`.

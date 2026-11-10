@@ -77,19 +77,19 @@ SidebarLayout                      ← collapsed kontekst provayderi + flex o‘
 
 ### Saydbar komponentlari
 
-| Komponent                    | Vazifasi                                                                                                                 |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| **`SidebarLayout`**          | **`SidebarContext`** provayderi (**collapsed**, **toggle**) va **`Sidebar`** + **`SidebarMain`** uchun flex o‘rama.      |
-| **`Sidebar`**                | Ustun ildizi: yoyilgan / yig‘ilgan kenglik, **`collapsed`**.                                                             |
-| **`SidebarHeader`**          | Saydbar sarlavhasi; ichida **`SidebarHeaderCard`**; ixtiyoriy **`divider`**, **`trigger`** sloti (**`SidebarTrigger`**). |
-| **`SidebarHeaderCard`**      | Brend / sarlavha kartochkasi (**`SidebarHeader`** ichida; maxsus razmetkada alohida).                                    |
-| **`SidebarContent`**         | Sarlavha va pastki qism o‘rtasidagi skroll qismi.                                                                        |
-| **`SidebarSection`**         | **`label`** bilan punktlar guruhi.                                                                                       |
-| **`SidebarItem`**            | Menyu punkti: **`leftNode`** (ikonka), **`active`**, **`collapsed`**.                                                    |
-| **`SidebarTrigger`**         | Yig‘ish tugmasi; **`SidebarLayout`** bo‘lmasa **`onToggle`** va **`collapsed`** bering.                                  |
-| **`SidebarFooter`**          | **`SidebarUserProfileCard`** bilan pastki qism (avatar, ism, email).                                                     |
-| **`SidebarUserProfileCard`** | Profil kartochkasi (**`SidebarFooter`** yoki alohida).                                                                   |
-| **`SidebarCard`**            | Ustun ichidagi umumiy kartochka.                                                                                         |
+| Komponent                    | Vazifasi                                                                                                                                                                                                                                                               |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`SidebarLayout`**          | **`SidebarContext`** provayderi (**collapsed**, **toggle**) va **`Sidebar`** + **`SidebarMain`** uchun flex o‘rama.                                                                                                                                                    |
+| **`Sidebar`**                | Ustun ildizi: yoyilgan / yig‘ilgan kenglik, **`collapsed`**.                                                                                                                                                                                                           |
+| **`SidebarHeader`**          | Saydbar sarlavhasi; ichida **`SidebarHeaderCard`**; ixtiyoriy **`divider`**, **`trigger`** sloti (**`SidebarTrigger`**).                                                                                                                                               |
+| **`SidebarHeaderCard`**      | Brend / sarlavha kartochkasi (**`SidebarHeader`** ichida; maxsus razmetkada alohida). **`options`** bilan — menyu tugmasi (WAI-ARIA APG): ↑/↓/Home/End, harf bo‘yicha qidiruv, Escape; punktlar — **`menuitemradio`**.                                                 |
+| **`SidebarContent`**         | Sarlavha va pastki qism o‘rtasidagi skroll qismi. **`<nav>`** sifatida chiziladi (landmark); bir nechta navigatsiya bo‘lsa — **`aria-label`**.                                                                                                                         |
+| **`SidebarSection`**         | **`label`** bilan punktlar guruhi.                                                                                                                                                                                                                                     |
+| **`SidebarItem`**            | Menyu punkti: **`leftNode`** (ikonka), **`active`**, **`collapsed`**. **`href`** bilan — **`<a>`** havola, aks holda **`<button>`**. **`collapsed`** holatda punkt matni uning nomi bo‘lib qoladi. **`label`** li **`SidebarSection`** — shu nomli **`role="group"`**. |
+| **`SidebarTrigger`**         | Yig‘ish tugmasi; **`SidebarLayout`** bo‘lmasa **`onToggle`** va **`collapsed`** bering.                                                                                                                                                                                |
+| **`SidebarFooter`**          | **`SidebarUserProfileCard`** bilan pastki qism (avatar, ism, email).                                                                                                                                                                                                   |
+| **`SidebarUserProfileCard`** | Profil kartochkasi (**`SidebarFooter`** yoki alohida).                                                                                                                                                                                                                 |
+| **`SidebarCard`**            | Ustun ichidagi umumiy kartochka.                                                                                                                                                                                                                                       |
 
 ### Asosiy zona va ildiz
 
@@ -97,7 +97,7 @@ SidebarLayout                      ← collapsed kontekst provayderi + flex o‘
 | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **`LayoutRoot`**          | Saydbarli sahifa ildizi: **`height`**, **`overflow`**, shunda **`SidebarInsetContent`** **`PageHeader`** ostidagi yagona skroll bo‘lsin.                                                  |
 | **`SidebarInset`**        | **`<main>`** tegi: **`insetLeft`** chapdan ustunni saydbar kengligicha suradi (**`collapsed`** ni hisobga oling).                                                                         |
-| **`SidebarInsetContent`** | **`PageHeader`** ostidagi **`overflow-y: auto`** maydoni.                                                                                                                                 |
+| **`SidebarInsetContent`** | **`PageHeader`** ostidagi **`overflow-y: auto`** maydoni. Klaviaturadan fokuslanadi (**`tabIndex={0}`**); **`aria-label`** bilan — **`role="region"`**.                                   |
 | **`PageHeader`**          | Asosiy ustunning yuqori yo‘lagi; **`children`** — har qanday razmetka. Storybook demo uchun **`PageHeaderDemoContent`**. Alohida sahifa — [PageHeader](/uz/guide/components/page-header). |
 | **`SidebarMain`**         | **`SidebarLayout`** bilan **`SidebarInset`** o‘rniga: chapdan chekinishli oddiy kontent bloki.                                                                                            |
 

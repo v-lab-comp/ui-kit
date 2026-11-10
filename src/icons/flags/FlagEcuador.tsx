@@ -1,9 +1,11 @@
-import type { ComponentProps } from 'react'
-import { SvgIcon } from '../SvgIcon'
+import { forwardRef } from 'react'
+import { SvgIcon, type FlagProps } from '../SvgIcon'
 
 const svg =
   '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n<g clip-path="url(#clip0_253_6586)">\n<path d="M0 12C0 5.37262 5.37262 0 12 0C18.6274 0 24 5.37262 24 12L12 13.0435L0 12Z" fill="#FFDA44"/>\n<path d="M1.60571 18C3.68063 21.5867 7.55832 24 12 24C16.4416 24 20.3193 21.5867 22.3942 18L12 17.2174L1.60571 18Z" fill="#D80027"/>\n<path d="M22.3942 18C23.4153 16.235 24 14.1858 24 12H0C0 14.1858 0.584719 16.235 1.60575 18H22.3942Z" fill="#0052B4"/>\n<path d="M11.9999 16.1738C14.3051 16.1738 16.1738 14.3051 16.1738 11.9999C16.1738 9.69476 14.3051 7.82605 11.9999 7.82605C9.69476 7.82605 7.82605 9.69476 7.82605 11.9999C7.82605 14.3051 9.69476 16.1738 11.9999 16.1738Z" fill="#FFDA44"/>\n<path d="M12 14.6086C10.5616 14.6086 9.39136 13.4383 9.39136 11.9999V10.4347C9.39136 8.99628 10.5616 7.82605 12 7.82605C13.4385 7.82605 14.6087 8.99633 14.6087 10.4347V11.9999C14.6087 13.4384 13.4385 14.6086 12 14.6086Z" fill="#338AF3"/>\n<path d="M16.1739 5.73916H13.0435C13.0435 5.16288 12.5763 4.69568 12 4.69568C11.4237 4.69568 10.9565 5.16288 10.9565 5.73916H7.82605C7.82605 6.31549 8.32803 6.78265 8.90427 6.78265H8.86953C8.86953 7.35898 9.33669 7.82613 9.91302 7.82613C9.91302 8.40246 10.3802 8.86962 10.9565 8.86962H13.0435C13.6198 8.86962 14.087 8.40246 14.087 7.82613C14.6633 7.82613 15.1304 7.35898 15.1304 6.78265H15.0957C15.672 6.78265 16.1739 6.31544 16.1739 5.73916Z" fill="black"/>\n</g>\n<defs>\n<clipPath id="clip0_253_6586">\n<rect width="24" height="24" fill="white"/>\n</clipPath>\n</defs>\n</svg>\n'
 
-export function FlagEcuador(props: Omit<ComponentProps<typeof SvgIcon>, 'svg' | 'title'>) {
-  return <SvgIcon {...props} svg={svg} title="Ecuador" />
-}
+export const FlagEcuador = forwardRef<HTMLSpanElement, FlagProps>(function FlagEcuador(props, ref) {
+  return <SvgIcon title="Ecuador" {...props} ref={ref} svg={svg} />
+})
+
+FlagEcuador.displayName = 'FlagEcuador'

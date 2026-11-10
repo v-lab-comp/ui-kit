@@ -1,4 +1,12 @@
-import { useEffect, useRef, useState, type DragEvent, type ChangeEvent } from 'react'
+import {
+  forwardRef,
+  useId,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type DragEvent,
+  type KeyboardEvent,
+} from 'react'
 import clsx from 'clsx'
 import {
   RiUploadCloud2Line,
@@ -11,12 +19,14 @@ import {
 } from '@remixicon/react'
 import { contractAttrs, contractPart, type ContractValue } from '@/theme/contract'
 import { fileUploadContract } from '@/theme/contracts/file-upload'
+import { downloadFile } from '@/utils/downloadFile'
+import { useControllableState } from '@/utils/useControllableState'
 
 /* ─── File icon (PDF / DOC / etc.) ─── */
 
 function FileIcon({ ext = 'PDF' }: { ext?: string }) {
   return (
-    <div className={contractPart(fileUploadContract, 'file-icon')}>
+    <div className={contractPart(fileUploadContract, 'file-icon')} aria-hidden="true">
       <RiFileLine size={40} color="var(--stroke-soft-200)" />
       <span className={contractPart(fileUploadContract, 'file-icon-ext')}>{ext}</span>
     </div>
@@ -41,9 +51,9 @@ export interface FileUploadTexts {
   done?: string
   /** Статус «ошибка». */
   error?: string
-  /** `title` кнопки скачивания. */
+  /** `title` кнопки скачивания (и начало её доступного имени, за ним — имя файла). */
   download?: string
-  /** `aria-label` кнопки удаления. */
+  /** `aria-label` кнопки удаления (к нему добавляется имя файла). */
   remove?: string
   /** Разделитель в «0 KB of 50 MB». */
   ofLabel?: string
@@ -108,116 +118,153 @@ export function uploadFilesToNativeFiles(files: UploadFile[]): File[] {
 
 export type FileUploadFilesChangeHandler = (uploadFiles: UploadFile[], nativeFiles: File[]) => void
 
-function notifyFilesChange(
-  onFilesChange: FileUploadFilesChangeHandler | undefined,
-  uploadFiles: UploadFile[]
-) {
-  onFilesChange?.(uploadFiles, uploadFilesToNativeFiles(uploadFiles))
+function fileExt(file: Pick<UploadFile, 'ext' | 'name'>): string {
+  return file.ext ?? file.name.split('.').pop()?.toUpperCase() ?? 'FILE'
 }
 
-function filesSignature(files: UploadFile[]): string {
-  return files.map((f) => `${f.id}:${f.name}:${f.status}:${f.sizeLabel}`).join('|')
+function clampProgress(progress: number): number {
+  return Math.min(100, Math.max(0, Math.round(progress)))
 }
 
 /* ─── FileUploadItem ─── */
 
-interface FileUploadItemProps {
+export interface FileUploadItemProps {
   file: UploadFile
   onRemove?: (id: string) => void
   texts?: FileUploadTexts
 }
 
-export function FileUploadItem({ file, onRemove, texts }: FileUploadItemProps) {
-  const t = { ...DEFAULT_FILE_UPLOAD_TEXTS, ...texts }
-  const { id, name, sizeLabel, progress = 0, status, ext, url } = file
-
-  function handleDownload() {
-    const directUrl = typeof url === 'string' && url ? url : null
-    if (directUrl) {
-      const a = document.createElement('a')
-      a.href = directUrl
-      a.download = name
-      a.target = '_blank'
-      a.rel = 'noopener noreferrer'
-      a.click()
-      return
-    }
-
-    if (!file.file) return
-    const blobUrl = URL.createObjectURL(file.file)
-    const a = document.createElement('a')
-    a.href = blobUrl
-    a.download = name
-    a.click()
-    URL.revokeObjectURL(blobUrl)
+function FileUploadStatus({
+  status,
+  texts,
+}: {
+  status: UploadFileStatus
+  texts: Required<FileUploadTexts>
+}) {
+  if (status === 'uploading') {
+    return (
+      <>
+        <RiLoader4Line
+          size={16}
+          className={contractPart(fileUploadContract, 'spinning')}
+          aria-hidden="true"
+        />
+        <span>{texts.uploading}</span>
+      </>
+    )
   }
-
+  if (status === 'done') {
+    return (
+      <>
+        <RiCheckboxCircleFill
+          size={16}
+          color="var(--state-success-base, #1fc16b)"
+          aria-hidden="true"
+        />
+        <span>{texts.done}</span>
+      </>
+    )
+  }
   return (
-    <div className={contractPart(fileUploadContract, 'file-item')}>
-      <div className={contractPart(fileUploadContract, 'file-item-content')}>
-        <button
-          type="button"
-          className={contractPart(fileUploadContract, 'file-item-download-btn')}
-          onClick={handleDownload}
-          title={t.download}
-        >
-          <FileIcon ext={ext ?? name.split('.').pop()?.toUpperCase() ?? 'FILE'} />
-          <div className={contractPart(fileUploadContract, 'file-item-text')}>
-            <span className={contractPart(fileUploadContract, 'file-item-name')}>{name}</span>
-            <div className={contractPart(fileUploadContract, 'file-item-meta')}>
-              <span className={contractPart(fileUploadContract, 'file-item-size')}>
-                {status === 'uploading' ? `0 KB ${t.ofLabel} ${sizeLabel}` : sizeLabel}
-              </span>
-              <span className={contractPart(fileUploadContract, 'file-item-dot')}>&middot;</span>
-              <span className={contractPart(fileUploadContract, 'file-item-status')}>
-                {status === 'uploading' && (
-                  <>
-                    <RiLoader4Line
-                      size={16}
-                      className={contractPart(fileUploadContract, 'spinning')}
-                    />
-                    <span>{t.uploading}</span>
-                  </>
-                )}
-                {status === 'done' && (
-                  <>
-                    <RiCheckboxCircleFill size={16} color="var(--state-success-base, #1fc16b)" />
-                    <span>{t.done}</span>
-                  </>
-                )}
-                {status === 'error' && (
-                  <>
-                    <RiCloseCircleFill size={16} color="var(--state-error-base, #fb3748)" />
-                    <span>{t.error}</span>
-                  </>
-                )}
-              </span>
-            </div>
-          </div>
-        </button>
-        <button
-          type="button"
-          className={contractPart(fileUploadContract, 'file-item-action')}
-          onClick={(e) => {
-            e.stopPropagation()
-            onRemove?.(id)
-          }}
-          aria-label={t.remove}
-        >
-          {status === 'uploading' ? <RiCloseLine size={20} /> : <RiDeleteBin6Line size={20} />}
-        </button>
-      </div>
-      {status === 'uploading' && (
-        <div className={contractPart(fileUploadContract, 'progress-track')}>
-          <div
-            className={contractPart(fileUploadContract, 'progress-fill')}
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-      )}
-    </div>
+    <>
+      <RiCloseCircleFill size={16} color="var(--state-error-base, #fb3748)" aria-hidden="true" />
+      <span>{texts.error}</span>
+    </>
   )
 }
+
+/**
+ * Строка файла. Кнопка скачивания и кнопка удаления называются с именем файла
+ * («Скачать файл report.pdf», «Удалить файл report.pdf»); прогресс — `role="progressbar"`
+ * с именем файла; смена статуса объявляется через `role="status"`.
+ */
+export const FileUploadItem = forwardRef<HTMLDivElement, FileUploadItemProps>(
+  function FileUploadItem({ file, onRemove, texts }, ref) {
+    const t = { ...DEFAULT_FILE_UPLOAD_TEXTS, ...texts }
+    const { id, name, sizeLabel, progress = 0, status, url } = file
+    const uid = useId()
+    const downloadId = `${uid}-download`
+    const removeId = `${uid}-remove`
+    const nameId = `${uid}-name`
+    const metaId = `${uid}-meta`
+
+    return (
+      <div ref={ref} className={contractPart(fileUploadContract, 'file-item')}>
+        <div className={contractPart(fileUploadContract, 'file-item-content')}>
+          <button
+            type="button"
+            id={downloadId}
+            className={contractPart(fileUploadContract, 'file-item-download-btn')}
+            onClick={() => downloadFile({ url, blob: file.file, fileName: name })}
+            title={t.download}
+            // Имя: «<download> <имя файла>»; размер и статус — описание
+            aria-label={t.download}
+            aria-labelledby={`${downloadId} ${nameId}`}
+            aria-describedby={metaId}
+          >
+            <FileIcon ext={fileExt(file)} />
+            <div className={contractPart(fileUploadContract, 'file-item-text')}>
+              <span id={nameId} className={contractPart(fileUploadContract, 'file-item-name')}>
+                {name}
+              </span>
+              <div id={metaId} className={contractPart(fileUploadContract, 'file-item-meta')}>
+                <span className={contractPart(fileUploadContract, 'file-item-size')}>
+                  {status === 'uploading' ? `0 KB ${t.ofLabel} ${sizeLabel}` : sizeLabel}
+                </span>
+                <span
+                  className={contractPart(fileUploadContract, 'file-item-dot')}
+                  aria-hidden="true"
+                >
+                  &middot;
+                </span>
+                <span
+                  role="status"
+                  className={contractPart(fileUploadContract, 'file-item-status')}
+                >
+                  <FileUploadStatus status={status} texts={t} />
+                </span>
+              </div>
+            </div>
+          </button>
+          <button
+            type="button"
+            id={removeId}
+            className={contractPart(fileUploadContract, 'file-item-action')}
+            onClick={(e) => {
+              e.stopPropagation()
+              onRemove?.(id)
+            }}
+            aria-label={t.remove}
+            aria-labelledby={`${removeId} ${nameId}`}
+          >
+            {status === 'uploading' ? (
+              <RiCloseLine size={20} aria-hidden="true" />
+            ) : (
+              <RiDeleteBin6Line size={20} aria-hidden="true" />
+            )}
+          </button>
+        </div>
+        {status === 'uploading' && (
+          <div
+            className={contractPart(fileUploadContract, 'progress-track')}
+            role="progressbar"
+            aria-labelledby={nameId}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={clampProgress(progress)}
+          >
+            <div
+              className={contractPart(fileUploadContract, 'progress-fill')}
+              style={{ width: `${clampProgress(progress)}%` }}
+            />
+          </div>
+        )}
+      </div>
+    )
+  }
+)
+
+FileUploadItem.displayName = 'FileUploadItem'
 
 /* ─── FileDropZone ─── */
 
@@ -236,21 +283,36 @@ export interface FileDropZoneProps {
   dropZoneClassName?: string
 }
 
-export function FileDropZone({
-  onFiles,
-  accept,
-  label = 'Документ',
-  required,
-  multiple = true,
-  size = 'default',
-  texts,
-  className,
-  dropZoneClassName,
-}: FileDropZoneProps) {
+/**
+ * Зона выбора / перетаскивания файлов. Обёртка — `role="group"` с именем из подписи поля.
+ * В размере `default` единственная точка фокуса — кнопка загрузки (вложенных
+ * интерактивных элементов нет); клик мышью по всей зоне по-прежнему открывает выбор файла.
+ * В `compact` кнопки нет, поэтому сама зона — `role="button"`.
+ */
+export const FileDropZone = forwardRef<HTMLDivElement, FileDropZoneProps>(function FileDropZone(
+  {
+    onFiles,
+    accept,
+    label = 'Документ',
+    required,
+    multiple = true,
+    size = 'default',
+    texts,
+    className,
+    dropZoneClassName,
+  },
+  ref
+) {
   const t = { ...DEFAULT_FILE_UPLOAD_TEXTS, ...texts }
   const [dragging, setDragging] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const isCompact = size === 'compact'
+  const uid = useId()
+  const labelId = `${uid}-label`
+  const titleId = `${uid}-title`
+  const subtitleId = `${uid}-subtitle`
+
+  const openPicker = () => inputRef.current?.click()
 
   function handleDrop(e: DragEvent<HTMLDivElement>) {
     e.preventDefault()
@@ -265,21 +327,45 @@ export function FileDropZone({
     e.target.value = ''
   }
 
-  const dropZoneClass = clsx(
-    contractPart(fileUploadContract, isCompact ? 'drop-zone-compact' : 'drop-zone'),
-    dropZoneClassName
-  )
+  // В compact зона сама является кнопкой; иначе кнопка — вложенная drop-zone-btn
+  const zoneButtonProps = isCompact
+    ? {
+        role: 'button' as const,
+        tabIndex: 0,
+        'aria-labelledby': `${labelId} ${titleId}`,
+        'aria-describedby': subtitleId,
+        onKeyDown: (e: KeyboardEvent<HTMLDivElement>) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            openPicker()
+          }
+        },
+      }
+    : {}
 
   return (
-    <div className={clsx(contractPart(fileUploadContract, 'drop-zone-wrapper'), className)}>
-      <div className={contractPart(fileUploadContract, 'drop-zone-label')}>
+    <div
+      ref={ref}
+      role="group"
+      aria-labelledby={labelId}
+      className={clsx(contractPart(fileUploadContract, 'drop-zone-wrapper'), className)}
+    >
+      <div id={labelId} className={contractPart(fileUploadContract, 'drop-zone-label')}>
         <span>{label}</span>
         {required && (
-          <span className={contractPart(fileUploadContract, 'drop-zone-required')}>*</span>
+          <span
+            className={contractPart(fileUploadContract, 'drop-zone-required')}
+            aria-hidden="true"
+          >
+            *
+          </span>
         )}
       </div>
       <div
-        className={dropZoneClass}
+        className={clsx(
+          contractPart(fileUploadContract, isCompact ? 'drop-zone-compact' : 'drop-zone'),
+          dropZoneClassName
+        )}
         {...contractAttrs(fileUploadContract, { size, dragging })}
         onDragOver={(e) => {
           e.preventDefault()
@@ -287,32 +373,31 @@ export function FileDropZone({
         }}
         onDragLeave={() => setDragging(false)}
         onDrop={handleDrop}
-        onClick={() => inputRef.current?.click()}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault()
-            inputRef.current?.click()
-          }
-        }}
+        onClick={openPicker}
+        {...zoneButtonProps}
       >
         <RiUploadCloud2Line
           size={isCompact ? 40 : 24}
           color="var(--text-sub-600, #5c5c5c)"
           className={isCompact ? contractPart(fileUploadContract, 'drop-zone-icon') : undefined}
+          aria-hidden="true"
         />
         <div className={contractPart(fileUploadContract, 'drop-zone-text')}>
-          <p className={contractPart(fileUploadContract, 'drop-zone-title')}>{t.title}</p>
-          <p className={contractPart(fileUploadContract, 'drop-zone-subtitle')}>{t.subtitle}</p>
+          <p id={titleId} className={contractPart(fileUploadContract, 'drop-zone-title')}>
+            {t.title}
+          </p>
+          <p id={subtitleId} className={contractPart(fileUploadContract, 'drop-zone-subtitle')}>
+            {t.subtitle}
+          </p>
         </div>
         {!isCompact && (
           <button
             type="button"
             className={contractPart(fileUploadContract, 'drop-zone-btn')}
+            aria-describedby={`${titleId} ${subtitleId}`}
             onClick={(e) => {
               e.stopPropagation()
-              inputRef.current?.click()
+              openPicker()
             }}
           >
             {t.button}
@@ -324,12 +409,16 @@ export function FileDropZone({
           accept={accept}
           multiple={multiple}
           hidden
+          tabIndex={-1}
+          aria-labelledby={labelId}
           onChange={handleChange}
         />
       </div>
     </div>
   )
-}
+})
+
+FileDropZone.displayName = 'FileDropZone'
 
 /* ─── FileUploadField — drop zone + file list ─── */
 
@@ -340,7 +429,18 @@ export interface FileUploadFieldProps {
   accept?: string
   /** Максимальный размер одного файла в байтах. Превышение → статус `error`. */
   maxSize?: number
-  initialFiles?: UploadFile[]
+  /**
+   * Список файлов (контролируемый режим). Прогресс и статус загрузки задаёт приложение:
+   * обновляйте `progress` / `status` у элементов по мере реальной загрузки.
+   */
+  files?: UploadFile[]
+  /** Начальный список (неконтролируемый режим). */
+  defaultFiles?: UploadFile[]
+  /**
+   * Статус, с которым добавляются выбранные файлы (кроме превысивших `maxSize` — у них `error`).
+   * `'uploading'` — если приложение само грузит файлы и обновляет `files`. По умолчанию `'done'`.
+   */
+  newFileStatus?: UploadFileStatus
   multiple?: boolean
   size?: FileDropZoneSize
   /** Видимые тексты (мультиязычность). */
@@ -351,85 +451,68 @@ export interface FileUploadFieldProps {
   dropZoneClassName?: string
 }
 
-export function FileUploadField({
-  label,
-  required,
-  accept,
-  maxSize,
-  initialFiles = [],
-  multiple = true,
-  size = 'default',
-  texts,
-  onFilesChange,
-  className,
-  dropZoneClassName,
-}: FileUploadFieldProps) {
-  const [files, setFiles] = useState<UploadFile[]>(initialFiles)
+const NO_FILES: UploadFile[] = []
 
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- sync props → state for controlled scenario
-    setFiles((prev) =>
-      filesSignature(prev) === filesSignature(initialFiles) ? prev : initialFiles
+export const FileUploadField = forwardRef<HTMLDivElement, FileUploadFieldProps>(
+  function FileUploadField(
+    {
+      label,
+      required,
+      accept,
+      maxSize,
+      files: filesProp,
+      defaultFiles = NO_FILES,
+      newFileStatus = 'done',
+      multiple = true,
+      size = 'default',
+      texts,
+      onFilesChange,
+      className,
+      dropZoneClassName,
+    },
+    ref
+  ) {
+    const [files, setFiles] = useControllableState<UploadFile[], [File[]]>({
+      value: filesProp,
+      defaultValue: defaultFiles,
+      onChange: onFilesChange,
+    })
+
+    const commit = (next: UploadFile[]) => setFiles(next, uploadFilesToNativeFiles(next))
+
+    function handleFiles(newFiles: File[]) {
+      const mapped = newFiles.map((f) =>
+        fileToUploadFile(f, maxSize != null && f.size > maxSize ? 'error' : newFileStatus)
+      )
+      commit(multiple ? [...files, ...mapped] : mapped.slice(0, 1))
+    }
+
+    function handleRemove(id: string) {
+      commit(files.filter((f) => f.id !== id))
+    }
+
+    return (
+      <div ref={ref} className={clsx(contractPart(fileUploadContract, 'upload-field'), className)}>
+        <FileDropZone
+          label={label}
+          required={required}
+          accept={accept}
+          multiple={multiple}
+          size={size}
+          texts={texts}
+          onFiles={handleFiles}
+          dropZoneClassName={dropZoneClassName}
+        />
+        {files.length > 0 && (
+          <div className={contractPart(fileUploadContract, 'upload-field-list')}>
+            {files.map((f) => (
+              <FileUploadItem key={f.id} file={f} onRemove={handleRemove} texts={texts} />
+            ))}
+          </div>
+        )}
+      </div>
     )
-  }, [initialFiles])
-
-  function simulateUpload(id: string) {
-    const timer = setInterval(() => {
-      setFiles((prev) => {
-        const file = prev.find((f) => f.id === id)
-        if (!file || file.status !== 'uploading') {
-          clearInterval(timer)
-          return prev
-        }
-        const next = (file.progress ?? 0) + 20
-        if (next >= 100) {
-          clearInterval(timer)
-          const updated = prev.map((f) =>
-            f.id === id ? { ...f, progress: 100, status: 'done' as const } : f
-          )
-          notifyFilesChange(onFilesChange, updated)
-          return updated
-        }
-        return prev.map((f) => (f.id === id ? { ...f, progress: next } : f))
-      })
-    }, 80)
   }
+)
 
-  function handleFiles(newFiles: File[]) {
-    const mapped = newFiles.map((f) =>
-      maxSize != null && f.size > maxSize ? fileToUploadFile(f, 'error') : fileToUploadFile(f)
-    )
-    const next = multiple ? [...files, ...mapped] : mapped.slice(0, 1)
-    setFiles(next)
-    notifyFilesChange(onFilesChange, next)
-    mapped.filter((f) => f.status === 'uploading').forEach((f) => simulateUpload(f.id))
-  }
-
-  function handleRemove(id: string) {
-    const next = files.filter((f) => f.id !== id)
-    setFiles(next)
-    notifyFilesChange(onFilesChange, next)
-  }
-
-  return (
-    <div className={clsx(contractPart(fileUploadContract, 'upload-field'), className)}>
-      <FileDropZone
-        label={label}
-        required={required}
-        accept={accept}
-        multiple={multiple}
-        size={size}
-        texts={texts}
-        onFiles={handleFiles}
-        dropZoneClassName={dropZoneClassName}
-      />
-      {files.length > 0 && (
-        <div className={contractPart(fileUploadContract, 'upload-field-list')}>
-          {files.map((f) => (
-            <FileUploadItem key={f.id} file={f} onRemove={handleRemove} texts={texts} />
-          ))}
-        </div>
-      )}
-    </div>
-  )
-}
+FileUploadField.displayName = 'FileUploadField'

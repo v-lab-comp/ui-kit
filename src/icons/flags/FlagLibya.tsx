@@ -1,9 +1,11 @@
-import type { ComponentProps } from 'react'
-import { SvgIcon } from '../SvgIcon'
+import { forwardRef } from 'react'
+import { SvgIcon, type FlagProps } from '../SvgIcon'
 
 const svg =
   '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n<g clip-path="url(#clip0_253_5038)">\n<path d="M1.19072 6.78262C0.427875 8.36025 0 10.1301 0 12C0 13.8699 0.427875 15.6397 1.19072 17.2174L12 18.2609L22.8093 17.2174C23.5721 15.6397 24 13.8699 24 12C24 10.1301 23.5721 8.36025 22.8093 6.78262L12 5.73914L1.19072 6.78262Z" fill="black"/>\n<path d="M1.19116 17.2173C3.13207 21.2313 7.24249 24 12 24C16.7575 24 20.868 21.2313 22.8089 17.2173H1.19116Z" fill="#496E2D"/>\n<path d="M1.19116 6.78263H22.8089C20.868 2.76867 16.7575 0 12 0C7.24249 0 3.13207 2.76867 1.19116 6.78263Z" fill="#D80027"/>\n<path d="M14.7931 9.8056L15.7777 11.1624L17.3722 10.6454L16.3861 12.001L17.3705 13.3577L15.7766 12.8387L14.7904 14.1944L14.7915 12.5181L13.1974 11.9991L14.792 11.482L14.7931 9.8056Z" fill="#F0F0F0"/>\n<path d="M12.106 15.3913C10.233 15.3913 8.71467 13.8729 8.71467 12C8.71467 10.127 10.233 8.60867 12.106 8.60867C12.6899 8.60867 13.2395 8.75633 13.7192 9.0163C12.9666 8.28032 11.9374 7.82605 10.8016 7.82605C8.49642 7.82605 6.62775 9.69477 6.62775 11.9999C6.62775 14.3051 8.49647 16.1738 10.8016 16.1738C11.9374 16.1738 12.9666 15.7196 13.7192 14.9836C13.2394 15.2436 12.69 15.3913 12.106 15.3913Z" fill="#F0F0F0"/>\n</g>\n<defs>\n<clipPath id="clip0_253_5038">\n<rect width="24" height="24" fill="white"/>\n</clipPath>\n</defs>\n</svg>\n'
 
-export function FlagLibya(props: Omit<ComponentProps<typeof SvgIcon>, 'svg' | 'title'>) {
-  return <SvgIcon {...props} svg={svg} title="Libya" />
-}
+export const FlagLibya = forwardRef<HTMLSpanElement, FlagProps>(function FlagLibya(props, ref) {
+  return <SvgIcon title="Libya" {...props} ref={ref} svg={svg} />
+})
+
+FlagLibya.displayName = 'FlagLibya'

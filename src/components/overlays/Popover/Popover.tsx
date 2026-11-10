@@ -1,6 +1,9 @@
 import { forwardRef, useLayoutEffect } from 'react'
 import {
   useFloating,
+  useDismiss,
+  useInteractions,
+  useRole,
   autoUpdate,
   offset as offsetMiddleware,
   flip,
@@ -15,16 +18,43 @@ import type { PopoverProps } from './Popover.types'
 
 export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
   (
-    { open, anchorRef, placement = 'bottom', offset = 6, children, className, style, zIndex },
+    {
+      open,
+      onOpenChange,
+      dismissible = true,
+      role,
+      anchorRef,
+      placement = 'bottom',
+      offset = 6,
+      children,
+      className,
+      style,
+      zIndex,
+      ...rest
+    },
     ref
   ) => {
-    const { refs, floatingStyles } = useFloating({
+    const {
+      refs,
+      floatingStyles,
+      context,
+      placement: finalPlacement,
+    } = useFloating({
       open,
+      onOpenChange: (next) => onOpenChange?.(next),
       placement,
       strategy: 'fixed',
       middleware: [offsetMiddleware(offset), flip(), shift({ padding: 8 })],
       whileElementsMounted: autoUpdate,
     })
+
+    // Escape и клик снаружи закрывают слой через onOpenChange(false); без onOpenChange закрывать нечем
+    const dismiss = useDismiss(context, { enabled: dismissible && onOpenChange !== undefined })
+    const roleInteraction = useRole(context, {
+      role: role ?? 'dialog',
+      enabled: role !== undefined,
+    })
+    const { getFloatingProps } = useInteractions([dismiss, roleInteraction])
 
     /* После коммита DOM — без чтения anchorRef.current во время render (eslint react-hooks/refs). */
     useLayoutEffect(() => {
@@ -41,8 +71,10 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
       <FloatingPortal>
         <div
           ref={floatingRef}
+          {...getFloatingProps(rest)}
           className={clsx(popoverContract.className, className)}
           {...contractAttrs(popoverContract, {})}
+          data-placement={finalPlacement}
           style={{
             ...floatingStyles,
             ...(zIndex !== undefined ? { zIndex } : {}),

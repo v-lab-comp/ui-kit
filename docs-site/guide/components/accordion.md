@@ -44,6 +44,7 @@ export function FaqBlock() {
 | `disabled`     | `boolean`                 | Отключить раскрытие                                                                            |
 | `leftIcon`     | `ReactNode`               | Иконка слева от заголовка (при `flipIcon === false`)                                           |
 | `flipIcon`     | `boolean`                 | `true` — «плюс/минус» слева; `false` — справа (при наличии `leftIcon` — порядок как в дизайне) |
+| `region`       | `boolean`                 | `role="region"` у панели с именем из заголовка (по умолчанию выключено)                        |
 
 Полный тип — **`AccordionProps`** в исходниках пакета.
 

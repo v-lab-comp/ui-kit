@@ -1,6 +1,9 @@
-import { useCallback, useRef, useState } from 'react'
+import { forwardRef } from 'react'
+import type { ForwardedRef } from 'react'
+import { FloatingFocusManager } from '@floating-ui/react'
 import { RiExpandUpDownLine } from '@remixicon/react'
-import { useClickOutside } from '@/hooks'
+import { useDropdownMenu } from '@/components/overlays/Menu'
+import { useMergeRefs } from '@/utils/useMergeRefs'
 import { useSidebar } from '../SidebarContext'
 import { SidebarCard } from '../Card'
 import { contractPart } from '@/theme/contract'
@@ -12,6 +15,8 @@ export type { SidebarHeaderCardProps, SidebarHeaderCardOption } from './HeaderCa
 
 type CardProps = Omit<SidebarHeaderCardProps, 'options' | 'selectedValue' | 'onSelect'>
 
+type ForwardedCardProps<P> = P & { forwardedRef: ForwardedRef<HTMLElement> }
+
 function Card({
   icon,
   title,
@@ -20,11 +25,13 @@ function Card({
   collapsed: propCollapsed,
   bordered = true,
   className,
+  forwardedRef,
   ...props
-}: CardProps) {
+}: ForwardedCardProps<CardProps>) {
   const { collapsed } = useSidebar(propCollapsed)
   return (
     <SidebarCard
+      ref={forwardedRef as ForwardedRef<HTMLButtonElement | HTMLDivElement>}
       leftSlot={icon}
       rightSlot={
         rightSlot != null ? (
@@ -59,24 +66,34 @@ function WithDropdown({
   collapsed: propCollapsed,
   bordered = true,
   className,
+  forwardedRef,
   ...rest
-}: SidebarHeaderCardProps & { options: SidebarHeaderCardOption[] }) {
+}: ForwardedCardProps<SidebarHeaderCardProps & { options: SidebarHeaderCardOption[] }>) {
   const { collapsed } = useSidebar(propCollapsed)
-  const wrapperRef = useRef<HTMLDivElement>(null)
-  const [isOpen, setIsOpen] = useState(false)
-
-  const close = useCallback(() => setIsOpen(false), [])
-  useClickOutside(wrapperRef, close, isOpen)
+  const selectedIndex = options.findIndex((opt) => opt.value === selectedValue)
+  const {
+    open,
+    context,
+    setReference,
+    setFloating,
+    getReferenceProps,
+    getMenuProps,
+    getItemProps,
+  } = useDropdownMenu({
+    labels: options.map((opt) => opt.label),
+    selectedIndex: selectedIndex >= 0 ? selectedIndex : null,
+  })
+  const triggerRef = useMergeRefs<HTMLElement>([setReference, forwardedRef])
 
   return (
-    <div ref={wrapperRef} className={contractPart(sidebarHeaderCardContract, 'wrapper')}>
+    <div className={contractPart(sidebarHeaderCardContract, 'wrapper')}>
       <SidebarCard
-        {...rest}
+        ref={triggerRef}
         leftSlot={icon}
         rightSlot={
           <span
             className={contractPart(sidebarHeaderCardContract, 'right-button')}
-            data-open={isOpen || undefined}
+            data-open={open || undefined}
           >
             <RiExpandUpDownLine />
           </span>
@@ -84,9 +101,7 @@ function WithDropdown({
         collapsed={collapsed}
         bordered={bordered}
         className={className}
-        onClick={() => setIsOpen((v) => !v)}
-        aria-expanded={isOpen}
-        aria-haspopup="listbox"
+        {...getReferenceProps(rest)}
       >
         <>
           <span className={contractPart(sidebarCardContract, 'title')}>{title}</span>
@@ -95,51 +110,65 @@ function WithDropdown({
           )}
         </>
       </SidebarCard>
-      {isOpen && (
-        <div className={contractPart(sidebarHeaderCardContract, 'dropdown')} role="listbox">
-          {options.map((opt) => (
-            <button
-              key={opt.value}
-              type="button"
-              role="option"
-              aria-selected={selectedValue === opt.value}
-              className={contractPart(sidebarHeaderCardContract, 'dropdown-item')}
-              onClick={() => {
-                onSelect?.(opt.value)
-                close()
-              }}
-            >
-              {opt.icon != null && (
-                <span className={contractPart(sidebarHeaderCardContract, 'dropdown-item-icon')}>
-                  {opt.icon}
-                </span>
-              )}
-              <span className={contractPart(sidebarHeaderCardContract, 'dropdown-item-content')}>
-                <span className={contractPart(sidebarHeaderCardContract, 'dropdown-item-label')}>
-                  {opt.label}
-                </span>
-                {opt.subtitle != null && (
+      {open && (
+        <FloatingFocusManager context={context} modal={false} initialFocus={-1}>
+          <div
+            ref={setFloating}
+            className={contractPart(sidebarHeaderCardContract, 'dropdown')}
+            {...getMenuProps()}
+          >
+            {options.map((opt, index) => (
+              <button
+                key={opt.value}
+                type="button"
+                role="menuitemradio"
+                aria-checked={selectedValue === opt.value}
+                className={contractPart(sidebarHeaderCardContract, 'dropdown-item')}
+                {...getItemProps(index, { onClick: () => onSelect?.(opt.value) })}
+              >
+                {opt.icon != null && (
                   <span
-                    className={contractPart(sidebarHeaderCardContract, 'dropdown-item-subtitle')}
+                    className={contractPart(sidebarHeaderCardContract, 'dropdown-item-icon')}
+                    aria-hidden
                   >
-                    {opt.subtitle}
+                    {opt.icon}
                   </span>
                 )}
-              </span>
-            </button>
-          ))}
-        </div>
+                <span className={contractPart(sidebarHeaderCardContract, 'dropdown-item-content')}>
+                  <span className={contractPart(sidebarHeaderCardContract, 'dropdown-item-label')}>
+                    {opt.label}
+                  </span>
+                  {opt.subtitle != null && (
+                    <span
+                      className={contractPart(sidebarHeaderCardContract, 'dropdown-item-subtitle')}
+                    >
+                      {opt.subtitle}
+                    </span>
+                  )}
+                </span>
+              </button>
+            ))}
+          </div>
+        </FloatingFocusManager>
       )}
     </div>
   )
 }
 
-/** Карточка заголовка сайдбара. Dropdown только при передаче options. */
-export function SidebarHeaderCard(props: SidebarHeaderCardProps) {
+/**
+ * Карточка заголовка сайдбара. При переданных options — кнопка меню (APG menu button):
+ * пункты — menuitemradio, выбранный отмечен aria-checked. ref — на кнопку-триггер.
+ */
+export const SidebarHeaderCard = forwardRef<HTMLElement, SidebarHeaderCardProps>((props, ref) => {
   if (props.options?.length) {
-    return <WithDropdown {...props} options={props.options} />
+    return <WithDropdown {...props} options={props.options} forwardedRef={ref} />
   }
-  return <Card {...props} />
-}
+  // options/selectedValue/onSelect не должны попасть в DOM-атрибуты кнопки
+  const cardProps: SidebarHeaderCardProps = { ...props }
+  delete cardProps.options
+  delete cardProps.selectedValue
+  delete cardProps.onSelect
+  return <Card {...cardProps} forwardedRef={ref} />
+})
 
 SidebarHeaderCard.displayName = 'SidebarHeaderCard'

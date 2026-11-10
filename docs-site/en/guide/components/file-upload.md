@@ -5,7 +5,7 @@ description: File upload field — FileUploadField / FileUploadItem.
 
 # FileUpload
 
-**`FileUploadField`**: drop zone, file list, progress simulation in stories.
+**`FileUploadField`**: drop zone, file list, upload progress and status come from the app via `files`.
 
 ## Preview
 
@@ -32,7 +32,7 @@ export function DocumentsUpload() {
       required
       multiple
       accept=".pdf,.doc,.docx"
-      initialFiles={files}
+      files={files}
       onFilesChange={(next) => setFiles(next)}
     />
   )
@@ -50,7 +50,9 @@ export function DocumentsUpload() {
 | `multiple`          | `boolean`                                                  | Multiple files (`true` by default)                                     |
 | `size`              | `default` \| `compact`                                     | Zone size (**`FileDropZone`**)                                         |
 | `texts`             | **`FileUploadTexts`**                                      | All visible strings (i18n); defaults — **`DEFAULT_FILE_UPLOAD_TEXTS`** |
-| `initialFiles`      | **`UploadFile[]`**                                         | Initial file list in field state                                       |
+| `files`             | **`UploadFile[]`**                                         | File list (controlled): the app updates `progress` / `status`          |
+| `defaultFiles`      | **`UploadFile[]`**                                         | Initial list (uncontrolled)                                            |
+| `newFileStatus`     | `uploading` \| `done` \| `error`                           | Status of added files (`done` by default; `uploading` if you upload)   |
 | `onFilesChange`     | `(uploadFiles: UploadFile[], nativeFiles: File[]) => void` | List updated (second arg — **`File[]` for `FormData`**)                |
 | `className`         | `string`                                                   | Field container class                                                  |
 | `dropZoneClassName` | `string`                                                   | Drop zone class                                                        |

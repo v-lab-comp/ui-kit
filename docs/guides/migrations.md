@@ -102,6 +102,24 @@ Peer `react` / `react-dom` — `^18.2.0 || ^19.0.0` (было `>=17`). На Reac
 - Форма: значение отправляется скрытыми `<input type="hidden" name>` (в `multiple` — по одному на значение, пустое значение — `''`).
 - Удалены неиспользуемые пропсы: `multipleDisplay` (`SelectInput`), `variant`, `searchThreshold`, `lazyLoadPageSize` (`AsyncSearchSelect`); у `PhoneInput` из типов убран `startBlock` (его занимает выбор страны).
 
+### 9. Прочие изменения API (рефакторинг, этапы 2–5)
+
+| Было                                                                   | Стало                                                                                                                             |
+| ---------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `ShareLinkInput onCopy={(value) => …}`                                 | `onCopied={(value) => …}`; `onCopy` — нативный, на `<input>`                                                                      |
+| `FileUploadField initialFiles={…}` + встроенная имитация загрузки      | `files` (управляемо) или `defaultFiles`; прогресс и статус — из `files`; `newFileStatus` для новых файлов (по умолчанию `'done'`) |
+| `Table pageSize={20}` — начальное значение                             | `pageSize` управляемый (вместе с `onPageSizeChange`); неуправляемо — `defaultPageSize`, `defaultPage`                             |
+| `Tabs value="a"` без `onChange` игнорировался                          | делает Tabs управляемым; вкладки можно обернуть в `Tabs.List`                                                                     |
+| `Accordion` всегда `role="region"`                                     | только с пропом `region`                                                                                                          |
+| `SegmentedControl` — `role="group"`, каждый пункт — tab stop           | `role="radiogroup"`, один tab stop, стрелки                                                                                       |
+| `SidebarContent` — `<div>`; `SidebarItem` — всегда `<button>`          | `<nav>`; с `href` — `<a>` (`SidebarItemLinkProps`), иначе `<button>` (`SidebarItemButtonProps`)                                   |
+| `setBodyScrollLocked(true / false)`                                    | `const release = lockBodyScroll()` … `release()`                                                                                  |
+| `ModalStatus` — цвета иконки инлайном                                  | `data-variant`, цвета — в скине                                                                                                   |
+| `CheckboxField` — описание, подсказка, ошибка внутри `<label>`         | вне `<label>`, связаны через `aria-describedby`; клик по ним не переключает                                                       |
+| `DateInput` — иконка календаря `<span>`                                | `<button>` (имя — `calendarButtonLabel` или подпись поля)                                                                         |
+| `RHF*Props` — свои интерфейсы; `createRHFAdapter` разворачивал `field` | выводятся из фабрики; маппер сам передаёт `name`, `ref`, `onChange`, `onBlur`                                                     |
+| `SvgIcon` — `SVGProps`, всегда в дереве доступности                    | `HTMLAttributes<HTMLSpanElement>`, декоративный без `title` / `aria-label`                                                        |
+
 ## Sub-entry points для тяжёлых peer-зависимостей
 
 С версии `0.2.0` `DateInput`, `PhoneInput`, `PdfPreview` и RHF-адаптеры вынесены в отдельные entry points. Импорт из основного `@v-lab/ui-kit` не сработает.

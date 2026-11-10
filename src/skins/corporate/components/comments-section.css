@@ -257,7 +257,8 @@
     cursor: pointer;
   }
 
-  .vl-comments-section__menu-item:hover {
+  .vl-comments-section__menu-item:hover,
+  .vl-comments-section__menu-item[data-active] {
     background: var(--bg-weak-50);
   }
 
@@ -265,7 +266,8 @@
     color: var(--error-base, var(--text-strong-950));
   }
 
-  :where(.vl-comments-section__menu-item)[data-danger]:hover {
+  :where(.vl-comments-section__menu-item)[data-danger]:hover,
+  :where(.vl-comments-section__menu-item)[data-danger][data-active] {
     background: var(--error-lighter, var(--bg-weak-50));
   }
 }

@@ -379,6 +379,15 @@
     color: currentColor;
     cursor: pointer;
     opacity: 0.72;
+    /* Опора для ::before — расширенной зоны нажатия */
+    position: relative;
+  }
+
+  /* Невидимая зона нажатия 24×24 вокруг иконки 16×16 (WCAG 2.5.8) — вид не меняется */
+  .vl-tag__dismiss::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
   }
 
   .vl-tag__dismiss:hover {

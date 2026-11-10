@@ -343,14 +343,16 @@ async function main() {
       continue
     }
 
-    const component = `import type { ComponentProps } from 'react'
-import { SvgIcon } from '../SvgIcon'
+    const component = `import { forwardRef } from 'react'
+import { SvgIcon, type FlagProps } from '../SvgIcon'
 
 const svg = ${JSON.stringify(svg)}
 
-export function ${componentName}(props: Omit<ComponentProps<typeof SvgIcon>, 'svg' | 'title'>) {
-  return <SvgIcon {...props} svg={svg} title="${name.replace(/"/g, '\\"')}" />
-}
+export const ${componentName} = forwardRef<HTMLSpanElement, FlagProps>(function ${componentName}(props, ref) {
+  return <SvgIcon title="${name.replace(/"/g, '\\"')}" {...props} ref={ref} svg={svg} />
+})
+
+${componentName}.displayName = '${componentName}'
 `
 
     const outPath = join(FLAGS_OUT, `${componentName}.tsx`)

@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi } from 'vitest'
 import { Checkbox } from './Checkbox'
 import { CheckboxField } from './CheckboxField'
+import { CheckboxCard } from './CheckboxCard'
 
 describe('Checkbox', () => {
   it('renders a checkbox input', () => {
@@ -73,5 +74,49 @@ describe('CheckboxField', () => {
     render(<CheckboxField label="Accept terms" onChange={onChange} />)
     await userEvent.click(screen.getByText('Accept terms'))
     expect(onChange).toHaveBeenCalledOnce()
+  })
+})
+
+describe('CheckboxField a11y', () => {
+  it('names the checkbox by the label row only and describes it by description, link and hint', () => {
+    const { container } = render(
+      <CheckboxField
+        label="Accept terms"
+        description="Required to continue"
+        link={<a href="/terms">Read terms</a>}
+        hint="You can change it later"
+      />
+    )
+    const checkbox = screen.getByRole('checkbox', { name: 'Accept terms' })
+    expect(checkbox).toHaveAccessibleDescription(
+      'Required to continue Read terms You can change it later'
+    )
+    expect(container.querySelector('label a')).toBeNull()
+    expect(container.firstChild).not.toHaveAttribute('data-error')
+  })
+
+  it('links the error and marks the field with data-error / aria-invalid', () => {
+    const { container } = render(<CheckboxField label="Accept" error="Must accept" />)
+    const checkbox = screen.getByRole('checkbox', { name: 'Accept' })
+    expect(checkbox).toHaveAttribute('aria-invalid', 'true')
+    expect(checkbox).toHaveAccessibleDescription('Must accept')
+    expect(container.firstChild).toHaveAttribute('data-error')
+  })
+
+  it('toggles when the label text is clicked', async () => {
+    const onChange = vi.fn()
+    render(<CheckboxField label="Accept" description="More" onChange={onChange} />)
+    await userEvent.click(screen.getByText('Accept'))
+    expect(onChange).toHaveBeenCalledOnce()
+  })
+})
+
+describe('CheckboxCard a11y', () => {
+  it('names the checkbox by the label row and describes it by description', async () => {
+    render(<CheckboxCard label="Pro plan" description="Billed yearly" prefix={<span>P</span>} />)
+    const checkbox = screen.getByRole('checkbox', { name: 'Pro plan' })
+    expect(checkbox).toHaveAccessibleDescription('Billed yearly')
+    await userEvent.click(screen.getByText('Billed yearly'))
+    expect(checkbox).toBeChecked()
   })
 })

@@ -6,7 +6,8 @@ export interface SidebarProps extends HTMLAttributes<HTMLElement> {
   children?: ReactNode
 }
 
-export interface SidebarContentProps extends HTMLAttributes<HTMLDivElement> {
+/** Рендерится как `<nav>` */
+export interface SidebarContentProps extends HTMLAttributes<HTMLElement> {
   children?: ReactNode
 }
 

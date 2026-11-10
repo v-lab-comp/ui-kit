@@ -1,9 +1,13 @@
-import type { ComponentProps } from 'react'
-import { SvgIcon } from '../SvgIcon'
+import { forwardRef } from 'react'
+import { SvgIcon, type FlagProps } from '../SvgIcon'
 
 const svg =
   '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n<g clip-path="url(#clip0_253_6891)">\n<path d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24Z" fill="#F0F0F0"/>\n<path d="M6.48617 16.6957L3.51514 20.4849C5.68657 22.6566 8.68625 24 12 24C16.9608 24 21.2177 20.9893 23.0452 16.6957H6.48617Z" fill="#FFDA44"/>\n<path d="M23.0639 7.3478C21.2466 3.03103 16.9776 0 12 0C8.68625 0 5.68657 1.34339 3.51514 3.51511L6.52029 7.3478H23.0639Z" fill="#496E2D"/>\n<path d="M2.60864 8.82605V15.1304H23.5866C23.8558 14.1323 24 13.0831 24 12C24 10.9011 23.8519 9.83705 23.5752 8.82605H2.60864Z" fill="black"/>\n<path d="M3.51471 3.51465C-1.17157 8.20093 -1.17157 15.7989 3.51471 20.4853C5.45126 18.5487 7.31374 16.6862 12 12L3.51471 3.51465Z" fill="#A2001D"/>\n<path d="M4.8567 8.86951L5.63365 11.2609H8.14831L6.11403 12.7389L6.89094 15.1304L4.8567 13.6524L2.82237 15.1304L3.59947 12.7389L1.56519 11.2609H4.07965L4.8567 8.86951Z" fill="#FFDA44"/>\n<path d="M2.58313 12H7.13113V14.087H2.58313V12Z" fill="#F0F0F0"/>\n<path d="M7.99216 9.60741L7.2543 8.86951L4.85674 11.2671L2.45917 8.86951L1.72131 9.60741L4.12099 12.0028L1.72131 14.4025L2.45917 15.1304L4.85674 12.7372L7.2543 15.1304L7.99216 14.4025L5.59249 12.0028L7.99216 9.60741Z" fill="black"/>\n</g>\n<defs>\n<clipPath id="clip0_253_6891">\n<rect width="24" height="24" fill="white"/>\n</clipPath>\n</defs>\n</svg>\n'
 
-export function FlagMozambique(props: Omit<ComponentProps<typeof SvgIcon>, 'svg' | 'title'>) {
-  return <SvgIcon {...props} svg={svg} title="Mozambique" />
-}
+export const FlagMozambique = forwardRef<HTMLSpanElement, FlagProps>(
+  function FlagMozambique(props, ref) {
+    return <SvgIcon title="Mozambique" {...props} ref={ref} svg={svg} />
+  }
+)
+
+FlagMozambique.displayName = 'FlagMozambique'

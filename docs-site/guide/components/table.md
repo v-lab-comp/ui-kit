@@ -112,25 +112,27 @@ const cols: TableColumn<Row>[] = [
 
 ## Основные пропсы (`Table`)
 
-| Проп                 | Тип                           | Описание                                                                      |
-| -------------------- | ----------------------------- | ----------------------------------------------------------------------------- |
-| `columns`            | **`TableColumn<T>[]`**        | Колонки: ключ, заголовок, ширина, **`render`**, выравнивание, **`sortable`**  |
-| `data`               | **`T[]`**                     | Строки текущей страницы                                                       |
-| `totalItems`         | `number`                      | Всего элементов с бэкенда (включает пагинацию)                                |
-| `pageSize`           | `number`                      | Размер страницы (по умолчанию **20**)                                         |
-| `page`               | `number`                      | Текущая страница (1-based), с **`onPageChange`**                              |
-| `onPageChange`       | `(page: number) => void`      | Смена страницы                                                                |
-| `pageSizeOptions`    | `number[]`                    | Варианты в селекте размера страницы (по умолчанию `[20, 50, 100, 200]`)       |
-| `onPageSizeChange`   | `(size: number) => void`      | Смена размера страницы                                                        |
-| `onRowClick`         | `(row: T) => void`            | Клик по строке                                                                |
-| `maxHeight`          | `number` \| `string`          | Макс. высота: включает нативный скролл и sticky-шапку                         |
-| `hideHeader`         | `boolean`                     | Скрыть шапку таблицы                                                          |
-| `paginationPosition` | `top` \| `bottom`             | Где показывать пагинацию                                                      |
-| `activeRowIndex`     | `number`                      | Индекс подсвеченной строки (0-based в **`data`**)                             |
-| `sort`               | `SortState[]`                 | Контролируемое состояние сортировки (multi-sort: порядок = приоритет)         |
-| `defaultSort`        | `SortState[]`                 | Начальное состояние сортировки (неконтролируемый режим)                       |
-| `onSortChange`       | `(sort: SortState[]) => void` | Колбэк при изменении сортировки                                               |
-| `reorder`            | `{ storageKey: string }`      | Включает DnD-переупорядочивание колонок; порядок в `localStorage[storageKey]` |
+| Проп                             | Тип                              | Описание                                                                                                                   |
+| -------------------------------- | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `columns`                        | **`TableColumn<T>[]`**           | Колонки: ключ, заголовок, ширина, **`render`**, выравнивание, **`sortable`**                                               |
+| `data`                           | **`T[]`**                        | Строки текущей страницы                                                                                                    |
+| `totalItems`                     | `number`                         | Всего элементов с бэкенда (включает пагинацию)                                                                             |
+| `pageSize`                       | `number`                         | Размер страницы (контролируемый, с **`onPageSizeChange`**); неконтролируемый — **`defaultPageSize`** (по умолчанию **20**) |
+| `page`                           | `number`                         | Текущая страница (1-based), с **`onPageChange`**; неконтролируемый — **`defaultPage`**                                     |
+| `onPageChange`                   | `(page: number) => void`         | Смена страницы                                                                                                             |
+| `pageSizeOptions`                | `number[]`                       | Варианты в селекте размера страницы (по умолчанию `[20, 50, 100, 200]`)                                                    |
+| `onPageSizeChange`               | `(size: number) => void`         | Смена размера страницы                                                                                                     |
+| `onRowClick`                     | `(row: T) => void`               | Клик по строке; строка фокусируется и срабатывает по Enter/Space                                                           |
+| `getRowKey`                      | `(row: T, index: number) => Key` | Стабильный ключ строки (по умолчанию индекс)                                                                               |
+| `aria-label` / `aria-labelledby` | `string`                         | Имя таблицы и (при `maxHeight`) фокусируемой прокручиваемой области                                                        |
+| `maxHeight`                      | `number` \| `string`             | Макс. высота: включает нативный скролл и sticky-шапку                                                                      |
+| `hideHeader`                     | `boolean`                        | Скрыть шапку таблицы                                                                                                       |
+| `paginationPosition`             | `top` \| `bottom`                | Где показывать пагинацию                                                                                                   |
+| `activeRowIndex`                 | `number`                         | Индекс подсвеченной строки (0-based в **`data`**)                                                                          |
+| `sort`                           | `SortState[]`                    | Контролируемое состояние сортировки (multi-sort: порядок = приоритет)                                                      |
+| `defaultSort`                    | `SortState[]`                    | Начальное состояние сортировки (неконтролируемый режим)                                                                    |
+| `onSortChange`                   | `(sort: SortState[]) => void`    | Колбэк при изменении сортировки                                                                                            |
+| `reorder`                        | `{ storageKey: string }`         | Переупорядочивание колонок: drag-and-drop или Alt+Shift+←/→ на заголовке; порядок в `localStorage[storageKey]`             |
 
 ### Колонка `TableColumn<T>`
 

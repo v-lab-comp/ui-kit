@@ -1,9 +1,13 @@
-import type { ComponentProps } from 'react'
-import { SvgIcon } from '../SvgIcon'
+import { forwardRef } from 'react'
+import { SvgIcon, type FlagProps } from '../SvgIcon'
 
 const svg =
   '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n<g clip-path="url(#clip0_253_4963)">\n<path d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24Z" fill="#F0F0F0"/>\n<path d="M1.45908 6.26086H22.5409C20.5057 2.53073 16.5485 0 12 0C7.45148 0 3.49434 2.53073 1.45908 6.26086Z" fill="#D80027"/>\n<path d="M12 24C16.5485 24 20.5057 21.4693 22.5409 17.7391H1.45908C3.49434 21.4693 7.45148 24 12 24Z" fill="#D80027"/>\n<path d="M16.1739 12C16.1739 14.3052 14.3052 15.6522 12 15.6522C9.69483 15.6522 7.82611 14.3052 7.82611 12C7.82611 9.69478 9.69483 7.82611 12 7.82611C14.3052 7.82611 16.1739 9.69478 16.1739 12Z" fill="#FFDA44"/>\n<path d="M16.1739 12C16.1739 14.3052 14.3052 16.1739 12 16.1739C9.69483 16.1739 7.82611 14.3052 7.82611 12" fill="#0052B4"/>\n<path d="M9.39133 10.9565H10.4348V13.0435H9.39133V10.9565Z" fill="#D80027"/>\n<path d="M13.5652 10.9565H14.6087V13.0435H13.5652V10.9565Z" fill="#D80027"/>\n<path d="M11.4783 9.3913H12.5218V13.0435H11.4783V9.3913Z" fill="#D80027"/>\n</g>\n<defs>\n<clipPath id="clip0_253_4963">\n<rect width="24" height="24" fill="white"/>\n</clipPath>\n</defs>\n</svg>\n'
 
-export function FlagFrenchPolynesia(props: Omit<ComponentProps<typeof SvgIcon>, 'svg' | 'title'>) {
-  return <SvgIcon {...props} svg={svg} title="French Polynesia" />
-}
+export const FlagFrenchPolynesia = forwardRef<HTMLSpanElement, FlagProps>(
+  function FlagFrenchPolynesia(props, ref) {
+    return <SvgIcon title="French Polynesia" {...props} ref={ref} svg={svg} />
+  }
+)
+
+FlagFrenchPolynesia.displayName = 'FlagFrenchPolynesia'

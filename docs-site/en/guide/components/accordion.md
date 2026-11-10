@@ -44,6 +44,7 @@ export function FaqBlock() {
 | `disabled`     | `boolean`                 | Disable expand                                                                               |
 | `leftIcon`     | `ReactNode`               | Icon left of title when `flipIcon === false`                                                 |
 | `flipIcon`     | `boolean`                 | `true` — plus/minus on the left; `false` — on the right (with `leftIcon` — order per design) |
+| `region`       | `boolean`                 | Panel gets `role="region"` named by the title (off by default)                               |
 
 Full type — **`AccordionProps`** in package sources.
 

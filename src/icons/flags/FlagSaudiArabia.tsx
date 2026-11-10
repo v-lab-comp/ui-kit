@@ -1,9 +1,13 @@
-import type { ComponentProps } from 'react'
-import { SvgIcon } from '../SvgIcon'
+import { forwardRef } from 'react'
+import { SvgIcon, type FlagProps } from '../SvgIcon'
 
 const svg =
   '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n<g clip-path="url(#clip0_253_6521)">\n<path d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24Z" fill="#6DA544"/>\n<path d="M6.78265 14.3479C6.78265 15.2123 7.48344 15.9131 8.34786 15.9131H13.0435C13.0435 16.6335 13.6275 17.2174 14.3479 17.2174H15.9131C16.6334 17.2174 17.2174 16.6335 17.2174 15.9131V14.3479H6.78265Z" fill="#F0F0F0"/>\n<path d="M17.3478 6.78259V10.4348C17.3478 11.0102 16.8797 11.4782 16.3043 11.4782V13.0435C17.7428 13.0435 18.913 11.8732 18.913 10.4348V6.78259H17.3478Z" fill="#F0F0F0"/>\n<path d="M6.13046 10.4348C6.13046 11.0102 5.66237 11.4782 5.08698 11.4782V13.0435C6.52543 13.0435 7.69566 11.8732 7.69566 10.4348V6.78259H6.13046V10.4348Z" fill="#F0F0F0"/>\n<path d="M15 6.78259H16.5652V10.4348H15V6.78259Z" fill="#F0F0F0"/>\n<path d="M12.6522 8.86956C12.6522 9.01342 12.5351 9.13042 12.3913 9.13042C12.2475 9.13042 12.1304 9.01337 12.1304 8.86956V6.78259H10.5652V8.86956C10.5652 9.01342 10.4482 9.13042 10.3044 9.13042C10.1606 9.13042 10.0435 9.01337 10.0435 8.86956V6.78259H8.47827V8.86956C8.47827 9.87648 9.29746 10.6957 10.3044 10.6957C10.6922 10.6957 11.0518 10.5738 11.3479 10.3668C11.6439 10.5737 12.0036 10.6957 12.3913 10.6957C12.4694 10.6957 12.5462 10.6902 12.6217 10.6806C12.5108 11.1376 12.0993 11.4782 11.6087 11.4782V13.0435C13.0472 13.0435 14.2174 11.8732 14.2174 10.4348V8.86956V6.78259H12.6522V8.86956H12.6522Z" fill="#F0F0F0"/>\n<path d="M8.47827 11.4783H10.8261V13.0435H8.47827V11.4783Z" fill="#F0F0F0"/>\n</g>\n<defs>\n<clipPath id="clip0_253_6521">\n<rect width="24" height="24" fill="white"/>\n</clipPath>\n</defs>\n</svg>\n'
 
-export function FlagSaudiArabia(props: Omit<ComponentProps<typeof SvgIcon>, 'svg' | 'title'>) {
-  return <SvgIcon {...props} svg={svg} title="Saudi Arabia" />
-}
+export const FlagSaudiArabia = forwardRef<HTMLSpanElement, FlagProps>(
+  function FlagSaudiArabia(props, ref) {
+    return <SvgIcon title="Saudi Arabia" {...props} ref={ref} svg={svg} />
+  }
+)
+
+FlagSaudiArabia.displayName = 'FlagSaudiArabia'

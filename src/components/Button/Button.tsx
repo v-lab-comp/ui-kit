@@ -1,3 +1,4 @@
+import { forwardRef } from 'react'
 import clsx from 'clsx'
 import { useButtonGroup } from '@/components/ButtonGroup/ButtonGroupContext'
 import { customPaletteStyle } from '@/utils/customPalette'
@@ -15,21 +16,24 @@ export type {
   ButtonShape,
 } from './Button.types'
 
-export const Button = ({
-  children,
-  variant = 'filled',
-  color = 'primary',
-  customColor,
-  size,
-  shape = 'rounded',
-  leftNode,
-  rightNode,
-  className,
-  style,
-  // По умолчанию не submit: кнопка внутри <form> не должна неявно отправлять форму.
-  type = 'button',
-  ...props
-}: ButtonProps) => {
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+  {
+    children,
+    variant = 'filled',
+    color = 'primary',
+    customColor,
+    size,
+    shape = 'rounded',
+    leftNode,
+    rightNode,
+    className,
+    style,
+    // По умолчанию не submit: кнопка внутри <form> не должна неявно отправлять форму.
+    type = 'button',
+    ...props
+  },
+  ref
+) {
   useAccessibleNameWarning('Button', { children, ...props })
   const groupCtx = useButtonGroup()
   const resolvedSize = size ?? groupCtx?.size ?? 'medium'
@@ -40,6 +44,7 @@ export const Button = ({
 
   return (
     <button
+      ref={ref}
       type={type}
       className={clsx(buttonContract.className, className)}
       {...contractAttrs(buttonContract, {
@@ -57,6 +62,6 @@ export const Button = ({
       {rightNode}
     </button>
   )
-}
+})
 
 Button.displayName = 'Button'

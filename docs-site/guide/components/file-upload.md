@@ -5,7 +5,7 @@ description: Поле загрузки файлов — FileUploadField / FileUp
 
 # FileUpload
 
-Компонент **`FileUploadField`**: зона drop, список файлов, симуляция прогресса в сторис.
+Компонент **`FileUploadField`**: зона drop, список файлов, прогресс и статус загрузки задаёт приложение через `files`.
 
 ## Превью
 
@@ -32,7 +32,7 @@ export function DocumentsUpload() {
       required
       multiple
       accept=".pdf,.doc,.docx"
-      initialFiles={files}
+      files={files}
       onFilesChange={(next) => setFiles(next)}
     />
   )
@@ -41,19 +41,21 @@ export function DocumentsUpload() {
 
 ## Основные пропсы (`FileUploadField`)
 
-| Проп                | Тип                                                        | Описание                                                                        |
-| ------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `label`             | `string`                                                   | Подпись зоны загрузки                                                           |
-| `required`          | `boolean`                                                  | Обязательное поле                                                               |
-| `accept`            | `string`                                                   | Атрибут **`accept`** у input (MIME / расширения)                                |
-| `maxSize`           | `number`                                                   | Лимит размера файла в **байтах**; сверх лимита → статус `error`                 |
-| `multiple`          | `boolean`                                                  | Несколько файлов (`true` по умолчанию)                                          |
-| `size`              | `default` \| `compact`                                     | Размер зоны (**`FileDropZone`**)                                                |
-| `texts`             | **`FileUploadTexts`**                                      | Все видимые строки (мультиязычность); дефолты — **`DEFAULT_FILE_UPLOAD_TEXTS`** |
-| `initialFiles`      | **`UploadFile[]`**                                         | Начальный список файлов в состоянии поля                                        |
-| `onFilesChange`     | `(uploadFiles: UploadFile[], nativeFiles: File[]) => void` | Список обновился (второй аргумент — **`File[]` для FormData**)                  |
-| `className`         | `string`                                                   | Класс контейнера поля                                                           |
-| `dropZoneClassName` | `string`                                                   | Класс зоны drop                                                                 |
+| Проп                | Тип                                                        | Описание                                                                         |
+| ------------------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `label`             | `string`                                                   | Подпись зоны загрузки                                                            |
+| `required`          | `boolean`                                                  | Обязательное поле                                                                |
+| `accept`            | `string`                                                   | Атрибут **`accept`** у input (MIME / расширения)                                 |
+| `maxSize`           | `number`                                                   | Лимит размера файла в **байтах**; сверх лимита → статус `error`                  |
+| `multiple`          | `boolean`                                                  | Несколько файлов (`true` по умолчанию)                                           |
+| `size`              | `default` \| `compact`                                     | Размер зоны (**`FileDropZone`**)                                                 |
+| `texts`             | **`FileUploadTexts`**                                      | Все видимые строки (мультиязычность); дефолты — **`DEFAULT_FILE_UPLOAD_TEXTS`**  |
+| `files`             | **`UploadFile[]`**                                         | Список файлов (контролируемый режим): приложение обновляет `progress` / `status` |
+| `defaultFiles`      | **`UploadFile[]`**                                         | Начальный список (неконтролируемый режим)                                        |
+| `newFileStatus`     | `uploading` \| `done` \| `error`                           | Статус новых файлов (`done` по умолчанию; `uploading` — если грузите сами)       |
+| `onFilesChange`     | `(uploadFiles: UploadFile[], nativeFiles: File[]) => void` | Список обновился (второй аргумент — **`File[]` для FormData**)                   |
+| `className`         | `string`                                                   | Класс контейнера поля                                                            |
+| `dropZoneClassName` | `string`                                                   | Класс зоны drop                                                                  |
 
 Полный тип — **`FileUploadFieldProps`**. Метаданные файла — тип **`UploadFile`**.
 

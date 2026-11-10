@@ -1,3 +1,4 @@
+import { createRef } from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, afterEach } from 'vitest'
@@ -86,5 +87,13 @@ describe('Button', () => {
       render(<Button leftNode={<svg />} title="Добавить" />)
       expect(warn).not.toHaveBeenCalled()
     })
+  })
+})
+
+describe('Button ref', () => {
+  it('пробрасывает ref на <button>', () => {
+    const ref = createRef<HTMLButtonElement>()
+    render(<Button ref={ref}>Сохранить</Button>)
+    expect(ref.current).toBe(screen.getByRole('button', { name: 'Сохранить' }))
   })
 })

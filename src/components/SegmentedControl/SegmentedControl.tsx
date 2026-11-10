@@ -1,106 +1,140 @@
-import { useState, useRef, useLayoutEffect, useCallback, useMemo, useId } from 'react'
+import { forwardRef, useRef, useLayoutEffect, useCallback, useMemo, useId } from 'react'
+import { Composite } from '@floating-ui/react'
 import clsx from 'clsx'
 import { SegmentedControlContext } from './SegmentedControlContext'
 import { SegmentedControlItem } from './SegmentedControlItem'
 import { contractAttrs, contractPart } from '@/theme/contract'
 import { segmentedControlContract } from '@/theme/contracts/segmented-control'
+import { useRovingTabStop } from '@/components/ToggleButton/useRovingTabStop'
+import { useControllableState } from '@/utils/useControllableState'
+import { useMergeRefs } from '@/utils/useMergeRefs'
 import type { SegmentedControlProps } from './SegmentedControl.types'
 
 const ITEM_SELECTOR = '[data-seg-item]'
 
-export const SegmentedControl = ({
-  value: valueProp,
-  defaultValue,
-  onValueChange,
-  size = 'medium',
-  disabled,
-  className,
-  children,
-  ...props
-}: SegmentedControlProps) => {
-  const rootId = useId()
-  const containerRef = useRef<HTMLDivElement>(null)
-  const thumbRef = useRef<HTMLSpanElement>(null)
-  // True after the first measurement — enables CSS transition on subsequent moves.
-  const mountedRef = useRef(false)
-
-  // ---- Selection state ----
-  const [uncontrolled, setUncontrolled] = useState(defaultValue)
-  const isControlled = valueProp !== undefined
-  const selectedValue = isControlled ? valueProp : uncontrolled
-
-  const select = useCallback(
-    (value: string) => {
-      if (!isControlled) setUncontrolled(value)
-      onValueChange?.(value)
+const SegmentedControlRoot = forwardRef<HTMLDivElement, SegmentedControlProps>(
+  function SegmentedControl(
+    {
+      value: valueProp,
+      defaultValue,
+      onValueChange,
+      size = 'medium',
+      disabled,
+      className,
+      children,
+      onKeyDown,
+      ...props
     },
-    [isControlled, onValueChange]
-  )
+    ref
+  ) {
+    const rootId = useId()
+    const thumbRef = useRef<HTMLSpanElement>(null)
+    // True after the first measurement — enables CSS transition on subsequent moves.
+    const mountedRef = useRef(false)
 
-  // ---- Thumb position (direct DOM update — no setState, no cascading render) ----
-  const moveThumb = useCallback(() => {
-    const container = containerRef.current
-    const thumb = thumbRef.current
-    if (!container || !thumb) return
+    // ---- Selection state ----
+    const [selectedValue, setSelectedValue] = useControllableState<string | undefined, []>({
+      value: valueProp,
+      defaultValue,
+      onChange: onValueChange as ((value: string | undefined) => void) | undefined,
+    })
+    const select = useCallback((value: string) => setSelectedValue(value), [setSelectedValue])
 
-    const items = Array.from(container.querySelectorAll<HTMLElement>(ITEM_SELECTOR))
-    const selected = items.find((el) => el.dataset.segValue === selectedValue)
+    // ---- Roving tabindex (APG radio group): стрелки переводят фокус и сразу выбирают ----
+    const {
+      containerRef,
+      activeIndex,
+      onNavigate,
+      onKeyDown: onRovingKeyDown,
+    } = useRovingTabStop<HTMLDivElement>({
+      selectedSelector: '[aria-checked="true"]',
+      followSelection: true,
+      onKeyboardNavigate: (item) => {
+        const value = item.dataset.segValue
+        if (value !== undefined && value !== selectedValue) select(value)
+      },
+    })
+    const mergedRef = useMergeRefs([containerRef, ref])
 
-    if (!selected) {
-      thumb.style.opacity = '0'
-      return
-    }
+    // ---- Thumb position (direct DOM update — no setState, no cascading render) ----
+    const moveThumb = useCallback(() => {
+      const container = containerRef.current
+      const thumb = thumbRef.current
+      if (!container || !thumb) return
 
-    // First mount: disable transition so the thumb appears instantly.
-    if (!mountedRef.current) {
-      thumb.style.transition = 'none'
-      mountedRef.current = true
-    } else {
-      thumb.style.transition = ''
-    }
+      const items = Array.from(container.querySelectorAll<HTMLElement>(ITEM_SELECTOR))
+      const selected = items.find((el) => el.dataset.segValue === selectedValue)
 
-    thumb.style.left = `${selected.offsetLeft}px`
-    thumb.style.width = `${selected.offsetWidth}px`
-    thumb.style.opacity = '1'
-  }, [selectedValue])
+      if (!selected) {
+        thumb.style.opacity = '0'
+        return
+      }
 
-  useLayoutEffect(() => {
-    moveThumb()
-  }, [moveThumb])
+      // First mount: disable transition so the thumb appears instantly.
+      if (!mountedRef.current) {
+        thumb.style.transition = 'none'
+        mountedRef.current = true
+      } else {
+        thumb.style.transition = ''
+      }
 
-  // Items call this on mount so the thumb positions correctly once they're in the DOM.
-  const notifyMount = useCallback(() => {
-    moveThumb()
-  }, [moveThumb])
+      thumb.style.left = `${selected.offsetLeft}px`
+      thumb.style.width = `${selected.offsetWidth}px`
+      thumb.style.opacity = '1'
+    }, [containerRef, selectedValue])
 
-  const ctx = useMemo(
-    () => ({ selectedValue, select, size, disabled, notifyMount }),
-    [selectedValue, select, size, disabled, notifyMount]
-  )
+    useLayoutEffect(() => {
+      moveThumb()
+    }, [moveThumb])
 
-  return (
-    <SegmentedControlContext.Provider value={ctx}>
-      <div
-        ref={containerRef}
-        role="group"
-        aria-label={props['aria-label']}
-        data-seg-root={rootId}
-        className={clsx(segmentedControlContract.className, className)}
-        {...contractAttrs(segmentedControlContract, { size, disabled })}
-        {...props}
-      >
-        {/* Thumb is always in the DOM; opacity=0 when nothing is selected */}
-        <span
-          ref={thumbRef}
-          aria-hidden
-          className={contractPart(segmentedControlContract, 'thumb')}
-          style={{ opacity: 0 }}
+    // Items call this on mount so the thumb positions correctly once they're in the DOM.
+    const notifyMount = useCallback(() => {
+      moveThumb()
+    }, [moveThumb])
+
+    const ctx = useMemo(
+      () => ({ selectedValue, select, size, disabled, notifyMount }),
+      [selectedValue, select, size, disabled, notifyMount]
+    )
+
+    return (
+      <SegmentedControlContext.Provider value={ctx}>
+        <Composite
+          // APG radio group: ←/↑ — предыдущий, →/↓ — следующий
+          orientation="both"
+          activeIndex={activeIndex}
+          onNavigate={onNavigate}
+          onKeyDown={(e: React.KeyboardEvent<HTMLElement>) => {
+            onKeyDown?.(e as React.KeyboardEvent<HTMLDivElement>)
+            onRovingKeyDown(e)
+          }}
+          render={(htmlProps) => (
+            <div
+              {...htmlProps}
+              ref={mergedRef}
+              role="radiogroup"
+              aria-disabled={disabled || undefined}
+              data-seg-root={rootId}
+              className={clsx(segmentedControlContract.className, className)}
+              {...contractAttrs(segmentedControlContract, { size, disabled })}
+              {...props}
+            >
+              {/* Thumb is always in the DOM; opacity=0 when nothing is selected */}
+              <span
+                ref={thumbRef}
+                aria-hidden
+                className={contractPart(segmentedControlContract, 'thumb')}
+                style={{ opacity: 0 }}
+              />
+              {children}
+            </div>
+          )}
         />
-        {children}
-      </div>
-    </SegmentedControlContext.Provider>
-  )
-}
+      </SegmentedControlContext.Provider>
+    )
+  }
+)
 
-SegmentedControl.displayName = 'SegmentedControl'
-SegmentedControl.Item = SegmentedControlItem
+SegmentedControlRoot.displayName = 'SegmentedControl'
+
+export const SegmentedControl = Object.assign(SegmentedControlRoot, { Item: SegmentedControlItem })

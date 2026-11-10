@@ -48,6 +48,13 @@
     outline-offset: calc(-1 * var(--pixel-unit));
   }
 
+  /* Фокус кликабельной строки и прокручиваемой области — в стиле кнопок скина */
+  :where(.vl-table__tr)[data-clickable]:focus-visible,
+  :where(.vl-table__root)[data-scroll]:focus-visible {
+    outline: var(--pixel-focus-outline);
+    outline-offset: calc(-1 * var(--pixel-unit));
+  }
+
   /* Стрелки сортировки: приглушённые светлые, активная — в полную силу */
   .vl-table__sort-icon {
     color: var(--text-white-0);

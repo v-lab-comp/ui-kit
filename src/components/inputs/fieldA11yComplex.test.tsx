@@ -94,7 +94,10 @@ describe('a11y связки поля: сложные инпуты', () => {
     render(<RichInput maxLength={2} defaultValue="abc" />)
     const editor = screen.getByRole('textbox')
     expect(editor).not.toHaveAttribute('aria-labelledby')
-    expect(editor).not.toHaveAttribute('aria-describedby')
+    // aria-describedby (счётчик символов) допустим, но только на существующие элементы
+    for (const id of editor.getAttribute('aria-describedby')?.split(' ') ?? []) {
+      expect(document.getElementById(id)).not.toBeNull()
+    }
     expect(editor).not.toHaveAttribute('aria-required')
     expect(editor).toHaveAttribute('aria-invalid', 'true')
   })

@@ -40,16 +40,19 @@ export function AnchoredMenu() {
 }
 ```
 
-Tashqariga bosish, Escape va fokusni ilovada ulash kerak (yoki umumiy qatlamda **`useDismiss`** bilan o‘rash).
+**`onOpenChange`** berilsa, panel Escape va panel/ancordan tashqariga bosishda yopiladi (**`useDismiss`**); **`dismissible={false}`** bilan o‘chiriladi. Fokusni ilova boshqaradi. Ildiz **`data-placement`** oladi — flip/shift dan keyingi yakuniy joylashuv (skinlar uchun).
 
 ## Asosiy proplar
 
-| Prop        | Tip                                      | Tavsif                              |
-| ----------- | ---------------------------------------- | ----------------------------------- |
-| `open`      | `boolean`                                | Panel ko‘rinadimi                   |
-| `anchorRef` | `RefObject<Element \| null>`             | Joylashish uchun ancor              |
-| `placement` | `'top' \| 'bottom' \| 'left' \| 'right'` | Ancor tomoni                        |
-| `offset`    | `number`                                 | Ancordan chekinish (px), standart 6 |
-| `zIndex`    | `number` (ixtiyoriy)                     | Suzuvchi qatlam z-index             |
+| Prop           | Tip                                                                         | Tavsif                                             |
+| -------------- | --------------------------------------------------------------------------- | -------------------------------------------------- |
+| `open`         | `boolean`                                                                   | Panel ko‘rinadimi                                  |
+| `anchorRef`    | `RefObject<Element \| null>`                                                | Joylashish uchun ancor                             |
+| `placement`    | `'top' \| 'bottom' \| 'left' \| 'right'`                                    | Ancor tomoni                                       |
+| `offset`       | `number`                                                                    | Ancordan chekinish (px), standart 6                |
+| `zIndex`       | `number` (ixtiyoriy)                                                        | Suzuvchi qatlam z-index                            |
+| `onOpenChange` | `(open: boolean) => void` (ixtiyoriy)                                       | Yopilish so‘rovi (Escape, tashqariga bosish)       |
+| `dismissible`  | `boolean` (ixtiyoriy)                                                       | Escape / tashqariga bosishda yopish, standart true |
+| `role`         | `'dialog' \| 'alertdialog' \| 'menu' \| 'listbox' \| 'tooltip'` (ixtiyoriy) | Panelning ARIA roli                                |
 
 Manbalar: `src/components/overlays/Popover/`.

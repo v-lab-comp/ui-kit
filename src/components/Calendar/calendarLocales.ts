@@ -14,10 +14,16 @@ export interface CalendarLocale {
     string,
   ]
   weekdays: [string, string, string, string, string, string, string]
+  /**
+   * BCP 47 тег языка (`'ru'`, `'en-GB'`). По нему `Intl.DateTimeFormat` строит доступное имя дня
+   * («понедельник, 3 марта 2025 г.»). Без тега имя собирается из `months`: «3 Март 2025».
+   */
+  code?: string
 }
 
 export const calendarLocales = {
   en: {
+    code: 'en',
     months: [
       'January',
       'February',
@@ -35,6 +41,7 @@ export const calendarLocales = {
     weekdays: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
   },
   ru: {
+    code: 'ru',
     months: [
       'Январь',
       'Февраль',
@@ -52,6 +59,7 @@ export const calendarLocales = {
     weekdays: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
   },
   uz: {
+    code: 'uz',
     months: [
       'Yanvar',
       'Fevral',

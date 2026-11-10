@@ -1,9 +1,13 @@
-import type { ComponentProps } from 'react'
-import { SvgIcon } from '../SvgIcon'
+import { forwardRef } from 'react'
+import { SvgIcon, type FlagProps } from '../SvgIcon'
 
 const svg =
   '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n<g clip-path="url(#clip0_253_5707)">\n<path d="M23.2536 16.1739C23.736 14.8739 24 13.4678 24 12C24 10.5321 23.736 9.12606 23.2536 7.82608L12 6.78259L0.746391 7.82608C0.264 9.12606 0 10.5321 0 12C0 13.4678 0.264 14.8739 0.746391 16.1739L12 17.2173L23.2536 16.1739Z" fill="#F0F0F0"/>\n<path d="M12 24.0001C17.1595 24.0001 21.5581 20.7436 23.2536 16.174H0.746338C2.4419 20.7436 6.84037 24.0001 12 24.0001Z" fill="#338AF3"/>\n<path d="M12 0C6.84037 0 2.4419 3.2565 0.746338 7.82611H23.2536C21.5581 3.2565 17.1595 0 12 0Z" fill="#6DA544"/>\n</g>\n<defs>\n<clipPath id="clip0_253_5707">\n<rect width="24" height="24" fill="white"/>\n</clipPath>\n</defs>\n</svg>\n'
 
-export function FlagSierraLeone(props: Omit<ComponentProps<typeof SvgIcon>, 'svg' | 'title'>) {
-  return <SvgIcon {...props} svg={svg} title="Sierra Leone" />
-}
+export const FlagSierraLeone = forwardRef<HTMLSpanElement, FlagProps>(
+  function FlagSierraLeone(props, ref) {
+    return <SvgIcon title="Sierra Leone" {...props} ref={ref} svg={svg} />
+  }
+)
+
+FlagSierraLeone.displayName = 'FlagSierraLeone'

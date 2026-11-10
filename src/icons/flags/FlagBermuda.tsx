@@ -1,9 +1,11 @@
-import type { ComponentProps } from 'react'
-import { SvgIcon } from '../SvgIcon'
+import { forwardRef } from 'react'
+import { SvgIcon, type FlagProps } from '../SvgIcon'
 
 const svg =
   '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n<g clip-path="url(#clip0_253_6031)">\n<path d="M24 12C24 18.6274 18.6274 24 12 24C5.37262 24 0 18.6274 0 12C0 12.0029 12 0.0013125 12 0C18.6274 0 24 5.37262 24 12Z" fill="#D80027"/>\n<path d="M12 5.73914V9.78646L7.82611 5.73914H12Z" fill="#0052B4"/>\n<path d="M6.26085 12H9.78637L6.26085 7.30432L5.73914 10.9565L6.26085 12Z" fill="#0052B4"/>\n<path d="M11.9679 12H12C12 11.9892 12 11.9787 12 11.9679C11.9893 11.9786 11.9786 11.9893 11.9679 12Z" fill="#F0F0F0"/>\n<path d="M12 6.26086C12 4.14937 12 2.76586 12 0H11.998C5.37145 0.001125 0 5.37323 0 12H6.26086V8.47448L9.78638 12H11.9679C11.9786 11.9893 11.9893 11.9786 12 11.9679C12 11.1594 12 10.4381 12 9.78647L8.47444 6.26086H12Z" fill="#F0F0F0"/>\n<path d="M6.07103 1.56519C4.1942 2.63389 2.63387 4.19417 1.56522 6.071V12.5217H4.69567V4.69573V4.69564H12.5217C12.5217 3.70831 12.5217 2.76772 12.5217 1.56519H6.07103Z" fill="#D80027"/>\n<path d="M12.4771 11.0013L7.73649 6.26086H6.26086V6.26096L12.4769 12.477H12.477C12.4771 12.4771 12.4771 11.4595 12.4771 11.0013Z" fill="#D80027"/>\n<path d="M13.5652 6.26086V12C13.5652 14.7956 20.8696 14.7956 20.8696 12V6.26086H13.5652Z" fill="#F3F3F3"/>\n<path d="M13.5652 12V12C13.5652 14.7956 17.2174 15.6522 17.2174 15.6522C17.2174 15.6522 20.8696 14.7956 20.8696 12V12H13.5652Z" fill="#6DA544"/>\n<path d="M17.2174 9.70435L15.5217 10.4348V12L17.2174 13.0435L18.913 12V10.4348L17.2174 9.70435Z" fill="#A2001D"/>\n<path d="M15.5217 8.86951H18.913V10.4347H15.5217V8.86951Z" fill="#338AF3"/>\n</g>\n<defs>\n<clipPath id="clip0_253_6031">\n<rect width="24" height="24" fill="white"/>\n</clipPath>\n</defs>\n</svg>\n'
 
-export function FlagBermuda(props: Omit<ComponentProps<typeof SvgIcon>, 'svg' | 'title'>) {
-  return <SvgIcon {...props} svg={svg} title="Bermuda" />
-}
+export const FlagBermuda = forwardRef<HTMLSpanElement, FlagProps>(function FlagBermuda(props, ref) {
+  return <SvgIcon title="Bermuda" {...props} ref={ref} svg={svg} />
+})
+
+FlagBermuda.displayName = 'FlagBermuda'

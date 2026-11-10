@@ -60,14 +60,23 @@ export function ControlledTabs() {
 
 ### `Tabs` (ildiz)
 
-| Prop           | Tip                       | Tavsif                                                          |
-| -------------- | ------------------------- | --------------------------------------------------------------- |
-| `children`     | `ReactNode`               | Razmetkada istalgan tartibda **`Tabs.Tab`** va **`Tabs.Panel`** |
-| `defaultValue` | `string`                  | Boshqarilmasiz rejimda faol varaq                               |
-| `value`        | `string`                  | Boshqariladigan rejimda faol varaq                              |
-| `onChange`     | `(value: string) => void` | Varaq almashishi (**`value`** bilan — boshqariladigan rejim)    |
+| Prop                             | Tip                       | Tavsif                                                                               |
+| -------------------------------- | ------------------------- | ------------------------------------------------------------------------------------ |
+| `children`                       | `ReactNode`               | Razmetkada istalgan tartibda **`Tabs.Tab`** va **`Tabs.Panel`**                      |
+| `defaultValue`                   | `string`                  | Boshqarilmasiz rejimda faol varaq                                                    |
+| `value`                          | `string`                  | Boshqariladigan rejimda faol varaq                                                   |
+| `onChange`                       | `(value: string) => void` | **`value`** berilsa — boshqariladigan rejim; o‘zgarishni **`onChange`** orqali oling |
+| `aria-label` / `aria-labelledby` | `string`                  | **`Tabs.List`** ishlatilmasa, tablar ro‘yxati nomi                                   |
 
 Tip — **`TabsProps`**.
+
+### `Tabs.List`
+
+Ixtiyoriy tablar o‘rami (`role="tablist"`): `aria-label` / `aria-labelledby`, `className`, `ref` va boshqa `div` props qabul qiladi. Ichidagi tablarni o‘z komponentlaringizga o‘rash mumkin. **`Tabs.List`** bo‘lmasa, **`Tabs.Panel`** dan boshqa barcha bolalar ro‘yxatga avtomatik tushadi.
+
+Klaviatura (WAI-ARIA APG): Tab tartibida faqat faol tab; ←/→, Home/End fokusni o‘tkazadi va tabni darhol faollashtiradi. `Tabs.Tab` va `Tabs.Panel` `ref`, `className` va boshqa HTML props qabul qiladi.
+
+Turi — **`TabsListProps`**.
 
 ### `Tabs.Tab`
 

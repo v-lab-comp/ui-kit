@@ -1,12 +1,4 @@
-import {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  type CSSProperties,
-  type MouseEvent,
-} from 'react'
+import { forwardRef, useCallback, useEffect, useMemo, useState, type CSSProperties } from 'react'
 import {
   RiBold,
   RiFormatClear,
@@ -19,7 +11,7 @@ import {
 } from '@remixicon/react'
 import clsx from 'clsx'
 import { InputField, inputFieldLabelId } from '../base/InputField'
-import { useRichTextEditor } from '../base/richText'
+import { RichTextToolButton, RichTextToolbar, useRichTextEditor } from '../base/richText'
 import { contractPart } from '@/theme/contract'
 import { useMergeRefs } from '@/utils/useMergeRefs'
 import { richInputContract } from '@/theme/contracts/rich-input'
@@ -106,15 +98,6 @@ export const RichInput = forwardRef<HTMLDivElement, RichInputProps>(
 
     const setEditorRef = useMergeRefs<HTMLDivElement>([editorRef, ref])
 
-    const runTool = useCallback(
-      (e: MouseEvent<HTMLButtonElement>, command: string) => {
-        // Не отдаём фокус кнопке — иначе теряется выделение в редакторе
-        e.preventDefault()
-        exec(command)
-      },
-      [exec]
-    )
-
     const isEditable = !disabled && !readOnly
     const editorStyle = {
       '--rich-input-min-rows': minRows,
@@ -125,27 +108,25 @@ export const RichInput = forwardRef<HTMLDivElement, RichInputProps>(
     const showToolbar = !readOnly && toolItems.length > 0
 
     const toolbar = showToolbar ? (
-      <div
+      <RichTextToolbar
         className={contractPart(richInputContract, 'toolbar')}
         data-placement={toolbarPlacement}
-        role="toolbar"
         aria-label={a11y.toolbar}
       >
         {toolItems.map(({ tool, command, Icon }) => (
-          <button
+          <RichTextToolButton
             key={tool}
-            type="button"
             disabled={disabled}
             aria-label={a11y[tool]}
-            aria-pressed={activeFormats.has(command)}
+            pressed={activeFormats.has(command)}
             className={contractPart(richInputContract, 'tool-button')}
             data-on={activeFormats.has(command) || undefined}
-            onMouseDown={(e) => runTool(e, command)}
+            onExec={() => exec(command)}
           >
             <Icon size={18} aria-hidden />
-          </button>
+          </RichTextToolButton>
         ))}
-      </div>
+      </RichTextToolbar>
     ) : null
 
     return (
@@ -170,48 +151,59 @@ export const RichInput = forwardRef<HTMLDivElement, RichInputProps>(
         wrapperClassName={clsx(contractPart(richInputContract, 'wrapper'), wrapperClassName)}
         id={id}
       >
-        {(fieldId, control) => (
-          <>
-            {toolbarPlacement === 'top' ? toolbar : null}
+        {(fieldId, control) => {
+          const counterId = maxLength ? `${fieldId}-counter` : undefined
+          const describedBy =
+            [control['aria-describedby'], counterId].filter(Boolean).join(' ') || undefined
+          return (
+            <>
+              {toolbarPlacement === 'top' ? toolbar : null}
 
-            {/* contenteditable не именуется через <label for> — связываем с label явно */}
-            <div
-              {...editorProps}
-              {...control}
-              ref={setEditorRef}
-              role="textbox"
-              aria-labelledby={label ? inputFieldLabelId(fieldId) : undefined}
-              aria-multiline
-              aria-invalid={overLimit || control['aria-invalid']}
-              aria-readonly={readOnly || undefined}
-              contentEditable={isEditable}
-              suppressContentEditableWarning
-              data-placeholder={placeholder}
-              data-empty={isEmpty || undefined}
-              data-max-rows={maxRows ? '' : undefined}
-              className={contractPart(richInputContract, 'editable')}
-              style={editorStyle}
-              onFocus={onFocus}
-              onBlur={onBlur}
-            />
+              {/* contenteditable не именуется через <label for> — связываем с label явно */}
+              <div
+                {...editorProps}
+                {...control}
+                ref={setEditorRef}
+                role="textbox"
+                aria-labelledby={label ? inputFieldLabelId(fieldId) : undefined}
+                aria-multiline
+                aria-describedby={describedBy}
+                aria-invalid={overLimit || control['aria-invalid']}
+                aria-readonly={readOnly || undefined}
+                aria-disabled={disabled || undefined}
+                aria-placeholder={placeholder}
+                // readOnly: текст остаётся доступен с клавиатуры (выделение, копирование)
+                tabIndex={readOnly && !disabled ? 0 : undefined}
+                contentEditable={isEditable}
+                suppressContentEditableWarning
+                data-placeholder={placeholder}
+                data-empty={isEmpty || undefined}
+                data-max-rows={maxRows ? '' : undefined}
+                className={contractPart(richInputContract, 'editable')}
+                style={editorStyle}
+                onFocus={onFocus}
+                onBlur={onBlur}
+              />
 
-            {maxLength ? (
-              <div className={contractPart(richInputContract, 'footer')}>
-                <span
-                  className={contractPart(richInputContract, 'counter')}
-                  data-error={overLimit || undefined}
-                  aria-live="polite"
-                >
-                  {length}/{maxLength}
-                </span>
-              </div>
-            ) : null}
+              {maxLength ? (
+                <div className={contractPart(richInputContract, 'footer')}>
+                  {/* Без aria-live: счётчик связан с полем через aria-describedby, а не озвучивается на каждый символ */}
+                  <span
+                    id={counterId}
+                    className={contractPart(richInputContract, 'counter')}
+                    data-error={overLimit || undefined}
+                  >
+                    {length}/{maxLength}
+                  </span>
+                </div>
+              ) : null}
 
-            {toolbarPlacement === 'bottom' ? toolbar : null}
+              {toolbarPlacement === 'bottom' ? toolbar : null}
 
-            {name ? <input type="hidden" name={name} value={value ?? html} /> : null}
-          </>
-        )}
+              {name ? <input type="hidden" name={name} value={value ?? html} /> : null}
+            </>
+          )
+        }}
       </InputField>
     )
   }

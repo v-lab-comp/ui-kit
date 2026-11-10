@@ -1,32 +1,36 @@
-import { useState, useId, useRef, useLayoutEffect } from 'react'
+import { forwardRef, useId, useRef, useLayoutEffect, useState, version } from 'react'
 import clsx from 'clsx'
 import { RiAddLine, RiSubtractLine } from '@remixicon/react'
 import { contractAttrs, contractPart } from '@/theme/contract'
 import { accordionContract } from '@/theme/contracts/accordion'
+import { useControllableState } from '@/utils/useControllableState'
 import type { AccordionProps } from './Accordion.types'
 
-export function Accordion({
-  title,
-  children,
-  defaultOpen = false,
-  open: controlledOpen,
-  onOpenChange,
-  disabled = false,
-  leftIcon,
-  flipIcon = false,
-  className,
-  id: propsId,
-  ...props
-}: AccordionProps) {
-  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen)
-  const isControlled = controlledOpen !== undefined
-  const open = isControlled ? controlledOpen : uncontrolledOpen
+// inert: React 19 ждёт boolean, React 18 не знает проп и пишет строку как есть ('' — атрибут включён)
+const INERT = (Number.parseInt(version, 10) >= 19 ? true : '') as unknown as boolean
 
-  function handleToggle() {
-    const next = !open
-    if (!isControlled) setUncontrolledOpen(next)
-    onOpenChange?.(next)
-  }
+export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(function Accordion(
+  {
+    title,
+    children,
+    defaultOpen = false,
+    open: controlledOpen,
+    onOpenChange,
+    disabled = false,
+    leftIcon,
+    flipIcon = false,
+    className,
+    id: propsId,
+    region = false,
+    ...props
+  },
+  ref
+) {
+  const [open, setOpen] = useControllableState<boolean>({
+    value: controlledOpen,
+    defaultValue: defaultOpen,
+    onChange: onOpenChange,
+  })
 
   const fallbackId = useId()
   const rootId = propsId ?? fallbackId
@@ -34,14 +38,11 @@ export function Accordion({
   const panelId = `${rootId}-panel`
 
   const ExpandIcon = open ? RiSubtractLine : RiAddLine
-  const iconLeft = flipIcon ? (
-    <ExpandIcon className={contractPart(accordionContract, 'toggle-icon')} size={20} aria-hidden />
-  ) : (
-    leftIcon
-  )
-  const iconRight = flipIcon ? null : (
+  const toggleIcon = (
     <ExpandIcon className={contractPart(accordionContract, 'toggle-icon')} size={20} aria-hidden />
   )
+  const iconLeft = flipIcon ? toggleIcon : leftIcon
+  const iconRight = flipIcon ? null : toggleIcon
 
   const hasLeftIcon = !flipIcon && leftIcon != null
 
@@ -61,6 +62,7 @@ export function Accordion({
 
   return (
     <div
+      ref={ref}
       className={clsx(accordionContract.className, className)}
       data-state={open ? 'open' : 'closed'}
       id={rootId}
@@ -74,7 +76,7 @@ export function Accordion({
       <button
         type="button"
         className={contractPart(accordionContract, 'trigger')}
-        onClick={handleToggle}
+        onClick={() => setOpen(!open)}
         disabled={disabled}
         aria-expanded={open}
         aria-controls={panelId}
@@ -97,9 +99,11 @@ export function Accordion({
       </button>
       <div
         id={panelId}
-        role="region"
-        aria-labelledby={triggerId}
-        aria-hidden={!open}
+        // region — только по запросу: десятки аккордеонов не должны плодить ориентиры
+        role={region ? 'region' : undefined}
+        aria-labelledby={region ? triggerId : undefined}
+        // Закрытая панель вне порядка Tab и дерева доступности; высота 0 и анимация — как раньше
+        inert={open ? undefined : INERT}
         className={contractPart(accordionContract, 'content')}
         data-state={open ? 'open' : 'closed'}
         style={{ height: open ? contentHeight : 0 }}
@@ -110,6 +114,6 @@ export function Accordion({
       </div>
     </div>
   )
-}
+})
 
 Accordion.displayName = 'Accordion'

@@ -1,15 +1,27 @@
-import type { FieldValues, UseControllerProps } from 'react-hook-form'
+import type { FieldValues } from 'react-hook-form'
 import { CheckboxField } from '@/components/inputs/Checkbox'
 import type { CheckboxFieldProps } from '@/components/inputs/Checkbox'
-import { createRHFAdapter } from './createRHFAdapter'
+import { createRHFAdapter, type RHFAdapterProps } from './createRHFAdapter'
 
-export type RHFCheckboxProps<T extends FieldValues> = UseControllerProps<T> &
-  Omit<CheckboxFieldProps, 'checked' | 'defaultChecked' | 'name'>
+type Controlled = 'checked' | 'defaultChecked'
 
-export const RHFCheckbox = createRHFAdapter<CheckboxFieldProps>(
+export type RHFCheckboxProps<T extends FieldValues> = RHFAdapterProps<
+  CheckboxFieldProps,
+  T,
+  Controlled
+>
+
+export const RHFCheckbox = createRHFAdapter<CheckboxFieldProps, Controlled>(
   CheckboxField,
-  (field, fieldState) => ({
-    checked: !!field.value,
+  // value из field не передаём: у чекбокса это атрибут отправляемого значения, а не состояние
+  ({ name, ref, onChange, onBlur, disabled, value }, fieldState) => ({
+    name,
+    ref,
+    onChange,
+    onBlur,
+    // disabled есть в field только при disabled на уровне формы — иначе не перетираем проп
+    ...(disabled !== undefined && { disabled }),
+    checked: !!value,
     error: fieldState.error?.message,
   }),
   'RHFCheckbox'

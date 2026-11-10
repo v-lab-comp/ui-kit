@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { Children, cloneElement, isValidElement } from 'react'
+import { Children, cloneElement, forwardRef, isValidElement } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
 import { Avatar } from '@/components/Avatar'
 import { contractAttrs, contractPart } from '@/theme/contract'
@@ -64,19 +64,22 @@ function withGroupSize(child: ReactNode, size: number): ReactNode {
   return cloneElement(child, { size })
 }
 
-export function AvatarGroup({
-  children,
-  mode = 'default',
-  compactStyle = 'default',
-  compactSize,
-  size = 40,
-  max = 4,
-  overlap,
-  overflowColor = 'neutral',
-  className,
-  style,
-  ...props
-}: AvatarGroupProps) {
+export const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(function AvatarGroup(
+  {
+    children,
+    mode = 'default',
+    compactStyle = 'default',
+    compactSize,
+    size = 40,
+    max = 4,
+    overlap,
+    overflowColor = 'neutral',
+    className,
+    style,
+    ...props
+  },
+  ref
+) {
   const allChildren = Children.toArray(children)
   const visibleChildren = allChildren.slice(0, Math.max(1, max))
   const overflowCount = Math.max(0, allChildren.length - visibleChildren.length)
@@ -98,6 +101,7 @@ export function AvatarGroup({
 
     return (
       <div
+        ref={ref}
         className={clsx(avatarGroupContract.className, className)}
         style={{ ...style, ...cssVars }}
         {...contractAttrs(avatarGroupContract, { mode, 'compact-style': compactStyle })}
@@ -127,6 +131,7 @@ export function AvatarGroup({
 
   return (
     <div
+      ref={ref}
       className={clsx(avatarGroupContract.className, className)}
       style={{ ...style, '--avatar-group-overlap': `${resolvedOverlap}px` } as CSSProperties}
       {...contractAttrs(avatarGroupContract, { mode })}
@@ -146,11 +151,12 @@ export function AvatarGroup({
           className={contractPart(avatarGroupContract, 'item')}
           style={{ zIndex: visibleChildren.length + 1 }}
         >
-          <Avatar size={size} text={overflowLabel} color={overflowColor} />
+          {/* alt = видимый счётчик «+N»: иначе скрытые аватары не озвучиваются */}
+          <Avatar size={size} text={overflowLabel} alt={overflowLabel} color={overflowColor} />
         </div>
       )}
     </div>
   )
-}
+})
 
 AvatarGroup.displayName = 'AvatarGroup'

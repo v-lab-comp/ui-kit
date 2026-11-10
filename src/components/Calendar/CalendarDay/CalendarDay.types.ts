@@ -1,4 +1,9 @@
-export interface CalendarDayProps {
+import type { ButtonHTMLAttributes } from 'react'
+
+export interface CalendarDayProps extends Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  'onClick' | 'onMouseEnter' | 'disabled' | 'children' | 'type'
+> {
   day: number
   isSelected?: boolean
   /** Primary color text — can be used for any visual accent reason */

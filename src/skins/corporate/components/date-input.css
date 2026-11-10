@@ -23,8 +23,15 @@
 
   /* ── Calendar icon button ────────────────────────────────────────────────── */
 
+  /* Это <button>: сбрасываем нативное оформление, чтобы выглядел как прежняя иконка-span */
   .vl-date-input__calendar-btn {
     display: flex;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
     cursor: pointer;
   }
 

@@ -1,40 +1,22 @@
-import {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-  type InputHTMLAttributes,
-} from 'react'
+import { forwardRef, useId, useRef, type KeyboardEvent, type MouseEvent } from 'react'
 import { IMaskInput } from 'react-imask'
-import {
-  useFloating,
-  autoUpdate,
-  offset as offsetMiddleware,
-  flip,
-  shift,
-  useDismiss,
-  useInteractions,
-  FloatingPortal,
-} from '@floating-ui/react'
+import { FloatingFocusManager, FloatingPortal } from '@floating-ui/react'
 import clsx from 'clsx'
-import { InputField, splitInputFieldProps } from '../base/InputField'
+import { RiCalendarLine } from '@remixicon/react'
+import { InputField, inputFieldLabelId, splitInputFieldProps } from '../base/InputField'
 import { baseInputContract } from '@/theme/contracts/base-input'
 import { useMergeRefs } from '@/utils/useMergeRefs'
 import { Calendar, defaultLocale } from '../../Calendar'
 import { contractPart } from '@/theme/contract'
 import { dateInputContract } from '@/theme/contracts/date-input'
 import type { DateInputProps } from './DateInput.types'
-import {
-  DATE_INPUT_MASK,
-  DATE_INPUT_PLACEHOLDER,
-  formatDateToMasked,
-  formatIsoToMasked,
-  formatMaskedToIso,
-  parseMaskedDateString,
-} from './dateInputFormat'
-import { RiCalendarLine } from '@remixicon/react'
+import { DATE_INPUT_MASK, DATE_INPUT_PLACEHOLDER } from './dateInputFormat'
+import { useDateInputValue } from './useDateInputValue'
+import { useCalendarPopover } from './useCalendarPopover'
+
+/** Пустой autoComplete трактуем как off — как в BaseInput. */
+const normalizeAutoComplete = (ac: string | undefined) =>
+  ac === undefined || ac === '' ? 'off' : ac
 
 export const DateInput = forwardRef<HTMLInputElement, DateInputProps>((props, forwardedRef) => {
   const [field, rest] = splitInputFieldProps(props)
@@ -42,180 +24,145 @@ export const DateInput = forwardRef<HTMLInputElement, DateInputProps>((props, fo
     value,
     onChange,
     onAccept,
-    valueFormat = 'masked',
+    valueFormat,
     locale = defaultLocale,
     getDotDays,
+    calendarButtonLabel,
     placeholder = DATE_INPUT_PLACEHOLDER,
+    autoComplete,
+    onKeyDown,
     ...inputProps
   } = rest
   const { error, disabled } = field
   const size = field.size ?? 'medium'
-  const maskedRef = useRef<HTMLInputElement | null>(null)
+  const autoId = useId()
+  const fieldId = field.id ?? autoId
+  // Имя кнопки и диалога: явный проп, иначе подпись поля.
+  const labelledBy = field.label ? inputFieldLabelId(fieldId) : undefined
+
   const containerRef = useRef<HTMLDivElement>(null)
+  const inputElRef = useRef<HTMLInputElement | null>(null)
+  const inputRef = useMergeRefs([inputElRef, forwardedRef])
+  // Куда вернуть фокус при закрытии: на кнопку, если открыли ею, иначе в поле.
+  const returnFocusRef = useRef<HTMLElement | null>(null)
+  const dateValue = useDateInputValue({ value, onChange, onAccept, valueFormat })
+  const toggleRef = useRef<HTMLButtonElement>(null)
+  const {
+    isOpen,
+    focusInside,
+    open,
+    toggle,
+    close,
+    context,
+    floatingStyles,
+    setFloating,
+    getToggleProps,
+    getFloatingProps,
+  } = useCalendarPopover(containerRef, disabled)
 
-  const [isOpen, setIsOpen] = useState(false)
-
-  // Позиционирование календаря: flip (если снизу не помещается) + shift (держит в пределах
-  // вьюпорта по горизонтали). Портал в body, поэтому не обрезается контейнерами со скроллом.
-  const { refs, floatingStyles, context } = useFloating({
-    open: isOpen,
-    onOpenChange: setIsOpen,
-    placement: 'bottom-start',
-    strategy: 'fixed',
-    middleware: [offsetMiddleware(6), flip(), shift({ padding: 8 })],
-    whileElementsMounted: autoUpdate,
-  })
-
-  // Закрытие по клику вне (учитывает порталённый календарь как «свой») и по Escape.
-  const dismiss = useDismiss(context)
-  const { getFloatingProps } = useInteractions([dismiss])
-
-  useLayoutEffect(() => {
-    if (isOpen) refs.setReference(containerRef.current)
-  }, [isOpen, refs])
-
-  /**
-   * Отображаемая строка маски «DD / MM / YYYY».
-   * При valueFormat="iso" + controlled нельзя выводить маску из `value` на каждом рендере:
-   * пока пользователь вводит дату, в форме часто `''`, и маска бы сбрасывалась.
-   */
-  const [internalMasked, setInternalMasked] = useState(() => {
-    if (value === undefined) return ''
-    // ISO в форме → строка маски для поля; masked в форме → уже «DD / MM / YYYY»
-    return valueFormat === 'iso' ? formatIsoToMasked(String(value)) : String(value)
-  })
-
-  const isControlled = value !== undefined
-
-  // Синхронизация маски с ISO из формы при сбросе/загрузке (value меняется снаружи).
-  useEffect(() => {
-    if (value === undefined || valueFormat !== 'iso') return
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- намеренная подстройка отображения под контролируемый value
-    setInternalMasked(formatIsoToMasked(String(value ?? '')))
-  }, [value, valueFormat])
-
-  // Контролируемый masked: value уже в формате маски (не ISO — см. DateInputProps).
-  const displayMasked = isControlled && valueFormat !== 'iso' ? String(value ?? '') : internalMasked
-
-  const calendarDate = parseMaskedDateString(displayMasked)
-
-  const handleRef = useMergeRefs([maskedRef, forwardedRef])
-
-  const emitOnChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const masked = e.target.value
-      /* controlled+masked: маской управляет value с родителя; иначе — локальная маска */
-      if (!isControlled || valueFormat === 'iso') {
-        setInternalMasked(masked)
-      }
-      if (!onChange) return
-      if (valueFormat !== 'iso') {
-        onChange(e)
-        return
-      }
-      const iso = formatMaskedToIso(masked) ?? ''
-      const next = {
-        ...e,
-        target: { ...e.target, value: iso },
-        currentTarget: { ...e.currentTarget, value: iso },
-      } as React.ChangeEvent<HTMLInputElement>
-      onChange(next)
-    },
-    [onChange, valueFormat, isControlled]
-  )
-
-  const emitOnAccept = useCallback(
-    (masked: string) => {
-      if (!onAccept) return
-      if (valueFormat === 'iso') {
-        const iso = formatMaskedToIso(masked) ?? ''
-        onAccept(iso)
-      } else {
-        onAccept(masked)
-      }
-    },
-    [onAccept, valueFormat]
-  )
-
-  /** When user picks a date in the calendar popover */
-  const handleCalendarSelect = (date: Date | null) => {
-    if (!date) return
-    const masked = formatDateToMasked(date)
-    if (!isControlled || valueFormat === 'iso') setInternalMasked(masked)
-    emitOnAccept(masked)
-    setIsOpen(false)
+  const handleCalendarSelect = (date: Date) => {
+    dateValue.acceptDate(date)
+    close()
   }
 
-  /** When user finishes typing in the mask */
-  const handleMaskAccept = (val: string) => {
-    if (!isControlled || valueFormat === 'iso') setInternalMasked(val)
-    emitOnAccept(val)
+  // Alt+↓ открывает календарь с фокусом на дне (как у combobox/date picker в APG).
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    onKeyDown?.(e)
+    if (e.defaultPrevented || !e.altKey || e.key !== 'ArrowDown') return
+    e.preventDefault()
+    returnFocusRef.current = inputElRef.current
+    open(true)
+  }
+
+  const handleToggleClick = (e: MouseEvent<HTMLButtonElement>) => {
+    // Не даём клику всплыть до контейнера (он открывает без переноса фокуса).
+    e.stopPropagation()
+    returnFocusRef.current = toggleRef.current
+    toggle()
   }
 
   const defaultPrefix = (
-    <span
-      onClick={(e) => {
-        e.stopPropagation()
-        if (!disabled) setIsOpen((v) => !v)
-      }}
+    <button
+      ref={toggleRef}
+      type="button"
       className={contractPart(dateInputContract, 'calendar-btn')}
       data-disabled={disabled || undefined}
+      disabled={disabled}
+      aria-label={calendarButtonLabel}
+      aria-labelledby={calendarButtonLabel ? undefined : labelledBy}
+      {...getToggleProps()}
+      onClick={handleToggleClick}
     >
-      <RiCalendarLine size={20} />
-    </span>
+      <RiCalendarLine size={20} aria-hidden />
+    </button>
   )
 
   return (
     <div
       ref={containerRef}
       className={dateInputContract.className}
-      onClick={!disabled ? () => setIsOpen(true) : undefined}
+      onClick={
+        !disabled
+          ? () => {
+              returnFocusRef.current = inputElRef.current
+              open(false)
+            }
+          : undefined
+      }
     >
-      <InputField {...field} prefix={field.prefix ?? defaultPrefix} size={size}>
+      <InputField {...field} id={fieldId} prefix={field.prefix ?? defaultPrefix} size={size}>
         {(_id, control) => (
           <IMaskInput
-            inputRef={handleRef}
+            inputRef={inputRef}
             {...control}
             {...DATE_INPUT_MASK}
             placeholder={placeholder}
-            value={displayMasked}
-            onAccept={handleMaskAccept}
+            value={dateValue.displayMasked}
+            onAccept={dateValue.acceptMasked}
             disabled={disabled}
             data-size={size}
             data-error={!!error || undefined}
-            data-filled={/\d/.test(displayMasked) || undefined}
+            data-filled={/\d/.test(dateValue.displayMasked) || undefined}
             className={clsx(
               baseInputContract.className,
               contractPart(dateInputContract, 'input-inner')
             )}
-            onChange={emitOnChange}
+            onChange={dateValue.handleChange}
+            onKeyDown={handleKeyDown}
             {...(inputProps as object)}
-            autoComplete={(() => {
-              const ac = (inputProps as InputHTMLAttributes<HTMLInputElement>).autoComplete
-              return ac === undefined || ac === '' ? 'off' : ac
-            })()}
+            autoComplete={normalizeAutoComplete(autoComplete)}
           />
         )}
       </InputField>
 
       {isOpen && (
         <FloatingPortal>
-          <div
-            ref={(el) => refs.setFloating(el)}
-            className={contractPart(dateInputContract, 'popover')}
-            style={floatingStyles}
-            {...getFloatingProps({
-              onClick: (e) => e.stopPropagation(),
-              onMouseDown: (e) => e.stopPropagation(),
-            })}
+          <FloatingFocusManager
+            context={context}
+            modal={focusInside}
+            initialFocus={-1}
+            returnFocus={returnFocusRef}
           >
-            <Calendar
-              value={calendarDate}
-              onChange={handleCalendarSelect}
-              locale={locale}
-              getDotDays={getDotDays}
-            />
-          </div>
+            <div
+              ref={setFloating}
+              className={contractPart(dateInputContract, 'popover')}
+              style={floatingStyles}
+              aria-label={labelledBy ? undefined : calendarButtonLabel}
+              aria-labelledby={labelledBy}
+              {...getFloatingProps({
+                onClick: (e) => e.stopPropagation(),
+                onMouseDown: (e) => e.stopPropagation(),
+              })}
+            >
+              <Calendar
+                value={dateValue.calendarDate}
+                onChange={handleCalendarSelect}
+                locale={locale}
+                getDotDays={getDotDays}
+                autoFocus={focusInside}
+              />
+            </div>
+          </FloatingFocusManager>
         </FloatingPortal>
       )}
     </div>

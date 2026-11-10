@@ -30,12 +30,15 @@ afterEach(cleanup)
 
 // textContent label включает aria-hidden маркер «*» у обязательного поля
 const LABEL = /^Поле/
+// У DateInput подпись поля называет и кнопку календаря — берём именно <input>
+const getInput = () =>
+  screen.getAllByLabelText(LABEL).find((el) => el.tagName === 'INPUT') as HTMLInputElement
 
 describe.each(inputs)('%s: доступность поля', (_name, Input) => {
   it('связывает input с label, ошибкой и обязательностью', () => {
     render(<Input label="Поле" hint="Подсказка" error="Ошибка поля" required />)
 
-    const input = screen.getByLabelText(LABEL)
+    const input = getInput()
     expect(input.tagName).toBe('INPUT')
     expect(input).toHaveAttribute('aria-invalid', 'true')
     expect(input).toHaveAttribute('aria-required', 'true')
@@ -49,7 +52,7 @@ describe.each(inputs)('%s: доступность поля', (_name, Input) => {
 
   it('без ошибки и подсказки не выставляет aria-invalid / aria-describedby', () => {
     render(<Input label="Поле" />)
-    const input = screen.getByLabelText(LABEL)
+    const input = getInput()
     expect(input).not.toHaveAttribute('aria-invalid')
     expect(input).not.toHaveAttribute('aria-describedby')
     expect(input).not.toHaveAttribute('aria-required')
@@ -57,7 +60,7 @@ describe.each(inputs)('%s: доступность поля', (_name, Input) => {
 
   it('не пробрасывает пропсы InputField на <input>', () => {
     render(<Input label="Поле" wrapperClassName="custom-wrapper" />)
-    const input = screen.getByLabelText(LABEL)
+    const input = getInput()
     expect(input).not.toHaveAttribute('wrapperClassName')
     expect(input).not.toHaveAttribute('wrapperclassname')
     expect(input).not.toHaveClass('custom-wrapper')

@@ -23,21 +23,21 @@
 
   /* Цвет полосы по смыслу окна. Отдельного атрибута у Modal нет, поэтому смысл берётся из
      содержимого: цвет кнопки подтверждения в футере (ConfirmModal) или иконки статуса
-     (ModalStatus, вариант виден только по инлайн-стилю фона иконки). */
+     (ModalStatus, data-variant иконки статуса). */
   .vl-modal__panel:has(.vl-modal-footer [data-color='error']),
-  .vl-modal__panel:has(.vl-modal-status__status-icon[style*='error']) {
+  .vl-modal__panel:has(.vl-modal-status__status-icon[data-variant='error']) {
     --pixel-modal-bar-bg: var(--error-base);
   }
   .vl-modal__panel:has(.vl-modal-footer [data-color='success']),
-  .vl-modal__panel:has(.vl-modal-status__status-icon[style*='success']) {
+  .vl-modal__panel:has(.vl-modal-status__status-icon[data-variant='success']) {
     --pixel-modal-bar-bg: var(--success-base);
   }
-  .vl-modal__panel:has(.vl-modal-status__status-icon[style*='information']) {
+  .vl-modal__panel:has(.vl-modal-status__status-icon[data-variant='info']) {
     --pixel-modal-bar-bg: var(--information-base);
   }
   /* На жёлтом — чернила: белый текст на warning-base не читается */
   .vl-modal__panel:has(.vl-modal-footer [data-color='warning']),
-  .vl-modal__panel:has(.vl-modal-status__status-icon[style*='warning']) {
+  .vl-modal__panel:has(.vl-modal-status__status-icon[data-variant='warning']) {
     --pixel-modal-bar-bg: var(--warning-base);
     --pixel-modal-bar-text: var(--static-black);
   }

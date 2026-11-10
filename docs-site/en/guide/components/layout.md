@@ -77,29 +77,29 @@ SidebarLayout                      ← collapsed context provider + flex wrapper
 
 ### Sidebar components
 
-| Component                    | Role                                                                                                              |
-| ---------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| **`SidebarLayout`**          | **`SidebarContext`** provider (**collapsed**, **toggle**) and flex wrapper for **`Sidebar`** + **`SidebarMain`**. |
-| **`Sidebar`**                | Column root: width expanded / collapsed, **`collapsed`**.                                                         |
-| **`SidebarHeader`**          | Sidebar header; inner **`SidebarHeaderCard`**; optional **`divider`**, **`trigger`** slot (**`SidebarTrigger`**). |
-| **`SidebarHeaderCard`**      | Brand / title card (inside **`SidebarHeader`**; can be used standalone).                                          |
-| **`SidebarContent`**         | Scrollable middle between header and footer.                                                                      |
-| **`SidebarSection`**         | Group of items with **`label`**.                                                                                  |
-| **`SidebarItem`**            | Menu row: **`leftNode`** (icon), **`active`**, **`collapsed`**.                                                   |
-| **`SidebarTrigger`**         | Collapse button; without **`SidebarLayout`** pass **`onToggle`** and **`collapsed`**.                             |
-| **`SidebarFooter`**          | Footer with **`SidebarUserProfileCard`** (avatar, name, email).                                                   |
-| **`SidebarUserProfileCard`** | Profile card (**`SidebarFooter`** or standalone).                                                                 |
-| **`SidebarCard`**            | Generic card inside the column.                                                                                   |
+| Component                    | Role                                                                                                                                                                                                                                                                           |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **`SidebarLayout`**          | **`SidebarContext`** provider (**collapsed**, **toggle**) and flex wrapper for **`Sidebar`** + **`SidebarMain`**.                                                                                                                                                              |
+| **`Sidebar`**                | Column root: width expanded / collapsed, **`collapsed`**.                                                                                                                                                                                                                      |
+| **`SidebarHeader`**          | Sidebar header; inner **`SidebarHeaderCard`**; optional **`divider`**, **`trigger`** slot (**`SidebarTrigger`**).                                                                                                                                                              |
+| **`SidebarHeaderCard`**      | Brand / title card (inside **`SidebarHeader`**; can be used standalone). With **`options`** it is a menu button (WAI-ARIA APG): ↑/↓/Home/End, typeahead, Escape; items are **`menuitemradio`**.                                                                                |
+| **`SidebarContent`**         | Scrollable middle between header and footer. Renders as **`<nav>`** (landmark); name it with **`aria-label`** when there are several navs.                                                                                                                                     |
+| **`SidebarSection`**         | Group of items with **`label`**.                                                                                                                                                                                                                                               |
+| **`SidebarItem`**            | Menu row: **`leftNode`** (icon), **`active`**, **`collapsed`**. With **`href`** renders a link **`<a>`**, otherwise a **`<button>`**. When **`collapsed`** the item text stays its accessible name. **`SidebarSection`** with **`label`** is a **`role="group"`** named by it. |
+| **`SidebarTrigger`**         | Collapse button; without **`SidebarLayout`** pass **`onToggle`** and **`collapsed`**.                                                                                                                                                                                          |
+| **`SidebarFooter`**          | Footer with **`SidebarUserProfileCard`** (avatar, name, email).                                                                                                                                                                                                                |
+| **`SidebarUserProfileCard`** | Profile card (**`SidebarFooter`** or standalone).                                                                                                                                                                                                                              |
+| **`SidebarCard`**            | Generic card inside the column.                                                                                                                                                                                                                                                |
 
 ### Main area and root
 
-| Component                 | Role                                                                                                                                             |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **`LayoutRoot`**          | Page root with sidebar: **`height`**, **`overflow`**, so **`SidebarInsetContent`** is the only scroll under **`PageHeader`**.                    |
-| **`SidebarInset`**        | **`<main>`**: **`insetLeft`** offsets from the left by sidebar width (account for **`collapsed`**).                                              |
-| **`SidebarInsetContent`** | Region under **`PageHeader`** with **`overflow-y: auto`**.                                                                                       |
-| **`PageHeader`**          | Top strip of main column; **`children`** — any layout. Storybook demo: **`PageHeaderDemoContent`**. Separate page — [PageHeader](./page-header). |
-| **`SidebarMain`**         | Alternative to **`SidebarInset`** with **`SidebarLayout`**: simple content block with left offset.                                               |
+| Component                 | Role                                                                                                                                                   |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **`LayoutRoot`**          | Page root with sidebar: **`height`**, **`overflow`**, so **`SidebarInsetContent`** is the only scroll under **`PageHeader`**.                          |
+| **`SidebarInset`**        | **`<main>`**: **`insetLeft`** offsets from the left by sidebar width (account for **`collapsed`**).                                                    |
+| **`SidebarInsetContent`** | Region under **`PageHeader`** with **`overflow-y: auto`**. Keyboard focusable (**`tabIndex={0}`**); with **`aria-label`** becomes **`role="region"`**. |
+| **`PageHeader`**          | Top strip of main column; **`children`** — any layout. Storybook demo: **`PageHeaderDemoContent`**. Separate page — [PageHeader](./page-header).       |
+| **`SidebarMain`**         | Alternative to **`SidebarInset`** with **`SidebarLayout`**: simple content block with left offset.                                                     |
 
 ## Import
 

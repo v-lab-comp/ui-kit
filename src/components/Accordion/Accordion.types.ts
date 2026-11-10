@@ -7,7 +7,7 @@ export interface AccordionProps extends Omit<HTMLAttributes<HTMLDivElement>, 'ti
   children: ReactNode
   /** Раскрыт по умолчанию */
   defaultOpen?: boolean
-  /** Управляемый режим: раскрыт ли (в паре с onOpenChange) */
+  /** Управляемый режим: раскрыт ли (`open !== undefined`; смену получайте через onOpenChange) */
   open?: boolean
   /** Колбэк при смене раскрытия */
   onOpenChange?: (open: boolean) => void
@@ -17,4 +17,9 @@ export interface AccordionProps extends Omit<HTMLAttributes<HTMLDivElement>, 'ti
   leftIcon?: ReactNode
   /** true = иконка +/− слева от заголовка; false = иконка +/− справа (при leftIcon — слева от заголовка ещё и leftIcon) */
   flipIcon?: boolean
+  /**
+   * Панель контента — `role="region"` с именем из заголовка. По умолчанию выключено:
+   * включайте для немногих важных панелей, чтобы не плодить ориентиры на странице.
+   */
+  region?: boolean
 }

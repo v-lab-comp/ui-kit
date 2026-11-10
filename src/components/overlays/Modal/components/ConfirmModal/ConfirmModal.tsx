@@ -1,4 +1,4 @@
-import { forwardRef, useState } from 'react'
+import { forwardRef, useMemo, useRef, useState, type MutableRefObject } from 'react'
 import { Modal } from '../../Modal'
 import type { ModalHandle } from '../../Modal.types'
 import { ModalBody } from '../ModalBody'
@@ -26,6 +26,18 @@ export const ConfirmModal = forwardRef<ModalHandle, ConfirmModalProps>(
     ref
   ) => {
     const [loading, setLoading] = useState(false)
+    const footerRef = useRef<HTMLDivElement>(null)
+    /* APG alertdialog: начальный фокус — на наименее опасном действии (Cancel — первая
+       кнопка футера). Ref читается FloatingFocusManager при открытии, когда футер уже в DOM. */
+    const cancelFocusRef = useMemo<MutableRefObject<HTMLElement | null>>(
+      () => ({
+        get current() {
+          return footerRef.current?.querySelector<HTMLElement>('button') ?? null
+        },
+        set current(_value) {},
+      }),
+      []
+    )
 
     const handleConfirm = async () => {
       setLoading(true)
@@ -43,14 +55,20 @@ export const ConfirmModal = forwardRef<ModalHandle, ConfirmModalProps>(
     }
 
     return (
-      <Modal ref={ref} closeOnBackdropClick={!isDestructive} {...modalProps}>
+      <Modal
+        ref={ref}
+        closeOnBackdropClick={!isDestructive}
+        role={isDestructive ? 'alertdialog' : 'dialog'}
+        initialFocus={isDestructive ? cancelFocusRef : undefined}
+        {...modalProps}
+      >
         <ModalHeader title={title} subtitle={subtitle} />
         <ModalBody>
           {children && (
             <div className={contractPart(confirmModalContract, 'content')}>{children}</div>
           )}
         </ModalBody>
-        <ModalFooter>
+        <ModalFooter ref={footerRef}>
           <ModalFooterConfirmActions
             cancelText={cancelText}
             confirmText={confirmText}

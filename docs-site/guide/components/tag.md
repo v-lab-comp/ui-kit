@@ -67,7 +67,7 @@ export function TagsRow() {
 | `suffix`       | `ReactNode`                               | Узел справа от подписи, до крестика                                                                                       |
 | `onClick`      | `MouseEventHandler`                       | Корень становится кликабельным                                                                                            |
 | `onDismiss`    | `() => void`                              | Кнопка с крестиком                                                                                                        |
-| `dismissLabel` | `string`                                  | `aria-label` удаления (по умолчанию **`'Remove'`**)                                                                       |
+| `dismissLabel` | `string`                                  | Начало имени кнопки удаления: имя = `dismissLabel` + текст тега (по умолчанию **`'Remove'`** → «Remove Design»)           |
 | `disabled`     | `boolean`                                 | Неактивное состояние                                                                                                      |
 
 Плюс атрибуты **`HTMLAttributes<HTMLSpanElement>`**, кроме **`children`**, **`prefix`** и **`suffix`**.

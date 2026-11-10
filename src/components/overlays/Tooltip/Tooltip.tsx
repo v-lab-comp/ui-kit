@@ -6,8 +6,11 @@ import {
   flip,
   shift,
   FloatingPortal,
+  useDismiss,
+  useFocus,
   useHover,
   useInteractions,
+  useRole,
   useMergeRefs,
 } from '@floating-ui/react'
 import { getElementRef } from '@/utils/getElementRef'
@@ -24,7 +27,12 @@ export function Tooltip({
 }: TooltipProps) {
   const [isOpen, setIsOpen] = useState(false)
 
-  const { refs, floatingStyles, context } = useFloating({
+  const {
+    refs,
+    floatingStyles,
+    context,
+    placement: resolvedPlacement,
+  } = useFloating({
     open: isOpen,
     onOpenChange: setIsOpen,
     placement,
@@ -34,8 +42,13 @@ export function Tooltip({
     whileElementsMounted: autoUpdate,
   })
 
+  // APG Tooltip: открытие по наведению и по фокусу с клавиатуры, Escape закрывает,
+  // role="tooltip" + aria-describedby на триггере (пока подсказка открыта)
   const hover = useHover(context, { delay: { open: delay, close: 0 } })
-  const { getReferenceProps, getFloatingProps } = useInteractions([hover])
+  const focus = useFocus(context)
+  const dismiss = useDismiss(context)
+  const role = useRole(context, { role: 'tooltip' })
+  const { getReferenceProps, getFloatingProps } = useInteractions([hover, focus, dismiss, role])
 
   const child = children as ReactElement<Record<string, unknown>>
   /* Floating UI: merge reference ref + child ref — обходящих паттерн без чтения .current в render.
@@ -52,7 +65,7 @@ export function Tooltip({
             // eslint-disable-next-line react-hooks/refs
             ref={refs.setFloating}
             className={tooltipContract.className}
-            {...contractAttrs(tooltipContract, {})}
+            {...contractAttrs(tooltipContract, { placement: resolvedPlacement })}
             style={{
               ...floatingStyles,
               ...(zIndex !== undefined ? { zIndex } : {}),

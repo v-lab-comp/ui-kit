@@ -1,49 +1,89 @@
+import { forwardRef, useId } from 'react'
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes, Ref } from 'react'
 import clsx from 'clsx'
 import { useSidebar } from '../SidebarContext'
 import { contractAttrs, contractPart } from '@/theme/contract'
 import { sidebarItemContract } from '@/theme/contracts/sidebar-item'
 import type { SidebarItemProps } from './Item.types'
 
-export type { SidebarItemProps } from './Item.types'
+export type { SidebarItemProps, SidebarItemButtonProps, SidebarItemLinkProps } from './Item.types'
 
-export function SidebarItem({
-  leftNode,
-  children,
-  rightNode,
-  active = false,
-  collapsed: propCollapsed,
-  className,
-  ...props
-}: SidebarItemProps) {
-  const { collapsed } = useSidebar(propCollapsed)
-  return (
-    <div
-      className={clsx(sidebarItemContract.className, className)}
-      {...contractAttrs(sidebarItemContract, { collapsed })}
-    >
-      <span
-        className={contractPart(sidebarItemContract, 'bar-slot')}
-        data-active={active || undefined}
-        aria-hidden
-      />
-      <button
-        type="button"
-        className={contractPart(sidebarItemContract, 'item')}
-        data-active={active || undefined}
-        data-collapsed={collapsed || undefined}
-        aria-current={active ? 'page' : undefined}
-        {...props}
-      >
+/** Пункт сайдбара: с `href` — ссылка `<a>`, без — кнопка. ref — на ссылку/кнопку. */
+export const SidebarItem = forwardRef<HTMLButtonElement | HTMLAnchorElement, SidebarItemProps>(
+  (
+    {
+      leftNode,
+      children,
+      rightNode,
+      active = false,
+      collapsed: propCollapsed,
+      className,
+      ...props
+    },
+    ref
+  ) => {
+    const { collapsed } = useSidebar(propCollapsed)
+    const labelId = useId()
+    // В свёрнутом виде подпись скрыта скином (display: none), но aria-labelledby
+    // берёт имя и у скрытого элемента — иконка-кнопка не остаётся без имени
+    const labelledBy =
+      collapsed && children != null && props['aria-label'] == null
+        ? (props['aria-labelledby'] ?? labelId)
+        : props['aria-labelledby']
+
+    const itemProps = {
+      className: contractPart(sidebarItemContract, 'item'),
+      'data-active': active || undefined,
+      'data-collapsed': collapsed || undefined,
+      'aria-current': active ? ('page' as const) : undefined,
+    }
+    const content = (
+      <>
         {leftNode && <span className={contractPart(sidebarItemContract, 'left')}>{leftNode}</span>}
         {children != null && (
-          <span className={contractPart(sidebarItemContract, 'label')}>{children}</span>
+          <span id={labelId} className={contractPart(sidebarItemContract, 'label')}>
+            {children}
+          </span>
         )}
         {!collapsed && rightNode != null && (
           <span className={contractPart(sidebarItemContract, 'right')}>{rightNode}</span>
         )}
-      </button>
-    </div>
-  )
-}
+      </>
+    )
+
+    return (
+      <div
+        className={clsx(sidebarItemContract.className, className)}
+        {...contractAttrs(sidebarItemContract, { collapsed })}
+      >
+        <span
+          className={contractPart(sidebarItemContract, 'bar-slot')}
+          data-active={active || undefined}
+          aria-hidden
+        />
+        {props.href !== undefined ? (
+          <a
+            ref={ref as Ref<HTMLAnchorElement>}
+            {...itemProps}
+            {...(props as AnchorHTMLAttributes<HTMLAnchorElement>)}
+            aria-labelledby={labelledBy}
+          >
+            {content}
+          </a>
+        ) : (
+          <button
+            ref={ref as Ref<HTMLButtonElement>}
+            type="button"
+            {...itemProps}
+            {...(props as ButtonHTMLAttributes<HTMLButtonElement>)}
+            aria-labelledby={labelledBy}
+          >
+            {content}
+          </button>
+        )}
+      </div>
+    )
+  }
+)
 
 SidebarItem.displayName = 'SidebarItem'

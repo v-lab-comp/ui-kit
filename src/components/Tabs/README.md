@@ -20,7 +20,9 @@ Compound component для горизонтальных вкладок с под�
 ```
 TabsContext (createContext + useTabsContext)
     ↓
-Tabs (Provider, сбор values из Tabs.Tab, value/onChange)
+Tabs (Provider, регистрация вкладок через контекст, value/onChange)
+    ↓
+Tabs.List (role="tablist", roving tabindex — Composite из @floating-ui/react)
     ↓
 Tabs.Tab, Tabs.Panel (читают контекст)
 ```
@@ -29,6 +31,7 @@ Tabs.Tab, Tabs.Panel (читают контекст)
 
 ```ts
 export const Tabs = Object.assign(TabsRoot, {
+  List: TabsList,
   Tab: TabsTab,
   Panel: TabsPanel,
 })
@@ -42,21 +45,26 @@ export const Tabs = Object.assign(TabsRoot, {
 
 ### Контекст (TabsContext.tsx)
 
-- Хранит `value`, `onChange`, `values` и `id` — префикс для `id` / `aria-controls` / `aria-labelledby` вкладок и панелей.
+- Хранит `value`, `onChange`, `values`, `register` и `id` — префикс для `id` / `aria-controls` / `aria-labelledby` вкладок и панелей.
 - `useTabsContext()` — хук для Tab/Panel; вне `Tabs` бросает ошибку.
 
 ### Корень (Tabs)
 
-- Собирает `values` из `Tabs.Tab` через `Children.forEach`.
+- `values` — вкладки, зарегистрированные через `register` (обёртки и фрагменты вокруг `Tabs.Tab` допустимы).
 - Неконтролируемый: `defaultValue`, внутренний state.
-- Контролируемый: `value` + `onChange` (нужны оба, иначе компонент остаётся неконтролируемым).
-- Рендерит корень `vl-tabs` со списком вкладок (`vl-tabs__list`, `role="tablist"`) и разделителем (`vl-tabs__separator`), затем панели.
+- Контролируемый: `value !== undefined` (смену получайте через `onChange`).
+- Если среди детей нет `Tabs.List`, сам оборачивает все не-`Tabs.Panel` в `Tabs.List` (имя списка — `aria-label` / `aria-labelledby` корня), затем панели.
+
+### Tabs.List
+
+- Рендерит `vl-tabs` со списком (`vl-tabs__list`, `role="tablist"`) и разделителем (`vl-tabs__separator`); `ref`, `className` и остальные пропсы — на `role="tablist"`.
+- WAI-ARIA APG: один tab stop на активной вкладке; ←/→ (по кругу), Home/End переводят фокус и активируют вкладку (automatic activation).
 
 ### Tabs.Tab
 
 - Читает контекст, рендерит кнопку `vl-tabs__tab` с `role="tab"` и `aria-selected`.
 - При `value === activeValue` получает атрибут `data-active` (состояние `active` из контракта `src/theme/contracts/tabs.ts`); подчёркивание цветом `--primary-base` рисует скин.
-- По клику вызывает `onChange(value)`.
+- По клику вызывает `onChange(value)`. Принимает `ref`, `className` и остальные пропсы `button`.
 
 ### Tabs.Panel
 
@@ -96,11 +104,19 @@ const [active, setActive] = useState('tab2')
 
 ### Tabs (корень)
 
-| Проп           | Тип                       | По умолчанию | Описание                              |
-| -------------- | ------------------------- | ------------ | ------------------------------------- |
-| `defaultValue` | `string`                  | первый Tab   | Начальная вкладка (неконтролируемый)  |
-| `value`        | `string`                  | —            | Текущая вкладка (контролируемый)      |
-| `onChange`     | `(value: string) => void` | —            | Колбэк смены вкладки (контролируемый) |
+| Проп                             | Тип                       | По умолчанию | Описание                              |
+| -------------------------------- | ------------------------- | ------------ | ------------------------------------- |
+| `defaultValue`                   | `string`                  | первый Tab   | Начальная вкладка (неконтролируемый)  |
+| `value`                          | `string`                  | —            | Текущая вкладка (контролируемый)      |
+| `onChange`                       | `(value: string) => void` | —            | Колбэк смены вкладки (контролируемый) |
+| `aria-label` / `aria-labelledby` | `string`                  | —            | Имя списка вкладок без `Tabs.List`    |
+
+### Tabs.List
+
+| Проп                             | Тип         | Описание                      |
+| -------------------------------- | ----------- | ----------------------------- |
+| `aria-label` / `aria-labelledby` | `string`    | Доступное имя списка вкладок  |
+| `children`                       | `ReactNode` | `Tabs.Tab` (можно в обёртках) |
 
 ### Tabs.Tab
 
@@ -123,7 +139,8 @@ const [active, setActive] = useState('tab2')
 ```
 Tabs/
 ├── TabsContext.tsx   # Context + useTabsContext
-├── Tabs.tsx          # TabsRoot, TabsTab, TabsPanel
+├── Tabs.tsx          # TabsRoot, TabsList, TabsTab, TabsPanel
+├── Tabs.test.tsx
 ├── (контракт — src/theme/contracts/tabs.ts, стили — src/skins/corporate/components/tabs.css)
 ├── index.ts
 ├── Tabs.stories.tsx

@@ -1,9 +1,11 @@
-import type { ComponentProps } from 'react'
-import { SvgIcon } from '../SvgIcon'
+import { forwardRef } from 'react'
+import { SvgIcon, type FlagProps } from '../SvgIcon'
 
 const svg =
   '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n<g clip-path="url(#clip0_253_6515)">\n<path d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24Z" fill="#F0F0F0"/>\n<path d="M16.5184 9.39128H13.5061L12 6.78259L10.4939 9.39128H7.48157L8.98785 12L7.48157 14.6087H10.4939L12 17.2173L13.5061 14.6087H16.5184L15.0121 12L16.5184 9.39128ZM13.8504 12L12.9253 13.6025H11.0749L10.1496 12L11.0748 10.3974H12.9252L13.8504 12ZM12 8.7948L12.3443 9.39123H11.6557L12 8.7948ZM9.22433 10.3974H9.91302L9.56868 10.9938L9.22433 10.3974ZM9.22433 13.6025L9.56872 13.0061L9.91307 13.6025H9.22433ZM12 15.2051L11.6557 14.6087H12.3443L12 15.2051ZM14.7756 13.6025H14.087L14.4313 13.0061L14.7756 13.6025ZM14.087 10.3974H14.7756L14.4313 10.9938L14.087 10.3974Z" fill="#0052B4"/>\n<path d="M19.4699 2.60864H4.53015C3.43501 3.48089 2.49582 4.54036 1.76129 5.7391H22.2387C21.5041 4.54041 20.565 3.48089 19.4699 2.60864Z" fill="#0052B4"/>\n<path d="M4.53015 21.3913H19.4698C20.565 20.5191 21.5042 19.4596 22.2387 18.2609H1.76129C2.49587 19.4596 3.43506 20.5191 4.53015 21.3913Z" fill="#0052B4"/>\n</g>\n<defs>\n<clipPath id="clip0_253_6515">\n<rect width="24" height="24" fill="white"/>\n</clipPath>\n</defs>\n</svg>\n'
 
-export function FlagIsrael(props: Omit<ComponentProps<typeof SvgIcon>, 'svg' | 'title'>) {
-  return <SvgIcon {...props} svg={svg} title="Israel" />
-}
+export const FlagIsrael = forwardRef<HTMLSpanElement, FlagProps>(function FlagIsrael(props, ref) {
+  return <SvgIcon title="Israel" {...props} ref={ref} svg={svg} />
+})
+
+FlagIsrael.displayName = 'FlagIsrael'
