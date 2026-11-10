@@ -162,6 +162,7 @@ export type {
   SidebarItemProps,
   SidebarItemButtonProps,
   SidebarItemLinkProps,
+  SidebarItemComponent,
   SidebarCardProps,
   SidebarHeaderCardProps,
   SidebarHeaderCardOption,

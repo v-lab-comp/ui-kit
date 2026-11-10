@@ -201,7 +201,7 @@ export function HookCompositeInputDemo() {
 
   const { parts, notifyParts } = useCompositeInput<[string, string]>({
     value: composed,
-    onChange: (e) => setComposed(e.target.value),
+    onChange: (next) => setComposed(next),
     split: (s) => {
       const i = s.indexOf('@')
       if (i === -1) return [s, '']

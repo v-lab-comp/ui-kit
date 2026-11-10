@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { useState } from 'react'
+import { forwardRef, useState, type AnchorHTMLAttributes } from 'react'
 import {
   RiDashboardLine,
   RiArrowRightSLine,
@@ -83,6 +83,48 @@ export default meta
 type Story = StoryObj<typeof SidebarItem>
 
 /** Default state */
+/** Имитация Link роутера: переход без перезагрузки страницы */
+const FakeLink = forwardRef<HTMLAnchorElement, AnchorHTMLAttributes<HTMLAnchorElement>>(
+  ({ onClick, ...props }, ref) => (
+    <a
+      ref={ref}
+      {...props}
+      onClick={(event) => {
+        onClick?.(event)
+        event.preventDefault()
+      }}
+    />
+  )
+)
+FakeLink.displayName = 'FakeLink'
+
+/** Ссылка роутера: `as={Link}` рендерит переданный компонент с `href` и пропсами ссылки */
+export const WithRouterLink: Story = {
+  parameters: {
+    docs: {
+      source: {
+        type: 'code',
+        language: 'tsx',
+        code: `import { Link } from 'react-router-dom' // или next/link
+
+<SidebarItem as={Link} href="/projects" leftNode={<RiFolderLine />} active>
+  Projects
+</SidebarItem>`,
+      },
+    },
+  },
+  render: () => (
+    <div style={{ width: 280, display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <SidebarItem as={FakeLink} href="#dashboard" leftNode={<RiDashboardLine />}>
+        Dashboard
+      </SidebarItem>
+      <SidebarItem as={FakeLink} href="#projects" leftNode={<RiFolderLine />} active>
+        Projects
+      </SidebarItem>
+    </div>
+  ),
+}
+
 export const Default: Story = {
   args: {
     leftNode: <RiDashboardLine />,
@@ -171,4 +213,33 @@ export const MultipleItemsCollapsed: Story = {
       </div>
     ),
   ],
+}
+
+/** Навигация: с `href` пункт — ссылка `<a>`, активный получает `aria-current="page"`.
+ *  Для ссылок роутера — свой `onClick` с `preventDefault()` и переходом роутера. */
+export const AsLinks: Story = {
+  render: function Render() {
+    const [activeId, setActiveId] = useState<string>(ITEMS[0].id)
+    return (
+      <nav
+        aria-label="Sidebar"
+        style={{ width: 280, display: 'flex', flexDirection: 'column', gap: 4 }}
+      >
+        {ITEMS.slice(0, 4).map(({ id, icon: Icon, label }) => (
+          <SidebarItem
+            key={id}
+            href={`#${id}`}
+            leftNode={<Icon />}
+            active={activeId === id}
+            onClick={(e) => {
+              e.preventDefault()
+              setActiveId(id)
+            }}
+          >
+            {label}
+          </SidebarItem>
+        ))}
+      </nav>
+    )
+  },
 }

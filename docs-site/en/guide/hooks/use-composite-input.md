@@ -21,12 +21,12 @@ import { useCompositeInput } from '@v-lab/ui-kit'
 
 ## Options fields
 
-| Field                                 | Description                                                           |
-| ------------------------------------- | --------------------------------------------------------------------- |
-| `split` / `join`                      | Parse string into a tuple of parts and join back                      |
-| `value` / `defaultValue` / `onChange` | Same as a controlled form field                                       |
-| `name`                                | Name of the main hidden input with the full string                    |
-| `formNames`                           | Hidden field names by part index; `undefined` — part is not submitted |
+| Field                                 | Description                                                                                         |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `split` / `join`                      | Parse string into a tuple of parts and join back                                                    |
+| `value` / `defaultValue` / `onChange` | Same as a controlled form field; `onChange(value: string)` receives the joined string, not an event |
+| `name`                                | Name of the main hidden input with the full string                                                  |
+| `formNames`                           | Hidden field names by part index; `undefined` — part is not submitted                               |
 
 ## Example
 
@@ -46,7 +46,7 @@ function joinEmail([local, domain]: [string, string]) {
 export function useEmailParts(value: string, onChange: (v: string) => void) {
   return useCompositeInput<[string, string]>({
     value,
-    onChange: (e) => onChange(e.target.value),
+    onChange,
     split: splitEmail,
     join: joinEmail,
     name: 'email',

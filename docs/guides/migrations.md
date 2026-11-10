@@ -120,6 +120,17 @@ Peer `react` / `react-dom` — `^18.2.0 || ^19.0.0` (было `>=17`). На Reac
 | `RHF*Props` — свои интерфейсы; `createRHFAdapter` разворачивал `field` | выводятся из фабрики; маппер сам передаёт `name`, `ref`, `onChange`, `onBlur`                                                     |
 | `SvgIcon` — `SVGProps`, всегда в дереве доступности                    | `HTMLAttributes<HTMLSpanElement>`, декоративный без `title` / `aria-label`                                                        |
 
+### 10. `onChange` со значением у составных полей
+
+`PhoneInput`, `SiteInput`, `DateInput` и поля на `useCompositeInput` передают в `onChange` значение, а не событие `{ target: { value, name } }`:
+
+```diff
+- <PhoneInput onChange={(e) => setPhone(e.target.value)} />
++ <PhoneInput onChange={setPhone} />
+```
+
+`DateInput` вызывает `onChange` и при выборе даты в календаре (значение — в формате `valueFormat`). С react-hook-form `field.onChange` передаётся напрямую.
+
 ## Sub-entry points для тяжёлых peer-зависимостей
 
 С версии `0.2.0` `DateInput`, `PhoneInput`, `PdfPreview` и RHF-адаптеры вынесены в отдельные entry points. Импорт из основного `@v-lab/ui-kit` не сработает.

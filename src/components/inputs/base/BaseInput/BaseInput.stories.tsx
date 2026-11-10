@@ -7,6 +7,8 @@ const meta: Meta<typeof BaseInput> = {
   component: BaseInput,
   title: 'Inputs/BaseInput',
   tags: ['autodocs'],
+  // У голого поля нет подписи — имя для скринридера (axe: label)
+  args: { 'aria-label': 'Input' },
   parameters: {
     docs: { canvas: { sourceState: 'shown' } },
   },
@@ -79,11 +81,11 @@ export const Gallery: Story = {
           Big (40px)
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <BaseInput size="big" placeholder="Default" />
-          <BaseInput size="big" defaultValue="With value" />
-          <BaseInput size="big" placeholder="Error" hasError />
-          <BaseInput size="big" placeholder="Disabled" disabled />
-          <BaseInput size="big" defaultValue="Read-only" readOnly />
+          <BaseInput aria-label="Big — Default" size="big" placeholder="Default" />
+          <BaseInput aria-label="Big — With value" size="big" defaultValue="With value" />
+          <BaseInput aria-label="Big — Error" size="big" placeholder="Error" hasError />
+          <BaseInput aria-label="Big — Disabled" size="big" placeholder="Disabled" disabled />
+          <BaseInput aria-label="Big — Read-only" size="big" defaultValue="Read-only" readOnly />
         </div>
       </div>
       <div>
@@ -99,12 +101,20 @@ export const Gallery: Story = {
           Medium (36px)
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <BaseInput placeholder="Default" />
-          <BaseInput defaultValue="With value" />
-          <BaseInput placeholder="Error" hasError />
-          <BaseInput defaultValue="Error with value" hasError />
-          <BaseInput placeholder="Disabled" disabled />
-          <BaseInput defaultValue="Disabled with value" disabled />
+          <BaseInput aria-label="Medium — Default" placeholder="Default" />
+          <BaseInput aria-label="Medium — With value" defaultValue="With value" />
+          <BaseInput aria-label="Medium — Error" placeholder="Error" hasError />
+          <BaseInput
+            aria-label="Medium — Error with value"
+            defaultValue="Error with value"
+            hasError
+          />
+          <BaseInput aria-label="Medium — Disabled" placeholder="Disabled" disabled />
+          <BaseInput
+            aria-label="Medium — Disabled with value"
+            defaultValue="Disabled with value"
+            disabled
+          />
         </div>
       </div>
       <div>
@@ -120,10 +130,10 @@ export const Gallery: Story = {
           Small (32px)
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <BaseInput size="small" placeholder="Default" />
-          <BaseInput size="small" defaultValue="With value" />
-          <BaseInput size="small" placeholder="Error" hasError />
-          <BaseInput size="small" placeholder="Disabled" disabled />
+          <BaseInput aria-label="Small — Default" size="small" placeholder="Default" />
+          <BaseInput aria-label="Small — With value" size="small" defaultValue="With value" />
+          <BaseInput aria-label="Small — Error" size="small" placeholder="Error" hasError />
+          <BaseInput aria-label="Small — Disabled" size="small" placeholder="Disabled" disabled />
         </div>
       </div>
     </div>

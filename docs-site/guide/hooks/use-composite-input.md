@@ -21,12 +21,12 @@ import { useCompositeInput } from '@v-lab/ui-kit'
 
 ## Поля опций
 
-| Поле                                  | Описание                                                                      |
-| ------------------------------------- | ----------------------------------------------------------------------------- |
-| `split` / `join`                      | Разбор строки в кортеж частей и обратная сборка                               |
-| `value` / `defaultValue` / `onChange` | Как у контролируемого поля формы                                              |
-| `name`                                | Имя основного скрытого инпута с полной строкой                                |
-| `formNames`                           | Имена скрытых полей по индексам частей; `undefined` — часть не уходит в форму |
+| Поле                                  | Описание                                                                                          |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `split` / `join`                      | Разбор строки в кортеж частей и обратная сборка                                                   |
+| `value` / `defaultValue` / `onChange` | Как у контролируемого поля формы; `onChange(value: string)` получает собранную строку, не событие |
+| `name`                                | Имя основного скрытого инпута с полной строкой                                                    |
+| `formNames`                           | Имена скрытых полей по индексам частей; `undefined` — часть не уходит в форму                     |
 
 ## Пример
 
@@ -46,7 +46,7 @@ function joinEmail([local, domain]: [string, string]) {
 export function useEmailParts(value: string, onChange: (v: string) => void) {
   return useCompositeInput<[string, string]>({
     value,
-    onChange: (e) => onChange(e.target.value),
+    onChange,
     split: splitEmail,
     join: joinEmail,
     name: 'email',

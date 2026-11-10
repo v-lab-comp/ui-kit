@@ -53,6 +53,34 @@ const ASSERTIVE_COLORS = new Set<ToastColor>(['error', 'warning'])
 
 const isCompactSize = (size: ToastSize | undefined) => size === 'x-small' || size === 'small'
 
+/** Компактный тост (x-small/small): только первое действие — в строку с заголовком */
+const CompactContent = ({ action }: { action: ToastActionElement | undefined }) =>
+  action != null ? (
+    <span className={contractPart(toastContract, 'action-inline')}>{action}</span>
+  ) : null
+
+/** Полный тост: описание и ряд действий с разделителями */
+const FullContent = ({ description, actions }: Pick<ToastProps, 'description' | 'actions'>) => (
+  <>
+    {description != null && (
+      <span className={contractPart(toastContract, 'description')}>{description}</span>
+    )}
+    {actions != null && actions.length > 0 && (
+      <div className={contractPart(toastContract, 'actions')}>
+        {actions.map((action, i) => (
+          <span
+            key={isValidElement(action) ? (action.key ?? i) : i}
+            className={contractPart(toastContract, 'action-item')}
+            data-sep-after={i < actions.length - 1 || undefined}
+          >
+            {action}
+          </span>
+        ))}
+      </div>
+    )}
+  </>
+)
+
 export const Toast = ({
   color = 'neutral',
   variant = 'filled',
@@ -66,9 +94,7 @@ export const Toast = ({
   ...props
 }: ToastProps) => {
   const iconNode = icon ?? COLOR_ICON[color]
-  const hasActions = Boolean(actions?.length)
   const compact = isCompactSize(size)
-  const firstAction = hasActions && actions ? actions[0] : null
 
   return (
     <div
@@ -84,28 +110,9 @@ export const Toast = ({
       <div className={contractPart(toastContract, 'content')} data-row={compact || undefined}>
         <span className={contractPart(toastContract, 'title')}>{title}</span>
         {compact ? (
-          firstAction != null && (
-            <span className={contractPart(toastContract, 'action-inline')}>{firstAction}</span>
-          )
+          <CompactContent action={actions?.[0]} />
         ) : (
-          <>
-            {description != null && (
-              <span className={contractPart(toastContract, 'description')}>{description}</span>
-            )}
-            {hasActions && actions && (
-              <div className={contractPart(toastContract, 'actions')}>
-                {actions.map((action, i) => (
-                  <span
-                    key={isValidElement(action) ? (action.key ?? i) : i}
-                    className={contractPart(toastContract, 'action-item')}
-                    data-sep-after={i < actions.length - 1 || undefined}
-                  >
-                    {action}
-                  </span>
-                ))}
-              </div>
-            )}
-          </>
+          <FullContent description={description} actions={actions} />
         )}
       </div>
       {onClose != null && (

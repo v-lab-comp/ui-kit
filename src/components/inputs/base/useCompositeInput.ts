@@ -97,7 +97,8 @@ export function useCompositeInput<T extends unknown[]>({
 }: {
   value?: string
   defaultValue?: string
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  /** Новое собранное значение (строка `join(parts)`), не событие */
+  onChange?: (value: string) => void
   name?: string
   /** Разобрать строку на части */
   split: (composed: string) => T
@@ -121,11 +122,9 @@ export function useCompositeInput<T extends unknown[]>({
   const notify = useCallback(
     (newComposed: string) => {
       if (!isControlled) setInternalValue(newComposed)
-      onChange?.({
-        target: { value: newComposed, name: name ?? '' },
-      } as React.ChangeEvent<HTMLInputElement>)
+      onChange?.(newComposed)
     },
-    [isControlled, onChange, name]
+    [isControlled, onChange]
   )
 
   const notifyParts = useCallback((newParts: T) => notify(join(newParts)), [notify, join])

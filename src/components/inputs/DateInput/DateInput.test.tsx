@@ -31,7 +31,16 @@ describe('DateInput: календарь-диалог', () => {
   it('Alt+↓ из поля открывает, Enter выбирает дату и возвращает фокус в поле', async () => {
     const user = userEvent.setup()
     const onAccept = vi.fn()
-    render(<DateInput label="Date" value="2025-03-10" valueFormat="iso" onAccept={onAccept} />)
+    const onChange = vi.fn()
+    render(
+      <DateInput
+        label="Date"
+        value="2025-03-10"
+        valueFormat="iso"
+        onAccept={onAccept}
+        onChange={onChange}
+      />
+    )
     const input = screen.getByRole('textbox', { name: 'Date' })
     input.focus()
     await user.keyboard('{Alt>}{ArrowDown}{/Alt}')
@@ -41,6 +50,7 @@ describe('DateInput: календарь-диалог', () => {
     )
     await user.keyboard('{ArrowRight}{Enter}')
     expect(onAccept).toHaveBeenLastCalledWith('2025-03-11')
+    expect(onChange).toHaveBeenLastCalledWith('2025-03-11')
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     await waitFor(() => expect(input).toHaveFocus())
   })
@@ -53,5 +63,30 @@ describe('DateInput: календарь-диалог', () => {
     expect(await screen.findByRole('dialog', { name: 'Pick' })).toBeInTheDocument()
     expect(input).toHaveFocus()
     expect(screen.getByRole('button', { name: 'Pick' })).toHaveAttribute('aria-expanded', 'true')
+  })
+})
+
+describe('DateInput: onChange отдаёт значение', () => {
+  it('masked: строка маски при вводе', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn()
+    render(<DateInput label="Date" onChange={onChange} />)
+    await user.type(screen.getByRole('textbox', { name: 'Date' }), '11032025')
+    expect(onChange).toHaveBeenLastCalledWith('11 / 03 / 2025')
+  })
+
+  it('iso: YYYY-MM-DD при вводе и при выборе в календаре', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn()
+    render(<DateInput label="Date" valueFormat="iso" onChange={onChange} />)
+    const input = screen.getByRole('textbox', { name: 'Date' })
+    await user.type(input, '11032025')
+    expect(onChange).toHaveBeenLastCalledWith('2025-03-11')
+
+    input.focus()
+    await user.keyboard('{Alt>}{ArrowDown}{/Alt}')
+    await screen.findByRole('dialog')
+    await user.click(screen.getByRole('gridcell', { name: dayName(2025, 2, 12) }))
+    expect(onChange).toHaveBeenLastCalledWith('2025-03-12')
   })
 })

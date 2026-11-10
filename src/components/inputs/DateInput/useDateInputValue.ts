@@ -42,18 +42,7 @@ export function useDateInputValue({ value, onChange, onAccept, valueFormat = 'ma
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const masked = e.target.value
     if (ownsMask) setInternalMasked(masked)
-    if (!onChange) return
-    if (!isIso) {
-      onChange(e)
-      return
-    }
-    // Для iso подменяем value в событии: колбэк получает YYYY-MM-DD (контракт onChange).
-    const iso = toOutput(masked)
-    onChange({
-      ...e,
-      target: { ...e.target, value: iso },
-      currentTarget: { ...e.currentTarget, value: iso },
-    } as ChangeEvent<HTMLInputElement>)
+    onChange?.(toOutput(masked))
   }
 
   /** Маска приняла значение (ввод завершён). */
@@ -62,8 +51,12 @@ export function useDateInputValue({ value, onChange, onAccept, valueFormat = 'ma
     onAccept?.(toOutput(masked))
   }
 
-  /** Дата выбрана в календаре. */
-  const acceptDate = (date: Date) => acceptMasked(formatDateToMasked(date))
+  /** Дата выбрана в календаре: сообщаем и `onAccept`, и `onChange`. */
+  const acceptDate = (date: Date) => {
+    const masked = formatDateToMasked(date)
+    acceptMasked(masked)
+    onChange?.(toOutput(masked))
+  }
 
   return {
     displayMasked,

@@ -83,7 +83,7 @@ const meta: Meta<typeof TagInput> = {
   title: 'Inputs/TagInput',
   tags: ['autodocs'],
   args: {
-    hint: 'Свой тег: введите текст → Enter (или запятая/«;»). Из списка: клик, Tab или Enter при пустом поле. ↑↓ — подсветка; Esc — скрыть список.',
+    hint: 'Свой тег: введите текст → Enter (или запятая/«;»). Из списка: клик или ↑↓ и Enter/Tab. Esc — скрыть список.',
   },
   decorators: [
     (Story) => (

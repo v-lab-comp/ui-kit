@@ -1,4 +1,4 @@
-import type { ChangeEvent, InputHTMLAttributes } from 'react'
+import type { InputHTMLAttributes } from 'react'
 import type { InputFieldProps } from '../base/InputField'
 import type { BaseInputSize } from '../base/BaseInput'
 import type { CountryCode } from 'libphonenumber-js'
@@ -12,8 +12,8 @@ export type PhoneInputProps = Omit<InputFieldProps, 'children' | 'startBlock'> &
     /** Значение в формате E.164 (напр. +998901234567) */
     value?: string
     defaultValue?: string
-    /** onChange получает value напрямую (E.164), для совместимости с формами — e.target.value */
-    onChange?: (e: ChangeEvent<HTMLInputElement>) => void
+    /** Новое значение в формате E.164 (или `''`, если номер очищен) */
+    onChange?: (value: string) => void
     name?: string
     size?: BaseInputSize
     placeholder?: string

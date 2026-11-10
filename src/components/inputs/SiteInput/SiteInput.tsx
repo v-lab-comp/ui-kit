@@ -34,8 +34,8 @@ export const SiteInput = forwardRef<HTMLInputElement, SiteInputProps>((props, re
   const defaultProtocol = protocolOptions?.[0]?.value ?? protocol
 
   const { parts, notifyParts, hiddenInputs } = useCompositeInput<[string, string]>({
-    value: value as string | undefined,
-    defaultValue: defaultValue as string | undefined,
+    value,
+    defaultValue,
     onChange,
     name,
     split: (url) => splitProtocol(url, defaultProtocol),

@@ -1,4 +1,4 @@
-import type { ChangeEventHandler, InputHTMLAttributes } from 'react'
+import type { InputHTMLAttributes } from 'react'
 import type { InputFieldProps } from '../base/InputField'
 import type { CalendarLocale } from '../../Calendar'
 
@@ -8,7 +8,7 @@ export type DateInputValueFormat = 'masked' | 'iso'
 export type DateInputProps = Omit<InputFieldProps, 'children'> &
   Omit<
     InputHTMLAttributes<HTMLInputElement>,
-    'prefix' | 'size' | 'id' | 'disabled' | 'className' | 'type'
+    'prefix' | 'size' | 'id' | 'disabled' | 'className' | 'type' | 'value' | 'onChange'
   > & {
     /**
      * Контролируемое значение: строка **`YYYY-MM-DD`** или пустая строка.
@@ -16,11 +16,11 @@ export type DateInputProps = Omit<InputFieldProps, 'children'> &
      */
     value?: string
     /**
-     * Нативный `onChange` от инпута с маской.
-     * - `valueFormat: 'masked'` (по умолчанию): `event.target.value` — строка вида **`DD / MM / YYYY`** (как в маске).
-     * - `valueFormat: 'iso'` — **`event.target.value`** — **`YYYY-MM-DD`** или **`''`**, если дата неполная/невалидна.
+     * Новое значение при вводе и при выборе даты в календаре (не событие).
+     * - `valueFormat: 'masked'` (по умолчанию): строка вида **`DD / MM / YYYY`** (как в маске).
+     * - `valueFormat: 'iso'` — **`YYYY-MM-DD`** или **`''`**, если дата неполная/невалидна.
      */
-    onChange?: ChangeEventHandler<HTMLInputElement>
+    onChange?: (value: string) => void
     /**
      * Вызывается, когда маска приняла полное значение или выбрана дата в календаре.
      * - `valueFormat: 'masked'`: аргумент — **`DD / MM / YYYY`**.

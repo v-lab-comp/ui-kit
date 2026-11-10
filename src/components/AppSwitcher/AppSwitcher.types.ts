@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { ComponentPropsWithoutRef, ElementType, ReactNode } from 'react'
 
 /**
  * Промо-баннер в верхней части dropdown'а.
@@ -20,7 +20,13 @@ export type AppSwitcherPromo = {
   gradient?: string
 }
 
-export type AppItem = {
+/**
+ * Пункт меню. `T` — компонент ссылки из `as` (по умолчанию `<a>`): Link роутера и т.п.
+ *
+ * @example
+ * { id: 'crm', label: 'CRM', href: '/crm', as: Link, linkProps: { prefetch: false } }
+ */
+export type AppItem<T extends ElementType = 'a'> = {
   id: string
   /** Название приложения */
   label: string
@@ -30,6 +36,13 @@ export type AppItem = {
   icon?: string | ReactNode
   /** URL перехода: пункт рендерится ссылкой `<a href>`. Если есть и `onClick` — обычный клик вызывает только `onClick`, Ctrl/⌘/средняя кнопка открывают `href` */
   href?: string
+  /** Компонент ссылки для пункта с `href` (по умолчанию `<a>`), например Link роутера. Получает `href`, `linkProps` и пропсы пункта меню */
+  as?: T
+  /** Дополнительные пропсы ссылки (`as` или `<a>`): `target`, `prefetch`, `replace` и т.п. */
+  linkProps?: Omit<
+    ComponentPropsWithoutRef<T>,
+    'as' | 'href' | 'children' | 'className' | 'role' | 'onClick'
+  >
   onClick?: () => void
   /** Пометить как текущее активное приложение */
   isActive?: boolean
@@ -39,8 +52,8 @@ export type AppItem = {
   disabled?: boolean
 }
 
-export type AppSwitcherProps = {
-  apps: AppItem[]
+export type AppSwitcherProps<T extends ElementType = 'a'> = {
+  apps: AppItem<T>[]
   /**
    * Промо-баннер в верхней части выпадающего меню.
    * По умолчанию показывается с дефолтным текстом.

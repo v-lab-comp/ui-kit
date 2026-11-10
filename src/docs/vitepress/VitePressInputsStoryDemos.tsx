@@ -79,7 +79,7 @@ export function SiteInputDocsDemo() {
         hint="Protocol + path (composite value)."
         protocolOptions={PROTOCOL_OPTIONS}
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(next) => setValue(next)}
       />
     </div>
   )
@@ -127,7 +127,7 @@ export function DateInputDocsDemo() {
         placeholder="DD.MM.YYYY"
         hint='Calendar + mask; use valueFormat="iso" for APIs.'
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(next) => setValue(next)}
         valueFormat="iso"
       />
     </div>
@@ -143,7 +143,7 @@ export function PhoneInputDocsDemo() {
         defaultCountry="UZ"
         hint="Requires peers from @v-lab/ui-kit/phone."
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(next) => setValue(next)}
       />
     </div>
   )

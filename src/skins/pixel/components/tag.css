@@ -130,10 +130,15 @@
   /* ---------- Фокус ---------- */
 
   .vl-tag:focus-visible,
-  .vl-tag__main-hit:focus-visible,
-  .vl-tag__dismiss:focus-visible {
+  .vl-tag__main-hit:focus-visible {
     outline: var(--pixel-unit-sm) dashed var(--pixel-focus-color);
     outline-offset: 4px;
+  }
+
+  /* Кнопка 24×24 с padding 4px вокруг видимых 16×16: 4px − 4px = 0 */
+  .vl-tag__dismiss:focus-visible {
+    outline: var(--pixel-unit-sm) dashed var(--pixel-focus-color);
+    outline-offset: 0;
   }
 
   .vl-tag__main-hit {
@@ -165,7 +170,7 @@
     opacity: 0.75;
   }
 
-  /* Зона нажатия 24×24 (::before, inset: -4px) наследуется из corporate — здесь не переопределять */
+  /* Размер 24×24 и фон наведения через ::before (--_tag-dismiss-bg) — из corporate */
   .vl-tag__dismiss {
     border-radius: 0;
     opacity: 1;
@@ -173,7 +178,7 @@
 
   /* Вес как у corporate: тот же селектор, файл позже */
   .vl-tag__dismiss:hover {
-    background: var(--pixel-dither-hover);
+    --_tag-dismiss-bg: var(--pixel-dither-hover);
   }
 
   :where(.vl-tag)[data-variant='stroke']:where([data-color], [data-custom-color])
@@ -182,14 +187,14 @@
     .vl-tag__dismiss:hover,
   :where(.vl-tag)[data-variant='light']:where([data-color], [data-custom-color])
     .vl-tag__dismiss:hover {
-    background: var(--pal-bg-active);
+    --_tag-dismiss-bg: var(--pal-bg-active);
   }
 
   :where(.vl-tag)[data-variant='filled']:where([data-color], [data-custom-color])
     .vl-tag__dismiss:hover,
   :where(.vl-tag)[data-variant='filled']:where(:not([data-color], [data-custom-color]))
     .vl-tag__dismiss:hover {
-    background: var(--pixel-bevel-dark);
+    --_tag-dismiss-bg: var(--pixel-bevel-dark);
   }
 
   .vl-tag__dismiss:active {

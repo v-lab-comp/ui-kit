@@ -42,6 +42,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); ver
 - **Widgets and data:** `SegmentedControl` is a `radiogroup` with one tab stop; `Tabs` — `value` without `onChange` makes it controlled, `Tabs.List` added; `Accordion` — `role="region"` only with the `region` prop; `Table` — `pageSize` is controlled (uncontrolled: `defaultPageSize`, `defaultPage`), no `onPageChange(1)` on mount; the `Tag` dismiss button name is `dismissLabel` + the tag text.
 - **Content:** `FileUploadField` — `initialFiles` → `files` / `defaultFiles` plus `newFileStatus`, the fake upload is gone (progress and status come from `files`); `SvgIcon` is decorative by default, named via `title` / `aria-label`; flags accept `title`.
 - Almost all components forward `ref` (`forwardRef`).
+- **`onChange` passes the value** in `PhoneInput` (E.164 or `''`), `SiteInput` (protocol + path), `DateInput` (in its `valueFormat`) and fields built on `useCompositeInput` — like `SelectInput`. `DateInput` also calls `onChange` when a date is picked in the calendar. Before: `onChange={(e) => set(e.target.value)}` — now: `onChange={set}`; react-hook-form's `field.onChange` can be passed directly.
+- **`SidebarItem` and `AppSwitcher` links accept `as`** — a router link component: `<SidebarItem as={Link} href="/projects">`.
 
 ### Fixed
 
@@ -53,6 +55,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); ver
 - **`RichInput` / `MarkdownInput`:** the editor takes its name from `label`.
 - **`ThemeProvider`:** the system-scheme subscription is no longer recreated on every render; when switching to a lazily loaded skin, the previous skin stays until loading finishes. **`useClickOutside`** calls the latest callback after a re-render.
 - **Accessibility and keyboard (refactor, phases 2–5):** the `RichInput` / `MarkdownInput` / `CommentRichInput` formatting bar is a `role="toolbar"` with arrow keys and keyboard-operable buttons; `PasswordInput` and `ShareLinkInput` buttons are back in the Tab order; `Calendar` is an APG grid (arrows, PageUp / PageDown, full date as each day's name), the `DateInput` popup is a dialog with focus management; `Modal` / `Drawer` release scroll lock and leave the stack when unmounted, `ConfirmModal` is an `alertdialog`; `Tooltip` also opens on focus; `Toast` — one polite announcement, hidden toasts are not focusable, auto-dismiss pauses on hover and focus; `ToggleGroup`, `SegmentedControl`, `Tabs` — arrow keys and a single tab stop; a closed `Accordion` panel is not focusable; `Table` scroll area and rows work from the keyboard; the comments feed uses `feed` / `article` and restores focus after edit and delete; flags and icons no longer repeat ids.
+- **`SelectInput` / `AsyncSearchSelect`:** a selected value uses the normal text colour instead of the placeholder colour (`data-placeholder` is set only while the placeholder is shown).
 
 ### Removed
 

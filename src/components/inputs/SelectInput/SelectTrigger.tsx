@@ -19,12 +19,6 @@ export type SelectTriggerProps = Omit<
   text: ReactNode
   /** Значение не выбрано — подпись показывает плейсхолдер */
   isPlaceholder: boolean
-  /**
-   * Только `full`: писать `data-placeholder="false"` и у выбранного значения (по умолчанию `true`).
-   * Так SelectInput отрисовывается сейчас: скин выбирает по наличию атрибута, выбранное значение
-   * показано цветом плейсхолдера. `false` — атрибут только у плейсхолдера (так у AsyncSearchSelect).
-   */
-  placeholderAttrWhenFilled?: boolean
   /** Иконка слева в компактных вариантах */
   icon?: ReactNode
   /** Красная рамка компактных вариантов */
@@ -49,7 +43,6 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
       size,
       text,
       isPlaceholder,
-      placeholderAttrWhenFilled = true,
       icon,
       error,
       filled,
@@ -70,13 +63,10 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
           data-error={error || undefined}
           className={contractPart(selectInputContract, 'trigger')}
         >
-          {/* Булево значение: React пишет data-placeholder="true" / "false" — так отрисовывается и сейчас,
-              скин выбирает по наличию атрибута. Не менять, чтобы не поменялся вид. */}
+          {/* Атрибут есть только у показанного плейсхолдера — скины выбирают по его наличию */}
           <span
             className={contractPart(selectInputContract, 'trigger-text')}
-            data-placeholder={
-              placeholderAttrWhenFilled ? isPlaceholder : isPlaceholder || undefined
-            }
+            data-placeholder={isPlaceholder || undefined}
           >
             {text}
           </span>

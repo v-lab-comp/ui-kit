@@ -237,7 +237,6 @@ export const AsyncSearchSelect = forwardRef<HTMLButtonElement, AsyncSearchSelect
               disabled={disabled}
               text={selected ? selected.label : (placeholder ?? '')}
               isPlaceholder={!selected && !!placeholder}
-              placeholderAttrWhenFilled={false}
               error={!!error}
             />
           )}

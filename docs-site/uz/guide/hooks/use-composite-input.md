@@ -21,12 +21,12 @@ import { useCompositeInput } from '@v-lab/ui-kit'
 
 ## Parametr maydonlari
 
-| Maydon                                | Tavsif                                                                                |
-| ------------------------------------- | ------------------------------------------------------------------------------------- |
-| `split` / `join`                      | Qatorni qismlar kortejiga ajratish va qayta yig‘ish                                   |
-| `value` / `defaultValue` / `onChange` | Boshqariladigan forma maydoni bilan bir xil                                           |
-| `name`                                | To‘liq qatorli asosiy yashirin input nomi                                             |
-| `formNames`                           | Qismlar indekslari bo‘yicha yashirin maydon nomlari; `undefined` — forma ga chiqmaydi |
+| Maydon                                | Tavsif                                                                                                     |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `split` / `join`                      | Qatorni qismlar kortejiga ajratish va qayta yig‘ish                                                        |
+| `value` / `defaultValue` / `onChange` | Boshqariladigan forma maydoni bilan bir xil; `onChange(value: string)` hodisa emas, yig‘ilgan satrni oladi |
+| `name`                                | To‘liq qatorli asosiy yashirin input nomi                                                                  |
+| `formNames`                           | Qismlar indekslari bo‘yicha yashirin maydon nomlari; `undefined` — forma ga chiqmaydi                      |
 
 ## Misol
 
@@ -46,7 +46,7 @@ function joinEmail([local, domain]: [string, string]) {
 export function useEmailParts(value: string, onChange: (v: string) => void) {
   return useCompositeInput<[string, string]>({
     value,
-    onChange: (e) => onChange(e.target.value),
+    onChange,
     split: splitEmail,
     join: joinEmail,
     name: 'email',

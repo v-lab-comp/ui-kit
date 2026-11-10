@@ -7,6 +7,8 @@ const meta: Meta<typeof Checkbox> = {
   component: Checkbox,
   title: 'Inputs/Checkbox',
   tags: ['autodocs'],
+  // Подписи у чекбокса нет — имя для скринридера (axe: label)
+  args: { 'aria-label': 'Checkbox' },
   parameters: {
     docs: { canvas: { sourceState: 'shown' } },
   },
@@ -62,11 +64,11 @@ export const Gallery: Story = {
           Medium
         </p>
         <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
-          <Checkbox />
-          <Checkbox defaultChecked />
-          <Checkbox indeterminate />
-          <Checkbox disabled />
-          <Checkbox disabled defaultChecked />
+          <Checkbox aria-label="Unchecked" />
+          <Checkbox aria-label="Checked" defaultChecked />
+          <Checkbox aria-label="Indeterminate" indeterminate />
+          <Checkbox aria-label="Disabled" disabled />
+          <Checkbox aria-label="Disabled checked" disabled defaultChecked />
         </div>
       </div>
       <div>
@@ -82,11 +84,11 @@ export const Gallery: Story = {
           Small
         </p>
         <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
-          <Checkbox size="small" />
-          <Checkbox size="small" defaultChecked />
-          <Checkbox size="small" indeterminate />
-          <Checkbox size="small" disabled />
-          <Checkbox size="small" disabled defaultChecked />
+          <Checkbox aria-label="Small unchecked" size="small" />
+          <Checkbox aria-label="Small checked" size="small" defaultChecked />
+          <Checkbox aria-label="Small indeterminate" size="small" indeterminate />
+          <Checkbox aria-label="Small disabled" size="small" disabled />
+          <Checkbox aria-label="Small disabled checked" size="small" disabled defaultChecked />
         </div>
       </div>
     </div>

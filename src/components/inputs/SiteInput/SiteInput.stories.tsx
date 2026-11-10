@@ -71,7 +71,7 @@ type Story = StoryObj<typeof SiteInput>
 export const Playground: Story = {
   render: function Render(args) {
     const [value, setValue] = useState('https://')
-    return <SiteInput {...args} value={value} onChange={(e) => setValue(e.target.value)} />
+    return <SiteInput {...args} value={value} onChange={(next) => setValue(next)} />
   },
   args: {
     label: 'Website',
@@ -173,7 +173,7 @@ export const WithProtocolSelect: Story = {
   name: 'With Protocol Selector',
   render: function Render(args) {
     const [value, setValue] = useState('https://')
-    return <SiteInput {...args} value={value} onChange={(e) => setValue(e.target.value)} />
+    return <SiteInput {...args} value={value} onChange={(next) => setValue(next)} />
   },
   args: {
     label: 'Website',
@@ -212,7 +212,7 @@ export const FormDemo: Story = {
           hint="Change protocol and type a URL, then press Submit."
           protocolOptions={PROTOCOL_OPTIONS}
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(next) => setValue(next)}
         />
         <button type="submit" style={{ alignSelf: 'flex-start', padding: '8px 16px' }}>
           Submit

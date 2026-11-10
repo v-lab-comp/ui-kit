@@ -35,7 +35,7 @@ export function BirthDateField() {
     <DateInput
       label="Tug‘ilgan sana"
       value={value}
-      onChange={(e) => setValue(e.target.value)}
+      onChange={setValue}
       valueFormat="iso"
       placeholder="KK.OO.YYYY"
     />

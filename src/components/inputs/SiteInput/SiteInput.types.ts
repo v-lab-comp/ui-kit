@@ -3,7 +3,15 @@ import type { BaseInputProps } from '../base/BaseInput'
 import type { SelectOptionWithShortLabel } from '../SelectInput'
 
 export type SiteInputProps = Omit<InputFieldProps, 'children' | 'startBlock'> &
-  Omit<BaseInputProps, 'prefix' | 'size' | 'id' | 'disabled' | 'className'> & {
+  Omit<
+    BaseInputProps,
+    'prefix' | 'size' | 'id' | 'disabled' | 'className' | 'value' | 'defaultValue' | 'onChange'
+  > & {
+    /** Полный адрес: протокол + путь (например `'https://example.com'`) */
+    value?: string
+    defaultValue?: string
+    /** Новый полный адрес (протокол + путь), не событие */
+    onChange?: (value: string) => void
     /**
      * Статичный протокол-префикс. По умолчанию `'https://'`.
      * Игнорируется, если передан `protocolOptions`.

@@ -353,3 +353,24 @@ describe('AsyncSearchSelect: отключение на открытом спис
     expect(calls).toHaveLength(1)
   })
 })
+
+describe('AsyncSearchSelect: data-placeholder', () => {
+  it('атрибут есть только у плейсхолдера, у выбранного значения его нет', () => {
+    const { unmount } = render(
+      <AsyncSearchSelect label="Страна" placeholder="Выберите" loadOptions={filterLoad} />
+    )
+    expect(within(trigger()).getByText('Выберите')).toHaveAttribute('data-placeholder', 'true')
+    unmount()
+
+    render(
+      <AsyncSearchSelect
+        label="Страна"
+        placeholder="Выберите"
+        value="custom"
+        selectedOption={{ value: 'custom', label: 'Из API' }}
+        loadOptions={filterLoad}
+      />
+    )
+    expect(within(trigger()).getByText('Из API')).not.toHaveAttribute('data-placeholder')
+  })
+})

@@ -38,7 +38,6 @@ type Story = StoryObj<typeof SidebarUserProfileCard>
 export const Default: Story = {
   args: {
     src: 'https://i.pravatar.cc/80?img=47',
-    alt: 'Sophia Williams',
     title: 'Sophia Williams',
     description: 'sophia@alignui.com',
   },

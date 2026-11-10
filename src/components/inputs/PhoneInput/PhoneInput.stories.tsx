@@ -53,7 +53,7 @@ type Story = StoryObj<typeof PhoneInput>
 export const Playground: Story = {
   render: function Render(args) {
     const [value, setValue] = useState('')
-    return <PhoneInput {...args} value={value} onChange={(e) => setValue(e.target.value)} />
+    return <PhoneInput {...args} value={value} onChange={(next) => setValue(next)} />
   },
   args: {
     label: 'Phone',
@@ -78,7 +78,7 @@ export const ExternalValue: Story = {
     const [value, setValue] = useState('')
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <PhoneInput {...args} value={value} onChange={(e) => setValue(e.target.value)} />
+        <PhoneInput {...args} value={value} onChange={(next) => setValue(next)} />
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
           {['+79123456789', '+998901234567', '+998-901234567', '901234567', ''].map((v) => (
             <Button key={v} size="small" variant="stroke" onClick={() => setValue(v)}>
@@ -123,7 +123,7 @@ export const LocaleEnglish: Story = {
   name: 'Locale: English',
   render: function Render(args) {
     const [value, setValue] = useState('')
-    return <PhoneInput {...args} value={value} onChange={(e) => setValue(e.target.value)} />
+    return <PhoneInput {...args} value={value} onChange={(next) => setValue(next)} />
   },
   args: {
     label: 'Phone number',
@@ -136,7 +136,7 @@ export const LocaleUzbek: Story = {
   name: 'Locale: Uzbek',
   render: function Render(args) {
     const [value, setValue] = useState('')
-    return <PhoneInput {...args} value={value} onChange={(e) => setValue(e.target.value)} />
+    return <PhoneInput {...args} value={value} onChange={(next) => setValue(next)} />
   },
   args: {
     label: 'Telefon raqami',

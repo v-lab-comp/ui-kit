@@ -1,5 +1,5 @@
 import { forwardRef, useId, useState } from 'react'
-import type { CSSProperties, MouseEvent, ReactNode } from 'react'
+import type { CSSProperties, ElementType, MouseEvent, ReactElement, ReactNode, Ref } from 'react'
 import { FloatingFocusManager } from '@floating-ui/react'
 import { RiLayoutGridLine } from '@remixicon/react'
 import { Box } from '@/components/Box'
@@ -105,6 +105,14 @@ function AppIcon({ icon, label, size }: AppIconProps) {
   )
 }
 
+/** Полиморфная сигнатура: `T` — компонент ссылки из `as` пунктов */
+type AppSwitcherComponent = {
+  <T extends ElementType = 'a'>(
+    props: AppSwitcherProps<T> & { ref?: Ref<HTMLDivElement> }
+  ): ReactElement | null
+  displayName?: string
+}
+
 // ─── AppSwitcher ──────────────────────────────────────────────────────────────
 
 const DEFAULT_PROMO: AppSwitcherPromo = {
@@ -113,7 +121,7 @@ const DEFAULT_PROMO: AppSwitcherPromo = {
 }
 
 type MenuItemProps = {
-  app: AppItem
+  app: AppItem<ElementType>
   itemProps: Record<string, unknown>
 }
 
@@ -160,12 +168,14 @@ function AppSwitcherMenuItem({ app, itemProps }: MenuItemProps) {
     ...itemProps,
   }
 
-  // Настоящая ссылка: работает открытие в новой вкладке и семантика ссылки
+  // Настоящая ссылка: работает открытие в новой вкладке и семантика ссылки.
+  // `as` — компонент роутера (Link и т.п.); role/aria-current пункта меню идут последними
   if (app.href && !app.disabled) {
+    const LinkTag = (app.as ?? 'a') as ElementType
     return (
-      <a href={app.href} {...common}>
+      <LinkTag href={app.href} {...app.linkProps} {...common}>
         {content}
-      </a>
+      </LinkTag>
     )
   }
 
@@ -181,7 +191,7 @@ function AppSwitcherMenuItem({ app, itemProps }: MenuItemProps) {
   )
 }
 
-export const AppSwitcher = forwardRef<HTMLDivElement, AppSwitcherProps>(
+export const AppSwitcher = forwardRef<HTMLDivElement, AppSwitcherProps<ElementType>>(
   ({ apps, promo = DEFAULT_PROMO }, ref) => {
     const activeApp = apps.find((a) => a.isActive) ?? apps[0]
     const selectedIndex = apps.findIndex((a) => a.isActive && !a.disabled)
@@ -278,6 +288,6 @@ export const AppSwitcher = forwardRef<HTMLDivElement, AppSwitcherProps>(
       </Box>
     )
   }
-)
+) as AppSwitcherComponent
 
 AppSwitcher.displayName = 'AppSwitcher'

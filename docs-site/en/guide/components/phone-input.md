@@ -31,14 +31,7 @@ import { PhoneInput } from '@v-lab/ui-kit/phone'
 
 export function PhoneField() {
   const [value, setValue] = useState('')
-  return (
-    <PhoneInput
-      label="Phone"
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-      defaultCountry="UZ"
-    />
-  )
+  return <PhoneInput label="Phone" value={value} onChange={setValue} defaultCountry="UZ" />
 }
 ```
 
@@ -64,7 +57,7 @@ Import from **`@v-lab/ui-kit/phone`**. Shell — **[InputField](./input-field)**
 | Prop                             | Type                           | Description                                     |
 | -------------------------------- | ------------------------------ | ----------------------------------------------- |
 | **`value`** / **`defaultValue`** | `string`                       | **E.164** number (other formats are normalized) |
-| **`onChange`**                   | handler                        | **`event.target.value`** is **E.164**           |
+| **`onChange`**                   | `(value: string) => void`      | **E.164** string (or `""`), not an event        |
 | **`name`**                       | `string`                       | Form field name                                 |
 | **`size`**                       | **`BaseInputSize`**            | **`big`** \| **`medium`** \| **`small`**        |
 | **`placeholder`**                | `string`                       | Mask placeholder                                |

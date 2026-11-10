@@ -42,6 +42,8 @@ outline: deep
 - **Виджеты и данные:** `SegmentedControl` — `radiogroup` с одним tab stop; `Tabs` — `value` без `onChange` делает компонент управляемым, добавлен `Tabs.List`; `Accordion` — `role="region"` только с пропом `region`; `Table` — `pageSize` управляемый (неуправляемо — `defaultPageSize`, `defaultPage`), `onPageChange(1)` при монтировании больше не вызывается; имя кнопки удаления `Tag` — `dismissLabel` + текст тега.
 - **Контент:** `FileUploadField` — `initialFiles` → `files` / `defaultFiles` и `newFileStatus`, имитации загрузки больше нет (прогресс и статус — из `files`); `SvgIcon` по умолчанию декоративный, имя — через `title` / `aria-label`; флаги принимают `title`.
 - Почти все компоненты пробрасывают `ref` (`forwardRef`).
+- **`onChange` передаёт значение** у `PhoneInput` (E.164 или `''`), `SiteInput` (протокол + путь), `DateInput` (в формате `valueFormat`) и полей на `useCompositeInput` — как у `SelectInput`. `DateInput` вызывает `onChange` и при выборе даты в календаре. Было `onChange={(e) => set(e.target.value)}` — стало `onChange={set}`; `field.onChange` из react-hook-form передаётся напрямую.
+- **`SidebarItem` и ссылки `AppSwitcher` принимают `as`** — компонент ссылки роутера: `<SidebarItem as={Link} href="/projects">`.
 
 ### Fixed
 
@@ -53,6 +55,7 @@ outline: deep
 - **`RichInput` / `MarkdownInput`:** редактор получает имя из `label`.
 - **`ThemeProvider`:** подписка на системную тему больше не пересоздаётся на каждом рендере; при переходе на скин с ленивой загрузкой прежний скин остаётся до окончания загрузки. **`useClickOutside`** вызывает актуальный коллбэк после ререндера.
 - **Доступность и клавиатура (рефакторинг, этапы 2–5):** панель форматирования `RichInput` / `MarkdownInput` / `CommentRichInput` — `role="toolbar"`, стрелки, кнопки работают с клавиатуры; кнопки `PasswordInput` и `ShareLinkInput` снова в порядке Tab; `Calendar` — сетка по паттерну APG (стрелки, PageUp / PageDown, полная дата в имени дня), всплывающий календарь `DateInput` — диалог с управлением фокусом; `Modal` / `Drawer` снимают блокировку скролла и выходят из стека при размонтировании, `ConfirmModal` — `alertdialog`; `Tooltip` открывается и по фокусу; `Toast` — одно вежливое объявление, скрытые тосты не получают фокус, автоскрытие на паузе при наведении и фокусе; `ToggleGroup`, `SegmentedControl`, `Tabs` — стрелки и один tab stop; закрытая панель `Accordion` не получает фокус; `Table` — область прокрутки и строки доступны с клавиатуры; лента комментариев — `feed` / `article`, фокус возвращается после правки и удаления; у флагов и иконок нет повторяющихся id.
+- **`SelectInput` / `AsyncSearchSelect`:** выбранное значение показывается обычным цветом текста, а не цветом плейсхолдера (атрибут `data-placeholder` стоит только у видимой подсказки).
 
 ### Removed
 

@@ -364,35 +364,42 @@
     color: color-mix(in srgb, currentColor 60%, transparent);
   }
 
+  /* Кнопка 24×24 (WCAG 2.5.8 — axe меряет саму кнопку), видимая часть — 16×16:
+     margin -4px возвращает место в раскладке, фон наведения рисует ::before внутри padding */
   .vl-tag__dismiss {
     display: inline-flex;
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
-    width: 16px;
-    height: 16px;
-    margin: 0;
-    padding: 0;
+    box-sizing: border-box;
+    width: 24px;
+    height: 24px;
+    margin: -4px;
+    padding: 4px;
     border: none;
     border-radius: var(--radius-4);
     background: transparent;
     color: currentColor;
     cursor: pointer;
     opacity: 0.72;
-    /* Опора для ::before — расширенной зоны нажатия */
     position: relative;
+    isolation: isolate;
+    /* Кольцо halo — по видимым 16×16, а не по кнопке 24×24 */
+    --halo-offset: 4px;
   }
 
-  /* Невидимая зона нажатия 24×24 вокруг иконки 16×16 (WCAG 2.5.8) — вид не меняется */
   .vl-tag__dismiss::before {
     content: '';
     position: absolute;
-    inset: -4px;
+    inset: 4px;
+    z-index: -1;
+    border-radius: inherit;
+    background: var(--_tag-dismiss-bg, transparent);
   }
 
   .vl-tag__dismiss:hover {
     opacity: 1;
-    background-color: var(--bg-soft-200);
+    --_tag-dismiss-bg: var(--bg-soft-200);
   }
 
   :where(.vl-tag)[data-variant='stroke']:where([data-color], [data-custom-color])
@@ -401,19 +408,20 @@
     .vl-tag__dismiss:hover,
   :where(.vl-tag)[data-variant='light']:where([data-color], [data-custom-color])
     .vl-tag__dismiss:hover {
-    background-color: var(--pal-bg-active);
+    --_tag-dismiss-bg: var(--pal-bg-active);
   }
 
   :where(.vl-tag)[data-variant='filled']:where([data-color], [data-custom-color])
     .vl-tag__dismiss:hover,
   :where(.vl-tag)[data-variant='filled']:where(:not([data-color], [data-custom-color]))
     .vl-tag__dismiss:hover {
-    background-color: color-mix(in srgb, currentColor 18%, transparent);
+    --_tag-dismiss-bg: color-mix(in srgb, currentColor 18%, transparent);
   }
 
+  /* -3px = прежний отступ 1px от видимых 16×16 минус padding 4px */
   .vl-tag__dismiss:focus-visible {
     outline: 2px solid var(--primary-base);
-    outline-offset: 1px;
+    outline-offset: -3px;
   }
 
   .vl-tag[data-disabled] .vl-tag__dismiss {

@@ -67,7 +67,7 @@
 
 ### Разметка
 
-- `SelectTrigger` — `variant`, `open`, `placement`, `size`, `text`, `isPlaceholder`, `placeholderAttrWhenFilled?` (только `full`, по умолчанию `true` — `data-placeholder="false"` и у выбранного значения, как сейчас у SelectInput; AsyncSearchSelect передаёт `false`), `icon?`, `error?`, `filled?`, `completed?`, `completedColor?` + атрибуты кнопки (`getTriggerProps()`).
+- `SelectTrigger` — `variant`, `open`, `placement`, `size`, `text`, `isPlaceholder`, `icon?`, `error?`, `filled?`, `completed?`, `completedColor?` + атрибуты кнопки (`getTriggerProps()`).
 - `SelectSuffix` — `open`, `placement`, `showClear`, `disabled?`, `onClear`; `SelectChevron` — `open`, `placement`, `size`.
 - `SelectDropdownPanel` — `open`, `floatingRef`, `floatingProps`, `floatingStyles`, `dropdownPortalZIndex?`, `basePlacement`, `dropdownWidth?`, `dropdownMaxHeight?`, `search?: { value, onChange(value), placeholder, disabled?, inputProps? }` (`inputProps` — `getSearchProps()`), `listScrollRef?`, `onListScroll?`.
 - `SelectOptionList` — атрибуты `<ul>` (`getListboxProps()`), `busy?` (`aria-busy`), `loadMoreRef?` (рисует сторож).

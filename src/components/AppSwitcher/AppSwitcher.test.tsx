@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { forwardRef, type AnchorHTMLAttributes } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 import { AppSwitcher } from './AppSwitcher'
 import type { AppItem } from './AppSwitcher.types'
@@ -57,6 +58,39 @@ describe('AppSwitcher', () => {
     await user.keyboard('{Escape}')
     expect(screen.queryByRole('menu')).toBeNull()
     expect(trigger).toHaveFocus()
+  })
+
+  it('as: renders the given link component with href, linkProps and menuitem role', async () => {
+    const user = userEvent.setup()
+    const FakeLink = forwardRef<
+      HTMLAnchorElement,
+      AnchorHTMLAttributes<HTMLAnchorElement> & { replace?: boolean }
+    >(({ replace, ...props }, ref) => (
+      <a ref={ref} data-fake-link={replace ? 'replace' : ''} {...props} />
+    ))
+    FakeLink.displayName = 'FakeLink'
+    render(
+      <AppSwitcher
+        apps={[
+          {
+            id: 'crm',
+            label: 'CRM',
+            href: '/crm',
+            as: FakeLink,
+            linkProps: { replace: true },
+            isActive: true,
+          },
+          { id: 'docs', label: 'Docs', href: '/docs', as: FakeLink },
+        ]}
+        promo={null}
+      />
+    )
+    await user.click(screen.getByRole('button', { name: 'App switcher' }))
+    const crm = screen.getByRole('menuitem', { name: 'CRM' })
+    expect(crm).toHaveAttribute('data-fake-link', 'replace')
+    expect(crm).toHaveAttribute('href', '/crm')
+    expect(crm).toHaveAttribute('aria-current', 'page')
+    expect(screen.getByRole('menuitem', { name: 'Docs' })).toHaveAttribute('data-fake-link', '')
   })
 
   it('href items are real links; disabled item is described by its status', async () => {

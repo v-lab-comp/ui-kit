@@ -1,3 +1,4 @@
+import { createRef } from 'react'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeAll, describe, expect, it, vi } from 'vitest'
@@ -10,6 +11,12 @@ beforeAll(() => {
 })
 
 describe('CommentRichInput', () => {
+  it('forwards ref to the editable textbox', () => {
+    const ref = createRef<HTMLDivElement>()
+    render(<CommentRichInput ref={ref} onSend={() => {}} placeholder="Write a comment" />)
+    expect(ref.current).toBe(screen.getByRole('textbox'))
+  })
+
   it('names the textbox by placeholder (or ariaLabels.input) and exposes state', () => {
     const { rerender } = render(
       <CommentRichInput onSend={() => {}} placeholder="Write a comment" maxLength={10} disabled />

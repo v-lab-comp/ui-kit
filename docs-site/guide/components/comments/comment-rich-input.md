@@ -40,6 +40,8 @@ export function EditorOnly() {
 
 Полный тип — **`CommentRichInputProps`**: обязательные **`onSend`**, **`placeholder`**; опционально **`isPending`**, **`disabled`**, **`ariaLabels`**, **`toolbarStartSlot`**, **`className`** / **`rootClassName`**. Отправка — **Enter**, новая строка — **Shift+Enter**.
 
+Ключи **`ariaLabels`**: **`input`** — имя поля ввода (по умолчанию — `placeholder`), **`toolbar`** — имя тулбара форматирования (`role="toolbar"`, по умолчанию не задано), а также **`bold`**, **`italic`**, **`underline`**, **`strikethrough`**, **`align`**, **`send`** — имена кнопок.
+
 ## Высота и прозрачность
 
 По умолчанию высота поля растёт от контента, а неактивное поле **не** приглушается (раньше в дефолте были зашиты `min-height: 116px` и `opacity: 0.8`). При необходимости прежнее поведение возвращается CSS-переменными:

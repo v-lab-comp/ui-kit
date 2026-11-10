@@ -15,9 +15,9 @@ function Controlled(props: PhoneInputProps & { onValue?: (v: string) => void }) 
       name="phone"
       {...rest}
       value={value}
-      onChange={(e) => {
-        setValue(e.target.value)
-        onValue?.(e.target.value)
+      onChange={(next) => {
+        setValue(next)
+        onValue?.(next)
       }}
     />
   )
@@ -253,5 +253,16 @@ describe('PhoneInput: country select', () => {
     expect(input().closest('.custom-wrapper')).not.toBeNull()
     expect(input()).not.toHaveAttribute('endblock')
     expect(input()).not.toHaveAttribute('wrapperclassname')
+  })
+})
+
+describe('PhoneInput: onChange отдаёт значение', () => {
+  it('вызывается со строкой E.164, не с событием', () => {
+    const onChange = vi.fn()
+    render(<PhoneInput label="Phone" defaultCountry="UZ" onChange={onChange} />)
+    fireEvent.change(screen.getByRole('textbox', { name: 'Phone' }), {
+      target: { value: '90 123 45 67' },
+    })
+    expect(onChange).toHaveBeenLastCalledWith('+998901234567')
   })
 })

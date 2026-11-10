@@ -17,6 +17,7 @@ import { contractAttrs } from '@/theme/contract'
 import { toastProviderContract } from '@/theme/contracts/toast-provider'
 import { useToastSlotHeights } from './hooks/useToastSlotHeights'
 import { useSwipeDismiss } from './hooks/useSwipeDismiss'
+import { useMediaQuery } from './hooks/useMediaQuery'
 import { computeToastLayout } from './toastLayout'
 import { DURATION, EASE } from './toastConstants'
 
@@ -45,9 +46,7 @@ function ToastProvider({
     defaultDuration: duration,
   })
 
-  const [canHover] = useState(() =>
-    typeof window === 'undefined' ? true : window.matchMedia('(hover: hover)').matches
-  )
+  const canHover = useMediaQuery('(hover: hover)', true)
   const stackEnabled = stacking && canHover
   const [hovered, setHovered] = useState(false)
   const [focusWithin, setFocusWithin] = useState(false)

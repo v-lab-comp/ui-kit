@@ -40,6 +40,8 @@ export function EditorOnly() {
 
 To‘liq tip — **`CommentRichInputProps`**: majburiy **`onSend`**, **`placeholder`**; ixtiyoriy **`isPending`**, **`disabled`**, **`ariaLabels`**, **`toolbarStartSlot`**, **`className`** / **`rootClassName`**. Yuborish — **Enter**, yangi qator — **Shift+Enter**.
 
+**`ariaLabels`** kalitlari: **`input`** — kiritish maydonining nomi (standart — `placeholder`), **`toolbar`** — formatlash paneli nomi (`role="toolbar"`, standartda berilmagan), shuningdek **`bold`**, **`italic`**, **`underline`**, **`strikethrough`**, **`align`**, **`send`** — tugmalar nomlari.
+
 ## Balandlik va shaffoflik
 
 Standart holatda maydon balandligi kontentdan o‘sadi, faolsiz maydon esa **xiralashtirilmaydi** (avval standartda `min-height: 116px` va `opacity: 0.8` qat’iy yozilgan edi). Zarur bo‘lsa, avvalgi xatti-harakat CSS-o‘zgaruvchilari orqali qaytariladi:

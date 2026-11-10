@@ -35,7 +35,7 @@ export function BirthDateField() {
     <DateInput
       label="Date of birth"
       value={value}
-      onChange={(e) => setValue(e.target.value)}
+      onChange={setValue}
       valueFormat="iso"
       placeholder="DD.MM.YYYY"
     />
@@ -53,7 +53,7 @@ Base — **[InputField](./input-field)** and masked input with calendar. Import 
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **`value`**               | Controlled value: with **`valueFormat: 'iso'`** — **`YYYY-MM-DD`** or **`''`**; the visible mask stays **DD / MM / YYYY**                                                                                                               |
 | **`valueFormat`**         | **`masked`** (default) — **`onChange`** matches mask string; **`iso`** — **`YYYY-MM-DD`** in **`onChange`** / **`onAccept`** for APIs                                                                                                   |
-| **`onChange`**            | Native change event; meaning of **`target.value`** depends on **`valueFormat`**                                                                                                                                                         |
+| **`onChange`**            | **`(value: string) => void`** — on typing and on calendar pick; string format follows **`valueFormat`** (not an event)                                                                                                                  |
 | **`onAccept`**            | Fires when the mask accepts a full value or a date is picked in the calendar                                                                                                                                                            |
 | **`locale`**              | **`CalendarLocale`** for the calendar                                                                                                                                                                                                   |
 | **`getDotDays`**          | **`(date: Date) => boolean`** — dot markers on days                                                                                                                                                                                     |

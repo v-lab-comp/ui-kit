@@ -42,6 +42,8 @@ Format [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) ga asoslangan, v
 - **Vidjetlar va ma’lumotlar:** `SegmentedControl` — bitta tab stop bilan `radiogroup`; `Tabs` — `onChange` siz `value` komponentni boshqariladigan qiladi, `Tabs.List` qo‘shildi; `Accordion` — `role="region"` faqat `region` prop’i bilan; `Table` — `pageSize` boshqariladigan (boshqarilmaydigan: `defaultPageSize`, `defaultPage`), o‘rnatilganda `onPageChange(1)` chaqirilmaydi; `Tag` o‘chirish tugmasining nomi — `dismissLabel` + teg matni.
 - **Kontent:** `FileUploadField` — `initialFiles` → `files` / `defaultFiles` va `newFileStatus`, soxta yuklash olib tashlandi (progress va holat `files` dan); `SvgIcon` sukut bo‘yicha dekorativ, nomi `title` / `aria-label` orqali; bayroqlar `title` qabul qiladi.
 - Deyarli barcha komponentlar `ref` ni uzatadi (`forwardRef`).
+- **`onChange` qiymatni uzatadi** — `PhoneInput` (E.164 yoki `''`), `SiteInput` (protokol + yo‘l), `DateInput` (`valueFormat` formatida) va `useCompositeInput` asosidagi maydonlarda — `SelectInput` dagi kabi. `DateInput` kalendarda sana tanlanganda ham `onChange` ni chaqiradi. Avval `onChange={(e) => set(e.target.value)}` — endi `onChange={set}`; react-hook-form’ning `field.onChange` ini to‘g‘ridan-to‘g‘ri berish mumkin.
+- **`SidebarItem` va `AppSwitcher` havolalari `as` qabul qiladi** — router havola komponenti: `<SidebarItem as={Link} href="/projects">`.
 
 ### Fixed
 
@@ -53,6 +55,7 @@ Format [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) ga asoslangan, v
 - **`RichInput` / `MarkdownInput`:** muharrir nomini `label` dan oladi.
 - **`ThemeProvider`:** tizim sxemasiga obuna endi har renderda qayta yaratilmaydi; dangasa yuklanadigan skinga o‘tishda yuklash tugaguncha oldingi skin qoladi. **`useClickOutside`** qayta renderdan keyin dolzarb callback ni chaqiradi.
 - **Foydalanish qulayligi va klaviatura (refaktoring, 2–5-bosqichlar):** `RichInput` / `MarkdownInput` / `CommentRichInput` formatlash paneli — `role="toolbar"`, strelkalar, tugmalar klaviaturadan ishlaydi; `PasswordInput` va `ShareLinkInput` tugmalari yana Tab tartibida; `Calendar` — APG to‘ri (strelkalar, PageUp / PageDown, kun nomida to‘liq sana), `DateInput` qalqib chiquvchi kalendari — fokus boshqaruvli dialog; `Modal` / `Drawer` o‘chirilganda skroll blokini bo‘shatadi va stekdan chiqadi, `ConfirmModal` — `alertdialog`; `Tooltip` fokusda ham ochiladi; `Toast` — bitta muloyim e’lon, yashirin toastlar fokus olmaydi, avtoyopish kursor va fokusda to‘xtaydi; `ToggleGroup`, `SegmentedControl`, `Tabs` — strelkalar va bitta tab stop; yopiq `Accordion` paneli fokus olmaydi; `Table` aylantirish sohasi va qatorlari klaviaturadan ishlaydi; izohlar lentasi — `feed` / `article`, tahrir va o‘chirishdan keyin fokus qaytadi; bayroq va ikonkalarda takroriy id yo‘q.
+- **`SelectInput` / `AsyncSearchSelect`:** tanlangan qiymat plaseholder rangida emas, oddiy matn rangida ko‘rsatiladi (`data-placeholder` faqat ko‘rinadigan maslahatda turadi).
 
 ### Removed
 

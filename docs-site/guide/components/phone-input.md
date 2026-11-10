@@ -31,14 +31,7 @@ import { PhoneInput } from '@v-lab/ui-kit/phone'
 
 export function PhoneField() {
   const [value, setValue] = useState('')
-  return (
-    <PhoneInput
-      label="Телефон"
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-      defaultCountry="UZ"
-    />
-  )
+  return <PhoneInput label="Телефон" value={value} onChange={setValue} defaultCountry="UZ" />
 }
 ```
 
@@ -64,7 +57,7 @@ const { field } = useController({ name: 'phone', control })
 | Проп                             | Тип                            | Описание                                                |
 | -------------------------------- | ------------------------------ | ------------------------------------------------------- |
 | **`value`** / **`defaultValue`** | `string`                       | Номер в **E.164** (другие форматы нормализуются)        |
-| **`onChange`**                   | `ChangeEventHandler`           | В **`event.target.value`** — строка **E.164**           |
+| **`onChange`**                   | `(value: string) => void`      | Строка **E.164** (или `""`), не событие                 |
 | **`name`**                       | `string`                       | Имя поля в форме                                        |
 | **`size`**                       | **`BaseInputSize`**            | Высота поля (**`big`** \| **`medium`** \| **`small`**)  |
 | **`placeholder`**                | `string`                       | Плейсхолдер маски                                       |

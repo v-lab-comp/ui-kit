@@ -49,9 +49,9 @@ describe('SiteInput: выбор протокола', () => {
             name="site"
             protocolOptions={PROTOCOLS}
             value={value}
-            onChange={(e) => {
-              setValue(e.target.value)
-              onValue(e.target.value)
+            onChange={(next) => {
+              setValue(next)
+              onValue(next)
             }}
           />
         </form>
@@ -92,5 +92,15 @@ describe('SiteInput: выбор протокола', () => {
     expect(input.closest('.custom-wrapper')).not.toBeNull()
     expect(input).not.toHaveAttribute('wrapperclassname')
     expect(screen.getByText('.uz')).toBeInTheDocument()
+  })
+})
+
+describe('SiteInput: onChange отдаёт значение', () => {
+  it('вызывается с полным адресом (протокол + путь), не с событием', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn()
+    render(<SiteInput label="Сайт" onChange={onChange} />)
+    await user.type(screen.getByRole('textbox', { name: 'Сайт' }), 'a')
+    expect(onChange).toHaveBeenLastCalledWith('https://a')
   })
 })

@@ -37,7 +37,7 @@ export function BirthDateField() {
     <DateInput
       label="Дата рождения"
       value={value}
-      onChange={(e) => setValue(e.target.value)}
+      onChange={setValue}
       valueFormat="iso"
       placeholder="ДД.ММ.ГГГГ"
     />
@@ -55,7 +55,7 @@ export function BirthDateField() {
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **`value`**               | Контролируемое значение: при **`valueFormat: 'iso'`** — строка **`YYYY-MM-DD`** или **`''`**; внутри поля по-прежнему маска «ДД / ММ / ГГГГ»                                                              |
 | **`valueFormat`**         | **`masked`** (по умолчанию) — в **`onChange`** строка как в маске; **`iso`** — в **`onChange`** / при полной дате **`YYYY-MM-DD`** для форм и API                                                         |
-| **`onChange`**            | Нативный **`ChangeEvent`**; смысл **`event.target.value`** зависит от **`valueFormat`** (см. JSDoc в типах)                                                                                               |
+| **`onChange`**            | **`(value: string) => void`** — при вводе и при выборе даты в календаре; формат строки — по **`valueFormat`** (не событие)                                                                                |
 | **`onAccept`**            | Вызывается, когда маска приняла полное значение или дата выбрана в календаре; формат строки — по **`valueFormat`**                                                                                        |
 | **`locale`**              | Локаль календаря (**`CalendarLocale`**)                                                                                                                                                                   |
 | **`getDotDays`**          | Подсветка точками дней в сетке: **`(date: Date) => boolean`**                                                                                                                                             |

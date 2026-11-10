@@ -93,11 +93,9 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>((props, 
     (newValue: string) => {
       setKnownValue(newValue || undefined)
       if (!isControlled) setInternalValue(newValue || undefined)
-      onChange?.({
-        target: { value: newValue, name: name ?? '' },
-      } as React.ChangeEvent<HTMLInputElement>)
+      onChange?.(newValue)
     },
-    [isControlled, onChange, name]
+    [isControlled, onChange]
   )
 
   const applyFullPhone = useCallback(

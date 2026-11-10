@@ -1,6 +1,6 @@
 # PhoneInput — значение и страна
 
-Поле национальной части номера (`react-phone-number-input/input-max`, `international` + `withCountryCallingCode={false}`) и селект страны слева. Наружу — E.164 через `onChange(e => e.target.value)` или `""` для пустого поля.
+Поле национальной части номера (`react-phone-number-input/input-max`, `international` + `withCountryCallingCode={false}`) и селект страны слева. Наружу — E.164 через `onChange(value => ...)` или `""` для пустого поля.
 
 ## Страна
 

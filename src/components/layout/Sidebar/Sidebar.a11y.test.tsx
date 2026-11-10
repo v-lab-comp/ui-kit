@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { forwardRef, type AnchorHTMLAttributes } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 import { Sidebar, SidebarContent, SidebarSection } from './Sidebar'
 import { SidebarItem } from './Item'
@@ -20,6 +21,27 @@ describe('Sidebar accessibility', () => {
     )
     expect(screen.getByRole('navigation', { name: 'Main' })).toBeInTheDocument()
     expect(screen.getByRole('group', { name: 'MAIN' })).toBeInTheDocument()
+  })
+
+  it('item with as renders the given link component with href, link props and aria-current', () => {
+    const FakeLink = forwardRef<
+      HTMLAnchorElement,
+      AnchorHTMLAttributes<HTMLAnchorElement> & { replace?: boolean }
+    >(({ replace, ...props }, ref) => (
+      <a ref={ref} data-fake-link={replace ? 'replace' : ''} {...props} />
+    ))
+    FakeLink.displayName = 'FakeLink'
+    const ref = { current: null as HTMLAnchorElement | HTMLButtonElement | null }
+    render(
+      <SidebarItem as={FakeLink} href="/projects" replace active ref={ref}>
+        Projects
+      </SidebarItem>
+    )
+    const link = screen.getByRole('link', { name: 'Projects' })
+    expect(link).toHaveAttribute('data-fake-link', 'replace')
+    expect(link).toHaveAttribute('href', '/projects')
+    expect(link).toHaveAttribute('aria-current', 'page')
+    expect(ref.current).toBe(link)
   })
 
   it('item renders a link with href and a button without it', () => {

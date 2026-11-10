@@ -31,14 +31,7 @@ import { PhoneInput } from '@v-lab/ui-kit/phone'
 
 export function PhoneField() {
   const [value, setValue] = useState('')
-  return (
-    <PhoneInput
-      label="Telefon"
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-      defaultCountry="UZ"
-    />
-  )
+  return <PhoneInput label="Telefon" value={value} onChange={setValue} defaultCountry="UZ" />
 }
 ```
 

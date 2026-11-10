@@ -1,17 +1,32 @@
 import { forwardRef, useId } from 'react'
-import type { AnchorHTMLAttributes, ButtonHTMLAttributes, Ref } from 'react'
+import type { ButtonHTMLAttributes, ElementType, Ref } from 'react'
 import clsx from 'clsx'
 import { useSidebar } from '../SidebarContext'
 import { contractAttrs, contractPart } from '@/theme/contract'
 import { sidebarItemContract } from '@/theme/contracts/sidebar-item'
-import type { SidebarItemProps } from './Item.types'
+import type { SidebarItemComponent, SidebarItemProps } from './Item.types'
 
-export type { SidebarItemProps, SidebarItemButtonProps, SidebarItemLinkProps } from './Item.types'
+export type {
+  SidebarItemProps,
+  SidebarItemButtonProps,
+  SidebarItemLinkProps,
+  SidebarItemComponent,
+} from './Item.types'
 
-/** Пункт сайдбара: с `href` — ссылка `<a>`, без — кнопка. ref — на ссылку/кнопку. */
-export const SidebarItem = forwardRef<HTMLButtonElement | HTMLAnchorElement, SidebarItemProps>(
+/**
+ * Пункт сайдбара: с `href` — ссылка `<a>` (или компонент из `as`, например Link роутера),
+ * без — кнопка. ref — на ссылку/кнопку.
+ *
+ * @example
+ * <SidebarItem as={Link} href="/projects" active>Проекты</SidebarItem>
+ */
+export const SidebarItem = forwardRef<
+  HTMLButtonElement | HTMLAnchorElement,
+  SidebarItemProps<ElementType>
+>(
   (
     {
+      as,
       leftNode,
       children,
       rightNode,
@@ -31,6 +46,7 @@ export const SidebarItem = forwardRef<HTMLButtonElement | HTMLAnchorElement, Sid
         ? (props['aria-labelledby'] ?? labelId)
         : props['aria-labelledby']
 
+    const LinkTag = (as ?? 'a') as ElementType
     const itemProps = {
       className: contractPart(sidebarItemContract, 'item'),
       'data-active': active || undefined,
@@ -62,14 +78,9 @@ export const SidebarItem = forwardRef<HTMLButtonElement | HTMLAnchorElement, Sid
           aria-hidden
         />
         {props.href !== undefined ? (
-          <a
-            ref={ref as Ref<HTMLAnchorElement>}
-            {...itemProps}
-            {...(props as AnchorHTMLAttributes<HTMLAnchorElement>)}
-            aria-labelledby={labelledBy}
-          >
+          <LinkTag ref={ref} {...itemProps} {...props} aria-labelledby={labelledBy}>
             {content}
-          </a>
+          </LinkTag>
         ) : (
           <button
             ref={ref as Ref<HTMLButtonElement>}
@@ -84,6 +95,6 @@ export const SidebarItem = forwardRef<HTMLButtonElement | HTMLAnchorElement, Sid
       </div>
     )
   }
-)
+) as SidebarItemComponent
 
 SidebarItem.displayName = 'SidebarItem'

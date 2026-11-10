@@ -39,7 +39,7 @@ export function WebsiteField() {
       label="Sayt"
       protocolOptions={PROTOCOL_OPTIONS}
       value={value}
-      onChange={(e) => setValue(e.target.value)}
+      onChange={setValue}
       placeholder="www.example.com"
     />
   )

@@ -14,15 +14,9 @@
 :where([data-vl-skin~='pixel']) {
   /* ── Полный триггер ────────────────────────────────────────────────────── */
 
-  /* React пишет data-placeholder="false" у выбранного значения, а corporate красит любой
-     [data-placeholder] в серый. В pixel серый — только у настоящего плейсхолдера. */
+  /* data-placeholder есть только у показанного плейсхолдера */
   .vl-select-input__trigger-text[data-placeholder],
   .vl-select-input__compact-text[data-placeholder] {
-    color: var(--base-input-color);
-  }
-
-  .vl-select-input__trigger-text[data-placeholder='true'],
-  .vl-select-input__compact-text[data-placeholder='true'] {
     color: var(--text-soft-400);
   }
 
@@ -77,7 +71,7 @@
   }
 
   .vl-select-input__compact-trigger:not(.vl-input-field__wrapper *)
-    .vl-select-input__compact-text[data-placeholder='true'] {
+    .vl-select-input__compact-text[data-placeholder] {
     color: var(--text-sub-600);
   }
 

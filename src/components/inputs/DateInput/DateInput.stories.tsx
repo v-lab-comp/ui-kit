@@ -192,7 +192,7 @@ export const IsoValueFormat: Story = {
           required
           valueFormat="iso"
           value={iso}
-          onChange={(e) => setIso(e.target.value)}
+          onChange={(next) => setIso(next)}
           hint="onChange получает YYYY-MM-DD"
         />
         <pre style={{ marginTop: 12, fontSize: 12, opacity: 0.85 }}>

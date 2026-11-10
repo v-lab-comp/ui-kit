@@ -1,3 +1,4 @@
+import { forwardRef, type AnchorHTMLAttributes } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { RiShieldCheckLine } from '@remixicon/react'
 import { AppSwitcher } from './AppSwitcher'
@@ -221,6 +222,51 @@ export const WithoutPromo: Story = {
         { id: 'erp', label: 'ERP' },
       ]}
       promo={null}
+    />
+  ),
+}
+
+/** Имитация Link роутера: переход без перезагрузки страницы */
+const FakeLink = forwardRef<HTMLAnchorElement, AnchorHTMLAttributes<HTMLAnchorElement>>(
+  ({ onClick, ...props }, ref) => (
+    <a
+      ref={ref}
+      {...props}
+      onClick={(event) => {
+        onClick?.(event)
+        event.preventDefault()
+      }}
+    />
+  )
+)
+FakeLink.displayName = 'FakeLink'
+
+export const WithRouterLink: Story = {
+  name: 'Ссылки роутера (as)',
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      source: {
+        type: 'code',
+        language: 'tsx',
+        code: `import { Link } from 'react-router-dom' // или next/link
+
+<AppSwitcher
+  apps={[
+    { id: 'hrm', label: 'HRM', href: '/hrm', as: Link, isActive: true },
+    { id: 'crm', label: 'CRM', href: '/crm', as: Link },
+  ]}
+/>`,
+      },
+    },
+  },
+  render: () => (
+    <AppSwitcher
+      apps={[
+        { id: 'hrm', label: 'HRM', href: '#hrm', as: FakeLink, isActive: true },
+        { id: 'crm', label: 'CRM', href: '#crm', as: FakeLink },
+        { id: 'docs', label: 'Docs', href: '#docs', as: FakeLink },
+      ]}
     />
   ),
 }

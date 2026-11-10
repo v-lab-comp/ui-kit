@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { formFields, useCompositeInput } from './useCompositeInput'
 
 const formValues = () =>
@@ -9,10 +9,11 @@ const formValues = () =>
     String(v),
   ])
 
-function Triple({ name }: { name?: string }) {
+function Triple({ name, onChange }: { name?: string; onChange?: (value: string) => void }) {
   const { parts, notifyParts, hiddenInputs } = useCompositeInput<[string, string, string]>({
     defaultValue: 'a|b|c',
     name,
+    onChange,
     split: (value) => value.split('|') as [string, string, string],
     join: (parts) => parts.join('|'),
     formNames: ['first', undefined, 'third'],
@@ -91,5 +92,15 @@ describe('formFields', () => {
   it('пустой набор — null', () => {
     expect(formFields({})).toBeNull()
     expect(formFields([])).toBeNull()
+  })
+})
+
+describe('useCompositeInput: onChange', () => {
+  it('вызывается с собранной строкой, не с событием', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn()
+    render(<Triple name="whole" onChange={onChange} />)
+    await user.click(screen.getByRole('button', { name: 'Сменить' }))
+    expect(onChange).toHaveBeenCalledWith('a|b|z')
   })
 })

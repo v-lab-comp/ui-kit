@@ -47,7 +47,7 @@ function FullUrlInput({
 }: {
   value?: string
   defaultValue?: string
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onChange?: (value: string) => void
   name?: string
   label?: string
   hint?: string
@@ -127,7 +127,7 @@ function DomainWithEndBlock({
 }: {
   value?: string
   defaultValue?: string
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onChange?: (value: string) => void
   name?: string
   label?: string
   hint?: string
@@ -408,7 +408,7 @@ function renderVariantPreview(
               placeholder="example.com"
               protocolOptions={PROTOCOL_OPTIONS}
               value={formProps.website}
-              onChange={(e) => formProps.setWebsite(e.target.value)}
+              onChange={(next) => formProps.setWebsite(next)}
             />
           </div>
           <div>
@@ -419,7 +419,7 @@ function renderVariantPreview(
               label="Domain"
               hint=""
               value={formProps.domain}
-              onChange={(e) => formProps.setDomain(e.target.value)}
+              onChange={(next) => formProps.setDomain(next)}
             />
           </div>
         </>
@@ -485,7 +485,7 @@ function renderVariantPreview(
           label="URL"
           hint="Протокол слева (Select), зона справа (Select)."
           value={formProps.fullUrl}
-          onChange={(e) => formProps.setFullUrl(e.target.value)}
+          onChange={(next) => formProps.setFullUrl(next)}
         />
       )
     default:
@@ -682,10 +682,11 @@ export function CompositeInputsPlayground() {
 
           <div className={styles.playgroundSplit}>
             <div className={styles.playgroundCodeColumn}>
-              <div className={styles.playgroundCodeLabel}>
+              <div id="composite-playground-code-label" className={styles.playgroundCodeLabel}>
                 Код (можно редактировать и копировать)
               </div>
               <textarea
+                aria-labelledby="composite-playground-code-label"
                 className={styles.playgroundCodeTextarea}
                 value={displayedCode}
                 onChange={(e) => setDisplayedCode(e.target.value)}

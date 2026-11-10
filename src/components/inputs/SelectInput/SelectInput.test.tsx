@@ -501,3 +501,29 @@ describe('SelectInput: ref, форма, compact', () => {
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
   })
 })
+
+describe('SelectInput: data-placeholder', () => {
+  it('атрибут есть только у показанного плейсхолдера', () => {
+    const { unmount } = render(
+      <SelectInput label="Страна" placeholder="Выберите" options={COUNTRIES} />
+    )
+    expect(within(trigger()).getByText('Выберите')).toHaveAttribute('data-placeholder', 'true')
+    unmount()
+
+    render(<SelectInput label="Страна" placeholder="Выберите" options={COUNTRIES} value="uz" />)
+    expect(within(trigger()).getByText('Uzbekistan')).not.toHaveAttribute('data-placeholder')
+  })
+
+  it('компактный вариант: без атрибута у выбранного значения', () => {
+    render(
+      <SelectInput
+        variant="compact-label"
+        aria-label="Страна"
+        placeholder="Выберите"
+        options={COUNTRIES}
+        value="uz"
+      />
+    )
+    expect(trigger().querySelector('[data-placeholder]')).toBeNull()
+  })
+})
