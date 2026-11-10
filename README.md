@@ -7,7 +7,7 @@
 Светлая и тёмная схема — из коробки.
 
 ![version](https://img.shields.io/badge/version-0.15.0-335cff)
-![react](https://img.shields.io/badge/React-%E2%89%A517-61dafb?logo=react&logoColor=white)
+![react](https://img.shields.io/badge/React-18.2%2B%20%7C%2019-61dafb?logo=react&logoColor=white)
 ![typescript](https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript&logoColor=white)
 ![esm](https://img.shields.io/badge/ESM-only-f7df1e)
 

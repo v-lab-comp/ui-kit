@@ -21,6 +21,7 @@ import {
 import clsx from 'clsx'
 import { InputField } from '../base/InputField'
 import { baseInputContract } from '@/theme/contracts/base-input'
+import { useMergeRefs } from '@/utils/useMergeRefs'
 import { Calendar, defaultLocale } from '../../Calendar'
 import { contractPart } from '@/theme/contract'
 import { dateInputContract } from '@/theme/contracts/date-input'
@@ -114,14 +115,7 @@ export const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
 
     const calendarDate = parseMaskedDateString(displayMasked)
 
-    const handleRef = useCallback(
-      (el: HTMLInputElement | null) => {
-        maskedRef.current = el
-        if (typeof forwardedRef === 'function') forwardedRef(el)
-        else if (forwardedRef) forwardedRef.current = el
-      },
-      [forwardedRef]
-    )
+    const handleRef = useMergeRefs([maskedRef, forwardedRef])
 
     const emitOnChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -10,6 +10,7 @@ import {
   useInteractions,
   useMergeRefs,
 } from '@floating-ui/react'
+import { getElementRef } from '@/utils/getElementRef'
 import { contractAttrs } from '@/theme/contract'
 import { tooltipContract } from '@/theme/contracts/tooltip'
 import type { TooltipProps } from './Tooltip.types'
@@ -36,10 +37,11 @@ export function Tooltip({
   const hover = useHover(context, { delay: { open: delay, close: 0 } })
   const { getReferenceProps, getFloatingProps } = useInteractions([hover])
 
-  const child = children as ReactElement & { ref?: React.Ref<Element | null> }
-  /* Floating UI: merge reference ref + child ref — обходящих паттерн без чтения .current в render. */
-  // eslint-disable-next-line react-hooks/refs -- useMergeRefs merges callbacks; child.ref is forwarded, not read here
-  const mergedReferenceRef = useMergeRefs([refs.setReference, child.ref])
+  const child = children as ReactElement<Record<string, unknown>>
+  /* Floating UI: merge reference ref + child ref — обходящих паттерн без чтения .current в render.
+     ref ребёнка — через getElementRef: в React 18 он в `child.ref`, в 19 — в `child.props.ref`. */
+  // eslint-disable-next-line react-hooks/refs -- useMergeRefs merges callbacks; child's ref is forwarded, not read here
+  const mergedReferenceRef = useMergeRefs([refs.setReference, getElementRef<Element>(child)])
 
   return (
     <>

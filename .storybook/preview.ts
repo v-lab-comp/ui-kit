@@ -11,7 +11,7 @@ import '@fontsource/google-sans/cyrillic-500.css'
 import '../src/skins/corporate/index.css'
 
 /**
- * Storybook 8 + React 18 в режиме Docs генерирует ложные предупреждения act:
+ * Storybook 8 + React 18/19 в режиме Docs генерирует ложные предупреждения act:
  * - при IS_REACT_ACT_ENVIRONMENT=true React требует оборачивать все setState в act();
  * - без флага — «testing environment is not configured to support act».
  * Это баг/ограничение addon-docs (ZoomElement, SyntaxHighlighter, async-сторис).
@@ -52,6 +52,13 @@ console.warn = (...args: unknown[]) => {
 
 const SKINS = [corporateSkin] as const
 
+/**
+ * «Без скина»: история рендерится без ThemeProvider, на `<html>` нет `data-vl-skin`.
+ * CSS скина подключён, но все его правила висят под `[data-vl-skin~='…']` и не срабатывают —
+ * видно, что компонент рендерит сам (классы `vl-*`, data-атрибуты), без оформления.
+ */
+const NO_SKIN = 'none'
+
 const preview: Preview = {
   globalTypes: {
     skin: {
@@ -59,7 +66,10 @@ const preview: Preview = {
       toolbar: {
         title: 'Скин',
         icon: 'paintbrush',
-        items: SKINS.map((s) => s.name),
+        items: [
+          ...SKINS.map((s) => ({ value: s.name, title: s.name })),
+          { value: NO_SKIN, title: 'Без скина' },
+        ],
         dynamicTitle: true,
       },
     },
@@ -71,11 +81,13 @@ const preview: Preview = {
   initialGlobals: { skin: 'corporate', colorScheme: 'light' },
   decorators: [
     (Story, context) =>
-      createElement(
-        ThemeProvider,
-        { skins: SKINS, skin: context.globals.skin, colorScheme: context.globals.colorScheme },
-        createElement(Story)
-      ),
+      context.globals.skin === NO_SKIN
+        ? createElement(Story)
+        : createElement(
+            ThemeProvider,
+            { skins: SKINS, skin: context.globals.skin, colorScheme: context.globals.colorScheme },
+            createElement(Story)
+          ),
   ],
   parameters: {
     controls: {

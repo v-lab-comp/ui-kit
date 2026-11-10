@@ -29,16 +29,20 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); ver
 
 - **The package is renamed** to `@v-lab/ui-kit`, scope `@ui-kit` → `@v-lab`.
 - **Components are unstyled; styling lives in the `corporate` skin.** Components render stable `vl-<name>` / `vl-<name>__<part>` classes and data attributes from their contracts; CSS Modules and hashed class names are gone. Instead of `@v-lab/ui-kit/style.css`, import `@v-lab/ui-kit/skins/corporate.css` and turn the skin on: wrap the app in `ThemeProvider skins={[corporateSkin]}` or set `<html data-vl-skin="corporate">` — see [Installation](./installation). Global `.color-*` classes are replaced by the `data-color` attribute. The look is unchanged.
+- **React 19.** The kit is developed and tested on React 19.3. The `react` / `react-dom` peer range is `^18.2.0 || ^19.0.0` (was `>=17`, but the kit never worked on React 17: components use `useId` from React 18). Apps on React 18.2+ keep working unchanged.
 
 ### Fixed
 
 - **`PdfPreview` no longer crashes SSR on import.** `react-pdf` (pdf.js) is loaded lazily, in the browser only: previously the static import touched the DOM while the module was loading. If the app has set its own `pdfjs.GlobalWorkerOptions.workerSrc`, it is kept; otherwise the unpkg worker URL is used.
+- **Callback refs with a cleanup function (React 19)** on `Checkbox` / `BaseCheckbox`, `SearchInput`, `ShareLinkInput`, `RichInput`, `DateInput`, `PhoneInput` and `Popover`: the cleanup returned by the ref now runs on detach. These components used to forward the ref by hand, which dropped the cleanup and called the ref with `null`.
+- **`AppSwitcher`: an empty `icon` string** shows the initial-letter tile. On React 19 an empty `<img>` stayed instead: React 19 does not set `src=""`, so the fallback never triggered.
+- **Inputs: `data-filled` after a form reset.** After `form.reset()`, a `type="reset"` button or React 19’s automatic form reset (`<form action>`), an uncontrolled field no longer stays marked as filled (the “filled” border on an empty field).
 
 ### Removed
 
 - **The CommonJS build `dist/cjs/`** — the package ships as ESM only. `require('@v-lab/ui-kit')` on Node 20.19+ / 22.12+ loads the ESM build.
 - **The `./style.css` export** (`@v-lab/ui-kit/style.css`) — styles now ship with the skin: `@v-lab/ui-kit/skins/corporate.css`.
-- **Publishing to the corporate GitLab npm registry** — `publishConfig`, which pointed to the GitLab Package Registry, is removed from `package.json`. The registry for the next release will be announced separately; until then, install the package from a local tarball — see [Installation](./installation). The source code has moved to GitHub: [v-lab-comp/ui-kit](https://github.com/v-lab-comp/ui-kit).
+- **Publishing to the GitLab npm registry** — `publishConfig`, which pointed to the GitLab Package Registry, is removed from `package.json`. The registry for the next release will be announced separately; until then, install the package from a local tarball — see [Installation](./installation). The source code has moved to GitHub: [v-lab-comp/ui-kit](https://github.com/v-lab-comp/ui-kit).
 
 ## [0.15.0] — 2026-09-17
 

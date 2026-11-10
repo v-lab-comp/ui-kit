@@ -21,6 +21,7 @@ import {
 } from './phoneInputHelpers'
 import { phoneLocaleStrings } from './phoneLocales'
 import { contractPart } from '@/theme/contract'
+import { useMergeRefs } from '@/utils/useMergeRefs'
 import { phoneInputContract } from '@/theme/contracts/phone-input'
 import type { PhoneInputProps } from './PhoneInput.types'
 
@@ -54,6 +55,8 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
     },
     ref
   ) => {
+    // Библиотека пересылает ref сама и теряет очистку callback-ref (React 19) — оборачиваем
+    const phoneRef = useMergeRefs([ref])
     const allowedCountries = useMemo(() => getAllowedCountries(countries), [countries])
     const isAllowed = useCallback(
       (c: CountryCode | undefined): c is CountryCode => !!c && allowedCountries.includes(c),
@@ -233,7 +236,7 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
             <div className={contractPart(phoneInputContract, 'phone-input')}>
               <PhoneInputLib
                 key={country}
-                ref={ref}
+                ref={phoneRef}
                 id={fieldId}
                 country={country}
                 international={true}

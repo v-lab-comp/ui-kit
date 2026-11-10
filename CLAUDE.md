@@ -8,16 +8,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Stack
 
-| Layer    | Tech                                                                             |
-| -------- | -------------------------------------------------------------------------------- |
-| Runtime  | React 18                                                                         |
-| Language | TypeScript (strict)                                                              |
-| Bundler  | Vite + Rollup; ESM only, `preserveModules`                                       |
-| Styling  | Unstyled components + skins (`src/skins/<skin>/`), CSS Custom Properties; `clsx` |
-| Overlays | `@floating-ui/react`                                                             |
-| Icons    | `@remixicon/react`                                                               |
-| Docs     | Storybook 8 (`tags: ['autodocs']`), VitePress (`docs-site/`)                     |
-| Tests    | Vitest + React Testing Library (unit), Playwright (e2e)                          |
+| Layer    | Tech                                                                                            |
+| -------- | ----------------------------------------------------------------------------------------------- |
+| Runtime  | React 19 (dev and tests); peer `react` `^18.2.0 \|\| ^19.0.0` — no React-19-only APIs in `src/` |
+| Language | TypeScript (strict)                                                                             |
+| Bundler  | Vite + Rollup; ESM only, `preserveModules`                                                      |
+| Styling  | Unstyled components + skins (`src/skins/<skin>/`), CSS Custom Properties; `clsx`                |
+| Overlays | `@floating-ui/react`                                                                            |
+| Icons    | `@remixicon/react`                                                                              |
+| Docs     | Storybook 8 (`tags: ['autodocs']`), VitePress (`docs-site/`)                                    |
+| Tests    | Vitest + React Testing Library (unit), Playwright (e2e)                                         |
 
 ## Hard constraints
 

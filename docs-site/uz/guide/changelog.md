@@ -29,16 +29,20 @@ Format [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) ga asoslangan, v
 
 - **Paket qayta nomlandi:** endi `@v-lab/ui-kit`, scope `@ui-kit` → `@v-lab`.
 - **Komponentlar uslubsiz, bezak — `corporate` skinida.** Komponentlar kontraktlardan barqaror `vl-<name>` / `vl-<name>__<part>` klasslari va data-atributlarni chiqaradi; CSS Modules va xeshlangan klasslar olib tashlandi. `@v-lab/ui-kit/style.css` o‘rniga `@v-lab/ui-kit/skins/corporate.css` ni ulang va skinni yoqing: ilovani `ThemeProvider skins={[corporateSkin]}` ga o‘rang yoki `<html data-vl-skin="corporate">` qo‘ying — [O‘rnatish](./installation). Global `.color-*` klasslari `data-color` atributi bilan almashtirildi. Tashqi ko‘rinish o‘zgarmadi.
+- **React 19.** Kit React 19.3 da ishlab chiqiladi va sinovdan o‘tkaziladi. `react` / `react-dom` peer diapazoni — `^18.2.0 || ^19.0.0` (avval `>=17` edi, lekin kit React 17 da ishlamagan: komponentlar React 18 dagi `useId` dan foydalanadi). React 18.2+ dagi ilovalar o‘zgarishsiz ishlayveradi.
 
 ### Fixed
 
 - **`PdfPreview` import qilinganda endi SSR ni yiqitmaydi.** `react-pdf` (pdf.js) dangasa, faqat brauzerda yuklanadi: avval statik import modul yuklanayotgandayoq DOM ga murojaat qilardi. Ilova o‘zining `pdfjs.GlobalWorkerOptions.workerSrc` ini bergan bo‘lsa, u saqlanadi; aks holda unpkg dagi worker URL ishlatiladi.
+- **Tozalash funksiyasini qaytaradigan callback-ref (React 19)** — `Checkbox` / `BaseCheckbox`, `SearchInput`, `ShareLinkInput`, `RichInput`, `DateInput`, `PhoneInput` va `Popover` da: ref qaytargan funksiya ajratilganda chaqiriladi. Avval komponentlar ref ni qo‘lda uzatgan — tozalash yo‘qolgan, ref esa `null` olgan.
+- **`AppSwitcher`: `icon` da bo‘sh satr** nomning birinchi harfi bilan plitkani ko‘rsatadi. React 19 da uning o‘rniga bo‘sh `<img>` qolardi: React 19 `src=""` qo‘ymaydi va zaxira variant ishlamasdi.
+- **Kiritish maydonlari: forma tiklangandan keyin `data-filled`.** `form.reset()`, `type="reset"` tugmasi yoki React 19 dagi formani avtomatik tiklash (`<form action>`) dan keyin boshqarilmaydigan maydon endi to‘ldirilgan deb belgilangan holda qolmaydi.
 
 ### Removed
 
 - **CommonJS yig‘masi `dist/cjs/`** — paket faqat ESM sifatida yetkaziladi. Node 20.19+ / 22.12+ da `require('@v-lab/ui-kit')` ESM versiyasini yuklaydi.
 - **`./style.css` eksporti** (`@v-lab/ui-kit/style.css`) — stillar endi skin bilan yetkaziladi: `@v-lab/ui-kit/skins/corporate.css`.
-- **corporate GitLab npm reyestriga chiqarish** — `package.json` dan GitLab Package Registry ga ishora qilgan `publishConfig` olib tashlandi. Keyingi reliz uchun reyestr alohida e’lon qilinadi; ungacha paket mahalliy arxivdan o‘rnatiladi — [O‘rnatish](./installation). Manba kodi GitHub’ga ko‘chdi: [v-lab-comp/ui-kit](https://github.com/v-lab-comp/ui-kit).
+- **GitLab npm reyestriga chiqarish** — `package.json` dan GitLab Package Registry ga ishora qilgan `publishConfig` olib tashlandi. Keyingi reliz uchun reyestr alohida e’lon qilinadi; ungacha paket mahalliy arxivdan o‘rnatiladi — [O‘rnatish](./installation). Manba kodi GitHub’ga ko‘chdi: [v-lab-comp/ui-kit](https://github.com/v-lab-comp/ui-kit).
 
 ## [0.15.0] — 2026-09-17
 

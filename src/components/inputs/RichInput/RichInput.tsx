@@ -21,6 +21,7 @@ import clsx from 'clsx'
 import { InputField } from '../base/InputField'
 import { useRichTextEditor } from '../base/richText'
 import { contractPart } from '@/theme/contract'
+import { useMergeRefs } from '@/utils/useMergeRefs'
 import { richInputContract } from '@/theme/contracts/rich-input'
 import { DEFAULT_RICH_INPUT_ARIA_EN, DEFAULT_RICH_INPUT_TOOLS } from './richInputDefaults'
 import type { RichInputProps, RichInputTool } from './RichInput.types'
@@ -103,14 +104,7 @@ export const RichInput = forwardRef<HTMLDivElement, RichInputProps>(
       setHtml(value)
     }, [value, setHtml, editorRef])
 
-    const setEditorRef = useCallback(
-      (node: HTMLDivElement | null) => {
-        ;(editorRef as { current: HTMLDivElement | null }).current = node
-        if (typeof ref === 'function') ref(node)
-        else if (ref) (ref as { current: HTMLDivElement | null }).current = node
-      },
-      [ref, editorRef]
-    )
+    const setEditorRef = useMergeRefs<HTMLDivElement>([editorRef, ref])
 
     const runTool = useCallback(
       (e: MouseEvent<HTMLButtonElement>, command: string) => {

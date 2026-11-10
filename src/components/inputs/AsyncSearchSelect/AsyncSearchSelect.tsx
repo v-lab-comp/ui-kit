@@ -192,7 +192,12 @@ export const AsyncSearchSelect = forwardRef<HTMLSelectElement, AsyncSearchSelect
     )
 
     return (
-      <div ref={(el) => el && refs.setReference(el)} className={selectInputContract.className}>
+      <div
+        ref={(el) => {
+          if (el) refs.setReference(el)
+        }}
+        className={selectInputContract.className}
+      >
         <select
           ref={hiddenSelectRef}
           tabIndex={-1}

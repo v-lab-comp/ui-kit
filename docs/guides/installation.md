@@ -29,7 +29,7 @@ npm запишет в `package.json` зависимость `"@v-lab/ui-kit": "f
 
 ## 3. Установить peer-зависимости
 
-Минимум, нужный любому проекту:
+Минимум, нужный любому проекту (React — 18.2+ или 19):
 
 ```bash
 npm install react react-dom @remixicon/react clsx @floating-ui/react

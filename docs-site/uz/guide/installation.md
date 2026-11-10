@@ -26,7 +26,7 @@ npm install /yo‘l/v-lab-ui-kit-<versiya>.tgz react react-dom @remixicon/react 
 
 npm arxiv yo‘lini (`file:…`) ilovaning `package.json` fayliga yozadi. Kitni yangilash uchun yangi arxiv yig‘ing va uni xuddi shunday o‘rnating.
 
-Asosiy kirish uchun majburiy peer-paketlar: **react**, **react-dom**, **@remixicon/react**, **clsx**, **@floating-ui/react** (overlaylar, Select va pozitsiyalash).
+Asosiy kirish uchun majburiy peer-paketlar: **react** va **react-dom** (18.2+ yoki 19), **@remixicon/react**, **clsx**, **@floating-ui/react** (overlaylar, Select va pozitsiyalash).
 
 Ixtiyoriy entry nuqtalari (`date`, `phone`, `pdf`, `markdown`, `adapters`) qo‘shimcha peer-bog‘liqliklarni talab qiladi — paket `package.json` faylidagi eksportlar va `peerDependencies` ga qarang. **`adapters`** va **`react-hook-form`** uchun: [React Hook Form adapterlari](/uz/guide/adapters).
 

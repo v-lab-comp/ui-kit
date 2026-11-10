@@ -26,7 +26,7 @@ npm install /path/to/v-lab-ui-kit-<version>.tgz react react-dom @remixicon/react
 
 npm records the tarball path (`file:…`) in the app’s `package.json`. To update the kit, build a new tarball and install it the same way.
 
-Required peers for the main entry: **react**, **react-dom**, **@remixicon/react**, **clsx**, **@floating-ui/react** (overlays, Select, positioning).
+Required peers for the main entry: **react** and **react-dom** (18.2+ or 19), **@remixicon/react**, **clsx**, **@floating-ui/react** (overlays, Select, positioning).
 
 Optional entry points (`date`, `phone`, `pdf`, `markdown`, `adapters`) require extra peer dependencies — see exports and `peerDependencies` in the package’s `package.json`. For **`adapters`** and **`react-hook-form`**, see [React Hook Form adapters](./adapters).
 

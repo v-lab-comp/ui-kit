@@ -74,6 +74,10 @@ CommonJS-сборка `dist/cjs/` удалена; в `exports` у каждого
 - **Отдельный компонент** — своим классом через `className` или классом кита: `.vl-button` (0,1,0) бьёт правило скина того же веса порядком подключения, вариант — `.vl-button[data-variant='filled']` (0,2,0) бьёт `:where(.vl-button)[data-variant='filled']` (0,1,0).
 - **Свой скин** поверх `corporate` — `defineSkin({ name, schemes: ['light', 'dark'], extends: corporateSkin, load })`; на `<html>` будет `data-vl-skin="corporate brand"`, применяются оба. Правила написания скина — [`../architecture/theming.md`](../architecture/theming.md).
 
+### 6. React 18.2+ или 19
+
+Peer `react` / `react-dom` — `^18.2.0 || ^19.0.0` (было `>=17`). На React 17 кит и раньше не работал: компоненты используют `useId` из React 18. На React 18.2+ менять ничего не нужно. На React 19 callback-ref компонентов кита может возвращать функцию очистки — она вызывается при отсоединении.
+
 ## Sub-entry points для тяжёлых peer-зависимостей
 
 С версии `0.2.0` `DateInput`, `PhoneInput`, `PdfPreview` и RHF-адаптеры вынесены в отдельные entry points. Импорт из основного `@v-lab/ui-kit` не сработает.

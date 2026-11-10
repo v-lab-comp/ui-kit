@@ -4,6 +4,7 @@ import { RiLinkM, RiFileCopyLine, RiCheckLine } from '@remixicon/react'
 import { InputField } from '../base/InputField'
 import { BaseInput } from '../base/BaseInput'
 import { contractPart } from '@/theme/contract'
+import { useMergeRefs } from '@/utils/useMergeRefs'
 import { shareLinkInputContract } from '@/theme/contracts/share-link-input'
 import type { ShareLinkInputProps } from './ShareLinkInput.types'
 
@@ -55,14 +56,7 @@ export const ShareLinkInput = forwardRef<HTMLInputElement, ShareLinkInputProps>(
       []
     )
 
-    const handleRef = useCallback(
-      (el: HTMLInputElement | null) => {
-        inputRef.current = el
-        if (typeof forwardedRef === 'function') forwardedRef(el)
-        else if (forwardedRef) forwardedRef.current = el
-      },
-      [forwardedRef]
-    )
+    const handleRef = useMergeRefs([inputRef, forwardedRef])
 
     const handleCopy = useCallback(() => {
       if (disabled) return

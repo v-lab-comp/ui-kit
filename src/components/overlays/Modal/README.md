@@ -436,4 +436,4 @@ See **[MODAL_AI.md](./MODAL_AI.md)** for detailed guidance on:
 
 **Last updated:** 2026-11-10  
 **Component status:** Stable ✅  
-**Dependencies:** @floating-ui/react, React 18+
+**Dependencies:** @floating-ui/react, React 18.2+ or 19

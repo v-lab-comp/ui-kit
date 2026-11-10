@@ -1,9 +1,10 @@
 import clsx from 'clsx'
-import { forwardRef, useCallback, useEffect, useRef } from 'react'
+import { forwardRef, useEffect, useRef } from 'react'
 import { RiSearchLine } from '@remixicon/react'
 import { InputField } from '../base/InputField'
 import { BaseInput } from '../base/BaseInput'
 import { contractPart } from '@/theme/contract'
+import { useMergeRefs } from '@/utils/useMergeRefs'
 import { searchInputContract } from '@/theme/contracts/search-input'
 import type { SearchInputProps, ShortcutConfig } from './SearchInput.types'
 
@@ -95,14 +96,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
     const inputRef = useRef<HTMLInputElement | null>(null)
     const mobile = checkIsMobile()
 
-    const handleRef = useCallback(
-      (el: HTMLInputElement | null) => {
-        inputRef.current = el
-        if (typeof forwardedRef === 'function') forwardedRef(el)
-        else if (forwardedRef) forwardedRef.current = el
-      },
-      [forwardedRef]
-    )
+    const handleRef = useMergeRefs([inputRef, forwardedRef])
 
     useEffect(() => {
       if (!shortcut || mobile) return

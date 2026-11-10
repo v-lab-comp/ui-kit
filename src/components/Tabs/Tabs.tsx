@@ -28,7 +28,7 @@ function TabsRoot({
   const values = useMemo(() => {
     const vals: string[] = []
     Children.forEach(children, (child) => {
-      if (isValidElement(child) && child.type === TabsTab && child.props.value) {
+      if (isValidElement<TabsTabProps>(child) && child.type === TabsTab && child.props.value) {
         vals.push(child.props.value)
       }
     })

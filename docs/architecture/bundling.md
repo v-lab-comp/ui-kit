@@ -67,7 +67,7 @@ dist/
 
 | Тип                             | Пакеты                                                                                                                        | Почему так                                                          |
 | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| `peerDependencies` обязательные | `react`, `react-dom`, `clsx`, `@remixicon/react`, `@floating-ui/react`                                                        | Одна копия в приложении; совместимость версий                       |
+| `peerDependencies` обязательные | `react`, `react-dom` (`^18.2.0 \|\| ^19.0.0`), `clsx`, `@remixicon/react`, `@floating-ui/react`                               | Одна копия в приложении; совместимость версий                       |
 | `peerDependencies` опциональные | `react-hook-form`, `imask`, `react-imask`, `libphonenumber-js`, `react-phone-number-input`, `react-pdf`, `marked`, `turndown` | Нужны только при использовании соответствующего sub-entry           |
 | `dependencies`                  | —                                                                                                                             | Любая `dependency` рискует превратиться в дубль в графе потребителя |
 

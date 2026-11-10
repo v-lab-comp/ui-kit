@@ -53,7 +53,7 @@ skins/<name>/ (entry skins/<name>/index.ts) → theme/skin.ts + CSS скина (
 
 | Слой          | Технология                                      | Назначение                                                                                                                                 |
 | ------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| Runtime       | React 18                                        | UI-framework                                                                                                                               |
+| Runtime       | React 19 (разработка и тесты), поддержка 18.2+  | UI-framework; peer `react` / `react-dom` — `^18.2.0 \|\| ^19.0.0`                                                                          |
 | Язык          | TypeScript (strict)                             | Тип-чек по всему пакету                                                                                                                    |
 | Сборка        | Vite + Rollup                                   | Несколько entry points, только ESM, `preserveModules`                                                                                      |
 | Стили         | Unstyled-компоненты + скины (`src/skins/`)      | Компоненты рендерят классы `vl-*` и data-атрибуты из контракта; оформление — в CSS скина `corporate` (`@v-lab/ui-kit/skins/corporate.css`) |

@@ -29,16 +29,20 @@ outline: deep
 
 - **Пакет переименован** в `@v-lab/ui-kit`, scope `@ui-kit` → `@v-lab`.
 - **Компоненты без стилей, оформление — в скине `corporate`.** Компоненты рендерят стабильные классы `vl-<name>` / `vl-<name>__<part>` и data-атрибуты из контрактов; CSS Modules и хешированные классы убраны. Вместо `@v-lab/ui-kit/style.css` подключите `@v-lab/ui-kit/skins/corporate.css` и включите скин: оберните приложение в `ThemeProvider skins={[corporateSkin]}` или поставьте `<html data-vl-skin="corporate">` — [Установка](./installation). Глобальные классы `.color-*` заменены атрибутом `data-color`. Внешний вид не изменился.
+- **React 19.** Кит разрабатывается и тестируется на React 19.3. Peer `react` / `react-dom` — `^18.2.0 || ^19.0.0` (было `>=17`, но на React 17 кит не работал: компоненты используют `useId` из React 18). Приложения на React 18.2+ работают без изменений.
 
 ### Fixed
 
 - **`PdfPreview` больше не роняет SSR при импорте.** `react-pdf` (pdf.js) загружается лениво, только в браузере: раньше статический импорт обращался к DOM ещё при загрузке модуля. Если приложение задало свой `pdfjs.GlobalWorkerOptions.workerSrc`, он сохраняется; иначе используется URL воркера с unpkg.
+- **Callback-ref с функцией очистки (React 19)** у `Checkbox` / `BaseCheckbox`, `SearchInput`, `ShareLinkInput`, `RichInput`, `DateInput`, `PhoneInput` и `Popover`: функция, которую вернул ref, вызывается при отсоединении. Раньше компоненты пересылали ref вручную — очистка терялась, а ref получал `null`.
+- **`AppSwitcher`: пустая строка в `icon`** показывает плитку с первой буквой названия. На React 19 вместо неё оставался пустой `<img>`: React 19 не ставит `src=""`, и запасной вариант не срабатывал.
+- **Поля ввода: `data-filled` после сброса формы.** После `form.reset()`, кнопки `type="reset"` или автоматического сброса формы в React 19 (`<form action>`) неконтролируемое поле больше не остаётся помеченным как заполненное (рамка «заполнено» на пустом поле).
 
 ### Removed
 
 - **CommonJS-сборка `dist/cjs/`** — пакет поставляется только как ESM. `require('@v-lab/ui-kit')` в Node 20.19+ / 22.12+ загружает ESM-версию.
 - **Экспорт `./style.css`** (`@v-lab/ui-kit/style.css`) — стили теперь поставляются скином: `@v-lab/ui-kit/skins/corporate.css`.
-- **Публикация в npm-реестр GitLab corporate** — из `package.json` убран `publishConfig`, который указывал на GitLab Package Registry. Реестр для следующего релиза объявим отдельно; до тех пор пакет ставится из локального архива — [Установка](./installation). Исходный код переехал на GitHub: [v-lab-comp/ui-kit](https://github.com/v-lab-comp/ui-kit).
+- **Публикация в npm-реестр GitLab** — из `package.json` убран `publishConfig`, который указывал на GitLab Package Registry. Реестр для следующего релиза объявим отдельно; до тех пор пакет ставится из локального архива — [Установка](./installation). Исходный код переехал на GitHub: [v-lab-comp/ui-kit](https://github.com/v-lab-comp/ui-kit).
 
 ## [0.15.0] — 2026-09-17
 

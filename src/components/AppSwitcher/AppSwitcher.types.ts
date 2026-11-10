@@ -26,7 +26,7 @@ export type AppItem = {
   label: string
   /** Подпись под названием (показывается в trigger для активного приложения) */
   description?: string
-  /** Иконка: URL/путь к изображению, ReactNode или undefined → авто-инициал */
+  /** Иконка: URL/путь к изображению, ReactNode; undefined или пустая строка → авто-инициал */
   icon?: string | ReactNode
   /** URL для перехода (window.location.assign) */
   href?: string

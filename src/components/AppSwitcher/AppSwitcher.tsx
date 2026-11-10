@@ -56,7 +56,8 @@ function AppIcon({ icon, label, size }: AppIconProps) {
   const [imgError, setImgError] = useState(false)
   const radius = size <= 32 ? 8 : 10
 
-  if (typeof icon === 'string' && !imgError) {
+  // Пустая строка — как отсутствие иконки: React 19 не ставит src="", и onError бы не сработал
+  if (typeof icon === 'string' && icon !== '' && !imgError) {
     return (
       <img
         src={icon}

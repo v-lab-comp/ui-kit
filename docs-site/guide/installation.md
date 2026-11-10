@@ -26,7 +26,7 @@ npm install /путь/к/v-lab-ui-kit-<версия>.tgz react react-dom @remixi
 
 npm запишет путь к архиву (`file:…`) в `package.json` приложения. Чтобы обновить кит, соберите новый архив и установите его так же.
 
-Обязательные peer-пакеты для основного входа: **react**, **react-dom**, **@remixicon/react**, **clsx**, **@floating-ui/react** (оверлеи, Select и позиционирование).
+Обязательные peer-пакеты для основного входа: **react** и **react-dom** (18.2+ или 19), **@remixicon/react**, **clsx**, **@floating-ui/react** (оверлеи, Select и позиционирование).
 
 Опциональные входы (`date`, `phone`, `pdf`, `markdown`, `adapters`) требуют дополнительных peer-зависимостей — см. экспорты и `peerDependencies` в `package.json` пакета. Отдельно про **`adapters`** и **`react-hook-form`**: [Адаптеры RHF](./adapters).
 

@@ -10,6 +10,7 @@ import {
 import clsx from 'clsx'
 import { contractAttrs } from '@/theme/contract'
 import { popoverContract } from '@/theme/contracts/popover'
+import { useMergeRefs } from '@/utils/useMergeRefs'
 import type { PopoverProps } from './Popover.types'
 
 export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
@@ -32,16 +33,14 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
       }
     }, [open, anchorRef, refs])
 
+    const floatingRef = useMergeRefs<HTMLDivElement>([refs.setFloating, ref])
+
     if (!open) return null
 
     return (
       <FloatingPortal>
         <div
-          ref={(el) => {
-            refs.setFloating(el)
-            if (typeof ref === 'function') ref(el)
-            else if (ref) ref.current = el
-          }}
+          ref={floatingRef}
           className={clsx(popoverContract.className, className)}
           {...contractAttrs(popoverContract, {})}
           style={{
