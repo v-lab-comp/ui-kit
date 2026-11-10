@@ -11,9 +11,13 @@ export function useClickOutside<T extends Element>(
 ): void {
   const callbackRef = useRef(onClickOutside)
 
+  // Держим ref в актуальном состоянии каждый рендер, не переподписывая слушатель
+  useEffect(() => {
+    callbackRef.current = onClickOutside
+  })
+
   useEffect(() => {
     if (!enabled) return
-    callbackRef.current = onClickOutside
 
     const handler = (event: MouseEvent) => {
       const el = ref.current

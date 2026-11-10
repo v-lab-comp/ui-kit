@@ -3,6 +3,7 @@ import clsx from 'clsx'
 import { useSegmentedControlContext } from './SegmentedControlContext'
 import { contractPart } from '@/theme/contract'
 import { segmentedControlContract } from '@/theme/contracts/segmented-control'
+import { useAccessibleNameWarning } from '@/components/Button/useAccessibleNameWarning'
 import type { SegmentedControlItemProps } from './SegmentedControl.types'
 
 export const SegmentedControlItem = ({
@@ -15,6 +16,7 @@ export const SegmentedControlItem = ({
   children,
   ...props
 }: SegmentedControlItemProps) => {
+  useAccessibleNameWarning('SegmentedControl.Item', { children, ...props })
   const ctx = useSegmentedControlContext()
   const isSelected = ctx.selectedValue === value
   const isDisabled = disabled ?? ctx.disabled

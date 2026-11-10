@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { forwardRef, useEffect, useRef } from 'react'
 import { RiSearchLine } from '@remixicon/react'
-import { InputField } from '../base/InputField'
+import { InputField, splitInputFieldProps } from '../base/InputField'
 import { BaseInput } from '../base/BaseInput'
 import { contractPart } from '@/theme/contract'
 import { useMergeRefs } from '@/utils/useMergeRefs'
@@ -69,116 +69,85 @@ const matchesShortcut = (e: KeyboardEvent, cfg: ShortcutConfig): boolean => {
   return cfg.win === 'ctrl' ? e.ctrlKey && !e.shiftKey : e.ctrlKey && e.shiftKey
 }
 
-export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
-  (
-    {
-      label,
-      required,
-      requiredMarker,
-      optional,
-      labelTooltip,
-      hint,
-      error,
-      completed,
-      completedColor,
-      prefix,
-      suffix,
-      id,
-      size = 'medium',
-      disabled,
-      className,
-      shortcut,
-      shortcutPriority = 0,
-      ...inputProps
-    },
-    forwardedRef
-  ) => {
-    const inputRef = useRef<HTMLInputElement | null>(null)
-    const mobile = checkIsMobile()
+export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props, forwardedRef) => {
+  const [field, rest] = splitInputFieldProps(props)
+  const { shortcut, shortcutPriority = 0, ...inputProps } = rest
+  const size = field.size ?? 'medium'
+  const inputRef = useRef<HTMLInputElement | null>(null)
+  const mobile = checkIsMobile()
 
-    const handleRef = useMergeRefs([inputRef, forwardedRef])
+  const handleRef = useMergeRefs([inputRef, forwardedRef])
 
-    useEffect(() => {
-      if (!shortcut || mobile) return
+  useEffect(() => {
+    if (!shortcut || mobile) return
 
-      const key = getRegistryKey(shortcut)
-      if (!registry.has(key)) registry.set(key, new Map())
-      registry.get(key)!.set(shortcutPriority, () => inputRef.current)
+    const key = getRegistryKey(shortcut)
+    if (!registry.has(key)) registry.set(key, new Map())
+    registry.get(key)!.set(shortcutPriority, () => inputRef.current)
 
-      const handler = (e: KeyboardEvent) => {
-        if (!matchesShortcut(e, shortcut)) return
-        e.preventDefault()
-        const entries = registry.get(key)
-        if (entries) focusHighestPriority(entries)
+    const handler = (e: KeyboardEvent) => {
+      if (!matchesShortcut(e, shortcut)) return
+      e.preventDefault()
+      const entries = registry.get(key)
+      if (entries) focusHighestPriority(entries)
+    }
+
+    document.addEventListener('keydown', handler)
+    try {
+      if (window.parent && window.parent !== window) {
+        window.parent.document.addEventListener('keydown', handler)
       }
+    } catch {
+      // cross-origin parent — ignore
+    }
 
-      document.addEventListener('keydown', handler)
+    return () => {
+      registry.get(key)?.delete(shortcutPriority)
+      document.removeEventListener('keydown', handler)
       try {
         if (window.parent && window.parent !== window) {
-          window.parent.document.addEventListener('keydown', handler)
+          window.parent.document.removeEventListener('keydown', handler)
         }
       } catch {
-        // cross-origin parent — ignore
+        // ignore
       }
+    }
+  }, [shortcut, shortcutPriority, mobile])
 
-      return () => {
-        registry.get(key)?.delete(shortcutPriority)
-        document.removeEventListener('keydown', handler)
-        try {
-          if (window.parent && window.parent !== window) {
-            window.parent.document.removeEventListener('keydown', handler)
-          }
-        } catch {
-          // ignore
-        }
-      }
-    }, [shortcut, shortcutPriority, mobile])
+  const defaultPrefix = field.prefix ?? <RiSearchLine size={20} />
 
-    const defaultPrefix = prefix ?? <RiSearchLine size={20} />
+  // Don't show shortcut badge on mobile (no physical keyboard)
+  const defaultSuffix =
+    field.suffix !== undefined ? (
+      field.suffix
+    ) : shortcut && !mobile ? (
+      <kbd className={contractPart(searchInputContract, 'shortcut')}>
+        {getShortcutLabel(shortcut)}
+      </kbd>
+    ) : undefined
 
-    // Don't show shortcut badge on mobile (no physical keyboard)
-    const defaultSuffix =
-      suffix !== undefined ? (
-        suffix
-      ) : shortcut && !mobile ? (
-        <kbd className={contractPart(searchInputContract, 'shortcut')}>
-          {getShortcutLabel(shortcut)}
-        </kbd>
-      ) : undefined
-
-    return (
-      <InputField
-        label={label}
-        required={required}
-        requiredMarker={requiredMarker}
-        optional={optional}
-        labelTooltip={labelTooltip}
-        hint={hint}
-        error={error}
-        completed={completed}
-        completedColor={completedColor}
-        prefix={defaultPrefix}
-        suffix={defaultSuffix}
-        size={size}
-        disabled={disabled}
-        className={clsx(searchInputContract.className, className)}
-        id={id}
-      >
-        {(fieldId) => (
-          <BaseInput
-            ref={handleRef}
-            id={fieldId}
-            type="search"
-            size={size}
-            hasError={!!error}
-            disabled={disabled}
-            className={contractPart(searchInputContract, 'input-inner')}
-            {...inputProps}
-          />
-        )}
-      </InputField>
-    )
-  }
-)
+  return (
+    <InputField
+      {...field}
+      prefix={defaultPrefix}
+      suffix={defaultSuffix}
+      size={size}
+      className={clsx(searchInputContract.className, field.className)}
+    >
+      {(_id, control) => (
+        <BaseInput
+          ref={handleRef}
+          {...control}
+          type="search"
+          size={size}
+          hasError={!!field.error}
+          disabled={field.disabled}
+          className={contractPart(searchInputContract, 'input-inner')}
+          {...inputProps}
+        />
+      )}
+    </InputField>
+  )
+})
 
 SearchInput.displayName = 'SearchInput'

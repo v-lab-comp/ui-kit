@@ -24,12 +24,16 @@ Format [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) ga asoslangan, v
 - **`corporate` skini** — kitning avvalgi ko‘rinishi, endi alohida skin sifatida: stillar — `@v-lab/ui-kit/skins/corporate.css`, `corporateSkin` manifesti — `@v-lab/ui-kit/skins/corporate`. Har bir skinning CSS i o‘z fayliga yig‘iladi: ilova bandliga faqat ulangan skinlar tushadi.
 - **Skinlar va kontraktlar:** o‘z skiningiz uchun `defineSkin` (`extends` orqali meros, `load` orqali CSS ni dangasa yuklash) va komponent kontraktlari (`defineContract`, `contractAttrs`, `contractPart`, `contractSelector`, `themeContracts` reyestri) — har bir komponent qaysi `vl-*` klasslari va data-atributlarni chiqarishi. Masalan, `Button` `vl-button` va `data-variant` / `data-color` / `data-size` / `data-shape` ni chiqaradi.
 - **`themeHtmlAttributes(skin, scheme)`** — SSR da serverdagi `<html>` uchun skin va sxema atributlari: skin stillari birinchi kadrdanoq, gidratsiyadan oldin ishlaydi. Next.js App Router uchun misol — [O‘rnatish → SSR va Next.js](./installation#ssr).
+- **Kiritish maydonlari uchun foydalanish qulayligi.** `InputField` maydonni maslahat va xato matni bilan bog‘laydi (`aria-describedby`) hamda xato va majburiylikni bildiradi (`aria-invalid`, `aria-required`) — kitdagi barcha maydonlarda. `InputField` asosidagi o‘z maydonlaringiz uchun render-funksiya shu atributlar bilan ikkinchi `control` argumentini oladi; `inputFieldLabelId(id)` — `aria-labelledby` uchun label id, `splitInputFieldProps(props)` — maydon va kontrol prop’larini ajratish.
+- **`ThemeProvider onSkinLoadError`** — skin CSS ni yuklash (`load`) xatosi endi yo‘qolmaydi: oldingi skin qoladi, xato ishlov beruvchiga yoki `console.error` ga boradi.
 
 ### Changed
 
 - **Paket qayta nomlandi:** endi `@v-lab/ui-kit`, scope `@ui-kit` → `@v-lab`.
 - **Komponentlar uslubsiz, bezak — `corporate` skinida.** Komponentlar kontraktlardan barqaror `vl-<name>` / `vl-<name>__<part>` klasslari va data-atributlarni chiqaradi; CSS Modules va xeshlangan klasslar olib tashlandi. `@v-lab/ui-kit/style.css` o‘rniga `@v-lab/ui-kit/skins/corporate.css` ni ulang va skinni yoqing: ilovani `ThemeProvider skins={[corporateSkin]}` ga o‘rang yoki `<html data-vl-skin="corporate">` qo‘ying — [O‘rnatish](./installation). Global `.color-*` klasslari `data-color` atributi bilan almashtirildi. Tashqi ko‘rinish o‘zgarmadi.
 - **React 19.** Kit React 19.3 da ishlab chiqiladi va sinovdan o‘tkaziladi. `react` / `react-dom` peer diapazoni — `^18.2.0 || ^19.0.0` (avval `>=17` edi, lekin kit React 17 da ishlamagan: komponentlar React 18 dagi `useId` dan foydalanadi). React 18.2+ dagi ilovalar o‘zgarishsiz ishlayveradi.
+- **`Button` sukut bo‘yicha `type="button"`** — `<form>` ichidagi tugma endi formani yubormaydi. Yuborish uchun `type="submit"` bering.
+- **Faqat ikonkali tugmalarga ochiq nom kerak:** `children` siz `Button`, `ToggleButton` va `SegmentedControl.Item` uchun TypeScript `aria-label` yoki `aria-labelledby` talab qiladi; dev rejimida nomsiz tugma ogohlantirish chiqaradi. O‘ramlar uchun bu qoidasiz turlar: `ButtonBaseProps`, `ToggleButtonBaseProps`, `SegmentedControlItemBaseProps`.
 
 ### Fixed
 
@@ -37,6 +41,9 @@ Format [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) ga asoslangan, v
 - **Tozalash funksiyasini qaytaradigan callback-ref (React 19)** — `Checkbox` / `BaseCheckbox`, `SearchInput`, `ShareLinkInput`, `RichInput`, `DateInput`, `PhoneInput` va `Popover` da: ref qaytargan funksiya ajratilganda chaqiriladi. Avval komponentlar ref ni qo‘lda uzatgan — tozalash yo‘qolgan, ref esa `null` olgan.
 - **`AppSwitcher`: `icon` da bo‘sh satr** nomning birinchi harfi bilan plitkani ko‘rsatadi. React 19 da uning o‘rniga bo‘sh `<img>` qolardi: React 19 `src=""` qo‘ymaydi va zaxira variant ishlamasdi.
 - **Kiritish maydonlari: forma tiklangandan keyin `data-filled`.** `form.reset()`, `type="reset"` tugmasi yoki React 19 dagi formani avtomatik tiklash (`<form action>`) dan keyin boshqarilmaydigan maydon endi to‘ldirilgan deb belgilangan holda qolmaydi.
+- **`InputField` prop’lari endi `<input>` ga tushmaydi:** `EmailInput`, `PasswordInput`, `SearchInput`, `DateInput` va boshqa maydonlardagi `startBlock`, `endBlock`, `filled`, `wrapperClassName`, `wrapperStyle` avval DOM elementga tushib, ishlamas edi — endi qo‘llanadi.
+- **`RichInput` / `MarkdownInput`:** muharrir nomini `label` dan oladi.
+- **`ThemeProvider`:** tizim sxemasiga obuna endi har renderda qayta yaratilmaydi; dangasa yuklanadigan skinga o‘tishda yuklash tugaguncha oldingi skin qoladi. **`useClickOutside`** qayta renderdan keyin dolzarb callback ni chaqiradi.
 
 ### Removed
 

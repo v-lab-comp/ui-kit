@@ -122,7 +122,7 @@ export const TagInput = forwardRef<HTMLInputElement, TagInputProps>(
         wrapperStyle={ctrl.mergedWrapperStyle}
         id={id}
       >
-        {(fieldId) => (
+        {(_fieldId, control) => (
           <>
             <div
               ref={ctrl.anchorRef as Ref<HTMLDivElement>}
@@ -141,12 +141,12 @@ export const TagInput = forwardRef<HTMLInputElement, TagInputProps>(
                   onRemoveAt={ctrl.removeAt}
                 />
                 <BaseInput
+                  {...control}
                   autoCapitalize="none"
                   autoCorrect="off"
                   {...inputProps}
                   {...ctrl.inputHandlers}
                   ref={ref}
-                  id={fieldId}
                   size={size}
                   hasError={!!error}
                   disabled={disabled}

@@ -3,6 +3,7 @@ import clsx from 'clsx'
 import { useToggleGroupContext } from './ToggleGroupContext'
 import { contractAttrs } from '@/theme/contract'
 import { toggleButtonContract } from '@/theme/contracts/toggle-button'
+import { useAccessibleNameWarning } from '@/components/Button/useAccessibleNameWarning'
 import type { ToggleButtonProps } from './ToggleButton.types'
 
 export const ToggleButton = ({
@@ -22,6 +23,7 @@ export const ToggleButton = ({
   tabIndex: tabIndexProp,
   ...props
 }: ToggleButtonProps) => {
+  useAccessibleNameWarning('ToggleButton', { children, ...props })
   const groupCtx = useToggleGroupContext()
 
   const isInsideGroup = groupCtx !== null && value !== undefined

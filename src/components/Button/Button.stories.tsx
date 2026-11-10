@@ -252,6 +252,7 @@ export const IconOnly: Story = {
   args: {
     variant: 'filled',
     leftNode: iconMap['add'],
+    'aria-label': 'Add',
   },
 }
 

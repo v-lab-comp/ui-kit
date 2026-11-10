@@ -1,4 +1,5 @@
 import type { HTMLAttributes, ReactNode } from 'react'
+import type { AccessibleNameProps } from '@/components/Button/Button.types'
 import type { ContractValue } from '@/theme/contract'
 import type { segmentedControlContract } from '@/theme/contracts/segmented-control'
 
@@ -17,7 +18,11 @@ export interface SegmentedControlProps extends Omit<HTMLAttributes<HTMLDivElemen
   children: ReactNode
 }
 
-export interface SegmentedControlItemProps extends HTMLAttributes<HTMLButtonElement> {
+/** Пропсы SegmentedControl.Item без требования доступного имени. */
+export interface SegmentedControlItemBaseProps extends Omit<
+  HTMLAttributes<HTMLButtonElement>,
+  'children' | 'aria-label' | 'aria-labelledby'
+> {
   /** Required — identifies this item within the control. */
   value: string
   /** Icon or element rendered before the label. */
@@ -25,5 +30,7 @@ export interface SegmentedControlItemProps extends HTMLAttributes<HTMLButtonElem
   /** Icon or element rendered after the label. */
   rightNode?: ReactNode
   disabled?: boolean
-  children?: ReactNode
 }
+
+/** Пропсы SegmentedControl.Item. Без `children` (иконка) обязателен `aria-label` или `aria-labelledby`. */
+export type SegmentedControlItemProps = SegmentedControlItemBaseProps & AccessibleNameProps

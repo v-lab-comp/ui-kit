@@ -24,12 +24,16 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); ver
 - **The `corporate` skin** — the kit’s existing look, now as a separate skin: styles in `@v-lab/ui-kit/skins/corporate.css`, the `corporateSkin` manifest in `@v-lab/ui-kit/skins/corporate`. Each skin’s CSS is built into its own file, so an app bundle contains only the skins it imports.
 - **Skins and contracts:** `defineSkin` for your own skin (inheritance via `extends`, lazy CSS loading via `load`) and component contracts (`defineContract`, `contractAttrs`, `contractPart`, `contractSelector`, the `themeContracts` registry) — which `vl-*` classes and data attributes each component renders. For example, `Button` renders `vl-button` and `data-variant` / `data-color` / `data-size` / `data-shape`.
 - **`themeHtmlAttributes(skin, scheme)`** — skin and scheme attributes for the server `<html>` with SSR, so skin styles apply from the first frame, before hydration. Next.js App Router example: [Installation → SSR and Next.js](./installation#ssr).
+- **Input accessibility.** `InputField` links the control to its hint and error (`aria-describedby`) and exposes the error and required state (`aria-invalid`, `aria-required`) — in every kit input. For your own fields built on `InputField`, the render function gets a second argument `control` with these attributes; `inputFieldLabelId(id)` gives the label id for `aria-labelledby`, `splitInputFieldProps(props)` splits field and control props.
+- **`ThemeProvider onSkinLoadError`** — a failed skin CSS load (`load`) is no longer lost: the previous skin stays, the error goes to the handler or to `console.error`.
 
 ### Changed
 
 - **The package is renamed** to `@v-lab/ui-kit`, scope `@ui-kit` → `@v-lab`.
 - **Components are unstyled; styling lives in the `corporate` skin.** Components render stable `vl-<name>` / `vl-<name>__<part>` classes and data attributes from their contracts; CSS Modules and hashed class names are gone. Instead of `@v-lab/ui-kit/style.css`, import `@v-lab/ui-kit/skins/corporate.css` and turn the skin on: wrap the app in `ThemeProvider skins={[corporateSkin]}` or set `<html data-vl-skin="corporate">` — see [Installation](./installation). Global `.color-*` classes are replaced by the `data-color` attribute. The look is unchanged.
 - **React 19.** The kit is developed and tested on React 19.3. The `react` / `react-dom` peer range is `^18.2.0 || ^19.0.0` (was `>=17`, but the kit never worked on React 17: components use `useId` from React 18). Apps on React 18.2+ keep working unchanged.
+- **`Button` defaults to `type="button"`** — a button inside a `<form>` no longer submits it. Pass `type="submit"` to submit.
+- **Icon-only buttons require an accessible name:** `Button`, `ToggleButton` and `SegmentedControl.Item` without `children` require `aria-label` or `aria-labelledby` in TypeScript; in dev mode a nameless one logs a warning. Wrappers can use the types without this rule: `ButtonBaseProps`, `ToggleButtonBaseProps`, `SegmentedControlItemBaseProps`.
 
 ### Fixed
 
@@ -37,6 +41,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); ver
 - **Callback refs with a cleanup function (React 19)** on `Checkbox` / `BaseCheckbox`, `SearchInput`, `ShareLinkInput`, `RichInput`, `DateInput`, `PhoneInput` and `Popover`: the cleanup returned by the ref now runs on detach. These components used to forward the ref by hand, which dropped the cleanup and called the ref with `null`.
 - **`AppSwitcher`: an empty `icon` string** shows the initial-letter tile. On React 19 an empty `<img>` stayed instead: React 19 does not set `src=""`, so the fallback never triggered.
 - **Inputs: `data-filled` after a form reset.** After `form.reset()`, a `type="reset"` button or React 19’s automatic form reset (`<form action>`), an uncontrolled field no longer stays marked as filled (the “filled” border on an empty field).
+- **`InputField` props no longer leak onto `<input>`:** `startBlock`, `endBlock`, `filled`, `wrapperClassName`, `wrapperStyle` on `EmailInput`, `PasswordInput`, `SearchInput`, `DateInput` and other fields used to land on the DOM element and do nothing — they now apply.
+- **`RichInput` / `MarkdownInput`:** the editor takes its name from `label`.
+- **`ThemeProvider`:** the system-scheme subscription is no longer recreated on every render; when switching to a lazily loaded skin, the previous skin stays until loading finishes. **`useClickOutside`** calls the latest callback after a re-render.
 
 ### Removed
 

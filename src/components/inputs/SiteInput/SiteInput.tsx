@@ -100,10 +100,10 @@ export const SiteInput = forwardRef<HTMLInputElement, SiteInputProps>(
           className={clsx(siteInputContract.className, className)}
           id={id}
         >
-          {(fieldId) => (
+          {(_fieldId, control) => (
             <BaseInput
               ref={ref}
-              id={fieldId}
+              {...control}
               type="text"
               inputMode="url"
               autoComplete="url"

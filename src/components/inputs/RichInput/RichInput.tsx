@@ -18,7 +18,7 @@ import {
   type RemixiconComponentType,
 } from '@remixicon/react'
 import clsx from 'clsx'
-import { InputField } from '../base/InputField'
+import { InputField, inputFieldLabelId } from '../base/InputField'
 import { useRichTextEditor } from '../base/richText'
 import { contractPart } from '@/theme/contract'
 import { useMergeRefs } from '@/utils/useMergeRefs'
@@ -170,17 +170,19 @@ export const RichInput = forwardRef<HTMLDivElement, RichInputProps>(
         wrapperClassName={clsx(contractPart(richInputContract, 'wrapper'), wrapperClassName)}
         id={id}
       >
-        {(fieldId) => (
+        {(fieldId, control) => (
           <>
             {toolbarPlacement === 'top' ? toolbar : null}
 
+            {/* contenteditable не именуется через <label for> — связываем с label явно */}
             <div
               {...editorProps}
+              {...control}
               ref={setEditorRef}
-              id={fieldId}
               role="textbox"
+              aria-labelledby={label ? inputFieldLabelId(fieldId) : undefined}
               aria-multiline
-              aria-invalid={!!error || overLimit || undefined}
+              aria-invalid={overLimit || control['aria-invalid']}
               aria-readonly={readOnly || undefined}
               contentEditable={isEditable}
               suppressContentEditableWarning

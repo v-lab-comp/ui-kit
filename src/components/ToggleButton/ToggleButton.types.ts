@@ -1,12 +1,14 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react'
 import type { ButtonSize, ButtonShape } from '@/components/Button'
+import type { AccessibleNameProps } from '@/components/Button/Button.types'
 
 export type ToggleButtonSize = ButtonSize
 export type ToggleButtonShape = ButtonShape
 
-export interface ToggleButtonProps extends Omit<
+/** Пропсы ToggleButton без требования доступного имени. */
+export interface ToggleButtonBaseProps extends Omit<
   ButtonHTMLAttributes<HTMLButtonElement>,
-  'onChange'
+  'onChange' | 'children' | 'aria-label' | 'aria-labelledby'
 > {
   /**
    * Controlled pressed state.
@@ -29,3 +31,6 @@ export interface ToggleButtonProps extends Omit<
   leftNode?: ReactNode
   rightNode?: ReactNode
 }
+
+/** Пропсы ToggleButton. Без `children` (кнопка-иконка) обязателен `aria-label` или `aria-labelledby`. */
+export type ToggleButtonProps = ToggleButtonBaseProps & AccessibleNameProps

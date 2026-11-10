@@ -5,7 +5,9 @@ import {
   useEffect,
   useLayoutEffect,
   useMemo,
+  useRef,
   useState,
+  useSyncExternalStore,
   type ReactNode,
 } from 'react'
 import {
@@ -44,6 +46,11 @@ export type ThemeProviderProps<S extends readonly Skin[] = readonly Skin[]> = {
   onColorSchemeChange?: (scheme: ColorSchemePreference) => void
   /** Ключ localStorage, чтобы запоминать выбор пользователя (только uncontrolled) */
   storageKey?: string
+  /**
+   * Не удалось загрузить CSS скина (`load` отклонился). Остаётся применённым предыдущий скин.
+   * Без обработчика ошибка пишется в `console.error`.
+   */
+  onSkinLoadError?: (error: unknown, skinName: string) => void
   children?: ReactNode
 }
 
@@ -73,17 +80,25 @@ const writeStorage = (key: string | undefined, value: Stored) => {
 
 const SYSTEM_DARK_QUERY = '(prefers-color-scheme: dark)'
 
-const useSystemScheme = (): ColorScheme => {
-  const query = typeof window !== 'undefined' ? window.matchMedia?.(SYSTEM_DARK_QUERY) : undefined
-  const [scheme, setScheme] = useState<ColorScheme>(query?.matches ? 'dark' : 'light')
-  useEffect(() => {
-    if (!query) return
-    const onChange = (e: MediaQueryListEvent) => setScheme(e.matches ? 'dark' : 'light')
-    query.addEventListener('change', onChange)
-    return () => query.removeEventListener('change', onChange)
-  }, [query])
-  return scheme
+const getSystemQuery = (): MediaQueryList | undefined =>
+  typeof window !== 'undefined' ? window.matchMedia?.(SYSTEM_DARK_QUERY) : undefined
+
+// Функции модульного уровня: стабильная ссылка, поэтому подписка на matchMedia
+// создаётся один раз, а не после каждого рендера.
+const subscribeSystemScheme = (onChange: () => void) => {
+  const query = getSystemQuery()
+  if (!query) return () => {}
+  query.addEventListener('change', onChange)
+  return () => query.removeEventListener('change', onChange)
 }
+
+const getSystemScheme = (): ColorScheme => (getSystemQuery()?.matches ? 'dark' : 'light')
+
+// На сервере системная схема неизвестна
+const getServerSystemScheme = (): ColorScheme => 'light'
+
+const useSystemScheme = (): ColorScheme =>
+  useSyncExternalStore(subscribeSystemScheme, getSystemScheme, getServerSystemScheme)
 
 type Applied = { skin: Skin; scheme: ColorScheme }
 type Snapshot = {
@@ -152,6 +167,7 @@ export function ThemeProvider<const S extends readonly Skin[]>({
   defaultColorScheme = 'light',
   onColorSchemeChange,
   storageKey,
+  onSkinLoadError,
   children,
 }: ThemeProviderProps<S>) {
   if (skins.length === 0) throw new Error('ThemeProvider: передайте хотя бы один скин в `skins`')
@@ -171,17 +187,40 @@ export function ThemeProvider<const S extends readonly Skin[]>({
 
   const activeSkin = skins.find((s) => s.name === skinName) ?? skins[0]
   // Скин с `load` применяем только после загрузки его CSS (пока грузится — остаётся
-  // предыдущий загруженный); скин без `load` применяется сразу.
+  // предыдущий применённый); скин без `load` применяется сразу.
   const needsLoad = skinChain(activeSkin).some((s) => s.load)
   const [lastLoaded, setLastLoaded] = useState<Skin | null>(null)
+  // Запоминаем и скин без `load`, чтобы при переключении на ленивый (или при ошибке
+  // его загрузки) на `<html>` оставался он, а не пустота. Обновление состояния
+  // во время рендера — штатный приём React для производного состояния.
+  if (!needsLoad && lastLoaded !== activeSkin) setLastLoaded(activeSkin)
   const appliedSkin = needsLoad ? lastLoaded : activeSkin
+
+  // Свежий обработчик без перезапуска загрузки при смене его ссылки
+  const onSkinLoadErrorRef = useRef(onSkinLoadError)
+  useEffect(() => {
+    onSkinLoadErrorRef.current = onSkinLoadError
+  })
 
   useEffect(() => {
     if (!needsLoad) return
     let cancelled = false
-    Promise.all(skinChain(activeSkin).flatMap((s) => (s.load ? [s.load()] : []))).then(() => {
-      if (!cancelled) setLastLoaded(activeSkin)
-    })
+    // `new Promise` превращает и синхронный throw из `load` в отклонение
+    const loads = skinChain(activeSkin).flatMap((s) =>
+      s.load ? [new Promise((resolve) => resolve(s.load?.()))] : []
+    )
+    Promise.all(loads).then(
+      () => {
+        if (!cancelled) setLastLoaded(activeSkin)
+      },
+      (error: unknown) => {
+        // Предыдущий загруженный скин остаётся применённым
+        if (cancelled) return
+        const handler = onSkinLoadErrorRef.current
+        if (handler) handler(error, activeSkin.name)
+        else console.error(`ThemeProvider: не удалось загрузить скин «${activeSkin.name}»`, error)
+      }
+    )
     return () => {
       cancelled = true
     }

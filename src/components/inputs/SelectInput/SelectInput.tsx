@@ -853,11 +853,11 @@ export const SelectInput = forwardRef<HTMLSelectElement, SelectInputProps>((prop
         className={className}
         id={id}
       >
-        {(fieldId) => (
+        {(_fieldId, control) => (
           <button
             ref={triggerRef}
             type="button"
-            id={fieldId}
+            {...control}
             role="combobox"
             aria-label={triggerAriaLabel}
             aria-expanded={isOpen}

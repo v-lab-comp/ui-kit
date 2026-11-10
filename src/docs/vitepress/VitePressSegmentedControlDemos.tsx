@@ -75,9 +75,21 @@ export function SegmentedControlGalleryDemo() {
       <section style={section}>
         <p style={label}>Только иконки</p>
         <SegmentedControl defaultValue="grid">
-          <SegmentedControl.Item value="grid" leftNode={<RiLayoutGridLine size={16} />} />
-          <SegmentedControl.Item value="list" leftNode={<RiListCheck size={16} />} />
-          <SegmentedControl.Item value="chart" leftNode={<RiBarChartLine size={16} />} />
+          <SegmentedControl.Item
+            value="grid"
+            aria-label="Сетка"
+            leftNode={<RiLayoutGridLine size={16} />}
+          />
+          <SegmentedControl.Item
+            value="list"
+            aria-label="Список"
+            leftNode={<RiListCheck size={16} />}
+          />
+          <SegmentedControl.Item
+            value="chart"
+            aria-label="График"
+            leftNode={<RiBarChartLine size={16} />}
+          />
         </SegmentedControl>
       </section>
 

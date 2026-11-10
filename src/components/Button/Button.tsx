@@ -3,10 +3,12 @@ import { useButtonGroup } from '@/components/ButtonGroup/ButtonGroupContext'
 import { customPaletteStyle } from '@/utils/customPalette'
 import { contractAttrs } from '@/theme/contract'
 import { buttonContract } from '@/theme/contracts/button'
+import { useAccessibleNameWarning } from './useAccessibleNameWarning'
 import type { ButtonProps } from './Button.types'
 
 export type {
   ButtonProps,
+  ButtonBaseProps,
   ButtonVariant,
   ButtonColor,
   ButtonSize,
@@ -24,8 +26,11 @@ export const Button = ({
   rightNode,
   className,
   style,
+  // По умолчанию не submit: кнопка внутри <form> не должна неявно отправлять форму.
+  type = 'button',
   ...props
 }: ButtonProps) => {
+  useAccessibleNameWarning('Button', { children, ...props })
   const groupCtx = useButtonGroup()
   const resolvedSize = size ?? groupCtx?.size ?? 'medium'
 
@@ -35,6 +40,7 @@ export const Button = ({
 
   return (
     <button
+      type={type}
       className={clsx(buttonContract.className, className)}
       {...contractAttrs(buttonContract, {
         variant,

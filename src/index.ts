@@ -37,6 +37,7 @@ export {
   BUTTON_SHAPE_OPTIONS,
 } from './components/Button'
 export type {
+  ButtonBaseProps,
   ButtonProps,
   ButtonVariant,
   ButtonColor,
@@ -239,12 +240,14 @@ export type { ButtonGroupProps } from './components/ButtonGroup'
 export { SegmentedControl, SegmentedControlItem } from './components/SegmentedControl'
 export type {
   SegmentedControlProps,
+  SegmentedControlItemBaseProps,
   SegmentedControlItemProps,
   SegmentedControlSize,
 } from './components/SegmentedControl'
 
 export { ToggleButton, ToggleGroup } from './components/ToggleButton'
 export type {
+  ToggleButtonBaseProps,
   ToggleButtonProps,
   ToggleButtonSize,
   ToggleButtonShape,
@@ -264,8 +267,17 @@ export type { BaseInputProps, BaseInputSize } from './components/inputs'
 export { BaseCheckbox, BASE_CHECKBOX_SIZE_OPTIONS } from './components/inputs'
 export type { BaseCheckboxProps, BaseCheckboxSize } from './components/inputs'
 
-export { InputField } from './components/inputs'
-export type { InputFieldProps } from './components/inputs'
+export {
+  InputField,
+  inputFieldHintId,
+  inputFieldLabelId,
+  splitInputFieldProps,
+} from './components/inputs'
+export type {
+  InputFieldControlProps,
+  InputFieldOwnProps,
+  InputFieldProps,
+} from './components/inputs'
 
 export { useCompositeInput } from './components/inputs'
 

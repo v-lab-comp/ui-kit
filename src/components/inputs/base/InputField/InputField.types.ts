@@ -1,6 +1,19 @@
 import type { CSSProperties, ReactNode } from 'react'
 import type { BaseInputSize } from '../BaseInput'
 
+/**
+ * Атрибуты для фокусируемого контрола внутри InputField — второй аргумент render-функции.
+ * Разворачиваются на `<input>`, кнопку-combobox и т.п.: связывают контрол с подсказкой / ошибкой
+ * и сообщают скринридеру об ошибке и обязательности.
+ */
+export interface InputFieldControlProps {
+  id: string
+  /** id текста подсказки / ошибки — когда он показан */
+  'aria-describedby'?: string
+  'aria-invalid'?: true
+  'aria-required'?: true
+}
+
 export interface InputFieldProps {
   size?: BaseInputSize
   label?: string
@@ -50,6 +63,10 @@ export interface InputFieldProps {
   wrapperClassName?: string
   /** Инлайн-стили оболочки поля (например `height: 'auto'` для многострочного содержимого). */
   wrapperStyle?: CSSProperties
-  /** Render-функция, получает сгенерированный id для связки label ↔ input */
-  children: ReactNode | ((id: string) => ReactNode)
+  /**
+   * Render-функция: `id` для связки label ↔ контрол и `control` — атрибуты доступности
+   * (`id`, `aria-describedby`, `aria-invalid`, `aria-required`), которые нужно развернуть на контрол.
+   * Для контрола, который нельзя связать через `<label for>` (contenteditable), — `aria-labelledby={inputFieldLabelId(id)}`.
+   */
+  children: ReactNode | ((id: string, control: InputFieldControlProps) => ReactNode)
 }

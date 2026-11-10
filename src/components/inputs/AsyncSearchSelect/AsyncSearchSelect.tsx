@@ -254,11 +254,11 @@ export const AsyncSearchSelect = forwardRef<HTMLSelectElement, AsyncSearchSelect
           className={className}
           id={idProp}
         >
-          {(fieldId) => (
+          {(_fieldId, control) => (
             <button
               ref={triggerRef}
               type="button"
-              id={fieldId}
+              {...control}
               role="combobox"
               aria-label={triggerAriaLabel}
               aria-expanded={open}

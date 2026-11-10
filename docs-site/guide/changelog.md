@@ -24,12 +24,16 @@ outline: deep
 - **Скин `corporate`** — прежний вид кита, теперь отдельным скином: стили — `@v-lab/ui-kit/skins/corporate.css`, манифест `corporateSkin` — `@v-lab/ui-kit/skins/corporate`. CSS каждого скина собирается в свой файл: в бандл приложения попадают только подключённые скины.
 - **Скины и контракты:** `defineSkin` для собственного скина (наследование `extends`, ленивая загрузка CSS через `load`) и контракты компонентов (`defineContract`, `contractAttrs`, `contractPart`, `contractSelector`, реестр `themeContracts`) — какие классы `vl-*` и data-атрибуты рендерит каждый компонент. Например, `Button` рендерит `vl-button` и `data-variant` / `data-color` / `data-size` / `data-shape`.
 - **`themeHtmlAttributes(skin, scheme)`** — атрибуты скина и схемы для серверного `<html>` при SSR: стили скина действуют с первого кадра, до гидрации. Пример для Next.js App Router — [Установка → SSR и Next.js](./installation#ssr).
+- **Доступность полей ввода.** `InputField` связывает поле с подсказкой и ошибкой (`aria-describedby`) и сообщает об ошибке и обязательности (`aria-invalid`, `aria-required`) — во всех полях кита. Для своих полей на `InputField` render-функция получает второй аргумент `control` с этими атрибутами; `inputFieldLabelId(id)` — id подписи для `aria-labelledby`, `splitInputFieldProps(props)` — разделение пропсов поля и контрола.
+- **`ThemeProvider onSkinLoadError`** — ошибка загрузки CSS скина (`load`) больше не теряется: прежний скин остаётся, ошибка уходит в обработчик или в `console.error`.
 
 ### Changed
 
 - **Пакет переименован** в `@v-lab/ui-kit`, scope `@ui-kit` → `@v-lab`.
 - **Компоненты без стилей, оформление — в скине `corporate`.** Компоненты рендерят стабильные классы `vl-<name>` / `vl-<name>__<part>` и data-атрибуты из контрактов; CSS Modules и хешированные классы убраны. Вместо `@v-lab/ui-kit/style.css` подключите `@v-lab/ui-kit/skins/corporate.css` и включите скин: оберните приложение в `ThemeProvider skins={[corporateSkin]}` или поставьте `<html data-vl-skin="corporate">` — [Установка](./installation). Глобальные классы `.color-*` заменены атрибутом `data-color`. Внешний вид не изменился.
 - **React 19.** Кит разрабатывается и тестируется на React 19.3. Peer `react` / `react-dom` — `^18.2.0 || ^19.0.0` (было `>=17`, но на React 17 кит не работал: компоненты используют `useId` из React 18). Приложения на React 18.2+ работают без изменений.
+- **`Button` по умолчанию `type="button"`** — кнопка внутри `<form>` больше не отправляет форму. Для отправки укажите `type="submit"`.
+- **Кнопки только с иконкой требуют доступное имя:** у `Button`, `ToggleButton` и `SegmentedControl.Item` без `children` TypeScript требует `aria-label` или `aria-labelledby`; в dev-режиме без имени — предупреждение в консоли. Для обёрток — типы без этого правила: `ButtonBaseProps`, `ToggleButtonBaseProps`, `SegmentedControlItemBaseProps`.
 
 ### Fixed
 
@@ -37,6 +41,9 @@ outline: deep
 - **Callback-ref с функцией очистки (React 19)** у `Checkbox` / `BaseCheckbox`, `SearchInput`, `ShareLinkInput`, `RichInput`, `DateInput`, `PhoneInput` и `Popover`: функция, которую вернул ref, вызывается при отсоединении. Раньше компоненты пересылали ref вручную — очистка терялась, а ref получал `null`.
 - **`AppSwitcher`: пустая строка в `icon`** показывает плитку с первой буквой названия. На React 19 вместо неё оставался пустой `<img>`: React 19 не ставит `src=""`, и запасной вариант не срабатывал.
 - **Поля ввода: `data-filled` после сброса формы.** После `form.reset()`, кнопки `type="reset"` или автоматического сброса формы в React 19 (`<form action>`) неконтролируемое поле больше не остаётся помеченным как заполненное (рамка «заполнено» на пустом поле).
+- **Пропсы `InputField` больше не попадают на `<input>`:** `startBlock`, `endBlock`, `filled`, `wrapperClassName`, `wrapperStyle` у `EmailInput`, `PasswordInput`, `SearchInput`, `DateInput` и других полей раньше уходили на DOM-элемент и не работали — теперь применяются.
+- **`RichInput` / `MarkdownInput`:** редактор получает имя из `label`.
+- **`ThemeProvider`:** подписка на системную тему больше не пересоздаётся на каждом рендере; при переходе на скин с ленивой загрузкой прежний скин остаётся до окончания загрузки. **`useClickOutside`** вызывает актуальный коллбэк после ререндера.
 
 ### Removed
 

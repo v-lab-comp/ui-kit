@@ -73,6 +73,7 @@ function Cell({
           leftNode={<RiFileCopyLine size={16} />}
           style={overrideStyle}
           disabled={disabled}
+          aria-label="Копировать"
         />
       </div>
     </div>

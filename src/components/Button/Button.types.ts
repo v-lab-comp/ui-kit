@@ -17,7 +17,36 @@ export const BUTTON_COLOR_OPTIONS = buttonContract.attributes.color
 export const BUTTON_SIZE_OPTIONS = buttonContract.attributes.size
 export const BUTTON_SHAPE_OPTIONS = buttonContract.attributes.shape
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+/** Контент, который даёт кнопке видимую подпись: `undefined` / `null` означают «подписи нет». */
+type ButtonContent = Exclude<ReactNode, null | undefined>
+
+/**
+ * Требование доступного имени для кнопок. Если `children` нет (кнопка-иконка),
+ * обязателен `aria-label` или `aria-labelledby` — иначе скринридер озвучит просто «кнопка».
+ * Общий для Button, ToggleButton и SegmentedControl.Item.
+ */
+export type AccessibleNameProps =
+  | {
+      children: ButtonContent
+      'aria-label'?: string
+      'aria-labelledby'?: string
+    }
+  | {
+      children?: null
+      'aria-label'?: string
+      'aria-labelledby': string
+    }
+  | {
+      children?: null
+      'aria-label': string
+      'aria-labelledby'?: string
+    }
+
+/** Пропсы Button без требования доступного имени (для обёрток и вычисления типов). */
+export interface ButtonBaseProps extends Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  'children' | 'aria-label' | 'aria-labelledby'
+> {
   variant?: ButtonVariant
   color?: ButtonColor
   /**
@@ -33,3 +62,9 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   leftNode?: ReactNode
   rightNode?: ReactNode
 }
+
+/**
+ * Пропсы Button. Без `children` (кнопка-иконка) обязателен `aria-label` или `aria-labelledby`.
+ * `type` по умолчанию — `"button"`: для отправки формы передайте `type="submit"` явно.
+ */
+export type ButtonProps = ButtonBaseProps & AccessibleNameProps

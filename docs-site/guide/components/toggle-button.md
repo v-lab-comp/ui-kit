@@ -64,9 +64,9 @@ const [view, setView] = useState<string | undefined>('grid')
 const [formats, setFormats] = useState<string[]>(['bold'])
 
 <ToggleGroup type="multiple" value={formats} onValueChange={setFormats} size="small">
-  <ToggleButton value="bold"      leftNode={<RiBold size={16} />} />
-  <ToggleButton value="italic"    leftNode={<RiItalic size={16} />} />
-  <ToggleButton value="underline" leftNode={<RiUnderline size={16} />} />
+  <ToggleButton value="bold"      aria-label="Жирный"       leftNode={<RiBold size={16} />} />
+  <ToggleButton value="italic"    aria-label="Курсив"       leftNode={<RiItalic size={16} />} />
+  <ToggleButton value="underline" aria-label="Подчёркнутый" leftNode={<RiUnderline size={16} />} />
 </ToggleGroup>
 ```
 

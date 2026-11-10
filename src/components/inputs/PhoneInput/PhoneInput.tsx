@@ -232,12 +232,12 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
           id={id}
           startBlock={startBlock}
         >
-          {(fieldId) => (
+          {(_fieldId, control) => (
             <div className={contractPart(phoneInputContract, 'phone-input')}>
               <PhoneInputLib
                 key={country}
                 ref={phoneRef}
-                id={fieldId}
+                {...control}
                 country={country}
                 international={true}
                 withCountryCallingCode={false}

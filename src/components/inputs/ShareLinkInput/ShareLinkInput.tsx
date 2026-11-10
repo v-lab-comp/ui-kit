@@ -1,7 +1,7 @@
 import clsx from 'clsx'
-import { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
+import { forwardRef, useEffect, useRef, useState } from 'react'
 import { RiLinkM, RiFileCopyLine, RiCheckLine } from '@remixicon/react'
-import { InputField } from '../base/InputField'
+import { InputField, splitInputFieldProps } from '../base/InputField'
 import { BaseInput } from '../base/BaseInput'
 import { contractPart } from '@/theme/contract'
 import { useMergeRefs } from '@/utils/useMergeRefs'
@@ -21,30 +21,11 @@ const copyToClipboard = async (text: string): Promise<boolean> => {
 }
 
 export const ShareLinkInput = forwardRef<HTMLInputElement, ShareLinkInputProps>(
-  (
-    {
-      label,
-      required,
-      requiredMarker,
-      optional,
-      labelTooltip,
-      hint,
-      error,
-      completed,
-      completedColor,
-      prefix,
-      suffix,
-      endBlock,
-      id,
-      size = 'medium',
-      disabled,
-      className,
-      value,
-      onCopy,
-      ...inputProps
-    },
-    forwardedRef
-  ) => {
+  (props, forwardedRef) => {
+    const [field, rest] = splitInputFieldProps(props)
+    const { value, onCopy, ...inputProps } = rest
+    const { disabled } = field
+    const size = field.size ?? 'medium'
     const inputRef = useRef<HTMLInputElement | null>(null)
     const [copied, setCopied] = useState(false)
     const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -58,7 +39,7 @@ export const ShareLinkInput = forwardRef<HTMLInputElement, ShareLinkInputProps>(
 
     const handleRef = useMergeRefs([inputRef, forwardedRef])
 
-    const handleCopy = useCallback(() => {
+    const handleCopy = () => {
       if (disabled) return
       const text = value !== undefined ? String(value) : (inputRef.current?.value ?? '')
       copyToClipboard(text).then((ok) => {
@@ -72,12 +53,12 @@ export const ShareLinkInput = forwardRef<HTMLInputElement, ShareLinkInputProps>(
           }, COPIED_DURATION_MS)
         }
       })
-    }, [disabled, value, onCopy])
+    }
 
-    const defaultPrefix = prefix ?? <RiLinkM size={20} />
+    const defaultPrefix = field.prefix ?? <RiLinkM size={20} />
     const defaultEndBlock =
-      endBlock !== undefined ? (
-        endBlock
+      field.endBlock !== undefined ? (
+        field.endBlock
       ) : (
         <button
           type="button"
@@ -109,30 +90,19 @@ export const ShareLinkInput = forwardRef<HTMLInputElement, ShareLinkInputProps>(
 
     return (
       <InputField
-        label={label}
-        required={required}
-        requiredMarker={requiredMarker}
-        optional={optional}
-        labelTooltip={labelTooltip}
-        hint={hint}
-        error={error}
-        completed={completed}
-        completedColor={completedColor}
+        {...field}
         prefix={defaultPrefix}
-        suffix={suffix}
         endBlock={defaultEndBlock}
         size={size}
-        disabled={disabled}
-        className={clsx(shareLinkInputContract.className, className)}
-        id={id}
+        className={clsx(shareLinkInputContract.className, field.className)}
       >
-        {(fieldId) => (
+        {(_id, control) => (
           <BaseInput
             ref={handleRef}
-            id={fieldId}
+            {...control}
             type="url"
             size={size}
-            hasError={!!error}
+            hasError={!!field.error}
             disabled={disabled}
             className={contractPart(shareLinkInputContract, 'input-inner')}
             value={value}

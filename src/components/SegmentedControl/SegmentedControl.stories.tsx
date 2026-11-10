@@ -111,9 +111,21 @@ export const IconOnly: Story = {
     const [value, setValue] = useState('grid')
     return (
       <SegmentedControl value={value} onValueChange={setValue}>
-        <SegmentedControl.Item value="grid" leftNode={<RiLayoutGridLine size={16} />} />
-        <SegmentedControl.Item value="list" leftNode={<RiListCheck size={16} />} />
-        <SegmentedControl.Item value="chart" leftNode={<RiBarChartLine size={16} />} />
+        <SegmentedControl.Item
+          value="grid"
+          aria-label="Сетка"
+          leftNode={<RiLayoutGridLine size={16} />}
+        />
+        <SegmentedControl.Item
+          value="list"
+          aria-label="Список"
+          leftNode={<RiListCheck size={16} />}
+        />
+        <SegmentedControl.Item
+          value="chart"
+          aria-label="График"
+          leftNode={<RiBarChartLine size={16} />}
+        />
       </SegmentedControl>
     )
   },
@@ -125,9 +137,9 @@ export const IconOnly: Story = {
         code: `const [value, setValue] = useState('grid')
 
 <SegmentedControl value={value} onValueChange={setValue}>
-  <SegmentedControl.Item value="grid"  leftNode={<RiLayoutGridLine size={16} />} />
-  <SegmentedControl.Item value="list"  leftNode={<RiListCheck size={16} />} />
-  <SegmentedControl.Item value="chart" leftNode={<RiBarChartLine size={16} />} />
+  <SegmentedControl.Item value="grid"  aria-label="Сетка" leftNode={<RiLayoutGridLine size={16} />} />
+  <SegmentedControl.Item value="list"  aria-label="Список" leftNode={<RiListCheck size={16} />} />
+  <SegmentedControl.Item value="chart" aria-label="График" leftNode={<RiBarChartLine size={16} />} />
 </SegmentedControl>`,
       },
     },
@@ -227,9 +239,21 @@ export const Gallery: Story = {
       </SegmentedControl>
 
       <SegmentedControl defaultValue="grid">
-        <SegmentedControl.Item value="grid" leftNode={<RiLayoutGridLine size={16} />} />
-        <SegmentedControl.Item value="list" leftNode={<RiListCheck size={16} />} />
-        <SegmentedControl.Item value="chart" leftNode={<RiBarChartLine size={16} />} />
+        <SegmentedControl.Item
+          value="grid"
+          aria-label="Сетка"
+          leftNode={<RiLayoutGridLine size={16} />}
+        />
+        <SegmentedControl.Item
+          value="list"
+          aria-label="Список"
+          leftNode={<RiListCheck size={16} />}
+        />
+        <SegmentedControl.Item
+          value="chart"
+          aria-label="График"
+          leftNode={<RiBarChartLine size={16} />}
+        />
       </SegmentedControl>
 
       <SegmentedControl defaultValue="table" disabled>
@@ -263,9 +287,9 @@ export const Gallery: Story = {
 
 {/* Только иконки */}
 <SegmentedControl defaultValue="grid">
-  <SegmentedControl.Item value="grid"  leftNode={<RiLayoutGridLine size={16} />} />
-  <SegmentedControl.Item value="list"  leftNode={<RiListCheck size={16} />} />
-  <SegmentedControl.Item value="chart" leftNode={<RiBarChartLine size={16} />} />
+  <SegmentedControl.Item value="grid"  aria-label="Сетка" leftNode={<RiLayoutGridLine size={16} />} />
+  <SegmentedControl.Item value="list"  aria-label="Список" leftNode={<RiListCheck size={16} />} />
+  <SegmentedControl.Item value="chart" aria-label="График" leftNode={<RiBarChartLine size={16} />} />
 </SegmentedControl>
 
 {/* Disabled */}

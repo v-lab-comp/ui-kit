@@ -191,9 +191,13 @@ export const GroupMultiple: Story = {
     const [values, setValues] = useState<string[]>(['bold'])
     return (
       <ToggleGroup type="multiple" value={values} onValueChange={setValues} size="small">
-        <ToggleButton value="bold" leftNode={<RiBold size={16} />} />
-        <ToggleButton value="italic" leftNode={<RiItalic size={16} />} />
-        <ToggleButton value="underline" leftNode={<RiUnderline size={16} />} />
+        <ToggleButton value="bold" aria-label="Жирный" leftNode={<RiBold size={16} />} />
+        <ToggleButton value="italic" aria-label="Курсив" leftNode={<RiItalic size={16} />} />
+        <ToggleButton
+          value="underline"
+          aria-label="Подчёркнутый"
+          leftNode={<RiUnderline size={16} />}
+        />
       </ToggleGroup>
     )
   },
@@ -205,9 +209,9 @@ export const GroupMultiple: Story = {
         code: `const [values, setValues] = useState(['bold'])
 
 <ToggleGroup type="multiple" value={values} onValueChange={setValues} size="small">
-  <ToggleButton value="bold" leftNode={<RiBold size={16} />} />
-  <ToggleButton value="italic" leftNode={<RiItalic size={16} />} />
-  <ToggleButton value="underline" leftNode={<RiUnderline size={16} />} />
+  <ToggleButton value="bold" aria-label="Жирный" leftNode={<RiBold size={16} />} />
+  <ToggleButton value="italic" aria-label="Курсив" leftNode={<RiItalic size={16} />} />
+  <ToggleButton value="underline" aria-label="Подчёркнутый" leftNode={<RiUnderline size={16} />} />
 </ToggleGroup>`,
       },
     },
@@ -249,9 +253,13 @@ export const Gallery: Story = {
         </ToggleButton>
       </ToggleGroup>
       <ToggleGroup type="multiple" defaultValue={['bold', 'italic']} size="small">
-        <ToggleButton value="bold" leftNode={<RiBold size={16} />} />
-        <ToggleButton value="italic" leftNode={<RiItalic size={16} />} />
-        <ToggleButton value="underline" leftNode={<RiUnderline size={16} />} />
+        <ToggleButton value="bold" aria-label="Жирный" leftNode={<RiBold size={16} />} />
+        <ToggleButton value="italic" aria-label="Курсив" leftNode={<RiItalic size={16} />} />
+        <ToggleButton
+          value="underline"
+          aria-label="Подчёркнутый"
+          leftNode={<RiUnderline size={16} />}
+        />
       </ToggleGroup>
     </div>
   ),
@@ -285,9 +293,9 @@ export const Gallery: Story = {
 
 {/* ToggleGroup multiple */}
 <ToggleGroup type="multiple" defaultValue={['bold', 'italic']} size="small">
-  <ToggleButton value="bold"      leftNode={<RiBold size={16} />} />
-  <ToggleButton value="italic"    leftNode={<RiItalic size={16} />} />
-  <ToggleButton value="underline" leftNode={<RiUnderline size={16} />} />
+  <ToggleButton value="bold"      aria-label="Жирный" leftNode={<RiBold size={16} />} />
+  <ToggleButton value="italic"    aria-label="Курсив" leftNode={<RiItalic size={16} />} />
+  <ToggleButton value="underline" aria-label="Подчёркнутый" leftNode={<RiUnderline size={16} />} />
 </ToggleGroup>`,
       },
     },

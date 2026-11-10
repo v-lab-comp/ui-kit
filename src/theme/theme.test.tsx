@@ -135,6 +135,30 @@ describe('ThemeProvider', () => {
     expect(result.current.resolvedColorScheme).toBe('dark')
   })
 
+  it('subscribes to matchMedia once across re-renders and follows changes', () => {
+    let listener: (() => void) | undefined
+    const mql = {
+      matches: false,
+      addEventListener: vi.fn((_: string, cb: () => void) => (listener = cb)),
+      removeEventListener: vi.fn(),
+    }
+    vi.stubGlobal('matchMedia', () => mql)
+    const { result, rerender, unmount } = renderHook(() => useTheme(), {
+      wrapper: wrapper({ defaultColorScheme: 'system' }),
+    })
+    rerender()
+    rerender()
+    act(() => result.current.setSkin('brand'))
+    expect(mql.addEventListener).toHaveBeenCalledTimes(1)
+    expect(mql.removeEventListener).not.toHaveBeenCalled()
+    expect(result.current.resolvedColorScheme).toBe('light')
+    mql.matches = true
+    act(() => listener?.())
+    expect(result.current.resolvedColorScheme).toBe('dark')
+    unmount()
+    expect(mql.removeEventListener).toHaveBeenCalledTimes(1)
+  })
+
   it('remembers the choice with storageKey', () => {
     const first = renderHook(() => useTheme(), { wrapper: wrapper({ storageKey: 'vl-test' }) })
     act(() => first.result.current.setColorScheme('dark'))
@@ -164,6 +188,41 @@ describe('ThemeProvider', () => {
     expect(html.hasAttribute('data-vl-skin')).toBe(false)
     await act(async () => resolveLoad())
     expect(html.getAttribute('data-vl-skin')).toBe('lazy')
+  })
+
+  it('keeps the previous skin and reports a failed skin load', async () => {
+    const error = new Error('chunk failed')
+    const broken = defineSkin({
+      name: 'broken',
+      schemes: ['light', 'dark'],
+      load: () => Promise.reject(error),
+    })
+    const onSkinLoadError = vi.fn()
+    const { result } = renderHook(() => useTheme(), {
+      wrapper: ({ children }: { children: ReactNode }) => (
+        <ThemeProvider skins={[base, broken]} onSkinLoadError={onSkinLoadError}>
+          {children}
+        </ThemeProvider>
+      ),
+    })
+    expect(html.getAttribute('data-vl-skin')).toBe('base')
+    await act(async () => result.current.setSkin('broken'))
+    expect(onSkinLoadError).toHaveBeenCalledWith(error, 'broken')
+    expect(html.getAttribute('data-vl-skin')).toBe('base')
+  })
+
+  it('logs a failed skin load to console.error without a handler', async () => {
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const broken = defineSkin({
+      name: 'broken',
+      schemes: ['light', 'dark'],
+      load: () => Promise.reject(new Error('chunk failed')),
+    })
+    render(<ThemeProvider skins={[broken]} />)
+    await act(async () => {})
+    expect(consoleError).toHaveBeenCalledWith(expect.stringContaining('broken'), expect.any(Error))
+    expect(html.hasAttribute('data-vl-skin')).toBe(false)
+    consoleError.mockRestore()
   })
 
   it('useTheme outside the provider throws', () => {
