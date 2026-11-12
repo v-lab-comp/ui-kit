@@ -1,0 +1,77 @@
+/**
+ * Hover-ореол corporate (halo.css) в arena остаётся, но становится свечением «арены».
+ *
+ * Почему не выключен, как в pixel: в макете (Buttons.dc.html, .btn.hover) наведение на
+ * заливную кнопку — именно ореол: кольцо 4px тинтом палитры + мягкое свечение её цветом
+ * (`0 0 0 4px rgba(198,244,50,.14), 0 0 36px rgba(198,244,50,.4)`). Механика corporate
+ * (псевдоэлемент `::after`, асимметричный тайминг, переменные `--halo-*`) подходит как есть —
+ * меняется только форма тени: свечение без сдвига вниз и шире (36px вместо 10px).
+ *
+ * Цвета:
+ *   - кольцо — `--halo-ring-color` (у filled / lighter corporate ставит `--pal-bg-hover`,
+ *     у остальных — `--halo-neutral`; в arena это полупрозрачный белый / чернила, tokens.css);
+ *   - свечение — `--halo-glow-color`. corporate ставит туда `--pal-base` (непрозрачный цвет),
+ *     для мягкого свечения файл кнопки arena переназначает его на `--pal-glow` (palettes.css).
+ *
+ * У ghost и иконочных кнопок в макете ореола нет — только фон `--arena-control-bg-hover`;
+ * это решают файлы компонентов (`--halo-ring-color: transparent` на варианте).
+ *
+ * Список и вес селекторов — как в corporate/halo.css: при равном весе правило arena идёт
+ * позже и побеждает. Новый элемент в списке corporate — добавить и сюда.
+ * Здесь, как и в corporate, нельзя объявлять `--halo-*` в базовом правиле `:is(…)` —
+ * это проверяет scripts/check-dist-css.mjs; дефолты — только в `var(…, fallback)`.
+ */
+
+:where([data-vl-skin~='arena']) {
+  :is(
+    .vl-password-input__eye-btn,
+    .vl-share-link-input__copy-button,
+    .vl-date-input__calendar-btn,
+    .vl-rich-input__tool-button,
+    .vl-tag__dismiss,
+    .vl-select-input__clear-btn,
+    .vl-sidebar-trigger,
+    .vl-calendar-header__nav-btn,
+    .vl-modal-header__close,
+    .vl-toast__close,
+    .vl-comment-rich-input__icon-button,
+    .vl-comment-rich-input__align-button,
+    .vl-comment-rich-input__send-button,
+    .vl-comments-section__menu-trigger,
+    .vl-button,
+    .vl-file-upload__file-item-action,
+    .vl-pdf-preview__nav-button,
+    .vl-table__page-btn,
+    .vl-app-switcher__trigger-grid
+  )::after {
+    box-shadow:
+      0 0 0 var(--halo-ring-size, 1px) var(--halo-ring-color, var(--pal-base, var(--halo-neutral))),
+      0 0 36px 0 var(--halo-glow-color, transparent);
+  }
+
+  /* Нажатие: свечение уходит, остаётся только кольцо — как у corporate */
+  :is(
+      .vl-password-input__eye-btn,
+      .vl-share-link-input__copy-button,
+      .vl-date-input__calendar-btn,
+      .vl-rich-input__tool-button,
+      .vl-tag__dismiss,
+      .vl-select-input__clear-btn,
+      .vl-sidebar-trigger,
+      .vl-calendar-header__nav-btn,
+      .vl-modal-header__close,
+      .vl-toast__close,
+      .vl-comment-rich-input__icon-button,
+      .vl-comment-rich-input__align-button,
+      .vl-comment-rich-input__send-button,
+      .vl-comments-section__menu-trigger,
+      .vl-button,
+      .vl-file-upload__file-item-action,
+      .vl-pdf-preview__nav-button,
+      .vl-table__page-btn,
+      .vl-app-switcher__trigger-grid
+    ):active:not(:disabled)::after {
+    box-shadow: 0 0 0 var(--halo-ring-size, 1px)
+      var(--halo-ring-color, var(--pal-base, var(--halo-neutral)));
+  }
+}

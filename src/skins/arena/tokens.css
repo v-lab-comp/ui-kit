@@ -1,0 +1,507 @@
+/**
+ * Семантические токены скина arena («Арена» — тёмное премиальное стекло для молодёжных
+ * live-аукционов). Источник значений — макеты docs/design/skin-mockups/arena/*.dc.html.
+ *
+ * Скин расширяет corporate: на `<html>` стоит `data-vl-skin="corporate arena"`, сначала
+ * применяются токены corporate, а этот файл переопределяет их поверх. Селекторы те же, что
+ * у corporate и pixel, все ветки весят (0,1,0) — поэтому `arena.css` обязан подключаться ПОСЛЕ
+ * `corporate.css`: при равном весе побеждает правило, которое идёт позже.
+ *
+ * Здесь переопределяется только то, что меняется: шрифты, радиусы, цвета, затемнение,
+ * ореол. Шкалы `--z-*` и `--motion-*` приходят из corporate как есть.
+ *
+ * Фирменная схема — тёмная («Ночная арена»); светлая («Дневная арена») — те же компоненты
+ * с другими токенами. Приложение аукциона выбирает `colorScheme="dark"` само.
+ *
+ * Собственные токены скина (их нет в corporate) — `--font-display` и `--arena-*`:
+ * материалы стекла, блик по кромке, свечение, фокус, шкала редкости, поля ввода.
+ * Простые значения — в блоках схем, составные (со ссылками на другие токены) — в блоке
+ * «Составные токены», запасной вид стекла — в двух последних блоках.
+ */
+
+/* ============================================================
+   Светлая схема «Дневная арена»: корень скина и вложенный светлый контейнер
+   ============================================================ */
+[data-vl-skin~='arena'],
+:where([data-vl-skin~='arena']) [data-theme='light'] {
+  /* Типографика. Unbounded — заголовки, кнопки, бейджи, вкладки, шапки таблиц;
+     Onest — основной текст и поля ввода. Шрифты подключает приложение (@fontsource
+     или Google Fonts) — см. README. Цифры табличные: ставки и таймеры не «прыгают». */
+  --font-sans: 'Onest', system-ui, -apple-system, sans-serif;
+  --font-display: 'Unbounded', 'Onest', system-ui, sans-serif;
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+
+  /* Радиусы — мягче, чем у corporate, и концентрические: карточка 20, меню 18, поле 14,
+     опция внутри меню 12. Кнопки — пилюли (--radius-full), их задаёт button.css. */
+  --radius-0: 0;
+  --radius-2: 4px;
+  --radius-4: 6px;
+  --radius-6: 8px;
+  --radius-8: 12px;
+  --radius-10: 14px;
+  --radius-12: 14px;
+  --radius-16: 18px;
+  --radius-20: 20px;
+  --radius-24: 24px;
+  --radius-28: 28px;
+  --radius-full: 999px;
+
+  /* Static: чернила (текст на лайме, розовом, янтаре) и белый (текст на синем) */
+  --static-black: #0b1220;
+  --static-white: #ffffff;
+
+  /* Primary — лайм. Текст на нём ВСЕГДА тёмный (--static-black, 14,6:1): белый на лайме
+     даёт 1,3:1. Как цвет текста лайм на светлом фоне не годится — для этого dark (олива). */
+  --primary-base: #c6f432;
+  --primary-dark: #3d5a00;
+  --primary-darker: #2c4200;
+  --primary-alpha-16: rgba(198, 244, 50, 0.42);
+  --primary-alpha-10: rgba(198, 244, 50, 0.22);
+
+  /* Background. weak-50 — фон страницы, white-0 — панели (карточки, поля, таблицы) */
+  --bg-strong-950: #0b1220;
+  --bg-surface-800: #2a3446;
+  --bg-sub-300: #dde1ea;
+  --bg-soft-200: #e7e9ef;
+  --bg-weak-50: #f3f4f8;
+  --bg-white-0: #ffffff;
+
+  /* Text. sub-600 — 8,1:1 на фоне страницы; soft-400 (плейсхолдеры) — 5,7:1 на панели.
+     disabled-300 — только для неактивных элементов (WCAG 1.4.3 их не нормирует). */
+  --text-strong-950: #0b1220;
+  --text-sub-600: #3e4a5e;
+  --text-soft-400: #5d6778;
+  --text-disabled-300: #8c95a6;
+  --text-white-0: #ffffff;
+
+  /* Stroke. sub-300 — граница элемента управления (чекбокс, stroke-кнопка), ≥ 3:1 к панели
+     и фону; soft-200 — волосок поверхностей и разделителей (декоративный) */
+  --stroke-strong-950: #0b1220;
+  --stroke-sub-300: rgba(11, 18, 32, 0.48);
+  --stroke-soft-200: rgba(11, 18, 32, 0.12);
+  --stroke-white-0: #ffffff;
+
+  /* Icon */
+  --icon-strong-950: #0b1220;
+  --icon-sub-600: #3e4a5e;
+  --icon-soft-400: #5d6778;
+  --icon-disabled-300: #8c95a6;
+  --icon-white-0: #ffffff;
+
+  /* Цвета состояний: base — заливка, dark — читаемый текст на панели и на lighter,
+     light / lighter — сплошные тинт-фоны. Текст на base — чернила (--static-black),
+     кроме синих information / feature: на них белый (--static-white). */
+
+  /* State: Warning — янтарь, таймер */
+  --warning-dark: #8a5a00;
+  --warning-base: #f5a524;
+  --warning-light: #fbe0ad;
+  --warning-lighter: #fdf0d6;
+
+  /* State: Error — розовый, «ставку перебили» */
+  --error-dark: #c2185b;
+  --error-base: #ff4d8d;
+  --error-light: #ffd0e0;
+  --error-lighter: #ffe4ee;
+
+  /* State: Faded */
+  --faded-dark: #3e4a5e;
+  --faded-base: #6b7588;
+  --faded-light: #e7e9ef;
+  --faded-lighter: #f0f1f5;
+
+  /* State: Information */
+  --information-dark: #2448c9;
+  --information-base: #3a63f0;
+  --information-light: #c9d5fb;
+  --information-lighter: #e6ecfd;
+
+  /* State: Success */
+  --success-dark: #3d5a00;
+  --success-base: #9bd41c;
+  --success-light: #d6f08a;
+  --success-lighter: #e9f8c2;
+
+  /* State: Away — золото «Коллекционного» */
+  --away-dark: #7a5300;
+  --away-base: #e4ae39;
+  --away-light: #f3dca6;
+  --away-lighter: #faf0db;
+
+  /* State: Feature — синий, второстепенный акцент («Подробнее») */
+  --feature-dark: #2448c9;
+  --feature-base: #3a63f0;
+  --feature-light: #c9d3ff;
+  --feature-lighter: #e6eaff;
+
+  /* State: Verified */
+  --verified-dark: #0b6a8c;
+  --verified-base: #36c2f2;
+  --verified-light: #b9e9f9;
+  --verified-lighter: #e0f5fc;
+
+  /* State: Highlighted — фуксия «Эпического» */
+  --highlighted-dark: #9a1aa8;
+  --highlighted-base: #d32ce6;
+  --highlighted-light: #f0c0f7;
+  --highlighted-lighter: #f9e1fc;
+
+  /* State: Stable */
+  --stable-dark: #0d6e5c;
+  --stable-base: #22c3a6;
+  --stable-light: #b2ebdf;
+  --stable-lighter: #dcf6f0;
+
+  /* Затемнение под модалкой и шторкой (плюс лёгкое размытие --arena-scrim-filter) */
+  --overlay-overlay-gray: rgba(11, 18, 32, 0.32);
+
+  /* Кромка hover-ореола у кнопок без палитры — см. halo.css */
+  --halo-neutral: rgba(11, 18, 32, 0.22);
+
+  /* ----- Собственные токены arena (простые значения) ----- */
+
+  /* Стекло — ТОЛЬКО у плавающих слоёв (модалка, шторка, поповер, тост, тултип, выпадающие
+     панели, переключатель приложений). Три материала: фон + значение backdrop-filter.
+     thin — мелочь поверх медиа (таймер на карточке лота); regular — тост, поповер, списки;
+     thick — модалка, меню, тултип, переключатель приложений (текст на нём читается всегда). */
+  --arena-glass-thin-bg: rgba(255, 255, 255, 0.45);
+  --arena-glass-thin-filter: blur(16px) saturate(150%);
+  --arena-glass-regular-bg: rgba(255, 255, 255, 0.6);
+  --arena-glass-regular-filter: blur(24px) saturate(160%);
+  --arena-glass-thick-bg: rgba(255, 255, 255, 0.76);
+  --arena-glass-thick-filter: blur(24px) saturate(160%);
+  /* Сплошной цвет стекла — запасной вид (нет backdrop-filter или prefers-reduced-transparency) */
+  --arena-glass-solid-bg: #ffffff;
+  /* Верхний внутренний блик стекла */
+  --arena-glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  /* Поле внутри стекла (поиск в выпадающем списке) */
+  --arena-glass-well: rgba(255, 255, 255, 0.7);
+  /* Блик по кромке: градиент для ::before (рецепт — в README) */
+  --arena-rim: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 0.4) 32%,
+    rgba(255, 255, 255, 0.1) 58%,
+    rgba(255, 255, 255, 0.7)
+  );
+
+  /* Блик сверху у заливных кнопок и нижняя «кромка» */
+  --arena-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  --arena-highlight-soft: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  --arena-edge-bottom: inset 0 -2px 0 rgba(11, 18, 32, 0.1);
+  /* Нажатие: тень внутрь + сжатие 2% + затемнение */
+  --arena-pressed-shadow: inset 0 2px 5px rgba(11, 18, 32, 0.18);
+
+  /* Свечение лаймовой CTA-кнопки («Ставка»): в покое и при наведении */
+  --arena-glow-primary: 0 6px 16px rgba(120, 160, 0, 0.22);
+  --arena-glow-primary-hover: 0 0 0 4px rgba(198, 244, 50, 0.35), 0 8px 22px rgba(120, 160, 0, 0.3);
+  /* Сила свечения цвета палитры (--pal-glow в palettes.css): доля цвета в color-mix */
+  --arena-glow-strength: 28%;
+
+  /* Фокус с клавиатуры: лаймовое кольцо 3px. На светлом фоне лайм почти не виден (1,3:1),
+     поэтому зазор между элементом и кольцом заливается чернилами (--arena-focus-ring):
+     чернильный контур 2px + лайм 3px, как в макете «фокус + контур». */
+  --arena-focus-color: #c6f432;
+  --arena-focus-contour: #0b1220;
+  --arena-focus-width: 3px;
+  --arena-focus-offset: 2px;
+
+  /* Поля ввода: фон, кольцо, внутренняя тень, неактивное поле */
+  --arena-field-bg: #ffffff;
+  --arena-field-border: rgba(11, 18, 32, 0.16);
+  --arena-field-border-hover: rgba(11, 18, 32, 0.3);
+  --arena-field-inset: 0 1px 2px rgba(11, 18, 32, 0.04);
+  --arena-field-bg-disabled: #e7e9ef;
+
+  /* Приподнятая сплошная поверхность внутри панели (триггер селекта, карточка выбора) */
+  --arena-raised-bg: #ffffff;
+  /* Прозрачные «контролы»: мягкая нейтральная кнопка, трек сегмент-контрола, кнопки
+     навигации календаря; hover у ghost и иконочных кнопок */
+  --arena-control-bg: rgba(11, 18, 32, 0.05);
+  --arena-control-bg-hover: rgba(11, 18, 32, 0.08);
+  /* Текст на тинте лайма (подсвеченная опция, активный пункт навигации) */
+  --arena-accent-text: #2c4200;
+
+  /* Шкала редкости CS2 — цвета данных: Badge, Tag, Avatar, карточки предметов.
+     base — заливка / полоса / свечение, on — текст на base, tint — фон пилюли,
+     text — текст на tint, glow — цвет свечения за предметом. */
+  --arena-rarity-common: #4b69ff;
+  /* Чернила #0b1220 на #4b69ff дают 4,25:1 — нужен самый тёмный тон (4,52:1) */
+  --arena-rarity-common-on: #07090f;
+  --arena-rarity-common-tint: #e6eaff;
+  --arena-rarity-common-text: #2f4fd0;
+  --arena-rarity-common-glow: rgba(75, 105, 255, 0.32);
+  --arena-rarity-rare: #8847ff;
+  --arena-rarity-rare-on: #ffffff;
+  --arena-rarity-rare-tint: #eee5ff;
+  --arena-rarity-rare-text: #6a2fd6;
+  --arena-rarity-rare-glow: rgba(136, 71, 255, 0.32);
+  --arena-rarity-epic: #d32ce6;
+  --arena-rarity-epic-on: #0b1220;
+  --arena-rarity-epic-tint: #f9e1fc;
+  --arena-rarity-epic-text: #9a1aa8;
+  --arena-rarity-epic-glow: rgba(211, 44, 230, 0.3);
+  --arena-rarity-legendary: #eb4b4b;
+  --arena-rarity-legendary-on: #0b1220;
+  --arena-rarity-legendary-tint: #fce6e6;
+  --arena-rarity-legendary-text: #b42323;
+  --arena-rarity-legendary-glow: rgba(235, 75, 75, 0.3);
+  --arena-rarity-collectible: #e4ae39;
+  --arena-rarity-collectible-on: #0b1220;
+  --arena-rarity-collectible-tint: #faf0db;
+  --arena-rarity-collectible-text: #7a5300;
+  --arena-rarity-collectible-glow: rgba(228, 174, 57, 0.38);
+
+  /* Размытие под затемнением модалки и шторки */
+  --arena-scrim-filter: blur(8px);
+  /* Нажатие и наведение у заливных кнопок (не зависят от схемы) */
+  --arena-press-transform: scale(0.98);
+  --arena-press-filter: brightness(0.9);
+  --arena-hover-filter: brightness(1.06);
+}
+
+/* ============================================================
+   Тёмная схема «Ночная арена» — фирменный вид. Те же ветки, что у corporate и pixel
+   (все (0,1,0)): корень со схемой dark и вложенный тёмный контейнер. Блок полный:
+   перекрывает и тёмный блок corporate, и светлый блок arena, который стоит выше.
+   ============================================================ */
+:where([data-vl-skin~='arena'])[data-vl-scheme='dark'],
+:where([data-vl-skin~='arena'])[data-theme='dark'],
+:where([data-vl-skin~='arena']) [data-theme='dark'] {
+  --static-black: #07090f;
+  --static-white: #ffffff;
+
+  /* Primary — лайм, текст на нём тёмный (15,5:1). dark — цвет текста и рамки фокуса
+     (сам лайм хорошо читается на тёмном), darker — светлый лайм для текста на тинте. */
+  --primary-base: #c6f432;
+  --primary-dark: #c6f432;
+  --primary-darker: #e6ff9a;
+  --primary-alpha-16: rgba(198, 244, 50, 0.16);
+  --primary-alpha-10: rgba(198, 244, 50, 0.1);
+
+  /* Background. weak-50 — фон страницы #07090f, white-0 — сплошная поверхность
+     контента #11151f (карточки, таблицы, панели вкладок) */
+  --bg-strong-950: #f2f5fb;
+  --bg-surface-800: #d5dbe6;
+  --bg-sub-300: #232a3a;
+  --bg-soft-200: #1a2030;
+  --bg-weak-50: #07090f;
+  --bg-white-0: #11151f;
+
+  /* Text. strong-950 — 18,2:1 на фоне, sub-600 — 8,6:1 на поверхности,
+     soft-400 (плейсхолдеры, неактивный текст кнопок) — от 5,7:1 */
+  --text-strong-950: #f2f5fb;
+  --text-sub-600: #a9b3c4;
+  --text-soft-400: #8b95a8;
+  --text-disabled-300: #5c6577;
+  --text-white-0: #07090f;
+
+  /* Stroke. sub-300 — граница элемента управления, ≥ 3:1; soft-200 — волосок 7% */
+  --stroke-strong-950: #f2f5fb;
+  --stroke-sub-300: rgba(242, 245, 251, 0.42);
+  --stroke-soft-200: rgba(255, 255, 255, 0.07);
+  --stroke-white-0: #07090f;
+
+  /* Icon */
+  --icon-strong-950: #f2f5fb;
+  --icon-sub-600: #a9b3c4;
+  --icon-soft-400: #8b95a8;
+  --icon-disabled-300: #5c6577;
+  --icon-white-0: #07090f;
+
+  /* Цвета состояний: base — заливка (текст на ней тёмный, у синих — белый), dark — светлый
+     тон для текста на тёмной поверхности и на lighter, light / lighter — полупрозрачные
+     тинты (ложатся и на сплошную поверхность, и на стекло). */
+
+  /* State: Warning */
+  --warning-dark: #f8c062;
+  --warning-base: #f5a524;
+  --warning-light: rgba(245, 165, 36, 0.24);
+  --warning-lighter: rgba(245, 165, 36, 0.14);
+
+  /* State: Error */
+  --error-dark: #ff6b9a;
+  --error-base: #ff4d8d;
+  --error-light: rgba(255, 77, 141, 0.24);
+  --error-lighter: rgba(255, 77, 141, 0.14);
+
+  /* State: Faded */
+  --faded-dark: #c3cbd8;
+  --faded-base: #6b7588;
+  --faded-light: rgba(255, 255, 255, 0.12);
+  --faded-lighter: rgba(255, 255, 255, 0.07);
+
+  /* State: Information */
+  --information-dark: #a3b6ff;
+  --information-base: #3a63f0;
+  --information-light: rgba(58, 99, 240, 0.28);
+  --information-lighter: rgba(58, 99, 240, 0.18);
+
+  /* State: Success */
+  --success-dark: #a6e23a;
+  --success-base: #9bd41c;
+  --success-light: rgba(155, 212, 28, 0.24);
+  --success-lighter: rgba(143, 209, 31, 0.14);
+
+  /* State: Away */
+  --away-dark: #f2cc72;
+  --away-base: #e4ae39;
+  --away-light: rgba(228, 174, 57, 0.26);
+  --away-lighter: rgba(228, 174, 57, 0.16);
+
+  /* State: Feature */
+  --feature-dark: #8ea8ff;
+  --feature-base: #3a63f0;
+  --feature-light: rgba(58, 99, 240, 0.28);
+  --feature-lighter: rgba(58, 99, 240, 0.18);
+
+  /* State: Verified */
+  --verified-dark: #8fdcf7;
+  --verified-base: #36c2f2;
+  --verified-light: rgba(54, 194, 242, 0.24);
+  --verified-lighter: rgba(54, 194, 242, 0.14);
+
+  /* State: Highlighted */
+  --highlighted-dark: #ee8cf7;
+  --highlighted-base: #d32ce6;
+  --highlighted-light: rgba(211, 44, 230, 0.26);
+  --highlighted-lighter: rgba(211, 44, 230, 0.16);
+
+  /* State: Stable */
+  --stable-dark: #6fe3cf;
+  --stable-base: #22c3a6;
+  --stable-light: rgba(34, 195, 166, 0.24);
+  --stable-lighter: rgba(34, 195, 166, 0.14);
+
+  --overlay-overlay-gray: rgba(0, 0, 0, 0.5);
+
+  --halo-neutral: rgba(255, 255, 255, 0.18);
+
+  /* ----- Собственные токены arena ----- */
+  --arena-glass-thin-bg: rgba(30, 34, 46, 0.4);
+  --arena-glass-thin-filter: blur(20px) saturate(160%);
+  /* Макет — 55%; 60% держит основной текст ≥ 4,5:1 даже над сплошным лаймом за стеклом */
+  --arena-glass-regular-bg: rgba(30, 34, 46, 0.6);
+  --arena-glass-regular-filter: blur(28px) saturate(160%);
+  --arena-glass-thick-bg: rgba(30, 34, 46, 0.82);
+  --arena-glass-thick-filter: blur(28px) saturate(160%);
+  --arena-glass-solid-bg: #181c27;
+  --arena-glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --arena-glass-well: rgba(7, 9, 15, 0.42);
+  --arena-rim: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.07) 35%,
+    rgba(255, 255, 255, 0) 60%,
+    rgba(255, 255, 255, 0.16)
+  );
+
+  --arena-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  --arena-highlight-soft: inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  --arena-edge-bottom: inset 0 -2px 0 rgba(7, 9, 15, 0.12);
+  --arena-pressed-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.28);
+
+  --arena-glow-primary: 0 0 24px rgba(198, 244, 50, 0.25);
+  --arena-glow-primary-hover: 0 0 0 4px rgba(198, 244, 50, 0.14), 0 0 36px rgba(198, 244, 50, 0.4);
+  --arena-glow-strength: 40%;
+
+  /* На тёмном фоне лайм виден сам (15,5:1 к #07090f): контур не нужен, отступ 3px */
+  --arena-focus-color: #c6f432;
+  --arena-focus-contour: transparent;
+  --arena-focus-width: 3px;
+  --arena-focus-offset: 3px;
+
+  --arena-field-bg: #0b0e16;
+  --arena-field-border: rgba(255, 255, 255, 0.1);
+  --arena-field-border-hover: rgba(255, 255, 255, 0.2);
+  --arena-field-inset: inset 0 2px 4px rgba(0, 0, 0, 0.35);
+  --arena-field-bg-disabled: #161b26;
+
+  --arena-raised-bg: #161b27;
+  --arena-control-bg: rgba(255, 255, 255, 0.06);
+  --arena-control-bg-hover: rgba(255, 255, 255, 0.08);
+  --arena-accent-text: #e6ff9a;
+
+  --arena-rarity-common: #4b69ff;
+  --arena-rarity-common-on: #07090f;
+  --arena-rarity-common-tint: #1b2447;
+  --arena-rarity-common-text: #9aabff;
+  --arena-rarity-common-glow: rgba(75, 105, 255, 0.45);
+  --arena-rarity-rare: #8847ff;
+  --arena-rarity-rare-on: #ffffff;
+  --arena-rarity-rare-tint: #261e47;
+  --arena-rarity-rare-text: #b896ff;
+  --arena-rarity-rare-glow: rgba(136, 71, 255, 0.45);
+  --arena-rarity-epic: #d32ce6;
+  --arena-rarity-epic-on: #07090f;
+  --arena-rarity-epic-tint: #341943;
+  --arena-rarity-epic-text: #ee86f8;
+  --arena-rarity-epic-glow: rgba(211, 44, 230, 0.4);
+  --arena-rarity-legendary: #eb4b4b;
+  --arena-rarity-legendary-on: #07090f;
+  --arena-rarity-legendary-tint: #381f27;
+  --arena-rarity-legendary-text: #ff8c8c;
+  --arena-rarity-legendary-glow: rgba(235, 75, 75, 0.45);
+  --arena-rarity-collectible: #e4ae39;
+  --arena-rarity-collectible-on: #07090f;
+  --arena-rarity-collectible-tint: #373124;
+  --arena-rarity-collectible-text: #f0c45e;
+  --arena-rarity-collectible-glow: rgba(228, 174, 57, 0.4);
+}
+
+/* ============================================================
+   Составные токены arena — собраны из значений выше.
+   Значение `var()` вычисляется там, где переменная объявлена, а потомкам наследуется уже
+   готовым. Поэтому составные токены объявлены на каждой ветке схемы (корень, вложенный
+   светлый и тёмный контейнер) — иначе во вложенном `[data-theme='dark']` остались бы
+   светлые значения.
+   ============================================================ */
+[data-vl-skin~='arena'],
+:where([data-vl-skin~='arena']) [data-theme='light'],
+:where([data-vl-skin~='arena']) [data-theme='dark'] {
+  --overlay-bg: var(--overlay-overlay-gray);
+
+  /* Фокус: outline: var(--arena-focus-outline); outline-offset: var(--arena-focus-offset);
+     и ещё --arena-focus-ring в box-shadow (последним слоем) — в светлой схеме он заливает
+     зазор чернилами, в тёмной прозрачный. */
+  --arena-focus-outline: var(--arena-focus-width) solid var(--arena-focus-color);
+  --arena-focus-ring: 0 0 0 var(--arena-focus-offset) var(--arena-focus-contour);
+
+  /* Маска блика по кромке: оставляет от ::before только рамку толщиной padding */
+  --arena-rim-width: 1px;
+  --arena-rim-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+}
+
+/* ============================================================
+   Запасной вид стекла — на уровне токенов, файлам компонентов ничего писать не нужно.
+   Браузер без backdrop-filter или пользователь с «уменьшить прозрачность»: материалы стекла
+   становятся сплошными, размытие выключается. Блоки идут после схем (тот же вес (0,1,0))
+   и объявлены на всех ветках: var() вычисляется там, где объявлен.
+   ============================================================ */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  [data-vl-skin~='arena'],
+  :where([data-vl-skin~='arena']) [data-theme='light'],
+  :where([data-vl-skin~='arena']) [data-theme='dark'] {
+    --arena-glass-thin-bg: var(--arena-glass-solid-bg);
+    --arena-glass-regular-bg: var(--arena-glass-solid-bg);
+    --arena-glass-thick-bg: var(--arena-glass-solid-bg);
+    --arena-glass-well: var(--arena-field-bg);
+    --arena-scrim-filter: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  [data-vl-skin~='arena'],
+  :where([data-vl-skin~='arena']) [data-theme='light'],
+  :where([data-vl-skin~='arena']) [data-theme='dark'] {
+    --arena-glass-thin-bg: var(--arena-glass-solid-bg);
+    --arena-glass-thin-filter: none;
+    --arena-glass-regular-bg: var(--arena-glass-solid-bg);
+    --arena-glass-regular-filter: none;
+    --arena-glass-thick-bg: var(--arena-glass-solid-bg);
+    --arena-glass-thick-filter: none;
+    --arena-glass-well: var(--arena-field-bg);
+    --arena-scrim-filter: none;
+  }
+}

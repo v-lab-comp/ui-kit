@@ -1,0 +1,7 @@
+/*
+ * site-input: вид arena поверх corporate/components/site-input.css — раскладка приходит оттуда.
+ * Своих правил нет: оболочку рисует input-field.css, «голое» поле — base-input.css, блок протокола —
+ * input-field.css (startBlock) и select-input.css (inline-триггер внутри поля).
+ */
+:where([data-vl-skin~='arena']) {
+}

@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Арена — данные</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&amp;family=Onest:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#07090f}
+.r{font-family:'Onest',system-ui,sans-serif;color:#f2f5fb;background:#07090f;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+.d{font-family:'Unbounded',system-ui,sans-serif;font-weight:700;letter-spacing:-.01em}
+.hd{display:flex;align-items:center;gap:16px}
+.ttl{margin:0;font-family:'Unbounded',system-ui,sans-serif;font-size:30px;line-height:1.15;font-weight:800;letter-spacing:-.02em}
+.mark{width:14px;height:14px;border-radius:4px;background:#c6f432;transform:rotate(45deg);box-shadow:0 0 18px rgba(198,244,50,.45);flex:none}
+.sec{display:flex;align-items:center;gap:10px;font-family:'Unbounded',system-ui,sans-serif;font-size:13px;font-weight:700;line-height:1.3;color:#f2f5fb}
+.sec::before{content:'';width:6px;height:6px;border-radius:2px;background:#c6f432;transform:rotate(45deg);box-shadow:0 0 8px rgba(198,244,50,.5)}
+.ic{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none;display:block}
+.ic *{vector-effect:non-scaling-stroke}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.h{display:flex;flex-direction:column;gap:16px}
+.surf{background:#11151f;border-radius:20px;box-shadow:0 0 0 1px rgba(255,255,255,.07),0 8px 24px rgba(0,0,0,.35)}
+.muted{color:#a9b3c4}
+
+.t-lime{--c:#c6f432;--t:rgba(198,244,50,.14);--x:#c6f432;--b:rgba(198,244,50,.3);--g:rgba(198,244,50,.25)}
+.t-pink{--c:#ff4d8d;--t:rgba(255,77,141,.14);--x:#ff7aa6;--b:rgba(255,77,141,.32);--g:rgba(255,77,141,.25)}
+.t-blue{--c:#3a63f0;--t:rgba(58,99,240,.18);--x:#a3b6ff;--b:rgba(58,99,240,.38);--g:rgba(58,99,240,.28)}
+.t-amber{--c:#f5a524;--t:rgba(245,165,36,.14);--x:#f8c062;--b:rgba(245,165,36,.32);--g:rgba(245,165,36,.25)}
+.t-neu{--c:#a9b3c4;--t:rgba(255,255,255,.07);--x:#c3cbd8;--b:rgba(255,255,255,.12);--g:rgba(0,0,0,0)}
+.t-r1{--c:#4b69ff;--t:rgba(75,105,255,.16);--x:#9aabff;--b:rgba(75,105,255,.42);--g:rgba(75,105,255,.32)}
+.t-r2{--c:#8847ff;--t:rgba(136,71,255,.16);--x:#b99bff;--b:rgba(136,71,255,.42);--g:rgba(136,71,255,.32)}
+.t-r3{--c:#d32ce6;--t:rgba(211,44,230,.16);--x:#ee8cf7;--b:rgba(211,44,230,.42);--g:rgba(211,44,230,.32)}
+.t-r4{--c:#eb4b4b;--t:rgba(235,75,75,.16);--x:#ff9a9a;--b:rgba(235,75,75,.42);--g:rgba(235,75,75,.32)}
+.t-r5{--c:#e4ae39;--t:rgba(228,174,57,.16);--x:#f2cc72;--b:rgba(228,174,57,.42);--g:rgba(228,174,57,.32)}
+
+table{border-collapse:collapse;width:100%;font-size:15px}
+th{font-family:'Unbounded',system-ui,sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-align:left;color:#a9b3c4;height:44px;padding:0 20px;background:rgba(255,255,255,.025);border-bottom:1px solid rgba(255,255,255,.07);white-space:nowrap}
+th .srt{display:inline-flex;align-items:center;gap:6px;color:#f2f5fb}
+th .srt .ic{color:#c6f432}
+td{height:52px;padding:0 20px;border-top:1px solid rgba(255,255,255,.06);box-sizing:border-box}
+tbody tr:first-child td{border-top:0}
+tr.sel td{background:rgba(198,244,50,.08)}
+tr.sel td:first-child{box-shadow:inset 3px 0 0 #c6f432}
+.pn{font-weight:600}
+.own{display:inline-flex;gap:10px;align-items:center}
+.more{border:0;background:transparent;width:32px;height:32px;border-radius:999px;color:#a9b3c4;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;margin-left:auto}
+tr.sel .more{background:rgba(255,255,255,.06);color:#f2f5fb}
+
+.pill{display:inline-flex;align-items:center;gap:7px;height:24px;padding:0 10px;border-radius:999px;font-family:'Unbounded',system-ui,sans-serif;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;background:var(--t);color:var(--x);box-shadow:inset 0 0 0 1px var(--b),0 0 14px var(--g)}
+.pill .dot{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor;flex:none}
+.pill .gm{width:7px;height:7px;border-radius:2px;background:var(--c);transform:rotate(45deg);box-shadow:0 0 8px var(--g);flex:none}
+.bdg{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 11px;border-radius:999px;font-family:'Unbounded',system-ui,sans-serif;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;box-sizing:border-box}
+.s-lime{background:#c6f432;color:#07090f;box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 0 14px rgba(198,244,50,.3)}
+.s-pink{background:#ff4d8d;color:#07090f;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 0 14px rgba(255,77,141,.3)}
+.s-amber{background:#f5a524;color:#07090f;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 0 14px rgba(245,165,36,.28)}
+.s-epic{background:#d32ce6;color:#07090f;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 0 14px rgba(211,44,230,.32)}
+.s-blue{background:#3a63f0;color:#ffffff;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 0 14px rgba(58,99,240,.32)}
+.s-stroke{background:transparent;color:#ff6b9a;box-shadow:inset 0 0 0 1.5px #ff4d8d}
+.bdg.n{min-width:26px;justify-content:center;padding:0 8px}
+
+.tabs{display:flex;gap:4px;position:relative;z-index:1}
+.tabs button{font-family:'Unbounded',system-ui,sans-serif;font-size:12px;font-weight:700;letter-spacing:.06em;border:0;cursor:pointer;height:46px;padding:0 18px;border-radius:14px 14px 0 0;background:transparent;color:#a9b3c4;position:relative}
+.tabs button.on{background:#11151f;color:#f2f5fb;height:47px;margin-bottom:-1px;box-shadow:0 -1px 0 rgba(255,255,255,.07),-1px 0 0 rgba(255,255,255,.07),1px 0 0 rgba(255,255,255,.07)}
+.tabs button.on::after{content:'';position:absolute;left:18px;right:18px;top:0;height:2px;border-radius:2px;background:#c6f432;box-shadow:0 0 10px rgba(198,244,50,.6)}
+.tpnl{border-radius:0 20px 20px 20px;padding:20px 22px;font-size:15px;line-height:1.55}
+
+.acc{display:flex;flex-direction:column;overflow:hidden}
+.acc button{all:unset;cursor:pointer;display:flex;align-items:center;gap:14px;height:56px;padding:0 20px;font-size:15px;font-weight:600;border-top:1px solid rgba(255,255,255,.06);box-sizing:border-box}
+.acc button:first-child{border-top:0}
+.acc button .ic{color:#a9b3c4}
+.acc button[aria-expanded="true"] .ic{color:#c6f432}
+.acc .pnl{padding:0 20px 18px 52px;font-size:14px;line-height:1.55;color:#a9b3c4}
+
+.crumbs{display:flex;align-items:center;gap:10px;font-size:15px;flex-wrap:wrap}
+.crumbs a{color:#c6f432;text-decoration:none;font-weight:500}
+.crumbs .ic{color:#a9b3c4}
+
+.cal{width:360px;box-sizing:border-box}
+.cal .ch{display:flex;align-items:center;justify-content:space-between;padding:14px 14px 4px}
+.cal .nav{border:0;width:36px;height:36px;border-radius:999px;background:rgba(255,255,255,.06);color:#f2f5fb;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.cal .gr{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));row-gap:4px;padding:8px 12px 14px}
+.cal .wd{font-family:'Unbounded',system-ui,sans-serif;font-size:10px;font-weight:500;letter-spacing:.06em;text-align:center;color:#a9b3c4;padding:8px 0}
+.cal .dy{border:0;background:transparent;height:40px;padding:0;font-family:'Onest',system-ui,sans-serif;font-size:14px;font-weight:500;color:#f2f5fb;cursor:pointer;border-radius:12px;font-variant-numeric:tabular-nums}
+.cal .dy.out{color:#8a94a7}
+.cal .dy.rng{background:rgba(198,244,50,.14);color:#e6ff9a;border-radius:0}
+.cal .dy.sel{background:#c6f432;color:#07090f;font-weight:700;box-shadow:0 0 16px rgba(198,244,50,.35)}
+.cal .dy.s0{border-radius:12px 0 0 12px}
+.cal .dy.s1{border-radius:0 12px 12px 0}
+.cal .dy.today{box-shadow:inset 0 0 0 1.5px #c6f432;color:#e6ff9a}
+
+.tag{display:inline-flex;align-items:center;gap:4px;height:32px;padding:0 12px;border-radius:999px;box-sizing:border-box;font-size:14px;font-weight:600;background:var(--t);color:var(--x);box-shadow:inset 0 0 0 1px var(--b),0 0 14px var(--g)}
+.tag.x{padding-right:4px}
+.tag button{border:0;background:rgba(255,255,255,.06);color:inherit;width:24px;height:24px;border-radius:999px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+
+.av{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;border-radius:50%;flex:none;overflow:hidden;font-family:'Unbounded',system-ui,sans-serif;font-weight:700;color:var(--x);border:2px solid #0b0e15;background:radial-gradient(circle at 35% 30%,var(--t),rgba(0,0,0,0) 80%),#141926;box-shadow:0 0 0 2px var(--c),0 0 12px var(--g)}
+.av.lg{box-shadow:0 0 0 3px var(--c),0 0 18px var(--g)}
+.avg{display:flex;padding-left:4px}
+.avg .av{margin-left:-10px;box-shadow:0 0 0 2px var(--c),0 0 0 5px #07090f}
+.avg .av:first-child{margin-left:0}
+
+.div{display:flex;align-items:center;gap:14px;font-family:'Unbounded',system-ui,sans-serif;font-size:11px;font-weight:500;letter-spacing:.12em;color:#a9b3c4}
+.div::before,.div::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.1)}
+.wrap{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+</style>
+</helmet>
+<div class="r" style="width: 1200px; height: 1800px; box-sizing: border-box; padding: 56px; display: flex; flex-direction: column; gap: 44px">
+  <div class="hd"><span class="mark" aria-hidden="true"></span><div class="ttl">Данные и отображение</div></div>
+
+  <div class="h">
+    <div class="sec">Table</div>
+    <div class="surf" style="overflow: hidden">
+      <table>
+        <thead><tr><th scope="col" aria-sort="ascending"><span class="srt">Проект<svg class="ic" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" style="stroke-width: 2"><path d="M12 19V5"/><path d="M6 11l6-6 6 6"/></svg></span></th><th scope="col">Статус</th><th scope="col">Владелец</th><th scope="col">Обновлён</th><th scope="col" style="width: 52px"><span class="sr">Действия</span></th></tr></thead>
+        <tbody>
+          <tr><td class="pn">Пиксель</td><td><span class="pill t-lime"><span class="dot"></span>Активен</span></td><td><span class="own"><span class="av t-r1" style="width: 30px; height: 30px; font-size: 9px">АП</span>Анна Петрова</span></td><td class="muted">сегодня</td><td><button class="more" aria-label="Действия: Пиксель"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="12" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="18.5" cy="12" r="1.3" fill="currentColor"/></svg></button></td></tr>
+          <tr class="sel" aria-selected="true"><td class="pn">Тайлсет 16×16</td><td><span class="pill t-amber"><span class="dot"></span>На ревью</span></td><td><span class="own"><span class="av t-r2" style="width: 30px; height: 30px; font-size: 9px">ИС</span>Иван Смирнов</span></td><td class="muted">вчера</td><td><button class="more" aria-label="Действия: Тайлсет"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="12" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="18.5" cy="12" r="1.3" fill="currentColor"/></svg></button></td></tr>
+          <tr><td class="pn">Звуки чиптюн</td><td><span class="pill t-neu"><span class="dot"></span>Черновик</span></td><td><span class="own"><span class="av t-r4" style="width: 30px; height: 30px; font-size: 9px">ЛК</span>Лейла Каримова</span></td><td class="muted">3 дня назад</td><td><button class="more" aria-label="Действия: Звуки"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="12" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="18.5" cy="12" r="1.3" fill="currentColor"/></svg></button></td></tr>
+          <tr><td class="pn">Босс-уровень</td><td><span class="pill t-pink"><span class="dot"></span>Ошибка</span></td><td><span class="own"><span class="av t-r3" style="width: 30px; height: 30px; font-size: 9px">ДН</span>Дилшод Назаров</span></td><td class="muted">12.10.2026</td><td><button class="more" aria-label="Действия: Босс-уровень"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="12" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="18.5" cy="12" r="1.3" fill="currentColor"/></svg></button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px">
+    <div class="h">
+      <div class="sec">Tabs</div>
+      <div>
+        <div class="tabs" role="tablist" aria-label="Проект"><button role="tab" aria-selected="true" aria-controls="tp1" id="tb1" class="on">ОБЗОР</button><button role="tab" aria-selected="false" tabindex="-1">УРОВНИ</button><button role="tab" aria-selected="false" tabindex="-1">КОМАНДА</button></div>
+        <div class="surf tpnl" role="tabpanel" id="tp1" aria-labelledby="tb1">Платформер в 8 уровнях. Активная вкладка соединяется с панелью — как закладка в папке.</div>
+      </div>
+      <div class="sec" style="margin-top: 12px">Breadcrumbs</div>
+      <nav aria-label="Навигация" class="crumbs"><a href="#">Главная</a><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg><a href="#">Проекты</a><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg><span aria-current="page" style="font-weight: 600">Пиксель</span></nav>
+    </div>
+    <div class="h">
+      <div class="sec">Accordion</div>
+      <div class="surf acc">
+        <button aria-expanded="true" aria-controls="ap1"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>Как пригласить команду?</button>
+        <div class="pnl" id="ap1" role="region">Откройте проект → вкладка «Команда» → «Пригласить». Ссылка действует 7 дней.</div>
+        <button aria-expanded="false"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>Можно ли экспортировать уровни?</button>
+        <button aria-expanded="false"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>Какие форматы спрайтов поддерживаются?</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 48px">
+    <div class="h">
+      <div class="sec">Calendar</div>
+      <div class="surf cal">
+        <div class="ch"><button class="nav" aria-label="Предыдущий месяц"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button><span class="d" style="font-size: 14px">Ноябрь 2026</span><button class="nav" aria-label="Следующий месяц"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button></div>
+        <div class="gr" role="grid" aria-label="Ноябрь 2026">
+          <span class="wd">ПН</span><span class="wd">ВТ</span><span class="wd">СР</span><span class="wd">ЧТ</span><span class="wd">ПТ</span><span class="wd">СБ</span><span class="wd">ВС</span>
+          <button class="dy out">26</button><button class="dy out">27</button><button class="dy out">28</button><button class="dy out">29</button><button class="dy out">30</button><button class="dy out">31</button><button class="dy">1</button>
+          <button class="dy">2</button><button class="dy">3</button><button class="dy">4</button><button class="dy">5</button><button class="dy">6</button><button class="dy">7</button><button class="dy">8</button>
+          <button class="dy">9</button><button class="dy today" aria-current="date">10</button><button class="dy sel s0" aria-pressed="true">11</button><button class="dy rng">12</button><button class="dy rng">13</button><button class="dy rng">14</button><button class="dy sel s1" aria-pressed="true">15</button>
+          <button class="dy">16</button><button class="dy">17</button><button class="dy">18</button><button class="dy">19</button><button class="dy">20</button><button class="dy">21</button><button class="dy">22</button>
+          <button class="dy">23</button><button class="dy">24</button><button class="dy">25</button><button class="dy">26</button><button class="dy">27</button><button class="dy">28</button><button class="dy">29</button>
+        </div>
+      </div>
+    </div>
+    <div class="h">
+      <div class="sec">Badge</div>
+      <div class="wrap">
+        <span class="bdg s-lime">PRIMARY</span><span class="pill t-lime" style="height: 26px"><span class="dot"></span>SUCCESS</span><span class="bdg s-pink">ERROR</span><span class="bdg s-amber">WARNING</span><span class="bdg s-epic">FEATURE</span><span class="pill t-neu" style="height: 26px">NEUTRAL</span>
+      </div>
+      <div class="wrap">
+        <span class="pill t-blue" style="height: 26px">LIGHTER</span><span class="pill t-lime" style="height: 26px"><span class="dot"></span>ОНЛАЙН</span><span class="bdg s-stroke">STROKE</span><span class="bdg s-pink n">12</span><span class="bdg s-blue n">99+</span>
+      </div>
+      <div class="wrap">
+        <span class="pill t-r1" style="height: 26px"><span class="gm"></span>Обычный</span><span class="pill t-r2" style="height: 26px"><span class="gm"></span>Редкий</span><span class="pill t-r3" style="height: 26px"><span class="gm"></span>Эпический</span><span class="pill t-r4" style="height: 26px"><span class="gm"></span>Легендарный</span><span class="pill t-r5" style="height: 26px"><span class="gm"></span>Коллекционный</span>
+      </div>
+      <div class="sec" style="margin-top: 12px">Tag</div>
+      <div class="wrap">
+        <span class="tag t-neu">Платформер</span>
+        <span class="tag x t-r2">Чиптюн<button aria-label="Удалить тег Чиптюн"><svg class="ic" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></span>
+        <span class="tag x t-lime">Готово<button aria-label="Удалить тег Готово"><svg class="ic" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></span>
+      </div>
+      <div class="sec" style="margin-top: 12px">ContentDivider</div>
+      <div class="div" role="separator">ИЛИ</div>
+      <div class="sec" style="margin-top: 12px">Box</div>
+      <div class="surf" style="padding: 20px 22px; font-size: 15px; line-height: 1.55">Box — базовая поверхность: рамка со ступенчатыми углами и жёсткая тень.</div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px">
+    <div class="h">
+      <div class="sec">Avatar</div>
+      <div style="display: flex; gap: 18px; align-items: center; padding-left: 4px">
+        <span class="av lg t-r1" style="width: 56px; height: 56px; font-size: 15px">АП</span>
+        <span class="av lg t-r2" style="width: 56px; height: 56px"><svg width="52" height="52" viewBox="0 0 52 52" role="img" aria-label="Иван Смирнов" style="display: block"><defs><linearGradient id="ivbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6a3be0"/><stop offset="1" stop-color="#1b1340"/></linearGradient></defs><rect width="52" height="52" fill="url(#ivbg)"/><path d="M8 54c1.5-10 8.5-16 18-16s16.5 6 18 16z" fill="#b99bff"/><path d="M21 33h10v6a5 5 0 0 1-10 0z" fill="#d9b08f"/><circle cx="26" cy="23" r="10" fill="#e9c4a4"/><path d="M15.5 22c0-7.5 4.5-12 10.5-12s10.5 4.5 10.5 12c-2-3.6-5.6-5.4-10.5-5.4S17.5 18.4 15.5 22z" fill="#141926"/><circle cx="22.5" cy="24" r="1.2" fill="#141926"/><circle cx="29.5" cy="24" r="1.2" fill="#141926"/></svg></span>
+        <span class="av t-r3" style="width: 40px; height: 40px; font-size: 11px">ДН</span>
+        <span class="av t-r4" style="width: 26px; height: 26px; font-size: 8px">ЛК</span>
+      </div>
+      <div class="sec" style="margin-top: 12px">AvatarGroup</div>
+      <div class="avg"><span class="av t-r1" style="width: 40px; height: 40px; font-size: 11px">АП</span><span class="av t-r2" style="width: 40px; height: 40px; font-size: 11px">ИС</span><span class="av t-r3" style="width: 40px; height: 40px; font-size: 11px">ДН</span><span class="av t-neu" style="width: 40px; height: 40px; font-size: 11px">+5</span></div>
+    </div>
+    <div class="h">
+      <div class="sec">AvatarCard</div>
+      <div class="surf" style="display: flex; gap: 14px; align-items: center; padding: 16px 16px 16px 18px">
+        <span class="av t-r1" style="width: 44px; height: 44px; font-size: 12px">АП</span>
+        <div style="display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0"><span style="font-size: 15px; font-weight: 600">Анна Петрова</span><span style="font-size: 13px; color: #a9b3c4">Гейм-дизайнер</span></div>
+        <span class="pill t-lime"><span class="dot"></span>ОНЛАЙН</span>
+      </div>
+    </div>
+    <div class="h">
+      <div class="sec">Typography</div>
+      <div style="font-family: 'Unbounded', system-ui, sans-serif; font-size: 28px; line-height: 1.2; font-weight: 800; letter-spacing: -.02em">H1 Заголовок</div>
+      <div style="font-family: 'Unbounded', system-ui, sans-serif; font-size: 20px; line-height: 1.25; font-weight: 700; letter-spacing: -.01em">H2 Заголовок</div>
+      <div style="font-family: 'Unbounded', system-ui, sans-serif; font-size: 15px; line-height: 1.3; font-weight: 700">H3 Заголовок</div>
+      <div style="font-size: 18px; line-height: 1.5">Body large — основной текст</div>
+      <div style="font-size: 16px; line-height: 1.5">Body — основной текст</div>
+      <div style="font-size: 13px; line-height: 1.4; color: #a9b3c4">Caption — подпись</div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":1800}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

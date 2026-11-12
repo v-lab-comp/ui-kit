@@ -1,0 +1,63 @@
+/*
+ * share-link-input: вид arena поверх corporate/components/share-link-input.css — раскладка
+ * приходит оттуда, здесь только оформление.
+ *
+ * Кнопка «Копировать» — лаймовая пилюля внутри поля (макет «Специальные поля»): Unbounded 11px
+ * капсом, тёмный текст на лайме, блик сверху. endBlock с кнопкой — без своего тинта и разделителя,
+ * только зазор 4px до края поля; кольцо фокуса рисует вся оболочка (input-field.css).
+ */
+:where([data-vl-skin~='arena']) {
+  .vl-input-field__block-end:has(.vl-share-link-input__copy-button),
+  .vl-input-field__wrapper:not([data-disabled])
+    .vl-input-field__block-end:has(.vl-share-link-input__copy-button),
+  .vl-input-field__wrapper:not([data-disabled])
+    .vl-input-field__block-end:has(.vl-share-link-input__copy-button):hover {
+    padding: 0 4px;
+    border-left-color: transparent;
+    background-color: transparent;
+  }
+
+  .vl-share-link-input__copy-button {
+    align-self: stretch;
+    margin-block: 4px;
+    gap: 6px;
+    padding: 0 14px;
+    border-radius: var(--radius-full);
+    background-color: var(--primary-base);
+    color: var(--static-black);
+    box-shadow: var(--arena-highlight), var(--arena-edge-bottom);
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    transition:
+      filter var(--motion-duration-fast) var(--motion-ease-standard),
+      transform var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-share-link-input__copy-button:hover:not(:disabled) {
+    filter: var(--arena-hover-filter);
+  }
+
+  .vl-share-link-input__copy-button:active:not(:disabled) {
+    transform: var(--arena-press-transform);
+    filter: var(--arena-press-filter);
+    box-shadow: var(--arena-pressed-shadow);
+  }
+
+  /* Кольцо фокуса — у всей оболочки; на кнопке — тёмный волосок внутри лайма */
+  .vl-share-link-input__copy-button:focus-visible {
+    outline: none;
+    box-shadow:
+      var(--arena-highlight),
+      inset 0 0 0 2px var(--static-black);
+  }
+
+  .vl-share-link-input__copy-button:disabled {
+    background-color: var(--arena-control-bg);
+    color: var(--text-soft-400);
+    box-shadow: none;
+  }
+}

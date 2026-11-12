@@ -1,0 +1,80 @@
+/* toggle-group: вид «арены» поверх corporate/components/toggle-group.css (макет: Buttons.dc.html,
+   «ToggleGroup — multiple»).
+
+   Группа — одна пилюля, как ButtonGroup: лоток --bg-soft-200 с волоском и бликом сверху,
+   кнопки стоят вплотную без своих рамок, между ними — волосок. Включённая кнопка — лаймовая
+   пилюля внутри лотка: тинт и лаймовое кольцо (toggle-button.css). */
+:where([data-vl-skin~='arena']) {
+  .vl-toggle-group {
+    gap: 0;
+    border-radius: var(--radius-full);
+    background-color: var(--bg-soft-200);
+    box-shadow:
+      inset 0 0 0 1px var(--stroke-soft-200),
+      var(--arena-highlight-soft);
+  }
+
+  :where(.vl-toggle-group)[data-orientation='vertical'] {
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: var(--radius-20);
+  }
+
+  /* Скругления: средние кнопки прямые (перегородки — прямые волоски), крайние повторяют
+     пилюлю лотка, включённая — сама пилюля */
+  .vl-toggle-group > .vl-toggle-button {
+    --btn-radius: 0px;
+  }
+
+  .vl-toggle-group > .vl-toggle-button:first-child {
+    --btn-radius: var(--radius-full) 0px 0px var(--radius-full);
+  }
+
+  .vl-toggle-group > .vl-toggle-button:last-child {
+    --btn-radius: 0px var(--radius-full) var(--radius-full) 0px;
+  }
+
+  :where(.vl-toggle-group)[data-orientation='vertical'] > .vl-toggle-button:first-child {
+    --btn-radius: var(--radius-20) var(--radius-20) 0px 0px;
+  }
+
+  :where(.vl-toggle-group)[data-orientation='vertical'] > .vl-toggle-button:last-child {
+    --btn-radius: 0px 0px var(--radius-20) var(--radius-20);
+  }
+
+  .vl-toggle-group > .vl-toggle-button:first-child:last-child,
+  .vl-toggle-group > .vl-toggle-button[data-state='on'] {
+    --btn-radius: var(--radius-full);
+  }
+
+  /* Вес (0,3,0): перекрывает рамку выключенной кнопки ((0,1,0)) и её :hover ((0,3,0), файл раньше) */
+  .vl-toggle-group > .vl-toggle-button[data-state='off'] {
+    --_ar-tgl-ring: transparent;
+  }
+
+  /* Перегородка — волосок у левого (в вертикальной группе — верхнего) края */
+  .vl-toggle-group > .vl-toggle-button[data-state='off'] + .vl-toggle-button[data-state='off'] {
+    box-shadow:
+      inset 1px 0 0 var(--stroke-soft-200),
+      var(--_ar-tgl-focus);
+  }
+
+  :where(.vl-toggle-group)[data-orientation='vertical']
+    > .vl-toggle-button[data-state='off']
+    + .vl-toggle-button[data-state='off'] {
+    box-shadow:
+      inset 0 1px 0 var(--stroke-soft-200),
+      var(--_ar-tgl-focus);
+  }
+
+  .vl-toggle-group > .vl-toggle-button[data-state='off']:disabled {
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  /* Фокус — поверх соседей */
+  .vl-toggle-group > .vl-toggle-button:focus-visible {
+    position: relative;
+    z-index: var(--z-raised);
+  }
+}

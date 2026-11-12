@@ -1,0 +1,16 @@
+/* drawer-body: вид arena поверх corporate/components/drawer-body.css — раскладка приходит оттуда.
+   Тело на стекле шторки: свой фон не нужен; полоса прокрутки — как в modal-body. */
+:where([data-vl-skin~='arena']) {
+  .vl-drawer-body {
+    font-family: var(--font-sans);
+    scrollbar-color: var(--faded-light) transparent;
+  }
+
+  .vl-drawer-body::-webkit-scrollbar-thumb {
+    background-color: var(--faded-light);
+  }
+
+  .vl-drawer-body::-webkit-scrollbar-thumb:hover {
+    background-color: var(--stroke-sub-300);
+  }
+}

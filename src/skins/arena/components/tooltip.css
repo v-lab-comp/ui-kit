@@ -1,0 +1,87 @@
+/* tooltip: вид arena поверх corporate/components/tooltip.css — раскладка и появление приходят оттуда.
+   Макет: Overlays.dc.html, «Tooltip» — табличка на толстом стекле (не чернильная плашка
+   corporate), радиус 12, Onest 13/500, блик по кромке. Позицию задаёт Floating UI
+   (position: fixed + transform) — здесь её не трогаем. Хвостик — ::after из того же стекла,
+   направлен по data-placement (фактическая сторона после flip); виден только наружный
+   треугольник ромба, чтобы стекло не ложилось на тултип дважды. У сторон -start / -end
+   хвостика нет — он указывал бы мимо триггера. */
+:where([data-vl-skin~='arena']) {
+  .vl-tooltip {
+    isolation: isolate;
+    border-radius: var(--radius-8);
+    background-color: var(--arena-glass-thick-bg);
+    -webkit-backdrop-filter: var(--arena-glass-thick-filter);
+    backdrop-filter: var(--arena-glass-thick-filter);
+    box-shadow: var(--arena-glass-shadow);
+    color: var(--text-strong-950);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  /* Блик по кромке: градиентная рамка 1px, середина вырезана маской */
+  .vl-tooltip::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-raised);
+    border-radius: inherit;
+    padding: var(--arena-rim-width);
+    background: var(--arena-rim);
+    -webkit-mask: var(--arena-rim-mask);
+    -webkit-mask-composite: xor;
+    mask: var(--arena-rim-mask);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .vl-tooltip::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: calc(var(--radius-2) / 2);
+    /* Без своего backdrop-filter: тултип со стеклом — корень подложки для потомков,
+       размытие у хвостика всё равно не сработало бы */
+    background: var(--arena-glass-thick-bg);
+    pointer-events: none;
+  }
+
+  .vl-tooltip:not(
+      [data-placement='top'],
+      [data-placement='bottom'],
+      [data-placement='left'],
+      [data-placement='right']
+    )::after {
+    content: none;
+  }
+
+  .vl-tooltip[data-placement='top']::after {
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, 50%) rotate(45deg);
+    clip-path: polygon(0 100%, 100% 100%, 100% 0);
+  }
+
+  .vl-tooltip[data-placement='bottom']::after {
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -50%) rotate(45deg);
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+  }
+
+  .vl-tooltip[data-placement='left']::after {
+    top: 50%;
+    right: 0;
+    transform: translate(50%, -50%) rotate(45deg);
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
+  }
+
+  .vl-tooltip[data-placement='right']::after {
+    top: 50%;
+    left: 0;
+    transform: translate(-50%, -50%) rotate(45deg);
+    clip-path: polygon(0 0, 0 100%, 100% 100%);
+  }
+}

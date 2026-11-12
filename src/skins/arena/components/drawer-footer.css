@@ -1,0 +1,12 @@
+/* drawer-footer: вид arena поверх corporate/components/drawer-footer.css — раскладка приходит оттуда.
+   Футер на стекле шторки: фон прозрачный, сверху волосок (Overlays.dc.html, «Drawer»). */
+:where([data-vl-skin~='arena']) {
+  .vl-drawer-footer {
+    border-top-color: var(--stroke-soft-200);
+    background: transparent;
+  }
+
+  .vl-drawer-footer__start {
+    font-family: var(--font-sans);
+  }
+}

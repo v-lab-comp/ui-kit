@@ -1,0 +1,62 @@
+/* avatar: вид arena поверх corporate/components/avatar.css (макет: Data.dc.html, «Avatar»).
+
+   Аватар — «жетон игрока»: тёмная подложка с мягким бликом тинта палитры, кольцо 2px цвета
+   палитры снаружи, тонкий зазор-обводка внутри (цвет «утопленного» поля) и свечение.
+   Инициалы — Unbounded 700 цветом палитры (--pal-text). Без палитры — нейтральное кольцо.
+   Кегль инициалов компонент задаёт инлайном (10…24px под гротеск); Unbounded шире —
+   поэтому текст уменьшается в em от этого значения. */
+:where([data-vl-skin~='arena']) {
+  .vl-avatar {
+    --_arena-avatar-ring: var(--stroke-sub-300);
+    --_arena-avatar-glow: transparent;
+    border: 2px solid var(--arena-field-bg);
+    background:
+      radial-gradient(circle at 35% 30%, var(--arena-control-bg-hover), transparent 80%),
+      var(--arena-raised-bg);
+    color: var(--text-strong-950);
+    font-family: var(--font-display);
+    font-weight: 700;
+    box-shadow:
+      0 0 0 2px var(--_arena-avatar-ring),
+      0 0 12px var(--_arena-avatar-glow);
+  }
+
+  /* Палитра: кольцо и свечение её цветом, блик — её тинтом, текст — читаемый тон палитры.
+     Вес (0,2,0) — как у правил corporate .vl-avatar[data-color='…'], файл идёт позже */
+  .vl-avatar[data-color] {
+    --_arena-avatar-ring: var(--pal-base);
+    --_arena-avatar-glow: var(--pal-glow);
+    background:
+      radial-gradient(circle at 35% 30%, var(--pal-bg-active), transparent 80%),
+      var(--arena-raised-bg);
+    color: var(--pal-text);
+  }
+
+  /* Нейтральная палитра — кольцо мягче, чем её заливка (светлая / чернильная) */
+  .vl-avatar[data-color='neutral'] {
+    --_arena-avatar-ring: var(--stroke-sub-300);
+    color: var(--text-sub-600);
+  }
+
+  /* Фото — во весь круг под кольцом */
+  .vl-avatar img {
+    border-radius: inherit;
+  }
+
+  /* Инициалы: ~0,8 от кегля компонента (56px → 14px, 40px → 11px, 32px → 10px) */
+  .vl-avatar span:not(.vl-avatar__icon) {
+    font-size: 0.8em;
+    letter-spacing: 0.02em;
+  }
+
+  /* Силуэт-заглушка — цвет текста аватара, полупрозрачный */
+  .vl-avatar__default-icon-head {
+    fill: currentColor;
+    fill-opacity: 0.85;
+  }
+
+  .vl-avatar__default-icon-shoulders {
+    fill: currentColor;
+    fill-opacity: 0.6;
+  }
+}

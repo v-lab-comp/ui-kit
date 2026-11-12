@@ -1,0 +1,239 @@
+/* comment-rich-input: вид arena поверх corporate/components/comment-rich-input.css
+   (макет: Content.dc.html, «CommentRichInput»).
+
+   Поле комментария — «утопленное» поле arena (сплошное, не стекло: это ввод, а не плавающий
+   слой): фон поля, кольцо-волосок и внутренняя тень, радиус карточки 20px. Фокус внутри —
+   кольцо акцента. Снизу — панель: форматирование собрано в пилюлю-«трек» с круглыми
+   кнопками, счётчик — Unbounded, отправка — круглая лаймовая CTA с тёмной иконкой и
+   свечением. Кнопки правки (сохранить / отмена) — пилюли Unbounded.
+   Переменные corporate --comment-input-min-height / --comment-input-opacity работают как прежде. */
+:where([data-vl-skin~='arena']) {
+  .vl-comment-rich-input {
+    border-radius: var(--radius-20);
+    background: var(--arena-field-bg);
+    box-shadow:
+      inset 0 0 0 1px var(--arena-field-border),
+      var(--arena-field-inset);
+    transition: box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-comment-rich-input:hover {
+    box-shadow:
+      inset 0 0 0 1px var(--arena-field-border-hover),
+      var(--arena-field-inset);
+  }
+
+  /* Фокус в редакторе — кольцо акцента (лайм в тёмной, олива в светлой) и мягкий ореол */
+  .vl-comment-rich-input:has(.vl-comment-rich-input__editable:focus-visible),
+  .vl-comment-rich-input:has(.vl-comment-rich-input__editable:focus) {
+    box-shadow:
+      inset 0 0 0 1.5px var(--arena-input-accent),
+      0 0 0 4px var(--primary-alpha-10);
+  }
+
+  .vl-comment-rich-input__body {
+    padding: 14px 18px 10px;
+  }
+
+  .vl-comment-rich-input__editable {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--text-strong-950);
+  }
+
+  .vl-comment-rich-input__editable[data-empty='true']::before {
+    color: var(--text-soft-400);
+  }
+
+  .vl-comment-rich-input__editable[contenteditable='false'] {
+    opacity: 1;
+    color: var(--text-soft-400);
+  }
+
+  .vl-comment-rich-input__footer {
+    gap: 10px;
+    padding: 8px 8px 8px 10px;
+    border-top: 1px solid var(--stroke-soft-200);
+  }
+
+  /* ---------- Форматирование: пилюля-трек ---------- */
+
+  .vl-comment-rich-input__toolbar {
+    padding: 3px;
+    border-radius: var(--radius-full);
+    background: var(--arena-control-bg);
+    box-shadow: inset 0 0 0 1px var(--stroke-soft-200);
+  }
+
+  .vl-comment-rich-input__toolbar-divider {
+    width: 1px;
+    margin: 0 4px;
+    border-radius: 0;
+    background: var(--stroke-soft-200);
+  }
+
+  .vl-comment-rich-input__icon-button,
+  .vl-comment-rich-input__align-button {
+    --halo-ring-color: transparent;
+    padding: 6px;
+    border-radius: var(--radius-full);
+    color: var(--text-sub-600);
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-comment-rich-input__align-button {
+    padding: 6px 6px 6px 8px;
+  }
+
+  .vl-comment-rich-input__icon-button:hover:not(:disabled),
+  .vl-comment-rich-input__align-button:hover:not(:disabled) {
+    background: var(--arena-control-bg-hover);
+    color: var(--text-strong-950);
+  }
+
+  /* Формат применён — лаймовый тинт, светлый лаймовый значок */
+  :where(.vl-comment-rich-input__icon-button)[data-active],
+  :where(.vl-comment-rich-input__icon-button)[data-active]:hover:not(:disabled) {
+    background: var(--primary-alpha-16);
+    color: var(--arena-accent-text);
+  }
+
+  .vl-comment-rich-input__icon-button:disabled,
+  .vl-comment-rich-input__align-button:disabled {
+    opacity: 1;
+    color: var(--text-disabled-300);
+  }
+
+  /* ---------- Счётчик и отправка ---------- */
+
+  .vl-comment-rich-input__submit-group {
+    gap: 10px;
+  }
+
+  .vl-comment-rich-input__counter {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--text-sub-600);
+  }
+
+  :where(.vl-comment-rich-input__counter)[data-error] {
+    color: var(--error-dark);
+  }
+
+  /* Отправка — круглая лаймовая CTA: тёмная иконка, блик, свечение; ореол при наведении */
+  .vl-comment-rich-input__send-button {
+    --halo-ring-size: 4px;
+    --halo-ring-color: var(--primary-alpha-10);
+    --halo-glow-color: color-mix(
+      in srgb,
+      var(--primary-base) var(--arena-glow-strength),
+      transparent
+    );
+    width: 36px;
+    height: 36px;
+    padding: 8px;
+    border-radius: var(--radius-full);
+    background: var(--primary-base);
+    color: var(--static-black);
+    box-shadow: var(--arena-highlight), var(--arena-edge-bottom), var(--arena-glow-primary);
+    transition:
+      filter var(--motion-duration-fast) var(--motion-ease-standard),
+      transform var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-comment-rich-input__send-text-button {
+    height: 32px;
+    padding: 0 16px;
+    border-radius: var(--radius-full);
+    background: var(--primary-base);
+    color: var(--static-black);
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    box-shadow: var(--arena-highlight), var(--arena-edge-bottom);
+    transition:
+      filter var(--motion-duration-fast) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-comment-rich-input__send-button:hover:not(:disabled),
+  .vl-comment-rich-input__send-text-button:hover:not(:disabled) {
+    opacity: 1;
+    filter: var(--arena-hover-filter);
+  }
+
+  .vl-comment-rich-input__send-text-button:hover:not(:disabled) {
+    box-shadow: var(--arena-highlight), var(--arena-edge-bottom), var(--arena-glow-primary-hover);
+  }
+
+  .vl-comment-rich-input__send-button:active:not(:disabled),
+  .vl-comment-rich-input__send-text-button:active:not(:disabled) {
+    transform: var(--arena-press-transform);
+    filter: var(--arena-press-filter);
+    box-shadow: var(--arena-pressed-shadow);
+  }
+
+  /* Неактивная отправка — нейтральная плашка с читаемым приглушённым значком, без свечения */
+  .vl-comment-rich-input__send-button:disabled,
+  .vl-comment-rich-input__send-text-button:disabled {
+    opacity: 1;
+    background: var(--arena-field-bg-disabled);
+    color: var(--text-soft-400);
+    box-shadow: inset 0 0 0 1px var(--stroke-soft-200);
+  }
+
+  .vl-comment-rich-input__secondary-button {
+    height: 32px;
+    padding: 0 14px;
+    border-radius: var(--radius-full);
+    color: var(--text-sub-600);
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    box-shadow: inset 0 0 0 1px var(--stroke-soft-200);
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-comment-rich-input__secondary-button:hover:not(:disabled) {
+    background: var(--arena-control-bg-hover);
+    color: var(--text-strong-950);
+  }
+
+  .vl-comment-rich-input__secondary-button:disabled {
+    opacity: 1;
+    color: var(--text-disabled-300);
+  }
+
+  /* ---------- Фокус с клавиатуры ---------- */
+
+  .vl-comment-rich-input__icon-button:focus-visible,
+  .vl-comment-rich-input__align-button:focus-visible,
+  .vl-comment-rich-input__secondary-button:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+    box-shadow: var(--arena-focus-ring);
+  }
+
+  .vl-comment-rich-input__send-button:focus-visible,
+  .vl-comment-rich-input__send-text-button:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+    box-shadow: var(--arena-highlight), var(--arena-focus-ring);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vl-comment-rich-input__send-button:active:not(:disabled),
+    .vl-comment-rich-input__send-text-button:active:not(:disabled) {
+      transform: none;
+    }
+  }
+}

@@ -1,0 +1,29 @@
+/* content-divider: вид «арены» поверх corporate/components/content-divider.css (макет: Data.dc.html,
+   «ContentDivider»; Content.dc.html — разделитель дня в чате).
+
+   Линия — волосок --stroke-soft-200. Подпись («ИЛИ») — Unbounded 500 капсом с широкой
+   разрядкой, вторичным текстом. solidText — подпись на мягкой нейтральной плашке. */
+:where([data-vl-skin~='arena']) {
+  :where(.vl-content-divider)[data-variant='textAndLine'],
+  :where(.vl-content-divider)[data-variant='withSlot'] {
+    gap: 14px;
+  }
+
+  :where(.vl-content-divider)[data-variant='solidText'] {
+    border-radius: var(--radius-8);
+    background: var(--arena-control-bg);
+  }
+
+  .vl-content-divider__line {
+    background: var(--stroke-soft-200);
+  }
+
+  .vl-content-divider__text-and-line-label,
+  .vl-content-divider__text-label {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--text-sub-600);
+  }
+}

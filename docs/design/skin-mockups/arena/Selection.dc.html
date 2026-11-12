@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Арена — выбор</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&amp;family=Onest:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#07090f}
+.r{font-family:'Onest',system-ui,sans-serif;color:#f2f5fb;background:#07090f;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+.d{font-family:'Unbounded',system-ui,sans-serif;font-weight:700;letter-spacing:-.01em}
+.hd{display:flex;align-items:center;gap:16px}
+.ttl{margin:0;font-family:'Unbounded',system-ui,sans-serif;font-size:30px;line-height:1.15;font-weight:800;letter-spacing:-.02em}
+.mark{width:14px;height:14px;border-radius:4px;background:#c6f432;transform:rotate(45deg);box-shadow:0 0 18px rgba(198,244,50,.45);flex:none}
+.ic{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none;display:block}
+.ic *{vector-effect:non-scaling-stroke}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.focus{outline:3px solid #c6f432;outline-offset:2px}
+
+.surf{background:#11151f;border-radius:20px;box-shadow:0 0 0 1px rgba(255,255,255,.07),0 8px 24px rgba(0,0,0,.35)}
+.glass{position:relative;isolation:isolate;background:rgba(30,34,46,.55);-webkit-backdrop-filter:blur(28px) saturate(160%);backdrop-filter:blur(28px) saturate(160%);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 18px 44px rgba(0,0,0,.5)}
+.glass.thick{background:rgba(30,34,46,.82)}
+.glass::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(150deg,rgba(255,255,255,.3),rgba(255,255,255,.07) 35%,rgba(255,255,255,0) 60%,rgba(255,255,255,.16));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;z-index:1}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.glass,.glass.thick{background:rgba(24,28,39,.97)}}
+
+.row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px;align-items:start}
+.pnl{padding:24px;display:flex;flex-direction:column}
+.lbl{display:block;font-family:'Unbounded',system-ui,sans-serif;font-size:12px;font-weight:500;line-height:1.3;color:#a9b3c4;margin-bottom:12px}
+
+.trg{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:10px;width:100%;height:48px;padding:0 14px 0 16px;border-radius:14px;background:#161b27;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);font-size:15px;color:#f2f5fb;cursor:pointer}
+.trg .v,.trg .ph{flex:1;min-width:0}
+.trg .ph{color:#a9b3c4}
+.trg .ic{color:#a9b3c4}
+.trg.open{box-shadow:inset 0 0 0 1px rgba(198,244,50,.55),0 0 0 4px rgba(198,244,50,.1)}
+.trg.open .ic{color:#c6f432}
+.trg.multi{height:auto;min-height:48px;padding:9px 14px 9px 10px;flex-wrap:wrap;gap:6px}
+.chipm{display:inline-flex;align-items:center;height:28px;padding:0 11px;border-radius:999px;background:rgba(198,244,50,.14);box-shadow:inset 0 0 0 1px rgba(198,244,50,.25);color:#e6ff9a;font-size:13px;font-weight:600}
+
+.pop{margin-top:10px;border-radius:18px;padding:6px}
+.srch{display:flex;align-items:center;gap:10px;height:44px;padding:0 12px;border-radius:12px;background:rgba(7,9,15,.42);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);color:#a9b3c4}
+.srch input{all:unset;flex:1;min-width:0;font-family:'Onest',system-ui,sans-serif;font-size:15px;color:#f2f5fb}
+.srch input::placeholder{color:#a9b3c4;opacity:1}
+.sep{height:1px;background:rgba(255,255,255,.08);margin:6px 6px}
+.opts{list-style:none;margin:0;padding:0}
+.opts li{display:flex;align-items:center;gap:10px;min-height:44px;padding:0 12px;border-radius:12px;box-sizing:border-box;font-size:15px;color:#f2f5fb}
+.opts li.two{padding:9px 12px}
+.opts li.hl{background:rgba(198,244,50,.16);color:#e6ff9a;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+.opts li .ck{margin-left:auto;color:#c6f432}
+.opts li .sub{display:block;font-size:13px;color:#a9b3c4;margin-top:2px}
+.opts li.grp-t{display:block;min-height:0;padding:12px 12px 6px;font-family:'Unbounded',system-ui,sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;color:#a9b3c4}
+.opts li.dis{color:#8f99ac}
+.opts li.dis .ic{margin-left:auto;color:#8f99ac}
+.st{display:flex;align-items:center;gap:12px;padding:14px 12px;font-size:14px;color:#a9b3c4}
+.dots{display:inline-flex;gap:5px}
+.dots i{width:6px;height:6px;border-radius:50%;background:#c6f432;box-shadow:0 0 8px rgba(198,244,50,.5);display:block}
+.dots i:nth-child(2){opacity:.6}
+.dots i:nth-child(3){opacity:.3}
+
+.cmp{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 12px 0 16px;border-radius:999px;font-family:'Unbounded',system-ui,sans-serif;font-size:13px;font-weight:700;color:#f2f5fb;background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)}
+.cmp .ic{color:#a9b3c4}
+.inl{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:4px;font-weight:600;color:#c6f432;border-bottom:1.5px dashed rgba(198,244,50,.6);padding-bottom:1px}
+
+.cb{display:flex;align-items:center;gap:12px;font-size:15px;cursor:pointer;position:relative}
+.bx{width:22px;height:22px;flex:none;box-sizing:border-box;border-radius:7px;display:flex;align-items:center;justify-content:center;background:#161b27;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.3);color:#07090f}
+.bx.on{background:#c6f432;box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 0 14px rgba(198,244,50,.35)}
+.bx.off{background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.12)}
+.bx.err{box-shadow:inset 0 0 0 1.5px #ff4d8d,0 0 12px rgba(255,77,141,.3)}
+.hint{font-size:13px;line-height:1.4;color:#a9b3c4}
+.err-t{display:flex;align-items:center;gap:6px;color:#ff6b9a}
+.fld{display:flex;gap:12px;align-items:flex-start;position:relative}
+.fld .bx{margin-top:1px}
+.fld .tx{display:flex;flex-direction:column;gap:4px}
+.lnk{color:#c6f432;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+
+.card{display:flex;gap:14px;align-items:flex-start;padding:18px;border-radius:18px;background:#161b27;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);cursor:pointer;position:relative}
+.card.sel{background:rgba(198,244,50,.07);box-shadow:inset 0 0 0 1.5px #c6f432,0 0 26px rgba(198,244,50,.18)}
+.card .tx{display:flex;flex-direction:column;gap:6px;min-width:0}
+.card .t{font-family:'Unbounded',system-ui,sans-serif;font-size:13px;font-weight:700;letter-spacing:.04em}
+.card .pr{margin-left:auto;font-family:'Unbounded',system-ui,sans-serif;font-size:15px;font-weight:700;white-space:nowrap}
+.card.sel .pr{color:#c6f432}
+</style>
+</helmet>
+<div class="r" style="width: 1200px; height: 1360px; box-sizing: border-box; padding: 56px; display: flex; flex-direction: column; gap: 44px">
+  <div class="hd"><span class="mark" aria-hidden="true"></span><div class="ttl">Выбор</div></div>
+
+  <div class="row">
+    <div class="surf pnl">
+      <span class="lbl" id="s1l">SelectInput — закрыт</span>
+      <button class="trg" role="combobox" aria-expanded="false" aria-labelledby="s1l"><span class="ph">Выберите роль</span><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+
+      <span class="lbl" id="s4l" style="margin-top: 28px">Множественный выбор</span>
+      <div class="trg multi" role="combobox" aria-expanded="false" aria-labelledby="s4l" tabindex="0"><span class="chipm">Дизайн</span><span class="chipm">Фронтенд</span><span class="chipm">+2</span><span style="flex: 1"></span><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div>
+
+      <span class="lbl" style="margin-top: 28px">Compact и inline</span>
+      <div style="display: flex; gap: 18px; align-items: center; flex-wrap: wrap">
+        <button class="cmp" aria-label="Сортировка">По дате<svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+        <span style="font-size: 15px">Показать <button class="inl" aria-label="Количество строк">25 строк<svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></span>
+      </div>
+    </div>
+
+    <div class="surf pnl">
+      <span class="lbl" id="s2l">Открыт, с поиском</span>
+      <button class="trg open focus" role="combobox" aria-expanded="true" aria-labelledby="s2l" aria-controls="lb-roles"><span class="v">Дизайнер</span><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
+      <div class="pop glass">
+        <div class="srch"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg><input type="text" placeholder="Поиск…" aria-label="Поиск по ролям"></div>
+        <div class="sep" aria-hidden="true"></div>
+        <ul class="opts" role="listbox" id="lb-roles" aria-label="Роли">
+          <li class="grp-t" role="presentation">КОМАНДА</li>
+          <li role="option" aria-selected="false">Разработчик</li>
+          <li role="option" aria-selected="true" class="hl">Дизайнер<span class="ck"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li>
+          <li role="option" aria-selected="false" class="two"><span>Менеджер<span class="sub">Доступ к отчётам</span></span></li>
+          <li class="grp-t" role="presentation">ГОСТИ</li>
+          <li role="option" aria-selected="false" aria-disabled="true" class="dis">Наблюдатель — скоро<svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2.5"/><path d="M8.5 11V8a3.5 3.5 0 0 1 7 0v3"/></svg></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="surf pnl">
+      <span class="lbl" id="s3l">AsyncSearchSelect</span>
+      <button class="trg open" role="combobox" aria-expanded="true" aria-labelledby="s3l"><span class="ph">Найти пользователя</span><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg></button>
+      <div class="pop glass">
+        <div class="srch"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg><input type="text" value="ann" aria-label="Поиск пользователя"></div>
+        <div class="st" role="status"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>Загрузка…</div>
+      </div>
+      <div class="pop glass">
+        <div class="srch"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg><input type="text" value="zzz" aria-label="Поиск пользователя"></div>
+        <div class="st" role="status"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>Ничего не найдено</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="surf pnl" style="gap: 18px">
+      <span class="lbl" style="margin-bottom: 0">Checkbox</span>
+      <label class="cb"><input type="checkbox" class="sr"><span class="bx" aria-hidden="true"></span>Не выбран</label>
+      <label class="cb"><input type="checkbox" class="sr" checked><span class="bx on" aria-hidden="true"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" style="stroke-width: 2.2"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Выбран</label>
+      <label class="cb"><input type="checkbox" class="sr"><span class="bx on" aria-hidden="true"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" style="stroke-width: 2.2"><path d="M7 12h10"/></svg></span>Частично</label>
+      <label class="cb" style="color: #8f99ac; cursor: not-allowed"><input type="checkbox" class="sr" disabled><span class="bx off" aria-hidden="true"></span>Отключён</label>
+      <label class="cb"><input type="checkbox" class="sr" aria-invalid="true"><span class="bx err" aria-hidden="true"></span>С ошибкой</label>
+    </div>
+
+    <div class="surf pnl" style="gap: 22px">
+      <span class="lbl" style="margin-bottom: 0">CheckboxField</span>
+      <label class="fld"><input type="checkbox" class="sr" checked aria-describedby="cf1h"><span class="bx on" aria-hidden="true"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" style="stroke-width: 2.2"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="tx"><span style="font-size: 15px; font-weight: 500">Получать новости</span><span class="hint" id="cf1h">Раз в неделю, без спама</span></span></label>
+      <div class="fld"><input type="checkbox" class="sr" id="cf2" aria-invalid="true" aria-describedby="cf2h"><span class="bx err" aria-hidden="true"></span><span class="tx"><label for="cf2" style="font-size: 15px; font-weight: 500">Принимаю <a href="#" class="lnk">условия</a></label><span class="hint err-t" id="cf2h"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5"/><path d="M12 16.5v.01"/></svg>Нужно согласие, чтобы продолжить</span></span></div>
+    </div>
+
+    <div class="surf pnl" style="gap: 14px">
+      <span class="lbl" style="margin-bottom: 0">CheckboxCard</span>
+      <label class="card sel"><input type="checkbox" class="sr" checked><span class="bx on" aria-hidden="true"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" style="stroke-width: 2.2"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="tx"><span class="t">ТАРИФ PRO</span><span class="hint">Безлимитные проекты и экспорт</span></span><span class="pr">990 ₽</span></label>
+      <label class="card"><input type="checkbox" class="sr"><span class="bx" aria-hidden="true"></span><span class="tx"><span class="t">ТАРИФ START</span><span class="hint">До 3 проектов</span></span><span class="pr">0 ₽</span></label>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":1360}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

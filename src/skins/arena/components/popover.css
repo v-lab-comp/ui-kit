@@ -1,0 +1,33 @@
+/* popover: вид arena поверх corporate/components/popover.css — раскладка и появление приходят оттуда.
+   Макет: Overlays.dc.html, «Popover» — меню на толстом стекле, радиус 18, блик по кромке.
+   Позицию задаёт Floating UI (position: fixed + transform) — здесь её не трогаем.
+   Содержимое (меню, списки) оформляет тот, кто его кладёт; у Popover нет своих частей. */
+:where([data-vl-skin~='arena']) {
+  .vl-popover {
+    isolation: isolate;
+    border: 0;
+    border-radius: var(--radius-16);
+    background-color: var(--arena-glass-thick-bg);
+    -webkit-backdrop-filter: var(--arena-glass-thick-filter);
+    backdrop-filter: var(--arena-glass-thick-filter);
+    box-shadow: var(--arena-glass-shadow);
+    color: var(--text-strong-950);
+    font-family: var(--font-sans);
+  }
+
+  /* Блик по кромке: градиентная рамка 1px, середина вырезана маской */
+  .vl-popover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-raised);
+    border-radius: inherit;
+    padding: var(--arena-rim-width);
+    background: var(--arena-rim);
+    -webkit-mask: var(--arena-rim-mask);
+    -webkit-mask-composite: xor;
+    mask: var(--arena-rim-mask);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}

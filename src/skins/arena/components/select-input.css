@@ -1,0 +1,389 @@
+/*
+ * select-input: вид arena поверх corporate/components/select-input.css — раскладка приходит
+ * оттуда, здесь только оформление (макет «Выбор», Selection.dc.html).
+ *
+ * - Полный триггер живёт в оболочке InputField: рамку, фокус, ошибку и ореол открытого списка
+ *   (`:has([aria-expanded='true'])`) рисует input-field.css. Здесь оболочка селекта становится
+ *   приподнятой (--arena-raised-bg, без «утопленной» тени), как триггер в макете.
+ *   Файл подключается раньше input-field.css, поэтому правила оболочки здесь — с большим весом.
+ * - Compact — самостоятельная пилюля-«контрол»: Unbounded 13px, тинт и волосок.
+ * - Inline — лаймовый текст с пунктирным подчёркиванием.
+ *   Внутри оболочки поля (startBlock у PhoneInput / SiteInput) compact и inline — часть поля,
+ *   поэтому их самостоятельный вид ограничен `:not(.vl-input-field__wrapper *)`.
+ * - Выпадающая панель — плавающий слой: стекло regular с бликом по кромке, радиус 18px,
+ *   опции 12px (концентрично: 18 − 6px отступа панели). Подсвеченная опция — лаймовый тинт,
+ *   текст акцентом. Поле поиска в панели — «колодец» в стекле (--arena-glass-well).
+ */
+:where([data-vl-skin~='arena']) {
+  /* ── Полный триггер ────────────────────────────────────────────────────── */
+
+  .vl-input-field__wrapper:has(.vl-select-input__trigger) {
+    --_arena-field-bg: var(--arena-raised-bg);
+    --_arena-field-inset: 0 0 transparent;
+  }
+
+  /* Отключённый селект: в тёмной схеме фон неактивного поля (#161b26) совпадает с приподнятым
+     (#161b27) — добавляем пунктирный контур, иначе он не отличим от активного */
+  .vl-input-field__wrapper[data-disabled]:has(.vl-select-input__trigger) {
+    border-style: dashed;
+    border-color: var(--arena-field-border-hover);
+  }
+
+  .vl-select-input__trigger:disabled .vl-select-input__trigger-text {
+    color: var(--text-soft-400);
+  }
+
+  .vl-select-input__trigger {
+    transition: color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-select-input__trigger-text[data-placeholder],
+  .vl-select-input__compact-text[data-placeholder] {
+    color: var(--text-sub-600);
+  }
+
+  .vl-select-input__clear-btn {
+    border-radius: var(--radius-full);
+    color: var(--icon-sub-600);
+  }
+
+  .vl-select-input__clear-btn:hover:not(:disabled) {
+    color: var(--icon-strong-950);
+    background-color: var(--arena-control-bg-hover);
+  }
+
+  .vl-select-input__clear-btn:focus-visible {
+    outline: none;
+    color: var(--icon-strong-950);
+    background-color: var(--arena-control-bg-hover);
+    box-shadow: inset 0 0 0 1.5px var(--arena-input-accent);
+  }
+
+  .vl-select-input__clear-btn:disabled {
+    color: var(--icon-soft-400);
+  }
+
+  .vl-select-input__chevron {
+    color: var(--icon-sub-600);
+    transition:
+      transform var(--motion-duration-fast) var(--motion-ease-standard),
+      color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  /* Открытый список — шеврон акцентом (поворот задаёт компонент) */
+  [data-open] > .vl-select-input__chevron,
+  .vl-input-field__wrapper:has([aria-expanded='true']) .vl-select-input__chevron {
+    color: var(--primary-dark);
+  }
+
+  .vl-input-field__wrapper[data-disabled] .vl-select-input__chevron {
+    color: var(--icon-soft-400);
+  }
+
+  /* ── Compact: пилюля-«контрол» ─────────────────────────────────────────── */
+
+  .vl-select-input__compact-trigger:not(.vl-input-field__wrapper *) {
+    gap: 8px;
+    padding-inline: 14px 10px;
+    border-color: var(--arena-field-border);
+    border-radius: var(--radius-full);
+    background: var(--arena-control-bg);
+    box-shadow: none;
+    color: var(--text-strong-950);
+    transition:
+      border-color var(--motion-duration-fast) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-fast) var(--motion-ease-standard),
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      transform var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-select-input__compact-trigger:not(.vl-input-field__wrapper *) .vl-select-input__compact-text {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .vl-select-input__compact-trigger:not(.vl-input-field__wrapper *):hover:not(:disabled):not(
+      [data-open]
+    ) {
+    border-color: var(--arena-input-border-hover);
+    background: var(--arena-control-bg-hover);
+  }
+
+  .vl-select-input__compact-trigger:not(.vl-input-field__wrapper *):active:not(:disabled) {
+    transform: var(--arena-press-transform);
+  }
+
+  .vl-select-input__compact-trigger[data-filled]:not([data-completed]):not([data-error]):not(
+      :disabled
+    ):not([data-open]) {
+    border-color: var(--arena-field-border);
+  }
+
+  .vl-select-input__compact-trigger[data-open] {
+    border-color: var(--arena-input-accent);
+    box-shadow: 0 0 0 4px var(--primary-alpha-10);
+  }
+
+  .vl-select-input__compact-trigger[data-completed]:not([data-error]):not(:disabled) {
+    border-color: var(--input-completed-border, var(--arena-input-done));
+  }
+
+  .vl-select-input__compact-trigger[data-completed]:not([data-custom-completed-border]):not(
+      [data-error]
+    ):not(:disabled):hover:not([data-open]) {
+    border-color: var(--success-dark);
+  }
+
+  .vl-select-input__compact-trigger[data-error] {
+    border-color: var(--arena-input-error);
+    box-shadow: 0 0 0 4px var(--arena-input-error-glow);
+  }
+
+  .vl-select-input__compact-trigger[data-error][data-open] {
+    box-shadow: 0 0 0 4px var(--arena-input-error-glow);
+  }
+
+  .vl-select-input__compact-trigger:not(.vl-input-field__wrapper *):focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+    box-shadow: var(--arena-focus-ring);
+  }
+
+  .vl-select-input__compact-trigger:disabled {
+    background: var(--arena-field-bg-disabled);
+    border-color: var(--stroke-soft-200);
+    box-shadow: none;
+  }
+
+  .vl-select-input__compact-trigger:disabled .vl-select-input__compact-text {
+    color: var(--text-soft-400);
+  }
+
+  .vl-select-input__compact-trigger:disabled .vl-select-input__compact-icon {
+    opacity: 0.5;
+  }
+
+  /* Compact внутри startBlock поля (страна у PhoneInput) — без своей рамки и ореола:
+     наведение и открытый список показывает блок (input-field.css) */
+  .vl-input-field__wrapper .vl-select-input__compact-trigger,
+  .vl-input-field__wrapper .vl-select-input__compact-trigger[data-open],
+  .vl-input-field__wrapper .vl-select-input__compact-trigger[data-error],
+  .vl-input-field__wrapper .vl-select-input__compact-trigger:disabled {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  /* ── Inline: лаймовый текст с пунктирным подчёркиванием ────────────────── */
+
+  .vl-select-input__inline-trigger {
+    border-radius: var(--radius-6);
+    color: var(--icon-sub-600);
+    transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-select-input__inline-trigger:not(.vl-input-field__wrapper *) .vl-select-input__compact-text {
+    padding-bottom: 1px;
+    border-bottom: 1.5px dashed color-mix(in srgb, var(--primary-dark) 60%, transparent);
+    font-weight: 600;
+    color: var(--primary-dark);
+  }
+
+  .vl-select-input__inline-trigger:not(.vl-input-field__wrapper *) .vl-select-input__chevron {
+    color: var(--primary-dark);
+  }
+
+  .vl-select-input__inline-trigger:hover:not(:disabled),
+  .vl-select-input__inline-trigger[data-open] {
+    background-color: var(--arena-control-bg);
+  }
+
+  /* Внутри startBlock фон наведения рисует сам блок */
+  .vl-input-field__wrapper .vl-select-input__inline-trigger:hover:not(:disabled),
+  .vl-input-field__wrapper .vl-select-input__inline-trigger[data-open] {
+    background-color: transparent;
+  }
+
+  .vl-select-input__inline-trigger:not(.vl-input-field__wrapper *):focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: 2px;
+    box-shadow: var(--arena-focus-ring);
+  }
+
+  .vl-select-input__inline-trigger[data-completed]:not([data-error]):not(:disabled),
+  .vl-select-input__inline-trigger[data-completed]:not([data-error]):not(:disabled)[data-open] {
+    border-color: var(--input-completed-border, var(--arena-input-done));
+  }
+
+  .vl-select-input__inline-trigger[data-completed]:not([data-custom-completed-border]):not(
+      [data-error]
+    ):not(:disabled):hover:not([data-open]) {
+    border-color: var(--success-dark);
+  }
+
+  /* Ошибка — розовое подчёркивание (у corporate inline-триггер ошибку не показывает) */
+  .vl-select-input__inline-trigger[data-error]:not(.vl-input-field__wrapper *)
+    .vl-select-input__compact-text {
+    border-bottom-color: var(--arena-input-error);
+  }
+
+  /* Отключено — без полупрозрачности: приглушённый текст, серое подчёркивание */
+  .vl-select-input__inline-trigger:disabled {
+    opacity: 1;
+  }
+
+  .vl-select-input__inline-trigger:disabled .vl-select-input__compact-text,
+  .vl-select-input__inline-trigger:disabled .vl-select-input__chevron {
+    color: var(--text-soft-400);
+    border-bottom-color: var(--stroke-soft-200);
+  }
+
+  /* ── Выпадающая панель: стекло ─────────────────────────────────────────── */
+
+  .vl-select-input__dropdown {
+    position: relative;
+    isolation: isolate;
+    padding: 6px;
+    gap: 6px;
+    background: var(--arena-glass-regular-bg);
+    -webkit-backdrop-filter: var(--arena-glass-regular-filter);
+    backdrop-filter: var(--arena-glass-regular-filter);
+    border: 0;
+    border-radius: var(--radius-16);
+    box-shadow: var(--arena-glass-shadow);
+  }
+
+  /* Блик по кромке: градиентная рамка 1px, середина вырезана маской */
+  .vl-select-input__dropdown::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-raised);
+    border-radius: inherit;
+    padding: var(--arena-rim-width);
+    background: var(--arena-rim);
+    -webkit-mask: var(--arena-rim-mask);
+    -webkit-mask-composite: xor;
+    mask: var(--arena-rim-mask);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* ── Поиск в панели — «колодец» в стекле ───────────────────────────────── */
+
+  .vl-select-input__dropdown-search-field .vl-input-field__wrapper {
+    --_arena-field-bg: var(--arena-glass-well);
+    --_arena-field-inset: 0 0 transparent;
+
+    border-color: var(--stroke-soft-200);
+    border-radius: var(--radius-8);
+  }
+
+  /* Фокус в поиске — рамка-акцент 1.5px без внешнего кольца: панель и так открыта от поля */
+  .vl-select-input__dropdown-search-field
+    .vl-input-field__wrapper:focus-within:not([data-disabled]),
+  .vl-select-input__dropdown-search-field
+    .vl-input-field__wrapper:has(:focus-visible):not([data-disabled]) {
+    border-color: var(--arena-input-accent);
+    outline: none;
+    box-shadow: inset 0 0 0 0.5px var(--arena-input-accent);
+  }
+
+  /* ── Прокрутка: тонкий ползунок-пилюля ─────────────────────────────────── */
+
+  .vl-select-input__options-scroll {
+    padding: 0;
+    scrollbar-color: var(--arena-control-bg-hover) transparent;
+  }
+
+  .vl-select-input__options-scroll::-webkit-scrollbar-thumb {
+    background-color: var(--arena-control-bg-hover);
+  }
+
+  .vl-select-input__options-scroll::-webkit-scrollbar-thumb:hover {
+    background-color: var(--stroke-sub-300);
+  }
+
+  .vl-select-input__options-list {
+    gap: 2px;
+  }
+
+  /* ── Группы: подзаголовок-капс Unbounded ───────────────────────────────── */
+
+  .vl-select-input__option-group-label {
+    padding: 12px 12px 6px;
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 14px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-sub-600);
+  }
+
+  :where(.vl-select-input__option-group-label)[data-sep] {
+    margin-top: 6px;
+    padding-top: 14px;
+    border-top-color: var(--stroke-soft-200);
+  }
+
+  /* ── Опции ─────────────────────────────────────────────────────────────── */
+
+  .vl-select-input__option {
+    padding: 10px 12px;
+    min-height: 40px;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    letter-spacing: 0;
+    color: var(--text-strong-950);
+    border-radius: var(--radius-8);
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-select-input__option:hover {
+    background-color: var(--arena-control-bg-hover);
+  }
+
+  /* Подсвеченная (мышь или стрелки) — лаймовый тинт, текст акцентом, блик сверху */
+  .vl-select-input__option[data-highlighted] {
+    background-color: var(--primary-alpha-16);
+    color: var(--arena-accent-text);
+    box-shadow: var(--arena-glass-highlight);
+  }
+
+  .vl-select-input__option[data-highlighted] .vl-select-input__option-primary {
+    color: inherit;
+  }
+
+  .vl-select-input__option[data-placeholder] {
+    color: var(--text-sub-600);
+  }
+
+  .vl-select-input__option[data-selected] {
+    font-weight: 600;
+  }
+
+  .vl-select-input__option-primary {
+    font-weight: 600;
+  }
+
+  .vl-select-input__option-description {
+    letter-spacing: 0;
+    color: var(--text-sub-600);
+  }
+
+  /* ── Пусто / загрузка ──────────────────────────────────────────────────── */
+
+  .vl-select-input__empty-state,
+  .vl-select-input__async-footer-message {
+    font-family: var(--font-sans);
+    color: var(--text-sub-600);
+  }
+
+  :where(.vl-select-input__empty-state, .vl-select-input__async-footer-message)[data-error] {
+    color: var(--error-dark);
+  }
+}

@@ -1,0 +1,26 @@
+/* checkbox-label-row: вид «арены» поверх corporate/components/checkbox-label-row.css — раскладка
+   приходит оттуда (макет: Selection.dc.html, «Checkbox» / «CheckboxField»).
+
+   Подпись — Onest 15px основным текстом, подпись-уточнение и описание — 13px вторичным.
+   Отключённый цвет (--_checkbox-disabled-color) задают checkbox-field.css / checkbox-card.css. */
+:where([data-vl-skin~='arena']) {
+  .vl-checkbox-label-row {
+    gap: 6px;
+  }
+
+  .vl-checkbox-label-row__label-text {
+    font-size: 15px;
+    line-height: 20px;
+    letter-spacing: 0;
+  }
+
+  .vl-checkbox-label-row__sublabel-text {
+    font-size: 13px;
+    line-height: 20px;
+  }
+
+  .vl-checkbox-label-row__description {
+    font-size: 13px;
+    line-height: 18px;
+  }
+}

@@ -1,0 +1,81 @@
+/* tabs: вид «арены» поверх corporate/components/tabs.css (макет: Data.dc.html, «Tabs»).
+
+   Вкладки — «закладки папки»: Unbounded 700 капсом с разрядкой. Активная — сплошная поверхность
+   --bg-white-0 с волоском сверху и по бокам и лаймовой светящейся полосой по верхней кромке;
+   она на 1px заходит на линию-разделитель и перекрывает её, поэтому сливается с панелью под
+   списком (панель приложение кладёт на ту же --bg-white-0). Неактивные — вторичный текст,
+   наведение — основной текст и лёгкая подложка.
+
+   Свои поля вкладки (corporate рисует голый текст с подчёркиванием на 10px ниже) — нужны
+   приёму «закладки». Хука на панель (Tabs.Panel без класса) нет — скругление панели и её
+   соединение с активной вкладкой задаёт приложение. */
+:where([data-vl-skin~='arena']) {
+  .vl-tabs__list {
+    align-items: flex-end;
+    gap: 4px;
+  }
+
+  .vl-tabs__tab {
+    padding: 13px 18px;
+    border-radius: var(--radius-12) var(--radius-12) 0 0;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 20px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-sub-600);
+    transition:
+      color var(--motion-duration-fast) var(--motion-ease-standard),
+      background-color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vl-tabs__tab {
+      transition: none;
+    }
+  }
+
+  .vl-tabs__tab:hover {
+    color: var(--text-strong-950);
+    background-color: var(--arena-control-bg);
+  }
+
+  .vl-tabs__tab:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: calc(-1 * var(--arena-focus-width));
+    /* Кольцо внутри: в светлой схеме чернильный контур — с внутренней стороны лайма */
+    box-shadow: inset 0 0 0 calc(var(--arena-focus-width) + var(--arena-focus-offset))
+      var(--arena-focus-contour);
+  }
+
+  /* Активная — закладка: поверхность, волосок сверху и по бокам, перекрывает разделитель */
+  :where(.vl-tabs__tab)[data-active] {
+    z-index: var(--z-raised);
+    margin-bottom: -1px;
+    padding-bottom: 14px;
+    color: var(--text-strong-950);
+    background-color: var(--bg-white-0);
+    box-shadow:
+      0 -1px 0 var(--stroke-soft-200),
+      -1px 0 0 var(--stroke-soft-200),
+      1px 0 0 var(--stroke-soft-200);
+  }
+
+  /* Лаймовая полоса по верхней кромке со свечением (вместо подчёркивания corporate) */
+  :where(.vl-tabs__tab)[data-active]::after {
+    left: 18px;
+    right: 18px;
+    top: 0;
+    bottom: auto;
+    height: 2px;
+    border-radius: var(--radius-full);
+    background-color: var(--primary-dark);
+    box-shadow: 0 0 10px var(--shadow-primary-6);
+  }
+
+  .vl-tabs__separator {
+    margin-top: 0;
+    background-color: var(--stroke-soft-200);
+  }
+}

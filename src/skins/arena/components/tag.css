@@ -1,0 +1,207 @@
+/* tag: вид «арены» поверх corporate/components/tag.css — высоты (20 / 24 / 28), поля и слоты
+   приходят оттуда (макет: Data.dc.html, «Tag»).
+
+   Тег — тинт-пилюля Onest 600: фон тинтом палитры, кольцо её цветом 30%, текст --pal-text и
+   мягкое свечение --pal-glow; filled — заливка с тёмным текстом и бликом. Без палитры —
+   нейтральная пилюля на --arena-control-bg. Кнопка «убрать» — круглая, наведение — тинт
+   текущего цвета.
+
+   Как перекрыт corporate: у него цвета разложены по ~27 правилам весом от (0,1,0) до (0,4,0)
+   (варианты × палитра/без × hover/active). Здесь каждое состояние только задаёт приватные
+   переменные --_ar-tag-*, а применяет их одно правило `.vl-tag[data-variant][data-size][data-shape]`
+   весом (0,4,0) — как самое тяжёлое правило corporate, файл идёт позже. Атрибуты variant / size /
+   shape Tag ставит всегда. У customColor нет --pal-text / --pal-on-base / --pal-border / --pal-glow —
+   везде запасные значения. */
+:where([data-vl-skin~='arena']) {
+  .vl-tag {
+    --_tag-radius: var(--radius-8);
+    --_ar-tag-text: var(
+      --pal-text,
+      color-mix(in srgb, var(--pal-base) 60%, var(--text-strong-950))
+    );
+    --_ar-tag-y: clamp(0, (0.179 - (0.2126 * r + 0.7152 * g + 0.0722 * b)) * 1000, 1);
+    --_ar-tag-on: var(
+      --pal-on-base,
+      color(from var(--pal-base) srgb-linear var(--_ar-tag-y) var(--_ar-tag-y) var(--_ar-tag-y))
+    );
+    --_ar-tag-ring: color-mix(in srgb, var(--pal-base) 30%, transparent);
+    --_ar-tag-glow: 0 0 14px color-mix(in srgb, var(--pal-glow, transparent) 60%, transparent);
+
+    font-weight: 600;
+  }
+
+  /* Применение — вес (0,4,0), см. шапку файла */
+  .vl-tag[data-variant][data-size][data-shape] {
+    border: 1px solid var(--_ar-tag-border);
+    background-color: var(--_ar-tag-bg);
+    color: var(--_ar-tag-fg);
+    box-shadow: var(--_ar-tag-shadow, 0 0 transparent);
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      border-color var(--motion-duration-fast) var(--motion-ease-standard),
+      color var(--motion-duration-fast) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vl-tag[data-variant][data-size][data-shape] {
+      transition: none;
+    }
+  }
+
+  :where(.vl-tag)[data-shape='rounded'] {
+    --_tag-radius: var(--radius-8);
+  }
+
+  /* ---------- Без палитры — нейтральные пилюли ---------- */
+
+  :where(.vl-tag)[data-variant='stroke'] {
+    --_ar-tag-bg: transparent;
+    --_ar-tag-border: var(--arena-field-border);
+    --_ar-tag-fg: var(--text-sub-600);
+  }
+
+  :where(.vl-tag)[data-variant='gray'] {
+    --_ar-tag-bg: var(--arena-control-bg);
+    --_ar-tag-border: transparent;
+    --_ar-tag-fg: var(--text-sub-600);
+  }
+
+  :where(.vl-tag)[data-variant='filled'] {
+    --_ar-tag-bg: var(--bg-surface-800);
+    --_ar-tag-border: transparent;
+    --_ar-tag-fg: var(--text-white-0);
+    --_ar-tag-shadow: var(--arena-highlight-soft);
+  }
+
+  :where(.vl-tag)[data-variant='light'] {
+    --_ar-tag-bg: var(--bg-soft-200);
+    --_ar-tag-border: transparent;
+    --_ar-tag-fg: var(--text-strong-950);
+  }
+
+  :where(.vl-tag):where(:not([data-color], [data-custom-color]))[data-interactive]:not(
+      [data-disabled]
+    ):hover {
+    --_ar-tag-bg: var(--arena-control-bg-hover);
+    --_ar-tag-fg: var(--text-strong-950);
+  }
+
+  :where(.vl-tag):where(
+      :not([data-color], [data-custom-color])
+    )[data-variant='stroke'][data-interactive]:not([data-disabled]):hover {
+    --_ar-tag-border: var(--arena-field-border-hover);
+  }
+
+  :where(.vl-tag):where(
+      :not([data-color], [data-custom-color])
+    )[data-variant='filled'][data-interactive]:not([data-disabled]):hover {
+    --_ar-tag-bg: var(--bg-strong-950);
+    --_ar-tag-fg: var(--text-white-0);
+  }
+
+  /* ---------- Палитра / customColor — тинт-пилюли ---------- */
+
+  :where(.vl-tag)[data-variant='stroke']:where([data-color], [data-custom-color]) {
+    --_ar-tag-bg: transparent;
+    --_ar-tag-border: var(--pal-border, var(--pal-base));
+    --_ar-tag-fg: var(--_ar-tag-text);
+    --_ar-tag-shadow: none;
+  }
+
+  :where(.vl-tag)[data-variant='gray']:where([data-color], [data-custom-color]) {
+    --_ar-tag-bg: var(--pal-bg-hover);
+    --_ar-tag-border: var(--_ar-tag-ring);
+    --_ar-tag-fg: var(--_ar-tag-text);
+    --_ar-tag-shadow: var(--_ar-tag-glow);
+  }
+
+  :where(.vl-tag)[data-variant='light']:where([data-color], [data-custom-color]) {
+    --_ar-tag-bg: var(--pal-bg-active);
+    --_ar-tag-border: var(--_ar-tag-ring);
+    /* Плотный тинт: текст на 15% ближе к основному (в светлой схеме розовый иначе < 4,5:1) */
+    --_ar-tag-fg: color-mix(in srgb, var(--_ar-tag-text) 85%, var(--text-strong-950));
+    --_ar-tag-shadow: var(--_ar-tag-glow);
+  }
+
+  :where(.vl-tag)[data-variant='filled']:where([data-color], [data-custom-color]) {
+    --_ar-tag-bg: var(--pal-base);
+    --_ar-tag-border: transparent;
+    --_ar-tag-fg: var(--_ar-tag-on);
+    --_ar-tag-shadow: var(--arena-highlight-soft), var(--_ar-tag-glow);
+  }
+
+  /* Нейтральная заливка палитры (--bg-strong-950) — белая на тёмной схеме; приглушаем */
+  :where(.vl-tag)[data-color='neutral'][data-variant='filled'] {
+    --_ar-tag-bg: var(--bg-surface-800);
+    --_ar-tag-fg: var(--text-white-0);
+  }
+
+  :where(.vl-tag)[data-color='neutral']:is([data-variant='gray'], [data-variant='light']) {
+    --_ar-tag-border: var(--stroke-soft-200);
+  }
+
+  /* Наведение и нажатие кликабельного тега с палитрой */
+  :where(.vl-tag):where([data-color], [data-custom-color])[data-interactive]:not(
+      [data-disabled]
+    ):hover {
+    --_ar-tag-bg: var(--pal-bg-active);
+    --_ar-tag-fg: color-mix(in srgb, var(--_ar-tag-text) 85%, var(--text-strong-950));
+  }
+
+  :where(.vl-tag)[data-variant='filled']:where(
+      [data-color],
+      [data-custom-color]
+    )[data-interactive]:not([data-disabled]):hover {
+    --_ar-tag-bg: var(--pal-hover);
+    --_ar-tag-fg: var(--_ar-tag-on);
+  }
+
+  /* ---------- Disabled — вместо полупрозрачности corporate тусклая плашка с читаемым
+     текстом; вес (0,2,0) — выше вариантов палитры, правило последнее ---------- */
+
+  :where(.vl-tag)[data-disabled] {
+    opacity: 1;
+  }
+
+  :where(.vl-tag)[data-disabled][data-variant] {
+    --_ar-tag-bg: var(--arena-field-bg-disabled);
+    --_ar-tag-border: transparent;
+    --_ar-tag-fg: var(--text-soft-400);
+    --_ar-tag-shadow: none;
+  }
+
+  /* ---------- Части ---------- */
+
+  .vl-tag__main-hit:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+    box-shadow: var(--arena-focus-ring);
+  }
+
+  /* corporate приглушает подпись до 60% цвета — на плотном тинте это < 4,5:1. В арене подпись
+     того же цвета, а отличается начертанием: 400 против 600 у основной */
+  .vl-tag__sublabel {
+    font-weight: 400;
+    color: inherit;
+  }
+
+  /* Кнопка «убрать» — круг; подложка наведения (::before corporate) — тоже круг */
+  .vl-tag__dismiss {
+    border-radius: var(--radius-full);
+  }
+
+  .vl-tag__dismiss:hover {
+    --_tag-dismiss-bg: color-mix(in srgb, currentColor 16%, transparent);
+  }
+
+  /* Ореол у «убрать» в арене не нужен — хватает подложки */
+  .vl-tag__dismiss::after {
+    content: none;
+  }
+
+  .vl-tag__dismiss:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: -2px;
+  }
+}

@@ -1,0 +1,274 @@
+/* table: вид arena поверх corporate/components/table.css (макет: Data.dc.html, «Table»;
+   светлая схема — Dark.dc.html, «Вкладки и таблица»). Раскладка — corporate.
+
+   Таблица — сплошная поверхность контента (не стекло): панель --bg-white-0, волосок, мягкая
+   глубокая тень, радиус карточки 20px. Шапка — капс Unbounded на чуть приподнятом фоне,
+   строки выше и крупнее (52px, Onest 15px), цифры табличные. Наведение — нейтральный тинт,
+   выбранная строка — лаймовый тинт и полоса 3px у первой ячейки. Пагинация — пилюли на
+   «треке», текущая страница — лайм с тёмным текстом.
+
+   Фоны шапки и наведения — непрозрачные (color-mix поверх панели): sticky-ячейки должны
+   закрывать прокручиваемый под ними контент. */
+:where([data-vl-skin~='arena']) {
+  .vl-table {
+    /* Шапка: 3% текста поверх панели — #161a24 в тёмной, #f7f7f8 в светлой */
+    --_arena-table-head-bg: color-mix(in srgb, var(--text-strong-950) 3%, var(--bg-white-0));
+    /* Наведение на строку: 4% текста поверх панели */
+    --_arena-table-hover-bg: color-mix(in srgb, var(--text-strong-950) 4%, var(--bg-white-0));
+  }
+
+  .vl-table__root {
+    border-color: var(--stroke-soft-200);
+    border-radius: var(--radius-20);
+    background-color: var(--bg-white-0);
+    box-shadow: var(--arena-shadow-surface);
+  }
+
+  /* Прокручиваемая область фокусируется с клавиатуры — кольцо внутри (снаружи режет overflow) */
+  :where(.vl-table__root)[data-scroll]:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: calc(-1 * (var(--arena-focus-width) + var(--arena-focus-offset)));
+    box-shadow:
+      var(--arena-shadow-surface),
+      inset 0 0 0 var(--arena-focus-offset) var(--arena-focus-contour);
+  }
+
+  .vl-table__table {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- Шапка ---------- */
+
+  .vl-table__th,
+  .vl-table__th[data-sticky-left] {
+    background-color: var(--_arena-table-head-bg);
+  }
+
+  /* Высота 44px: поля 12px + строка 20px */
+  .vl-table__th {
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--stroke-soft-200);
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 20px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-sub-600);
+  }
+
+  :where(.vl-table__th)[data-sortable] {
+    padding: 0;
+  }
+
+  :where(.vl-table__th)[data-drag-over] {
+    box-shadow: inset 3px 0 0 0 var(--primary-dark);
+  }
+
+  /* Перетаскиваемая шапка без сортировки фокусируется сама (tabIndex) */
+  :where(.vl-table__th)[data-reorderable]:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: calc(-1 * (var(--arena-focus-width) + var(--arena-focus-offset)));
+    box-shadow: inset 0 0 0 var(--arena-focus-offset) var(--arena-focus-contour);
+  }
+
+  .vl-table__sort-btn {
+    gap: 6px;
+    padding: 12px 20px;
+    text-transform: inherit;
+    letter-spacing: inherit;
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-table__sort-btn:hover {
+    background-color: var(--arena-control-bg);
+    color: var(--text-strong-950);
+  }
+
+  .vl-table__sort-btn:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: calc(-1 * (var(--arena-focus-width) + var(--arena-focus-offset)));
+    box-shadow: inset 0 0 0 var(--arena-focus-offset) var(--arena-focus-contour);
+  }
+
+  /* Колонка, по которой отсортировано: подпись в полную силу, стрелка — акцентом */
+  .vl-table__sort-btn:has(.vl-table__sort-icon[data-active]) {
+    color: var(--text-strong-950);
+  }
+
+  .vl-table__sort-icon {
+    color: var(--text-soft-400);
+  }
+
+  :where(.vl-table__sort-icon)[data-active] {
+    color: var(--primary-dark);
+  }
+
+  /* ---------- Строки ---------- */
+
+  .vl-table__tr {
+    transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-table__tr:not(:last-child) td {
+    border-bottom-color: var(--stroke-soft-200);
+  }
+
+  .vl-table__td {
+    padding: 16px 20px;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 20px;
+    letter-spacing: 0;
+    color: var(--text-sub-600);
+  }
+
+  :where(.vl-table__td)[data-strong] {
+    color: var(--text-strong-950);
+    font-weight: 600;
+  }
+
+  :where(.vl-table__th, .vl-table__td)[data-sticky-left-last] {
+    box-shadow: inset -1px 0 0 0 var(--stroke-soft-200);
+  }
+
+  /* Наведение — нейтральный тинт; sticky-ячейки получают тот же непрозрачный цвет */
+  :where(.vl-table__tr)[data-clickable]:hover,
+  :where(.vl-table__tr)[data-clickable]:hover
+    :where(.vl-table__th, .vl-table__td)[data-sticky-left] {
+    background-color: var(--_arena-table-hover-bg);
+  }
+
+  /* Выбранная строка — лаймовый тинт (как в макете), полоса 3px у первой ячейки.
+     Полоса — --primary-dark: лайм в тёмной схеме, олива в светлой (лайм на светлом не виден). */
+  :where(.vl-table__tr)[data-active] {
+    background-color: var(--primary-alpha-10);
+  }
+
+  :where(.vl-table__tr)[data-active] > :first-child {
+    box-shadow: inset 3px 0 0 0 var(--primary-dark);
+  }
+
+  :where(.vl-table__tr)[data-active] > :first-child[data-sticky-left-last] {
+    box-shadow:
+      inset 3px 0 0 0 var(--primary-dark),
+      inset -1px 0 0 0 var(--stroke-soft-200);
+  }
+
+  :where(.vl-table__tr)[data-active] :where(.vl-table__td)[data-strong] {
+    color: var(--text-strong-950);
+  }
+
+  /* ---------- Пагинация ---------- */
+
+  .vl-table__pagination-info {
+    font-size: 14px;
+    letter-spacing: 0;
+    color: var(--text-sub-600);
+  }
+
+  /* Кнопки страниц — пилюли на общем «треке» (как сегмент-контрол) */
+  .vl-table__btn-group {
+    gap: 2px;
+    padding: 3px;
+    border: 0;
+    border-radius: var(--radius-full);
+    overflow: visible;
+    background-color: var(--arena-control-bg);
+    box-shadow: inset 0 0 0 1px var(--stroke-soft-200);
+  }
+
+  .vl-table__page-btn,
+  .vl-table__ellipsis {
+    border-right: 0;
+  }
+
+  .vl-table__page-btn {
+    --halo-ring-color: transparent;
+    border-radius: var(--radius-full);
+    background-color: transparent;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-sub-600);
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-table__page-btn:hover:not(:disabled):not([data-active]) {
+    background: var(--arena-control-bg-hover);
+    color: var(--text-strong-950);
+  }
+
+  .vl-table__page-btn:active:not(:disabled):not([data-active]) {
+    transform: var(--arena-press-transform);
+  }
+
+  .vl-table__page-btn:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+    box-shadow: var(--arena-focus-ring);
+  }
+
+  .vl-table__page-btn:disabled {
+    opacity: 1;
+    color: var(--text-disabled-300);
+    cursor: not-allowed;
+  }
+
+  /* Текущая страница — лайм, текст на лайме всегда тёмный */
+  :where(.vl-table__page-btn)[data-active] {
+    background-color: var(--primary-base);
+    color: var(--static-black);
+    font-weight: 700;
+    box-shadow:
+      var(--arena-highlight),
+      0 0 14px color-mix(in srgb, var(--primary-base) var(--arena-glow-strength), transparent);
+  }
+
+  :where(.vl-table__page-btn)[data-active]:focus-visible {
+    box-shadow: var(--arena-highlight), var(--arena-focus-ring);
+  }
+
+  .vl-table__ellipsis {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-soft-400);
+  }
+
+  /* Выбор размера страницы — «утопленное» поле-пилюля */
+  .vl-table__compact-select {
+    padding: 6px 8px 6px 14px;
+    border: 0;
+    border-radius: var(--radius-full);
+    background-color: var(--arena-field-bg);
+    box-shadow:
+      inset 0 0 0 1px var(--arena-field-border),
+      var(--arena-field-inset);
+    font-size: 14px;
+    color: var(--text-strong-950);
+    transition: box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-table__compact-select:hover {
+    background: var(--arena-field-bg);
+    box-shadow:
+      inset 0 0 0 1px var(--arena-field-border-hover),
+      var(--arena-field-inset);
+  }
+
+  .vl-table__compact-select:has(:focus-visible) {
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+    box-shadow:
+      inset 0 0 0 1px var(--arena-field-border-hover),
+      var(--arena-focus-ring);
+  }
+
+  .vl-table__compact-select svg {
+    color: var(--icon-sub-600);
+  }
+}

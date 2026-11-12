@@ -1,0 +1,77 @@
+/* checkbox-card: вид «арены» поверх corporate/components/checkbox-card.css — раскладка приходит
+   оттуда (макет: Selection.dc.html, «CheckboxCard»).
+
+   Карточка — приподнятая сплошная поверхность --arena-raised-bg (радиус 18) с кольцом
+   --arena-field-border; наведение — кольцо ярче. Выбрана — лаймовый тинт, лаймовая рамка
+   (в светлой схеме олива, ≥ 3:1 к белому) и мягкое лаймовое свечение. Заголовок — Unbounded 700.
+   Фокус с клавиатуры — кольцо вокруг всей карточки, у самого чекбокса второго нет. */
+:where([data-vl-skin~='arena']) {
+  .vl-checkbox-card {
+    --_ar-card-glow: 0 0 transparent;
+    --_ar-card-focus: 0 0 transparent;
+
+    border-color: var(--arena-field-border);
+    border-radius: var(--radius-16);
+    background-color: var(--arena-raised-bg);
+    box-shadow: var(--_ar-card-glow), var(--_ar-card-focus);
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      border-color var(--motion-duration-fast) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vl-checkbox-card {
+      transition: none;
+    }
+  }
+
+  /* Наведение на невыбранную — тот же селектор, что у corporate */
+  .vl-checkbox-card:hover:not(:has(input:checked)):not(:has(input:disabled)) {
+    border-color: var(--arena-field-border-hover);
+    background-color: var(--arena-raised-bg);
+  }
+
+  .vl-checkbox-card:has(input:checked):not(:has(input:disabled)) {
+    --_ar-card-glow: 0 0 26px var(--shadow-primary-4);
+    border-color: var(--primary-dark);
+    background-color: var(--primary-alpha-10);
+  }
+
+  .vl-checkbox-card:hover:has(input:checked):not(:has(input:disabled)) {
+    background-color: var(--primary-alpha-16);
+  }
+
+  .vl-checkbox-card:has(input:focus-visible) {
+    --_ar-card-focus: var(--arena-focus-ring);
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+  }
+
+  .vl-checkbox-card .vl-base-checkbox:focus-visible {
+    --_ar-cb-focus: 0 0 transparent;
+    outline: none;
+  }
+
+  .vl-checkbox-card:has(input:disabled) {
+    --_checkbox-disabled-color: var(--text-soft-400);
+    border-color: var(--stroke-soft-200);
+    background-color: var(--arena-field-bg-disabled);
+  }
+
+  /* Заголовок — Unbounded, как «ТАРИФ PRO» в макете */
+  .vl-checkbox-card .vl-checkbox-label-row__label-text {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .vl-checkbox-card__card-content {
+    gap: 6px;
+  }
+
+  .vl-checkbox-card__prefix {
+    border-radius: var(--radius-8);
+  }
+}

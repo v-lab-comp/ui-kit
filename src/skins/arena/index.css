@@ -1,0 +1,84 @@
+/*
+ * Скин arena. Расширяет corporate: этот файл подключается ПОСЛЕ corporate.css — у правил
+ * обоих скинов одинаковый нулевой вес префикса :where([data-vl-skin~='…']), и при равной
+ * специфичности побеждает то, что идёт позже.
+ *
+ * Сначала токены (порядок между ними не важен; запасной вид стекла — в конце tokens.css),
+ * затем перекраска ореола corporate, затем компоненты — в том же порядке, что в
+ * corporate/index.css, чтобы правила arena с равным весом разрешались так же, как у corporate.
+ */
+@import './tokens.css';
+@import './shadows.css';
+@import './palettes.css';
+@import './components/base-input.variables.css';
+@import './halo.css';
+@import './components/accordion.css';
+@import './components/app-switcher.css';
+@import './components/select-input.css';
+@import './components/search-input.css';
+@import './components/input-field.css';
+@import './components/base-input.css';
+@import './components/avatar.css';
+@import './components/avatar-card.css';
+@import './components/avatar-group.css';
+@import './components/badge.css';
+@import './components/base-checkbox.css';
+@import './components/breadcrumb-item.css';
+@import './components/breadcrumbs.css';
+@import './components/button.css';
+@import './components/button-group.css';
+@import './components/calendar.css';
+@import './components/calendar-header.css';
+@import './components/calendar-grid.css';
+@import './components/calendar-day.css';
+@import './components/checkbox-label-row.css';
+@import './components/checkbox-card.css';
+@import './components/checkbox-field.css';
+@import './components/comment-rich-input.css';
+@import './components/comments-section.css';
+@import './components/typography.css';
+@import './components/ui-kit-root.css';
+@import './components/modal.css';
+@import './components/confirm-modal.css';
+@import './components/modal-header.css';
+@import './components/modal-body.css';
+@import './components/modal-footer.css';
+@import './components/popover.css';
+@import './components/content-divider.css';
+@import './components/drawer.css';
+@import './components/drawer-body.css';
+@import './components/drawer-footer.css';
+@import './components/drawer-header.css';
+@import './components/email-input.css';
+@import './components/file-upload.css';
+@import './components/layout-root.css';
+@import './components/modal-footer-slots.css';
+@import './components/modal-status.css';
+@import './components/page-header.css';
+@import './components/page-header-demo.css';
+@import './components/password-input.css';
+@import './components/rich-input.css';
+@import './components/segmented-control.css';
+@import './components/share-link-input.css';
+@import './components/sidebar.css';
+@import './components/sidebar-card.css';
+@import './components/sidebar-footer.css';
+@import './components/sidebar-header.css';
+@import './components/sidebar-header-card.css';
+@import './components/sidebar-inset.css';
+@import './components/sidebar-item.css';
+@import './components/site-input.css';
+@import './components/table.css';
+@import './components/tabs.css';
+@import './components/tag.css';
+@import './components/tag-input.css';
+@import './components/text-input.css';
+@import './components/toast.css';
+@import './components/toast-provider.css';
+@import './components/toggle-button.css';
+@import './components/toggle-group.css';
+@import './components/tooltip.css';
+@import './components/phone-input.css';
+@import './components/date-input.css';
+@import './components/pdf-preview.css';
+@import './components/sidebar-user-profile-card.css';

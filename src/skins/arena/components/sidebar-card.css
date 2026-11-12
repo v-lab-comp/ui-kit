@@ -1,0 +1,83 @@
+/* sidebar-card: вид arena поверх corporate/components/sidebar-card.css
+   (макет: Layout.dc.html, переключатель «V-LAB / Студия» и профиль в панели).
+
+   Карточка в стеклянной панели — мягкая «лунка»: прозрачный тинт контрола, радиус 16px,
+   у bordered-варианта волосок. Высота 56px вместо 64 (поля 8px вокруг слота 40px, как
+   .sw в макете). Заголовок — Unbounded (марка / название рабочего пространства),
+   подпись — Onest.
+
+   Свёрнутая панель arena уже колонки на два зазора (sidebar.css): карточка 64×64 corporate
+   в неё не входит — в свёрнутом виде она 48×48 (слот 40px + поля 4px). */
+:where([data-vl-skin~='arena']) {
+  .vl-sidebar-card {
+    min-height: 56px;
+    padding: 8px 12px 8px 8px;
+    border-color: var(--stroke-soft-200);
+    border-radius: var(--radius-16);
+    background: var(--arena-control-bg);
+    color: var(--text-strong-950);
+    font-family: var(--font-sans);
+    outline: 0 solid transparent;
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      border-color var(--motion-duration-fast) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-sidebar-card:hover {
+    background: var(--arena-control-bg-hover);
+    border-color: var(--stroke-sub-300);
+  }
+
+  :where(.vl-sidebar-card)[data-unbordered]:hover {
+    border-color: transparent;
+  }
+
+  .vl-sidebar-card:active {
+    transform: var(--arena-press-transform);
+  }
+
+  .vl-sidebar-card:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+    box-shadow: var(--arena-focus-ring);
+  }
+
+  :where(.vl-sidebar-card)[data-collapsed] {
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
+    min-height: 48px;
+    padding: 4px;
+  }
+
+  .vl-sidebar-card__content {
+    gap: 4px;
+  }
+
+  .vl-sidebar-card__title {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 16px;
+    letter-spacing: 0.04em;
+    color: var(--text-strong-950);
+  }
+
+  .vl-sidebar-card__subtitle {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 16px;
+    color: var(--text-sub-600);
+  }
+
+  .vl-sidebar-card__right {
+    color: var(--icon-sub-600);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vl-sidebar-card:active {
+      transform: none;
+    }
+  }
+}

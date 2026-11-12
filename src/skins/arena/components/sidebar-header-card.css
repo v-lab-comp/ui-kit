@@ -1,0 +1,93 @@
+/* sidebar-header-card: вид arena поверх corporate/components/sidebar-header-card.css
+   (макет: Layout.dc.html, переключатель «V-LAB» и выпадающая панель приложений).
+
+   Кнопка-стрелка — без рамки и плашки: просто шеврон цвета иконки (как в макете).
+   Выпадашка — плавающий слой, поэтому стекло thick (много текста), радиус 18px, поля 6px;
+   пункты — пилюли 14px (концентрично), наведение / фокус — тинт контрола, выбранный
+   (aria-checked) — лаймовый тинт с волоском и светлым лаймовым текстом. */
+:where([data-vl-skin~='arena']) {
+  .vl-sidebar-header-card__right-button {
+    border: 0;
+    border-radius: var(--radius-full);
+    background: transparent;
+    color: var(--icon-sub-600);
+    box-shadow: none;
+  }
+
+  .vl-sidebar-header-card__right-button svg {
+    transition: transform var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-sidebar-header-card__dropdown {
+    isolation: isolate;
+    margin-top: 8px;
+    padding: 6px;
+    border: 0;
+    border-radius: var(--radius-16);
+    background: var(--arena-glass-thick-bg);
+    -webkit-backdrop-filter: var(--arena-glass-thick-filter);
+    backdrop-filter: var(--arena-glass-thick-filter);
+    /* Кромка — внутренний волосок, а не градиентный ::before из README: выпадашка
+       прокручивается (overflow-y: auto), и абсолютный блик уезжал бы вместе со списком */
+    box-shadow:
+      inset 0 0 0 1px var(--stroke-soft-200),
+      var(--arena-glass-shadow);
+    scrollbar-width: thin;
+    scrollbar-color: var(--stroke-sub-300) transparent;
+  }
+
+  .vl-sidebar-header-card__dropdown-item {
+    gap: 12px;
+    padding: 8px 12px 8px 8px;
+    border-radius: var(--radius-12);
+    color: var(--text-strong-950);
+    font-family: var(--font-sans);
+    letter-spacing: 0;
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-sidebar-header-card__dropdown-item:hover,
+  .vl-sidebar-header-card__dropdown-item:focus-visible {
+    background: var(--arena-control-bg-hover);
+  }
+
+  .vl-sidebar-header-card__dropdown-item[aria-checked='true'] {
+    background: var(--primary-alpha-10);
+    color: var(--arena-accent-text);
+    box-shadow: inset 0 0 0 1px var(--primary-alpha-16);
+  }
+
+  .vl-sidebar-header-card__dropdown-item[aria-checked='true']:hover {
+    background: var(--primary-alpha-16);
+  }
+
+  /* Прокручиваемый список (overflow-y: auto) режет внешний контур — кольцо внутри */
+  .vl-sidebar-header-card__dropdown-item:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: calc(-1 * (var(--arena-focus-width) + var(--arena-focus-offset)));
+    box-shadow: inset 0 0 0 var(--arena-focus-offset) var(--arena-focus-contour);
+  }
+
+  .vl-sidebar-header-card__dropdown-item-icon {
+    border-radius: var(--radius-12);
+  }
+
+  .vl-sidebar-header-card__dropdown-item-label {
+    font-size: 15px;
+    font-weight: 600;
+    color: inherit;
+  }
+
+  .vl-sidebar-header-card__dropdown-item-subtitle {
+    font-size: 13px;
+    color: var(--text-sub-600);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vl-sidebar-header-card__right-button svg {
+      transition: none;
+    }
+  }
+}

@@ -1,0 +1,140 @@
+/* pdf-preview: вид arena поверх corporate/components/pdf-preview.css
+   (макет: Content.dc.html, «PdfPreview»).
+
+   Просмотрщик — сплошная поверхность-«сцена» (фон страницы, волосок, мягкая глубокая тень,
+   радиус 20px); страница лежит на ней с глубокой тенью плавающего слоя. Элементы управления
+   парят над сценой: ярлык с именем файла и счётчик страниц — стеклянные пилюли (thick: на них
+   текст, а под счётчиком может оказаться белая страница), кнопки листания — круглые «шайбы».
+   corporate прибивает ярлык имени к углу (вкладка с рамкой) — в arena он отходит от краёв
+   на 12px, как панель инструментов в макете. */
+:where([data-vl-skin~='arena']) {
+  .vl-pdf-preview {
+    border: 0;
+    border-radius: var(--radius-20);
+    background-color: var(--bg-weak-50);
+    box-shadow:
+      inset 0 0 0 1px var(--stroke-soft-200),
+      var(--arena-shadow-surface);
+  }
+
+  /* ---------- Листание ---------- */
+
+  .vl-pdf-preview__nav-button {
+    --halo-ring-color: transparent;
+    border-radius: var(--radius-full);
+    background-color: var(--arena-raised-bg);
+    color: var(--icon-strong-950);
+    box-shadow:
+      inset 0 0 0 1px var(--stroke-soft-200),
+      var(--shadow-regular-x-small);
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-pdf-preview__nav-button:hover:not(:disabled) {
+    background-color: var(--arena-raised-bg);
+    box-shadow:
+      inset 0 0 0 1px var(--stroke-sub-300),
+      var(--shadow-regular-x-small);
+  }
+
+  .vl-pdf-preview__nav-button:active:not(:disabled) {
+    transform: var(--arena-press-transform);
+    box-shadow:
+      inset 0 0 0 1px var(--stroke-sub-300),
+      var(--arena-pressed-shadow);
+  }
+
+  .vl-pdf-preview__nav-button:disabled {
+    opacity: 1;
+    background-color: transparent;
+    color: var(--icon-disabled-300);
+    box-shadow: inset 0 0 0 1px var(--stroke-soft-200);
+    cursor: not-allowed;
+  }
+
+  .vl-pdf-preview__nav-button:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+    box-shadow:
+      inset 0 0 0 1px var(--stroke-sub-300),
+      var(--arena-focus-ring);
+  }
+
+  /* ---------- Страница ---------- */
+
+  .vl-pdf-preview__canvas {
+    border-radius: var(--radius-6);
+    background-color: var(--static-white);
+    box-shadow: var(--arena-shadow-float);
+  }
+
+  /* ---------- Плавающие пилюли: имя файла и счётчик ---------- */
+
+  .vl-pdf-preview__filename-badge,
+  .vl-pdf-preview__page-counter {
+    isolation: isolate;
+    border: 0;
+    border-radius: var(--radius-full);
+    background-color: var(--arena-glass-thick-bg);
+    -webkit-backdrop-filter: var(--arena-glass-thick-filter);
+    backdrop-filter: var(--arena-glass-thick-filter);
+    box-shadow:
+      inset 0 0 0 1px var(--stroke-soft-200),
+      var(--arena-glass-shadow);
+  }
+
+  .vl-pdf-preview__filename-badge {
+    top: 12px;
+    right: 12px;
+    max-width: calc(100% - 24px);
+    gap: 8px;
+    padding: 8px 14px 8px 10px;
+    color: var(--text-strong-950);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0;
+    transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-pdf-preview__filename-badge:hover {
+    background-color: var(--arena-glass-solid-bg);
+  }
+
+  .vl-pdf-preview__filename-badge:active {
+    transform: var(--arena-press-transform);
+  }
+
+  .vl-pdf-preview__filename-badge:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+    box-shadow:
+      inset 0 0 0 1px var(--stroke-soft-200),
+      var(--arena-focus-ring);
+  }
+
+  .vl-pdf-preview__filename-badge-icon {
+    color: var(--primary-dark);
+  }
+
+  .vl-pdf-preview__page-counter {
+    bottom: 14px;
+    padding: 6px 12px;
+    color: var(--text-strong-950);
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 16px;
+    letter-spacing: 0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vl-pdf-preview__nav-button:active:not(:disabled),
+    .vl-pdf-preview__filename-badge:active {
+      transform: none;
+    }
+  }
+}

@@ -1,0 +1,51 @@
+/* button-group: вид «арены» поверх corporate/components/button-group.css (макет: Buttons.dc.html,
+   «ButtonGroup»).
+
+   Группа — одна пилюля: приподнятый лоток --bg-soft-200 с волоском и бликом по верхней кромке.
+   Кнопки внутри теряют свои рамки (кроме filled), между ними — волосок; крайние кнопки
+   повторяют скругление пилюли. Наведение и нажатие — тинт и сжатие самой кнопки (button.css). */
+:where([data-vl-skin~='arena']) {
+  .vl-button-group {
+    border-radius: var(--radius-full);
+    background-color: var(--bg-soft-200);
+    box-shadow:
+      inset 0 0 0 1px var(--stroke-soft-200),
+      var(--arena-highlight-soft);
+  }
+
+  /* Крайние кнопки — половинки пилюли (corporate скругляет их на --radius-8) */
+  .vl-button-group > *:first-child {
+    --btn-radius: var(--radius-full) 0px 0px var(--radius-full);
+  }
+
+  .vl-button-group > *:last-child {
+    --btn-radius: 0px var(--radius-full) var(--radius-full) 0px;
+  }
+
+  .vl-button-group > *:first-child:last-child {
+    --btn-radius: var(--radius-full);
+  }
+
+  /* Рамки рисует группа — схлопывать соседние границы не нужно */
+  .vl-button-group > * + * {
+    margin-left: 0;
+  }
+
+  /* Вес (0,3,0) и файл идёт после button.css: перекрывает рамку stroke во всех состояниях
+     (:hover / :active у stroke — тоже (0,3,0)) */
+  .vl-button-group > .vl-button:not([data-variant='filled']) {
+    --_ar-btn-shadow: 0 0 transparent;
+    border-color: transparent;
+  }
+
+  /* Перегородка между соседями — волоском внутри левого края */
+  .vl-button-group
+    > .vl-button:not([data-variant='filled'])
+    + .vl-button:not([data-variant='filled']) {
+    --_ar-btn-shadow: inset 1px 0 0 var(--stroke-soft-200);
+  }
+
+  .vl-button-group > .vl-button:disabled {
+    background-color: transparent;
+  }
+}

@@ -1,0 +1,134 @@
+/**
+ * Тени скина arena: мягкие, глубокие, тёмные — поверх теней corporate.
+ *
+ * Имена те же, что в corporate/shadows.css, поэтому компоненты, которые читают `--shadow-*`,
+ * получают тень «арены» без правки их CSS. Внутренние тени (`*-inner`) — не нижняя кромка,
+ * как у corporate, а верхний блик в 1px (свет падает сверху).
+ *
+ * В тёмной схеме тень — чёрная и плотная (до 50%), в светлой — чернильная и лёгкая.
+ * В отличие от corporate, тени объявлены на обеих схемах: в тёмной светлая тень corporate
+ * на фоне #07090f не видна. Кольца-волоски (`0 0 0 1px …`) берут --stroke-soft-200 —
+ * значение `var()` вычисляется там, где объявлено, поэтому блоки повторяют ветки tokens.css.
+ *
+ * Свои тени arena:
+ *   --arena-shadow-surface  сплошная поверхность контента (карточка, таблица, панель)
+ *   --arena-shadow-float    плавающий слой (под стеклом: модалка, поповер, тост, меню)
+ *   --arena-glass-shadow    готовый box-shadow стекла: блик сверху + плавающая тень
+ */
+
+/* ============================================================
+   Светлая схема
+   ============================================================ */
+[data-vl-skin~='arena'],
+:where([data-vl-skin~='arena']) [data-theme='light'] {
+  --arena-shadow-surface: 0 1px 2px rgba(11, 18, 32, 0.05), 0 10px 28px rgba(11, 18, 32, 0.07);
+  --arena-shadow-float: 0 1px 2px rgba(11, 18, 32, 0.06), 0 16px 40px rgba(11, 18, 32, 0.16);
+
+  /* ----- Regular Shadow ----- */
+  --shadow-regular-x-small: 0 1px 2px 0 rgba(11, 18, 32, 0.04);
+  --shadow-regular-small: 0 2px 8px 0 rgba(11, 18, 32, 0.08);
+  --shadow-regular-medium: 0 10px 28px -6px rgba(11, 18, 32, 0.12);
+  --shadow-regular-x-small-soft: 0 1px 4px 0 rgba(11, 18, 32, 0.06);
+  --shadow-dropdown: 0 1px 2px rgba(11, 18, 32, 0.06), 0 16px 40px rgba(11, 18, 32, 0.16);
+
+  /* ----- Custom Shadow ----- */
+  --shadow-x-small: 0 0 0 1px var(--stroke-soft-200), 0 1px 2px 0 rgba(11, 18, 32, 0.05);
+  --shadow-x-small-inner: inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
+  --shadow-small: 0 0 0 1px var(--stroke-soft-200), 0 4px 12px 0 rgba(11, 18, 32, 0.08);
+  --shadow-small-inner: inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
+  --shadow-medium:
+    0 0 0 1px var(--stroke-soft-200), 0 1px 2px rgba(11, 18, 32, 0.05),
+    0 10px 28px rgba(11, 18, 32, 0.07);
+  --shadow-medium-inner: inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
+  --shadow-large:
+    0 0 0 1px var(--stroke-soft-200), 0 1px 2px rgba(11, 18, 32, 0.06),
+    0 22px 56px rgba(11, 18, 32, 0.16);
+  --shadow-large-inner: inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
+
+  /* ----- Colored shadow base: цвет свечения ----- */
+  --shadow-gray-4: rgba(11, 18, 32, 0.04);
+  --shadow-gray-6: rgba(11, 18, 32, 0.06);
+  --shadow-gray-8: rgba(11, 18, 32, 0.08);
+  --shadow-primary-4: rgba(120, 160, 0, 0.18);
+  --shadow-primary-6: rgba(120, 160, 0, 0.24);
+  --shadow-blue-4: rgba(58, 99, 240, 0.18);
+  --shadow-purple-4: rgba(136, 71, 255, 0.18);
+  --shadow-orange-4: rgba(245, 165, 36, 0.24);
+  --shadow-green-4: rgba(120, 160, 0, 0.18);
+
+  /* ----- Card Shadow ----- */
+  --shadow-card-large:
+    0 0 0 1px var(--stroke-soft-200), 0 1px 2px rgba(11, 18, 32, 0.05),
+    0 10px 28px rgba(11, 18, 32, 0.07);
+  --shadow-card-large-inner: inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
+}
+
+/* ============================================================
+   Тёмная схема — те же ветки, что у tokens.css; блок идёт позже и перекрывает светлый
+   ============================================================ */
+:where([data-vl-skin~='arena'])[data-vl-scheme='dark'],
+:where([data-vl-skin~='arena'])[data-theme='dark'],
+:where([data-vl-skin~='arena']) [data-theme='dark'] {
+  /* Макет: .card / .surface — волосок + «0 8px 24px» / «0 14px 34px»; .glass — 0 18px 44px */
+  --arena-shadow-surface: 0 1px 0 rgba(0, 0, 0, 0.5), 0 14px 34px rgba(0, 0, 0, 0.38);
+  --arena-shadow-float: 0 1px 0 rgba(0, 0, 0, 0.45), 0 18px 44px rgba(0, 0, 0, 0.5);
+
+  /* ----- Regular Shadow ----- */
+  --shadow-regular-x-small: 0 1px 0 0 rgba(0, 0, 0, 0.5);
+  --shadow-regular-small: 0 4px 12px 0 rgba(0, 0, 0, 0.35);
+  --shadow-regular-medium: 0 14px 34px -6px rgba(0, 0, 0, 0.45);
+  --shadow-regular-x-small-soft: 0 1px 4px 0 rgba(0, 0, 0, 0.3);
+  --shadow-dropdown: 0 1px 0 rgba(0, 0, 0, 0.45), 0 18px 44px rgba(0, 0, 0, 0.5);
+
+  /* ----- Custom Shadow ----- */
+  --shadow-x-small: 0 0 0 1px var(--stroke-soft-200), 0 1px 0 0 rgba(0, 0, 0, 0.5);
+  --shadow-x-small-inner: inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+  --shadow-small: 0 0 0 1px var(--stroke-soft-200), 0 8px 24px 0 rgba(0, 0, 0, 0.35);
+  --shadow-small-inner: inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+  --shadow-medium:
+    0 0 0 1px var(--stroke-soft-200), 0 1px 0 rgba(0, 0, 0, 0.5), 0 14px 34px rgba(0, 0, 0, 0.38);
+  --shadow-medium-inner: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  --shadow-large:
+    0 0 0 1px var(--stroke-soft-200), 0 1px 0 rgba(0, 0, 0, 0.45), 0 22px 56px rgba(0, 0, 0, 0.5);
+  --shadow-large-inner: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+
+  /* ----- Colored shadow base: цвет свечения ----- */
+  --shadow-gray-4: rgba(0, 0, 0, 0.3);
+  --shadow-gray-6: rgba(0, 0, 0, 0.38);
+  --shadow-gray-8: rgba(0, 0, 0, 0.45);
+  --shadow-primary-4: rgba(198, 244, 50, 0.25);
+  --shadow-primary-6: rgba(198, 244, 50, 0.35);
+  --shadow-blue-4: rgba(58, 99, 240, 0.3);
+  --shadow-purple-4: rgba(136, 71, 255, 0.32);
+  --shadow-orange-4: rgba(245, 165, 36, 0.28);
+  --shadow-green-4: rgba(155, 212, 28, 0.28);
+
+  /* ----- Card Shadow ----- */
+  --shadow-card-large:
+    0 0 0 1px var(--stroke-soft-200), 0 1px 0 rgba(0, 0, 0, 0.5), 0 14px 34px rgba(0, 0, 0, 0.38);
+  --shadow-card-large-inner: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+}
+
+/* ============================================================
+   Составные тени — собраны из цветов выше, объявлены на всех ветках схемы
+   ============================================================ */
+[data-vl-skin~='arena'],
+:where([data-vl-skin~='arena']) [data-theme='light'],
+:where([data-vl-skin~='arena']) [data-theme='dark'] {
+  /* Готовый box-shadow стекла: box-shadow: var(--arena-glass-shadow); */
+  --arena-glass-shadow: var(--arena-glass-highlight), var(--arena-shadow-float);
+
+  /* ----- Colored Shadows: мягкое свечение цветом вместо многослойной тени ----- */
+  --shadow-colored-gray: 0 8px 24px var(--shadow-gray-4);
+  --shadow-colored-gray-inner: inset 0 1px 0 0 var(--shadow-gray-6);
+  --shadow-colored-primary: 0 0 24px var(--shadow-primary-4);
+  --shadow-colored-primary-inner: inset 0 0 0 1px var(--shadow-primary-4);
+  --shadow-colored-blue: 0 0 24px var(--shadow-blue-4);
+  --shadow-colored-blue-inner: inset 0 0 0 1px var(--shadow-blue-4);
+  --shadow-colored-purple: 0 0 24px var(--shadow-purple-4);
+  --shadow-colored-purple-inner: inset 0 0 0 1px var(--shadow-purple-4);
+  --shadow-colored-orange: 0 0 24px var(--shadow-orange-4);
+  --shadow-colored-orange-inner: inset 0 0 0 1px var(--shadow-orange-4);
+  --shadow-colored-green: 0 0 24px var(--shadow-green-4);
+  --shadow-colored-green-inner: inset 0 0 0 1px var(--shadow-green-4);
+}

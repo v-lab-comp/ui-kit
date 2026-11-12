@@ -1,0 +1,84 @@
+/* segmented-control: вид «арены» поверх corporate/components/segmented-control.css — высоты и
+   движение ползунка приходят оттуда (макеты: Buttons.dc.html — тёмная схема, Dark.dc.html — светлая).
+
+   Лоток — утопленная пилюля (фон страницы --bg-weak-50, волосок, внутренняя тень поля).
+   Активный сегмент — приподнятая плашка с бликом по верхней кромке и мягкой тенью:
+   в тёмной схеме — --bg-sub-300 (#232a3a), в светлой — белая панель. Пункты — Onest 600,
+   невыбранные — вторичным текстом. */
+:where([data-vl-skin~='arena']) {
+  .vl-segmented-control {
+    /* Плашка светлой схемы */
+    --_ar-seg-thumb: var(--bg-white-0);
+
+    border-color: var(--stroke-soft-200);
+    border-radius: var(--radius-full);
+    background-color: var(--bg-weak-50);
+    box-shadow: var(--arena-field-inset);
+  }
+
+  /* Тёмная схема (корень или вложенный контейнер) — плашка светлее поверхности */
+  &[data-vl-scheme='dark'] .vl-segmented-control,
+  &[data-theme='dark'] .vl-segmented-control,
+  [data-theme='dark'] .vl-segmented-control {
+    --_ar-seg-thumb: var(--bg-sub-300);
+  }
+
+  /* Вложенный светлый контейнер внутри тёмного — снова белая плашка */
+  [data-theme='light'] .vl-segmented-control {
+    --_ar-seg-thumb: var(--bg-white-0);
+  }
+
+  .vl-segmented-control__thumb {
+    border-radius: var(--radius-full);
+    background-color: var(--_ar-seg-thumb);
+    box-shadow:
+      var(--arena-highlight-soft),
+      0 0 0 1px var(--stroke-soft-200),
+      var(--shadow-regular-small);
+  }
+
+  .vl-segmented-control__item {
+    padding: 5px 16px;
+    gap: 8px;
+    font-weight: 600;
+    letter-spacing: 0;
+    border-radius: var(--radius-full);
+    color: var(--text-sub-600);
+    transition: color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vl-segmented-control__thumb,
+    .vl-segmented-control__item {
+      transition: none;
+    }
+  }
+
+  .vl-segmented-control__item svg {
+    flex-shrink: 0;
+  }
+
+  .vl-segmented-control__item:hover:not(:disabled):not([data-selected='true']) {
+    color: var(--text-strong-950);
+  }
+
+  .vl-segmented-control__item[data-selected='true'] {
+    color: var(--text-strong-950);
+  }
+
+  .vl-segmented-control__item:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+    box-shadow: var(--arena-focus-ring);
+  }
+
+  :where(.vl-segmented-control)[data-size='small'] .vl-segmented-control__item {
+    padding: 3px 12px;
+    gap: 6px;
+  }
+
+  :where(.vl-segmented-control)[data-size='x-small'] .vl-segmented-control__item {
+    padding: 1px 10px;
+    gap: 4px;
+  }
+}

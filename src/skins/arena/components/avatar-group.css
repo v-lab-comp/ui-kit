@@ -1,0 +1,50 @@
+/* avatar-group: вид arena поверх corporate/components/avatar-group.css
+   (макет: Data.dc.html, «AvatarGroup»).
+
+   default — жетоны внахлёст: у каждого своё кольцо палитры (avatar.css), а вокруг кольца —
+   разделитель цветом фона под группой (--stroke-white-0, как у corporate), поэтому следующий
+   аватар «вырезает» себе место в предыдущем. Белая рамка corporate у элемента не нужна —
+   её роль играет тень.
+   compact — пилюля-поверхность; внутри мало места, поэтому кольцо палитры уходит внутрь
+   аватара (цвет его обводки), а разделитель — рамка элемента цветом пилюли. */
+:where([data-vl-skin~='arena']) {
+  .vl-avatar-group__item {
+    border: 0;
+  }
+
+  .vl-avatar-group__item > .vl-avatar {
+    box-shadow:
+      0 0 0 2px var(--_arena-avatar-ring),
+      0 0 0 5px var(--stroke-white-0);
+  }
+
+  /* ---------- Compact ---------- */
+
+  :where(.vl-avatar-group)[data-mode='compact'] {
+    background: var(--bg-white-0);
+    box-shadow:
+      inset 0 0 0 1px var(--stroke-soft-200),
+      var(--arena-shadow-surface);
+  }
+
+  :where(.vl-avatar-group)[data-compact-style='stroke'] {
+    border-color: var(--stroke-sub-300);
+  }
+
+  .vl-avatar-group__compact-item {
+    border-color: var(--bg-white-0);
+  }
+
+  .vl-avatar-group__compact-item > .vl-avatar {
+    border-color: var(--_arena-avatar-ring);
+    box-shadow: none;
+  }
+
+  .vl-avatar-group__overflow-text {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--text-sub-600);
+  }
+}

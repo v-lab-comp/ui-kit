@@ -1,0 +1,18 @@
+/* modal-footer: вид arena поверх corporate/components/modal-footer.css — раскладка приходит оттуда.
+   В окне футер лежит на стекле: фон прозрачный, сверху — волосок --stroke-soft-200 (как
+   разделители шторки в Overlays.dc.html). Вне окна (отдельный футер в документации)
+   остаётся сплошная поверхность --bg-white-0 из corporate. Текст слота слева — Onest. */
+:where([data-vl-skin~='arena']) {
+  .vl-modal-footer {
+    border-top-color: var(--stroke-soft-200);
+  }
+
+  .vl-modal__panel .vl-modal-footer {
+    background: transparent;
+  }
+
+  .vl-modal-footer__start {
+    font-family: var(--font-sans);
+    letter-spacing: 0;
+  }
+}

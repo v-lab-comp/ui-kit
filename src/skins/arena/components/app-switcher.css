@@ -1,0 +1,240 @@
+/* app-switcher: вид arena поверх corporate/components/app-switcher.css — раскладка приходит оттуда.
+   Макет: Layout.dc.html — переключатель «V-LAB / Студия» в боковой панели и меню приложений.
+
+   - Триггер — прозрачный «контрол» с волоском: при наведении плотнее, открытый — кольцо
+     сильнее и сетка акцентным цветом. Имя — Unbounded, описание — Onest вторичным цветом.
+   - Выпадашка — толстое стекло с бликом по кромке, радиус 24 (концентричен плиткам 14
+     при отступе 12).
+   - Промо — тёмно-синяя плашка с синим кольцом и свечением в углу (вместо переливающегося
+     градиента corporate); свой градиент приложения (--promo-gradient) по-прежнему главнее.
+   - Плитки приложений: наведение — «контрол»-подложка, активная — лаймовый тинт с кольцом
+     и подписью --arena-accent-text; иконка-инициал — с бликом и свечением своего цвета. */
+:where([data-vl-skin~='arena']) {
+  /* Кнопки шрифт не наследуют — задаём явно */
+  .vl-app-switcher,
+  .vl-app-switcher__trigger,
+  .vl-app-switcher__item {
+    font-family: var(--font-sans);
+  }
+
+  /* ─── Триггер ─── */
+
+  .vl-app-switcher__trigger {
+    border: 0;
+    border-radius: var(--radius-12);
+    background: var(--arena-control-bg);
+    box-shadow: inset 0 0 0 1px var(--stroke-soft-200);
+    color: var(--text-strong-950);
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-app-switcher__trigger:hover {
+    background: var(--arena-control-bg-hover);
+    box-shadow: inset 0 0 0 1px var(--stroke-sub-300);
+  }
+
+  .vl-app-switcher__trigger[aria-expanded='true'] {
+    background: var(--arena-control-bg-hover);
+    box-shadow: inset 0 0 0 1px var(--stroke-sub-300);
+  }
+
+  .vl-app-switcher__trigger:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+    box-shadow:
+      inset 0 0 0 1px var(--stroke-soft-200),
+      var(--arena-focus-ring);
+  }
+
+  .vl-app-switcher__trigger-labels {
+    gap: 4px;
+  }
+
+  .vl-app-switcher__trigger-name {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 0.04em;
+    color: var(--text-strong-950);
+  }
+
+  .vl-app-switcher__trigger-description {
+    font-size: 12px;
+    line-height: 1.1;
+    color: var(--text-sub-600);
+  }
+
+  .vl-app-switcher__trigger-divider {
+    background: var(--stroke-soft-200);
+  }
+
+  .vl-app-switcher__trigger-grid {
+    color: var(--icon-sub-600);
+    transition: color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  /* Подложку даёт весь триггер — у сетки своей не нужно */
+  .vl-app-switcher__trigger:hover .vl-app-switcher__trigger-grid {
+    background: transparent;
+    color: var(--icon-strong-950);
+  }
+
+  .vl-app-switcher__trigger[aria-expanded='true'] .vl-app-switcher__trigger-grid {
+    color: var(--primary-dark);
+  }
+
+  /* ─── Выпадашка — толстое стекло ─── */
+
+  .vl-app-switcher__dropdown {
+    isolation: isolate;
+    border: 0;
+    border-radius: var(--radius-24);
+    background: var(--arena-glass-thick-bg);
+    -webkit-backdrop-filter: var(--arena-glass-thick-filter);
+    backdrop-filter: var(--arena-glass-thick-filter);
+    box-shadow: var(--arena-glass-shadow);
+    color: var(--text-strong-950);
+  }
+
+  /* Блик по кромке: градиентная рамка 1px, середина вырезана маской */
+  .vl-app-switcher__dropdown::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-raised);
+    border-radius: inherit;
+    padding: var(--arena-rim-width);
+    background: var(--arena-rim);
+    -webkit-mask: var(--arena-rim-mask);
+    -webkit-mask-composite: xor;
+    mask: var(--arena-rim-mask);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* ─── Промо ─── */
+
+  .vl-app-switcher__promo {
+    padding: 14px 16px 16px;
+    border-radius: var(--radius-12);
+    background: var(
+      --promo-gradient,
+      radial-gradient(
+        circle at 100% 0,
+        color-mix(in srgb, var(--information-base) 50%, transparent),
+        transparent 62%
+      ),
+      var(--information-lighter)
+    );
+    background-size: auto;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--information-base) 36%, transparent);
+    animation: none;
+  }
+
+  .vl-app-switcher__promo-title {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--text-strong-950);
+  }
+
+  .vl-app-switcher__promo-subtitle {
+    margin-top: 4px;
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--information-dark);
+  }
+
+  /* ─── Плитки приложений ─── */
+
+  .vl-app-switcher__grid {
+    gap: 6px;
+  }
+
+  .vl-app-switcher__item {
+    padding: 12px 4px 10px;
+    border-radius: var(--radius-12);
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-app-switcher__item:hover:not(:disabled) {
+    background: var(--arena-control-bg-hover);
+  }
+
+  .vl-app-switcher__item[data-active='true'],
+  .vl-app-switcher__item[data-active='true']:hover:not(:disabled) {
+    background: var(--primary-alpha-10);
+    box-shadow: inset 0 0 0 1px var(--primary-alpha-16);
+  }
+
+  .vl-app-switcher__item:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: calc(-1 * var(--arena-focus-width));
+  }
+
+  .vl-app-switcher__item:disabled {
+    opacity: 0.5;
+  }
+
+  .vl-app-switcher__item-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-strong-950);
+  }
+
+  .vl-app-switcher__item[data-active='true'] .vl-app-switcher__item-label {
+    font-weight: 600;
+    color: var(--arena-accent-text);
+  }
+
+  .vl-app-switcher__item:disabled .vl-app-switcher__item-label {
+    color: var(--text-sub-600);
+  }
+
+  /* ─── Иконки ─── */
+
+  .vl-app-switcher__icon-initial {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--static-black);
+    box-shadow:
+      var(--arena-highlight-soft),
+      var(--arena-edge-bottom),
+      0 6px 18px color-mix(in srgb, var(--app-icon-color, var(--primary-base)) 32%, transparent);
+  }
+
+  .vl-app-switcher__active-dot {
+    border-color: var(--arena-glass-solid-bg);
+    background: var(--success-base);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--success-base) 60%, transparent);
+  }
+
+  .vl-app-switcher__badge {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--static-black);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--error-base) 40%, transparent);
+  }
+
+  .vl-app-switcher__soon-label {
+    font-family: var(--font-display);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vl-app-switcher__trigger,
+    .vl-app-switcher__trigger-grid,
+    .vl-app-switcher__item {
+      transition: none;
+    }
+  }
+}

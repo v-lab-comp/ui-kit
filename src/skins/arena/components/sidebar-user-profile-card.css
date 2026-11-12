@@ -1,0 +1,4 @@
+/* sidebar-user-profile-card: своих стилей нет — карточка профиля использует sidebar-card.css,
+   «лунку» в подвале панели рисует sidebar-footer.css. */
+:where([data-vl-skin~='arena']) {
+}

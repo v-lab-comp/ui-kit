@@ -1,0 +1,42 @@
+/* breadcrumb-item: вид «арены» поверх corporate/components/breadcrumb-item.css (макет: Data.dc.html,
+   «Breadcrumbs»).
+
+   Ссылки — лаймом (в светлой схеме оливой, --primary-dark), наведение — подчёркивание;
+   текущая страница — основным текстом, 600. Onest 15px. */
+:where([data-vl-skin~='arena']) {
+  .vl-breadcrumb-item__label {
+    font-size: 15px;
+    letter-spacing: 0;
+  }
+
+  .vl-breadcrumb-link {
+    border-radius: var(--radius-2);
+    transition: color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-breadcrumb-link,
+  .vl-breadcrumb-link :where(.vl-breadcrumb-item__label, .vl-breadcrumb-item__icon) {
+    color: var(--primary-dark);
+  }
+
+  .vl-breadcrumb-link:hover .vl-breadcrumb-item__label {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .vl-breadcrumb-link:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+    box-shadow: var(--arena-focus-ring);
+  }
+
+  .vl-breadcrumb-page,
+  .vl-breadcrumb-page :where(.vl-breadcrumb-item__label, .vl-breadcrumb-item__icon) {
+    color: var(--text-strong-950);
+  }
+
+  .vl-breadcrumb-page .vl-breadcrumb-item__label {
+    font-weight: 600;
+  }
+}

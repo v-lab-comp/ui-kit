@@ -1,0 +1,27 @@
+/*
+ * phone-input: вид arena поверх corporate/components/phone-input.css — раскладка приходит оттуда,
+ * здесь только оформление.
+ *
+ * Селект страны в startBlock — часть поля: кнопка прозрачная, наведение и открытый список
+ * показывает весь блок (тинт в input-field.css). corporate затемняет кнопку полупрозрачным
+ * чёрным — в тёмной схеме его не видно, поэтому гасим.
+ */
+:where([data-vl-skin~='arena']) {
+  .vl-phone-input__phone-country-select button:hover:not(:disabled):not([data-open]),
+  .vl-phone-input__phone-country-select button[data-open] {
+    background: transparent;
+  }
+
+  /* Поле номера — тем же шрифтом и кеглем, что остальные поля (Onest 15px, small — 14px) */
+  .vl-phone-input__phone-input-field {
+    font-family: var(--base-input-font-family);
+    font-size: var(--base-input-font-size);
+    letter-spacing: var(--base-input-letter-spacing);
+    color: var(--base-input-color);
+  }
+
+  .vl-phone-input__phone-input-field:disabled {
+    color: var(--base-input-color-disabled);
+    background: transparent;
+  }
+}

@@ -1,0 +1,276 @@
+/* toast: вид arena поверх corporate/components/toast.css — раскладка приходит оттуда.
+   Макеты: Overlays.dc.html («Toast»), Main.dc.html (пилюля «Ставку перебили»),
+   Dark.dc.html (светлая схема, «Сохранено» над цветным фоном).
+
+   НЕ ТРОГАТЬ transition / transform / opacity у .vl-toast и состояний data-mounted /
+   data-exiting: длительность выхода (0.22s) совпадает с TOAST_EXIT_DURATION в useToastQueue.ts.
+
+   - Все варианты — обычное стекло (regular) с бликом по кромке; цвет палитры несёт иконка:
+     розовый — ошибка и «ставку перебили», лайм — успех, янтарь — предупреждение, синий — инфо.
+     filled — иконка на сплошной заливке палитры со свечением (как в Dark.dc.html);
+     lighter — иконка на тинте с кольцом (как в Overlays.dc.html);
+     light — то же, плюс лёгкая заливка всего тоста цветом палитры;
+     stroke — то же, кромка тоста цветом палитры вместо белого блика.
+   - Крупный тост: плитка 36×36 под иконкой, заголовок Unbounded капсом, описание Onest
+     вторичным цветом, первое действие — акцентом, остальные — приглушённые.
+   - Компактные (x-small / small) — пилюля: иконка без плитки цветом палитры со свечением,
+     заголовок Onest 600 — как «Ставку перебили».
+
+   Вес: правила corporate для вариантов — до (0,3,0) (`:where(.vl-toast)[data-variant][data-color] .icon`),
+   поэтому здесь селекторы того же или большего веса; файл подключается позже и побеждает при равенстве. */
+:where([data-vl-skin~='arena']) {
+  .vl-toast {
+    /* Плитка иконки по умолчанию (lighter / light / stroke): тинт палитры + кольцо + свечение */
+    --_arena-toast-tile-bg: color-mix(in srgb, var(--pal-base) 16%, transparent);
+    --_arena-toast-tile-fg: var(--pal-text);
+    --_arena-toast-tile-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--pal-base) 34%, transparent),
+      0 0 18px color-mix(in srgb, var(--pal-base) 24%, transparent);
+    position: relative;
+    isolation: isolate;
+    gap: 14px;
+    padding: 16px;
+    border-radius: var(--radius-20);
+    font-family: var(--font-sans);
+  }
+
+  /* Стекло — на всех вариантах; (0,2,0) перекрывает фоны и рамки вариантов corporate */
+  .vl-toast[data-variant] {
+    border: 0;
+    background-color: var(--arena-glass-regular-bg);
+    -webkit-backdrop-filter: var(--arena-glass-regular-filter);
+    backdrop-filter: var(--arena-glass-regular-filter);
+    box-shadow: var(--arena-glass-shadow);
+    color: var(--text-strong-950);
+  }
+
+  /* Блик по кромке: градиентная рамка 1px, середина вырезана маской */
+  .vl-toast::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-raised);
+    border-radius: inherit;
+    padding: var(--arena-rim-width);
+    background: var(--arena-rim);
+    -webkit-mask: var(--arena-rim-mask);
+    -webkit-mask-composite: xor;
+    mask: var(--arena-rim-mask);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* ---------- Варианты ---------- */
+
+  /* filled: сплошная заливка палитры под иконкой, знак — тёмный (у синих — белый) */
+  .vl-toast[data-variant='filled'] {
+    --_arena-toast-tile-bg: var(--pal-base);
+    --_arena-toast-tile-fg: var(--pal-on-base);
+    --_arena-toast-tile-shadow: var(--arena-highlight), 0 4px 16px var(--pal-glow);
+  }
+
+  /* light: лёгкая заливка тоста цветом палитры поверх стекла (в запасном виде — поверх сплошного) */
+  .vl-toast[data-variant='light'] {
+    background-image: linear-gradient(
+      color-mix(in srgb, var(--pal-base) 12%, transparent),
+      color-mix(in srgb, var(--pal-base) 12%, transparent)
+    );
+  }
+
+  /* stroke: кромка цветом палитры вместо белого блика */
+  .vl-toast[data-variant='stroke']::before {
+    background: color-mix(in srgb, var(--pal-base) 55%, transparent);
+  }
+
+  /* Текст — сплошными цветами: полупрозрачный текст на стекле теряет контраст */
+  .vl-toast[data-variant] .vl-toast__content {
+    color: var(--text-strong-950);
+  }
+
+  /* ---------- Иконка ---------- */
+
+  /* Крупный тост: плитка 36×36. Вес (0,4,0) — выше цветов иконки у вариантов corporate */
+  .vl-toast:not([data-size='x-small']):not([data-size='small']) .vl-toast__icon {
+    width: 36px;
+    height: 36px;
+    margin-top: 0;
+    border-radius: var(--radius-8);
+    background: var(--_arena-toast-tile-bg);
+    color: var(--_arena-toast-tile-fg);
+    box-shadow: var(--_arena-toast-tile-shadow);
+  }
+
+  .vl-toast:not([data-size='x-small']):not([data-size='small']) .vl-toast__icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Компактные: знак без плитки, читаемым цветом палитры и с мягким свечением */
+  .vl-toast[data-size='x-small'] .vl-toast__icon,
+  .vl-toast[data-size='small'] .vl-toast__icon {
+    color: var(--pal-text);
+    filter: drop-shadow(0 0 6px var(--pal-glow));
+  }
+
+  /* ---------- Тексты ---------- */
+
+  /* Содержимое тянется на свободное место: плитка шире иконки corporate (36 против 20) */
+  .vl-toast .vl-toast__content {
+    flex: 1 1 0;
+  }
+
+  /* Крупный тост: заголовок по центру плитки, если он один */
+  .vl-toast:not([data-size='x-small']):not([data-size='small']) .vl-toast__content {
+    min-height: 36px;
+    justify-content: center;
+  }
+
+  .vl-toast .vl-toast__title {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .vl-toast .vl-toast__description {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.45;
+    letter-spacing: 0;
+    color: var(--text-sub-600);
+    opacity: 1;
+  }
+
+  /* Однострочный и компактные тосты: заголовок — это само сообщение (Onest 600) */
+  .vl-toast .vl-toast__content[data-row] .vl-toast__title {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .vl-toast[data-size='x-small'] .vl-toast__content[data-row] .vl-toast__title {
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  /* ---------- Действия ---------- */
+
+  .vl-toast .vl-toast__actions {
+    gap: 18px;
+  }
+
+  .vl-toast .vl-toast__action-item[data-sep-after]::after {
+    content: none;
+  }
+
+  .vl-toast .vl-toast__action {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 20px;
+    letter-spacing: 0.01em;
+    color: var(--primary-dark);
+    text-decoration: none;
+    border-radius: var(--radius-2);
+    transition: color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-toast .vl-toast__action:hover {
+    opacity: 1;
+    color: var(--primary-darker);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* Второе и следующие действия — приглушённые */
+  .vl-toast .vl-toast__action-item:not(:first-child) .vl-toast__action {
+    color: var(--text-sub-600);
+  }
+
+  .vl-toast .vl-toast__action-item:not(:first-child) .vl-toast__action:hover {
+    color: var(--text-strong-950);
+  }
+
+  .vl-toast .vl-toast__action:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+    box-shadow: var(--arena-focus-ring);
+  }
+
+  .vl-toast[data-size='x-small'] .vl-toast__action {
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  /* ---------- Крестик ---------- */
+
+  .vl-toast .vl-toast__close {
+    width: 28px;
+    height: 28px;
+    margin-top: 4px;
+    border-radius: var(--radius-full);
+    color: var(--icon-sub-600);
+    opacity: 1;
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-toast .vl-toast__close svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .vl-toast .vl-toast__close:hover {
+    background: var(--arena-control-bg-hover);
+    color: var(--icon-strong-950);
+  }
+
+  .vl-toast .vl-toast__close:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+    box-shadow: var(--arena-focus-ring);
+  }
+
+  /* ---------- Компактные — пилюля ---------- */
+
+  .vl-toast[data-size='x-small'],
+  .vl-toast[data-size='small'] {
+    gap: 10px;
+    border-radius: var(--radius-full);
+  }
+
+  .vl-toast[data-size='x-small'] {
+    padding: 6px 12px 6px 14px;
+  }
+
+  .vl-toast[data-size='small'] {
+    padding: 8px 14px 8px 16px;
+  }
+
+  .vl-toast[data-size='x-small'] .vl-toast__close,
+  .vl-toast[data-size='small'] .vl-toast__close {
+    width: 20px;
+    height: 20px;
+    margin-top: 0;
+    margin-left: 4px;
+  }
+
+  .vl-toast[data-size='x-small'] .vl-toast__close svg,
+  .vl-toast[data-size='small'] .vl-toast__close svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vl-toast .vl-toast__action,
+    .vl-toast .vl-toast__close {
+      transition: none;
+    }
+  }
+}

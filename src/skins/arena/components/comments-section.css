@@ -1,0 +1,275 @@
+/* comments-section: вид arena поверх corporate/components/comments-section.css
+   (макет: Content.dc.html, «CommentsSection»).
+
+   Лента комментариев — сплошная поверхность контента (панель, волосок, мягкая глубокая тень,
+   радиус 20px). Комментарии — не серые плашки, как у corporate, а строки ленты: прозрачный
+   фон, наведение — лёгкий тинт. Разделитель дня — капс Unbounded между двумя волосками.
+   Имя — Onest 600, текст — светлее вторички, жирное подчёркнуто лаймом. Кнопка меню —
+   круглая; само меню — поповер (popover.css даёт стекло), пункты — пилюли, подсвеченный —
+   лаймовый тинт, удаление — розовый.
+   Анимация шиммера — corporate (vl-comments-section-shimmer), при reduced motion выключена. */
+:where([data-vl-skin~='arena']) {
+  .vl-comments-section {
+    gap: 12px;
+    padding: 12px;
+    border-radius: var(--radius-20);
+    background: var(--bg-white-0);
+    box-shadow:
+      inset 0 0 0 1px var(--stroke-soft-200),
+      var(--arena-shadow-surface);
+    color: var(--text-strong-950);
+    font-family: var(--font-sans);
+  }
+
+  /* ---------- Загрузка, ошибка, пусто ---------- */
+
+  .vl-comments-section__skeleton-card {
+    border-radius: var(--radius-16);
+    background: linear-gradient(
+      90deg,
+      var(--arena-control-bg) 0%,
+      var(--arena-control-bg-hover) 50%,
+      var(--arena-control-bg) 100%
+    );
+    background-size: 200% 100%;
+  }
+
+  .vl-comments-section__retry-button,
+  .vl-comments-section__show-more-button {
+    border-radius: var(--radius-4);
+    color: var(--primary-dark);
+    font-weight: 600;
+    text-decoration-color: color-mix(in srgb, var(--primary-dark) 60%, transparent);
+  }
+
+  .vl-comments-section__retry-button:hover,
+  .vl-comments-section__show-more-button:hover {
+    opacity: 1;
+    color: var(--primary-darker);
+  }
+
+  .vl-comments-section__empty-centered {
+    padding: 20px 0;
+    color: var(--text-sub-600);
+  }
+
+  /* ---------- Лента ---------- */
+
+  .vl-comments-section__list {
+    gap: 2px;
+  }
+
+  .vl-comments-section__day-divider-row {
+    align-items: center;
+    gap: 12px;
+    padding: 10px 10px 2px;
+  }
+
+  .vl-comments-section__day-divider-row::before,
+  .vl-comments-section__day-divider-row::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--stroke-soft-200);
+  }
+
+  .vl-comments-section__day-chip {
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 16px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-sub-600);
+  }
+
+  /* Кольцо аватара выступает наружу — карточка его не режет (corporate: overflow hidden) */
+  .vl-comments-section__comment-card {
+    overflow: visible;
+    gap: 14px;
+    padding: 12px 10px 12px 12px;
+    border-radius: var(--radius-16);
+    background: transparent;
+    transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-comments-section__comment-card:hover {
+    background: var(--arena-control-bg);
+  }
+
+  /* Карточка фокусируется программно (навигация по ленте стрелками) */
+  .vl-comments-section__comment-card:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: calc(-1 * (var(--arena-focus-width) + var(--arena-focus-offset)));
+    box-shadow: inset 0 0 0 var(--arena-focus-offset) var(--arena-focus-contour);
+  }
+
+  .vl-comments-section__avatar-slot {
+    padding-top: 2px;
+  }
+
+  .vl-comments-section__body {
+    gap: 4px;
+  }
+
+  .vl-comments-section__author-name {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-strong-950);
+  }
+
+  .vl-comments-section__comment-html {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--text-strong-950) 70%, var(--text-sub-600));
+  }
+
+  .vl-comments-section__comment-html :is(b, strong) {
+    font-weight: 600;
+    color: var(--text-strong-950);
+    box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--primary-base) 60%, transparent);
+  }
+
+  .vl-comments-section__comment-html a {
+    color: var(--primary-dark);
+    text-decoration-color: color-mix(in srgb, var(--primary-dark) 60%, transparent);
+    text-underline-offset: 2px;
+  }
+
+  .vl-comments-section__comment-html a:hover {
+    color: var(--primary-darker);
+  }
+
+  .vl-comments-section__show-more-button {
+    font-family: var(--font-sans);
+    font-size: 13px;
+  }
+
+  .vl-comments-section__time-meta {
+    padding-top: 2px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--text-sub-600);
+  }
+
+  .vl-comments-section__edited-mark {
+    font-style: normal;
+    color: var(--text-sub-600);
+  }
+
+  .vl-comments-section__deleted-mark {
+    font-style: normal;
+    color: var(--error-dark);
+  }
+
+  /* Удалённый — без тинта, приглушённый: заглушка курсивом */
+  :where(.vl-comments-section__comment-card)[data-deleted] {
+    opacity: 1;
+    background: transparent;
+    box-shadow: inset 0 0 0 1px var(--stroke-soft-200);
+  }
+
+  .vl-comments-section__deleted-placeholder {
+    font-size: 15px;
+    color: var(--text-soft-400);
+  }
+
+  /* ---------- Меню действий ---------- */
+
+  .vl-comments-section__menu-trigger {
+    --halo-ring-color: transparent;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-full);
+    color: var(--text-sub-600);
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-comments-section__menu-trigger:hover:not(:disabled),
+  .vl-comments-section__menu-trigger[aria-expanded='true'] {
+    background: var(--arena-control-bg-hover);
+    color: var(--text-strong-950);
+    box-shadow: inset 0 0 0 1px var(--stroke-soft-200);
+  }
+
+  .vl-comments-section__menu-trigger:disabled {
+    opacity: 1;
+    color: var(--text-disabled-300);
+  }
+
+  .vl-comments-section__menu-trigger:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+    box-shadow: var(--arena-focus-ring);
+  }
+
+  .vl-comments-section__menu-list {
+    gap: 2px;
+    min-width: 200px;
+    padding: 5px;
+  }
+
+  .vl-comments-section__menu-item {
+    gap: 10px;
+    min-height: 38px;
+    padding: 0 12px;
+    border-radius: var(--radius-12);
+    color: var(--text-strong-950);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-comments-section__menu-item svg {
+    flex-shrink: 0;
+    color: var(--icon-sub-600);
+  }
+
+  .vl-comments-section__menu-item:hover,
+  .vl-comments-section__menu-item[data-active] {
+    background: var(--primary-alpha-10);
+    color: var(--arena-accent-text);
+    box-shadow: inset 0 0 0 1px var(--primary-alpha-16);
+  }
+
+  .vl-comments-section__menu-item:hover svg,
+  .vl-comments-section__menu-item[data-active] svg {
+    color: inherit;
+  }
+
+  :where(.vl-comments-section__menu-item)[data-danger],
+  :where(.vl-comments-section__menu-item)[data-danger] svg {
+    color: var(--error-dark);
+  }
+
+  :where(.vl-comments-section__menu-item)[data-danger]:hover,
+  :where(.vl-comments-section__menu-item)[data-danger][data-active] {
+    background: var(--error-lighter);
+    color: var(--error-dark);
+    box-shadow: inset 0 0 0 1px var(--error-light);
+  }
+
+  /* Фокус двигается по пунктам (roving tabindex) — подсветка data-active, кольцо внутри */
+  .vl-comments-section__menu-item:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: calc(-1 * (var(--arena-focus-width) + var(--arena-focus-offset)));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vl-comments-section__skeleton-card {
+      animation: none;
+    }
+  }
+}

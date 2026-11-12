@@ -1,0 +1,14 @@
+/* breadcrumbs: вид «арены» поверх corporate/components/breadcrumbs.css (макет: Data.dc.html,
+   «Breadcrumbs»).
+
+   Разделитель (символ из --breadcrumb-sep, рисует ::before) — тихий --text-soft-400, Onest;
+   поля вокруг него чуть шире, как в макете (зазор 10px). */
+:where([data-vl-skin~='arena']) {
+  .vl-breadcrumbs__list > li + li::before {
+    margin: 0 4px;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    letter-spacing: 0;
+    color: var(--text-soft-400);
+  }
+}

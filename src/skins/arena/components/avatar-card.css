@@ -1,0 +1,53 @@
+/* avatar-card: вид arena поверх corporate/components/avatar-card.css
+   (макет: Data.dc.html, «AvatarCard»).
+
+   Раскладка — corporate. AvatarCard — строка «аватар + имя + подпись», а не поверхность:
+   она же сидит внутри карточки профиля в сайдбаре (SidebarUserProfileCard), поэтому фон
+   и тень сюда не добавлены — поверхность даёт контейнер.
+   Кольцо и свечение аватара рисуются снаружи его рамки (avatar.css); corporate обрезает
+   переполнение карточки — в arena переполнение видно, иначе кольцо срезается по краю.
+   Текст сам по себе обрезается многоточием (у заголовка и подписи свой overflow). */
+:where([data-vl-skin~='arena']) {
+  .vl-avatar-card {
+    overflow: visible;
+  }
+
+  .vl-avatar-card__title {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--text-strong-950);
+  }
+
+  .vl-avatar-card__subtitle {
+    font-family: var(--font-sans);
+    letter-spacing: 0;
+    color: var(--text-sub-600);
+  }
+
+  /* Крупные карточки (72, 80) — имя как заголовок: Unbounded */
+  .vl-avatar-card[data-avatar-size='72'] .vl-avatar-card__title,
+  .vl-avatar-card[data-avatar-size='80'] .vl-avatar-card__title {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 32px;
+    letter-spacing: -0.01em;
+  }
+
+  .vl-avatar-card[data-avatar-size='48'] .vl-avatar-card__title,
+  .vl-avatar-card[data-avatar-size='56'] .vl-avatar-card__title {
+    letter-spacing: 0;
+  }
+
+  .vl-avatar-card[data-avatar-size='32'] .vl-avatar-card__title,
+  .vl-avatar-card[data-avatar-size='40'] .vl-avatar-card__title {
+    font-size: 15px;
+    letter-spacing: 0;
+  }
+
+  .vl-avatar-card[data-avatar-size='32'] .vl-avatar-card__subtitle,
+  .vl-avatar-card[data-avatar-size='40'] .vl-avatar-card__subtitle {
+    font-size: 13px;
+  }
+}

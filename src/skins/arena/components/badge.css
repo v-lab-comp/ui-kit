@@ -1,0 +1,172 @@
+/* badge: вид «арены» поверх corporate/components/badge.css — высоты (14 / 16 / 20 / 24) и поля
+   приходят оттуда (макет: Data.dc.html, «Badge»; светлая схема — Dark.dc.html).
+
+   - Пилюля, Unbounded 700 капсом с разрядкой. Unbounded широкий — кегль на 2px меньше,
+     чем у corporate, чтобы бейдж не распирало.
+   - filled — заливка палитры, тёмный текст (--pal-on-base; белый у синих), блик сверху и свечение
+     цветом палитры (--pal-glow), как у CTA.
+   - light / lighter — тинт-пилюля (плотный / лёгкий) с текстом --pal-text и кольцом цвета
+     палитры 32%; stroke — рамка --pal-border.
+   - точка статуса светится своим цветом (кроме filled — на заливке свечение грязнит).
+
+   Шкала редкости CS2 — отдельной палитры [data-color] у бейджа нет; тинт-пилюля редкости
+   собирается из --arena-rarity-*-tint / -text (см. README) или через customColor.
+   У customColor нет --pal-text / --pal-on-base / --pal-border / --pal-glow — везде запасные значения. */
+:where([data-vl-skin~='arena']) {
+  .vl-badge {
+    --_ar-badge-shadow: 0 0 transparent;
+    --_ar-badge-focus: 0 0 transparent;
+    --_ar-badge-text: var(
+      --pal-text,
+      color-mix(in srgb, var(--pal-base) 60%, var(--text-strong-950))
+    );
+    /* Текст на заливке customColor — белый или чёрный по яркости заливки (как у Button) */
+    --_ar-badge-y: clamp(0, (0.179 - (0.2126 * r + 0.7152 * g + 0.0722 * b)) * 1000, 1);
+    --_ar-badge-on: var(
+      --pal-on-base,
+      color(
+        from var(--pal-base) srgb-linear var(--_ar-badge-y) var(--_ar-badge-y) var(--_ar-badge-y)
+      )
+    );
+    --_ar-badge-ring: color-mix(in srgb, var(--pal-base) 32%, transparent);
+
+    --_badge-fs: 10px;
+    gap: 4px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    box-shadow: var(--_ar-badge-shadow), var(--_ar-badge-focus);
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      border-color var(--motion-duration-fast) var(--motion-ease-standard),
+      color var(--motion-duration-fast) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-fast) var(--motion-ease-standard),
+      transform var(--motion-duration-halo-press) var(--motion-ease-standard);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vl-badge {
+      transition: none;
+    }
+  }
+
+  /* corporate сбрасывает шрифт у <button> через font: inherit — возвращаем Unbounded */
+  button.vl-badge {
+    font-family: var(--font-display);
+    font-weight: 700;
+  }
+
+  :where(.vl-badge)[data-size='xsmall'] {
+    --_badge-fs: 8px;
+  }
+
+  :where(.vl-badge)[data-size='small'] {
+    --_badge-fs: 9px;
+  }
+
+  :where(.vl-badge)[data-size='medium'] {
+    --_badge-fs: 10px;
+  }
+
+  :where(.vl-badge)[data-size='large'] {
+    --_badge-fs: 11px;
+  }
+
+  :where(.vl-badge)[data-shape='rounded'] {
+    border-radius: var(--badge-radius, var(--radius-6));
+  }
+
+  /* Точка статуса светится своим цветом */
+  .vl-badge__dot {
+    box-shadow: 0 0 6px currentColor;
+  }
+
+  :where(.vl-badge)[data-variant='filled'] .vl-badge__dot {
+    box-shadow: none;
+  }
+
+  /* ---------- Варианты ---------- */
+
+  :where(.vl-badge)[data-variant='filled'] {
+    --_ar-badge-shadow: var(--arena-highlight-soft), 0 0 12px var(--pal-glow, transparent);
+    background-color: var(--pal-base);
+    border-color: transparent;
+    color: var(--_ar-badge-on);
+  }
+
+  /* Нейтральная заливка corporate (--faded-base) под тёмным текстом даёт < 4,5:1 —
+     в арене приглушённая обратная заливка --bg-surface-800 (светлая на тёмной схеме) */
+  :where(.vl-badge)[data-color='neutral'][data-variant='filled'] {
+    --pal-base: var(--bg-surface-800);
+    --_ar-badge-shadow: var(--arena-highlight-soft);
+    color: var(--text-white-0);
+  }
+
+  :where(.vl-badge)[data-variant='light'] {
+    --_ar-badge-shadow: inset 0 0 0 1px var(--_ar-badge-ring);
+    background-color: var(--pal-bg-active);
+    /* Плотный тинт темнее (в светлой схеме) — текст на 15% ближе к основному: розовый
+       --error-dark на --error-light иначе даёт 4,3:1 */
+    color: color-mix(in srgb, var(--_ar-badge-text) 85%, var(--text-strong-950));
+  }
+
+  :where(.vl-badge)[data-variant='lighter'] {
+    --_ar-badge-shadow: inset 0 0 0 1px var(--_ar-badge-ring);
+    background-color: var(--pal-bg-hover);
+    color: var(--_ar-badge-text);
+  }
+
+  /* corporate красит нейтральный lighter в --faded-base — на тёмном тинте < 4,5:1 */
+  :where(.vl-badge)[data-color='neutral'][data-variant='lighter'] {
+    color: var(--faded-dark);
+  }
+
+  :where(.vl-badge)[data-color='neutral']:is([data-variant='light'], [data-variant='lighter']) {
+    --_ar-badge-ring: var(--stroke-soft-200);
+  }
+
+  :where(.vl-badge)[data-variant='stroke'] {
+    --_ar-badge-shadow: inset 0 0 0 0.5px var(--pal-border, var(--pal-base));
+    background-color: transparent;
+    border-color: var(--pal-border, var(--pal-base));
+    color: var(--_ar-badge-text);
+  }
+
+  :where(.vl-badge)[data-color='neutral'][data-variant='stroke'] {
+    --_ar-badge-shadow: inset 0 0 0 0.5px var(--stroke-sub-300);
+    border-color: var(--stroke-sub-300);
+    color: var(--text-sub-600);
+  }
+
+  /* ---------- Кликабельный ---------- */
+
+  :where(.vl-badge)[data-interactive][data-variant='filled']:active,
+  :where(.vl-badge)[data-interactive][data-variant='light']:active,
+  :where(.vl-badge)[data-interactive][data-variant='lighter']:active,
+  :where(.vl-badge)[data-interactive][data-variant='stroke']:active {
+    transform: var(--arena-press-transform);
+  }
+
+  :where(.vl-badge)[data-interactive][data-variant='filled']:active {
+    --_ar-badge-shadow: var(--arena-pressed-shadow);
+  }
+
+  :where(.vl-badge)[data-interactive]:focus-visible {
+    --_ar-badge-focus: var(--arena-focus-ring);
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+  }
+
+  /* ---------- Disabled — в конце; вес (0,2,0) — как у нейтральных вариантов ---------- */
+
+  :where(.vl-badge)[data-disabled][data-variant] {
+    --_ar-badge-shadow: inset 0 0 0 1px var(--stroke-soft-200);
+    background-color: var(--arena-field-bg-disabled);
+    border-color: transparent;
+    color: var(--text-soft-400);
+  }
+
+  :where(.vl-badge)[data-disabled] .vl-badge__dot {
+    box-shadow: none;
+  }
+}

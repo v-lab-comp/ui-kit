@@ -1,0 +1,13 @@
+/* layout-root: вид arena поверх corporate/components/layout-root.css
+   (макет: Layout.dc.html — экран приложения).
+
+   LayoutRoot — корень экрана с сайдбаром, поэтому фон «арены» ставит он сам: стеклянные
+   панель и шапка без тёмного фона под ними не читаются как стекло (README: фон страницы —
+   --bg-weak-50, текст — --text-strong-950). Высота, flex и overflow — corporate. */
+:where([data-vl-skin~='arena']) {
+  .vl-layout-root {
+    background: var(--bg-weak-50);
+    color: var(--text-strong-950);
+    font-family: var(--font-sans);
+  }
+}

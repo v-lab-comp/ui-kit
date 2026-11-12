@@ -1,1 +1,10 @@
 <meta name="robots" content="noindex, nofollow" />
+<style>
+  /* Фон страницы скин не задаёт — это делает приложение. В Storybook холст берёт поверхность
+     текущего скина и схемы: у corporate в светлой схеме это белый, как и раньше, а в тёмных
+     схемах текст больше не оказывается на белом. «Без скина» — переменных нет, фон браузера. */
+  html[data-vl-skin] body {
+    background: var(--bg-white-0);
+    color: var(--text-strong-950);
+  }
+</style>

@@ -1,0 +1,44 @@
+/* modal: вид arena поверх corporate/components/modal.css — раскладка и анимации приходят оттуда.
+   Макеты: Overlays.dc.html («Modal / ConfirmModal», «ModalStatus»), Main.dc.html (окно «Новый проект»),
+   Dark.dc.html (светлая схема, окно «Сохранить?» над цветным фоном).
+
+   - Затемнение — --overlay-bg с лёгким размытием страницы (--arena-scrim-filter).
+   - Окно — толстое стекло (thick: в нём много текста), блик по кромке через ::before,
+     мягкая глубокая тень. Без backdrop-filter и при prefers-reduced-transparency материал
+     сам становится сплошным (запасной вид — в tokens.css).
+   - Радиус 24 — концентричен иконке 44/14 в шапке и пилюлям кнопок при отступе 20. */
+:where([data-vl-skin~='arena']) {
+  .vl-modal__backdrop {
+    background: var(--overlay-bg);
+    -webkit-backdrop-filter: var(--arena-scrim-filter);
+    backdrop-filter: var(--arena-scrim-filter);
+  }
+
+  .vl-modal__panel {
+    isolation: isolate;
+    border: 0;
+    border-radius: var(--radius-24);
+    background: var(--arena-glass-thick-bg);
+    -webkit-backdrop-filter: var(--arena-glass-thick-filter);
+    backdrop-filter: var(--arena-glass-thick-filter);
+    box-shadow: var(--arena-glass-shadow);
+    color: var(--text-strong-950);
+    font-family: var(--font-sans);
+  }
+
+  /* Блик по кромке: градиентная рамка 1px, середина вырезана маской */
+  .vl-modal__panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-raised);
+    border-radius: inherit;
+    padding: var(--arena-rim-width);
+    background: var(--arena-rim);
+    -webkit-mask: var(--arena-rim-mask);
+    -webkit-mask-composite: xor;
+    mask: var(--arena-rim-mask);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}

@@ -3,6 +3,7 @@ import { createElement } from 'react'
 import { ThemeProvider } from '../src/theme'
 import { corporateSkin } from '../src/skins/corporate'
 import { pixelSkin } from '../src/skins/pixel'
+import { arenaSkin } from '../src/skins/arena'
 // Google Sans для Storybook (потребители подключают шрифт самостоятельно)
 import '@fontsource/google-sans/latin-400.css'
 import '@fontsource/google-sans/latin-500.css'
@@ -11,10 +12,21 @@ import '@fontsource/google-sans/cyrillic-500.css'
 // Пиксельные шрифты скина pixel (латиница и кириллица; потребители подключают их сами)
 import '@fontsource/press-start-2p/400.css'
 import '@fontsource/tiny5/400.css'
+// Шрифты скина arena: Unbounded (заголовки, кнопки, бейджи) и Onest (текст, поля).
+// Файлы <вес>.css содержат латиницу и кириллицу; потребители подключают их сами
+import '@fontsource/unbounded/500.css'
+import '@fontsource/unbounded/700.css'
+import '@fontsource/unbounded/800.css'
+import '@fontsource/onest/400.css'
+import '@fontsource/onest/500.css'
+import '@fontsource/onest/600.css'
+import '@fontsource/onest/700.css'
 // Скин corporate: токены, палитры и стили компонентов (компоненты сами стилей не подключают)
 import '../src/skins/corporate/index.css'
 // Скин pixel расширяет corporate и переопределяет его вид — строго ПОСЛЕ corporate
 import '../src/skins/pixel/index.css'
+// Скин arena тоже расширяет corporate — после corporate (с pixel правила не пересекаются)
+import '../src/skins/arena/index.css'
 
 /**
  * Storybook 8 + React 18/19 в режиме Docs генерирует ложные предупреждения act:
@@ -56,7 +68,7 @@ console.warn = (...args: unknown[]) => {
   originalConsoleWarn.apply(console, args as Parameters<typeof console.warn>)
 }
 
-const SKINS = [corporateSkin, pixelSkin] as const
+const SKINS = [corporateSkin, pixelSkin, arenaSkin] as const
 
 /**
  * «Без скина»: история рендерится без ThemeProvider, на `<html>` нет `data-vl-skin`.

@@ -1,0 +1,65 @@
+/* drawer: вид arena поверх corporate/components/drawer.css — раскладка и выезд приходят оттуда.
+   Макет: Overlays.dc.html, «Drawer» — толстое стекло над затемнённым размытым контентом,
+   скругление только с внутренней стороны (20px), блик по кромке.
+
+   Тайминги выезда (--drawer-animation-duration, transitionend) не трогаются — на них
+   завязан JS. Без backdrop-filter / при prefers-reduced-transparency стекло становится
+   сплошным само (tokens.css). */
+:where([data-vl-skin~='arena']) {
+  .vl-drawer__backdrop {
+    background: var(--overlay-bg);
+    -webkit-backdrop-filter: var(--arena-scrim-filter);
+    backdrop-filter: var(--arena-scrim-filter);
+  }
+
+  .vl-drawer__panel {
+    isolation: isolate;
+    background: var(--arena-glass-thick-bg);
+    -webkit-backdrop-filter: var(--arena-glass-thick-filter);
+    backdrop-filter: var(--arena-glass-thick-filter);
+    box-shadow: var(--arena-glass-shadow);
+    color: var(--text-strong-950);
+    font-family: var(--font-sans);
+  }
+
+  /* Волосок corporate по внутреннему краю заменяет блик ::before */
+  .vl-drawer__panel[data-side='left'] {
+    border: 0;
+    border-radius: 0 var(--radius-20) var(--radius-20) 0;
+  }
+  .vl-drawer__panel[data-side='right'] {
+    border: 0;
+    border-radius: var(--radius-20) 0 0 var(--radius-20);
+  }
+  .vl-drawer__panel[data-side='top'] {
+    border: 0;
+    border-radius: 0 0 var(--radius-20) var(--radius-20);
+  }
+  .vl-drawer__panel[data-side='bottom'] {
+    border: 0;
+    border-radius: var(--radius-20) var(--radius-20) 0 0;
+  }
+
+  /* Блик по кромке: градиентная рамка 1px, середина вырезана маской */
+  .vl-drawer__panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-raised);
+    border-radius: inherit;
+    padding: var(--arena-rim-width);
+    background: var(--arena-rim);
+    -webkit-mask: var(--arena-rim-mask);
+    -webkit-mask-composite: xor;
+    mask: var(--arena-rim-mask);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  @media (max-width: 640px) {
+    .vl-drawer__panel[data-mobile-bottom='true'] {
+      border: 0;
+      border-radius: var(--radius-20) var(--radius-20) 0 0;
+    }
+  }
+}

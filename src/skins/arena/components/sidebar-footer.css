@@ -1,0 +1,44 @@
+/* sidebar-footer: вид arena поверх corporate/components/sidebar-footer.css
+   (макет: Layout.dc.html, профиль «Анна Петрова» внизу панели).
+
+   Фон — от стеклянной панели (sidebar.css). Ширина — на всю панель (см. sidebar-header.css).
+   Карточка профиля в подвале — «лунка» в стекле: тинт контрола и волосок, радиус 18px,
+   как блок .me в макете; наведение — чуть плотнее. */
+:where([data-vl-skin~='arena']) {
+  .vl-sidebar-footer {
+    width: 100%;
+    background: transparent;
+  }
+
+  /* Свёрнутая панель — 56px: поля 4px по бокам, чтобы влезла карточка 48px (sidebar-card.css) */
+  :where(.vl-sidebar-footer)[data-collapsed] {
+    width: 100%;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
+  .vl-sidebar-footer__divider {
+    left: 16px;
+    right: 16px;
+    background: var(--stroke-soft-200);
+  }
+
+  .vl-sidebar-footer .vl-sidebar-card,
+  .vl-sidebar-footer .vl-sidebar-card[data-unbordered] {
+    border-radius: var(--radius-16);
+    background: var(--arena-control-bg);
+    box-shadow: inset 0 0 0 1px var(--stroke-soft-200);
+  }
+
+  .vl-sidebar-footer .vl-sidebar-card:hover,
+  .vl-sidebar-footer .vl-sidebar-card[data-unbordered]:hover {
+    background: var(--arena-control-bg-hover);
+    box-shadow: inset 0 0 0 1px var(--stroke-sub-300);
+  }
+
+  .vl-sidebar-footer .vl-sidebar-card:focus-visible {
+    box-shadow:
+      inset 0 0 0 1px var(--stroke-sub-300),
+      var(--arena-focus-ring);
+  }
+}

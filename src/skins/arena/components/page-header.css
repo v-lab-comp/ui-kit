@@ -1,0 +1,68 @@
+/* page-header: вид arena поверх corporate/components/page-header.css
+   (макет: Layout.dc.html, шапка «Главная › Проекты / Проекты»).
+
+   В макете шапка — плавающая стеклянная плита (regular), радиус 24px, как и боковая панель.
+   README скина разрешает стекло оболочке, если она парит. Внешние поля рядом с сайдбаром
+   задаёт sidebar-inset.css; высота, sticky и раскладка — corporate.
+
+   Стекло — на ::before, блик кромки — на ::after, оба под содержимым (шапка — контекст
+   наложения: sticky + z-index). На самой шапке backdrop-filter нет, чтобы она не стала
+   «корнем фона» для стеклянных выпадашек внутри неё. Волосок снизу corporate не нужен —
+   плиту очерчивает кромка. Заголовок — Unbounded. */
+:where([data-vl-skin~='arena']) {
+  .vl-page-header {
+    padding: 20px 24px 20px 28px;
+    border-radius: var(--radius-24);
+    background: transparent;
+    font-family: var(--font-sans);
+    color: var(--text-sub-600);
+    box-shadow: none;
+  }
+
+  .vl-page-header::before,
+  .vl-page-header::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: calc(-1 * var(--z-raised));
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .vl-page-header::before {
+    background: var(--arena-glass-regular-bg);
+    -webkit-backdrop-filter: var(--arena-glass-regular-filter);
+    backdrop-filter: var(--arena-glass-regular-filter);
+    box-shadow: var(--arena-glass-shadow);
+  }
+
+  .vl-page-header::after {
+    padding: var(--arena-rim-width);
+    background: var(--arena-rim);
+    -webkit-mask: var(--arena-rim-mask);
+    -webkit-mask-composite: xor;
+    mask: var(--arena-rim-mask);
+    mask-composite: exclude;
+  }
+
+  .vl-page-header__title-block {
+    gap: 6px;
+  }
+
+  .vl-page-header__title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 28px;
+    letter-spacing: -0.005em;
+    color: var(--text-strong-950);
+  }
+
+  .vl-page-header__description {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0;
+    color: var(--text-sub-600);
+  }
+}

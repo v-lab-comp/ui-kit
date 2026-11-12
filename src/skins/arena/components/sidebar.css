@@ -1,0 +1,149 @@
+/* sidebar: вид arena поверх corporate/components/sidebar.css (макет: Layout.dc.html, панель слева).
+
+   В макете «Экран приложения» боковая панель — плавающая стеклянная плита (regular) с отступом
+   от краёв окна и радиусом 24px. README скина разрешает стекло оболочке, если она парит, —
+   это тот случай. Раскладка corporate сохранена: колонка 272px (свёрнутая — 80px), отступ
+   контента рядом с ней (SidebarInset insetLeft / SidebarMain) — прежний. Панель просто
+   уменьшена внутри своей колонки на --_arena-shell-gap со всех сторон, поэтому между панелью
+   и контентом остаётся тот же зазор, что и до краёв окна.
+
+   Стекло нарисовано на ::before, блик кромки — на ::after (рецепт README), оба под
+   содержимым: панель — контекст наложения (fixed + z-index), отрицательный слой внутри неё
+   лежит над её фоном, но под детьми. На самой панели backdrop-filter нет намеренно: элемент
+   с backdrop-filter становится «корнем фона» для потомков, и стеклянная выпадашка шапки
+   (sidebar-header-card.css) за краем панели размывала бы пустоту вместо контента. */
+:where([data-vl-skin~='arena']) {
+  .vl-sidebar {
+    --_arena-shell-gap: 12px;
+    left: var(--_arena-shell-gap);
+    top: var(--_arena-shell-gap);
+    bottom: var(--_arena-shell-gap);
+    width: calc(272px - 2 * var(--_arena-shell-gap));
+    min-width: calc(272px - 2 * var(--_arena-shell-gap));
+    border-radius: var(--radius-24);
+    background: transparent;
+    color: var(--text-strong-950);
+    font-family: var(--font-sans);
+    box-shadow: none;
+  }
+
+  :where(.vl-sidebar)[data-collapsed='true'] {
+    width: calc(80px - 2 * var(--_arena-shell-gap));
+    min-width: calc(80px - 2 * var(--_arena-shell-gap));
+  }
+
+  .vl-sidebar::before,
+  .vl-sidebar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: calc(-1 * var(--z-raised));
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  /* Материал — стекло regular */
+  .vl-sidebar::before {
+    background: var(--arena-glass-regular-bg);
+    -webkit-backdrop-filter: var(--arena-glass-regular-filter);
+    backdrop-filter: var(--arena-glass-regular-filter);
+    box-shadow: var(--arena-glass-shadow);
+  }
+
+  /* Блик по кромке: градиентная рамка 1px, середина вырезана маской */
+  .vl-sidebar::after {
+    padding: var(--arena-rim-width);
+    background: var(--arena-rim);
+    -webkit-mask: var(--arena-rim-mask);
+    -webkit-mask-composite: xor;
+    mask: var(--arena-rim-mask);
+    mask-composite: exclude;
+  }
+
+  /* Прокручиваемая навигация: поля панели 12px, тонкий скроллбар */
+  .vl-sidebar-content {
+    padding: 8px 12px 12px;
+    gap: 12px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--stroke-sub-300) transparent;
+  }
+
+  :where(.vl-sidebar)[data-collapsed='true'] .vl-sidebar-content {
+    padding: 8px 8px 12px;
+  }
+
+  .vl-sidebar-section {
+    gap: 6px;
+  }
+
+  .vl-sidebar-section__items {
+    gap: 4px;
+  }
+
+  /* Подпись секции — капс Unbounded с разрядкой («РАБОТА», «СИСТЕМА» в макете) */
+  .vl-sidebar-section__label {
+    padding: 12px 14px 4px;
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 16px;
+    letter-spacing: 0.16em;
+    color: var(--text-sub-600);
+  }
+
+  :where(.vl-sidebar)[data-collapsed='true'] .vl-sidebar-section__label {
+    padding: 12px 0 4px;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+  }
+
+  /* Кнопка сворачивания: круглая «шайба» на кромке панели — сплошная, она наполовину
+     выступает за стекло */
+  .vl-sidebar-trigger {
+    --halo-ring-color: transparent;
+    border: 0;
+    border-radius: var(--radius-full);
+    background: var(--arena-raised-bg);
+    color: var(--icon-sub-600);
+    box-shadow:
+      inset 0 0 0 1px var(--stroke-soft-200),
+      var(--shadow-regular-x-small),
+      0 4px 12px color-mix(in srgb, var(--static-black) 24%, transparent);
+    transition:
+      color var(--motion-duration-fast) var(--motion-ease-standard),
+      background-color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-sidebar-trigger:hover {
+    background: var(--arena-raised-bg);
+    color: var(--icon-strong-950);
+    box-shadow:
+      inset 0 0 0 1px var(--stroke-sub-300),
+      var(--shadow-regular-x-small),
+      0 4px 12px color-mix(in srgb, var(--static-black) 24%, transparent);
+  }
+
+  .vl-sidebar-trigger:active {
+    transform: var(--arena-press-transform);
+  }
+
+  .vl-sidebar-trigger:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+    box-shadow:
+      inset 0 0 0 1px var(--stroke-sub-300),
+      var(--arena-focus-ring);
+  }
+
+  .vl-sidebar-trigger svg,
+  .vl-sidebar-trigger__icon {
+    transition: transform var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vl-sidebar-trigger svg,
+    .vl-sidebar-trigger__icon {
+      transition: none;
+    }
+  }
+}

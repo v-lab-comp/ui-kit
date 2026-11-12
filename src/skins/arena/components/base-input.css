@@ -1,0 +1,74 @@
+/*
+ * base-input: вид arena поверх corporate/components/base-input.css — раскладка приходит оттуда,
+ * здесь только оформление.
+ *
+ * Самостоятельный BaseInput — то же «утопленное» поле, что оболочка InputField (input-field.css):
+ * фон --arena-input-bg, волосок и внутренняя тень из base-input.variables.css. Фокус — лаймовое
+ * кольцо arena, ошибка — розовая рамка с ореолом.
+ *
+ * Внутри оболочки InputField (TextInput, DateInput, TagInput…) поле «голое»: фон, тени и кольцо
+ * фокуса рисует оболочка — сброс в конце файла.
+ */
+:where([data-vl-skin~='arena']) {
+  .vl-base-input {
+    background-color: var(--arena-input-bg);
+  }
+
+  .vl-base-input:hover:not(:disabled):not(:focus-visible) {
+    border-color: var(--arena-input-border-hover);
+  }
+
+  .vl-base-input:focus-visible {
+    border-color: var(--arena-input-accent);
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+    box-shadow: var(--base-input-shadow), var(--arena-focus-ring);
+  }
+
+  .vl-base-input:disabled {
+    box-shadow: none;
+  }
+
+  /* ── Ошибка: розовая рамка 1.5px и ореол; кольцо фокуса остаётся лаймовым ── */
+
+  .vl-base-input[data-error],
+  .vl-base-input[data-error]:hover:not(:disabled):not(:focus-visible) {
+    border-color: var(--arena-input-error);
+    box-shadow:
+      var(--base-input-shadow),
+      inset 0 0 0 0.5px var(--arena-input-error),
+      0 0 0 4px var(--arena-input-error-glow);
+  }
+
+  .vl-base-input[data-error]:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+    box-shadow:
+      var(--base-input-shadow),
+      inset 0 0 0 0.5px var(--arena-input-error),
+      var(--arena-focus-ring);
+  }
+
+  /* Только чтение — плоское поле без «утопленной» тени */
+  .vl-base-input:read-only:not(:disabled) {
+    background-color: var(--arena-input-bg);
+    box-shadow: none;
+  }
+
+  /* ── Поле внутри оболочки InputField — без своего фона, теней и кольца ───── */
+
+  .vl-input-field__wrapper .vl-base-input,
+  .vl-input-field__wrapper .vl-base-input:disabled,
+  .vl-input-field__wrapper .vl-base-input[data-error],
+  .vl-input-field__wrapper .vl-base-input[data-error]:hover:not(:disabled):not(:focus-visible),
+  .vl-input-field__wrapper .vl-base-input:read-only:not(:disabled) {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .vl-input-field__wrapper .vl-base-input:focus-visible,
+  .vl-input-field__wrapper .vl-base-input[data-error]:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+}

@@ -1,0 +1,68 @@
+/*
+ * date-input: вид arena поверх corporate/components/date-input.css — раскладка и анимация
+ * появления приходят оттуда, здесь только оформление.
+ *
+ * - Иконка календаря (<button>) — круглая кнопка: тинт при наведении, при фокусе — тинт и лаймовый
+ *   волосок внутри (кольцо фокуса рисует вся оболочка, input-field.css).
+ * - Поповер календаря — плавающий слой, поэтому календарь в нём стеклянный (материал regular,
+ *   блик по кромке). Сам календарь вне поповера — сплошная поверхность (calendar.css).
+ */
+:where([data-vl-skin~='arena']) {
+  .vl-date-input__calendar-btn {
+    margin: -4px;
+    padding: 4px;
+    border-radius: var(--radius-full);
+    color: var(--icon-sub-600);
+    transition:
+      color var(--motion-duration-fast) var(--motion-ease-standard),
+      background-color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-date-input__calendar-btn:hover:not([data-disabled]) {
+    color: var(--icon-strong-950);
+    background-color: var(--arena-control-bg-hover);
+  }
+
+  .vl-date-input__calendar-btn:focus-visible {
+    outline: none;
+    color: var(--icon-strong-950);
+    background-color: var(--arena-control-bg-hover);
+    box-shadow: inset 0 0 0 1.5px var(--arena-input-accent);
+  }
+
+  :where(.vl-date-input__calendar-btn)[data-disabled] {
+    color: var(--icon-soft-400);
+  }
+
+  /* ── Поповер: стеклянный календарь ─────────────────────────────────────── */
+
+  .vl-date-input__popover {
+    border-radius: var(--radius-20);
+  }
+
+  .vl-date-input__popover .vl-calendar {
+    position: relative;
+    isolation: isolate;
+    background: var(--arena-glass-regular-bg);
+    -webkit-backdrop-filter: var(--arena-glass-regular-filter);
+    backdrop-filter: var(--arena-glass-regular-filter);
+    border-color: transparent;
+    box-shadow: var(--arena-glass-shadow);
+  }
+
+  /* Блик по кромке: градиентная рамка 1px, середина вырезана маской */
+  .vl-date-input__popover .vl-calendar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-raised);
+    border-radius: inherit;
+    padding: var(--arena-rim-width);
+    background: var(--arena-rim);
+    -webkit-mask: var(--arena-rim-mask);
+    -webkit-mask-composite: xor;
+    mask: var(--arena-rim-mask);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}

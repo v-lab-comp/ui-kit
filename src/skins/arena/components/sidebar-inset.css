@@ -1,0 +1,30 @@
+/* sidebar-inset: вид arena поверх corporate/components/sidebar-inset.css
+   (макет: Layout.dc.html, область справа от панели).
+
+   В макете шапка страницы — плавающая стеклянная плита с отступом от краёв (page-header.css).
+   Внутри SidebarInset она получает внешние поля: сверху и справа — зазор оболочки, слева —
+   ноль (зазор до панели уже даёт колонка сайдбара, см. sidebar.css). Отдельно от сайдбара
+   (страница без панели) шапка остаётся без полей — их задаёт приложение. */
+:where([data-vl-skin~='arena']) {
+  .vl-sidebar-inset {
+    --_arena-shell-gap: 12px;
+    color: var(--text-strong-950);
+  }
+
+  .vl-sidebar-inset > .vl-page-header {
+    top: var(--_arena-shell-gap);
+    margin: var(--_arena-shell-gap) var(--_arena-shell-gap) 0 0;
+  }
+
+  /* Тонкий скроллбар в цвет оболочки */
+  .vl-sidebar-inset-content {
+    scrollbar-width: thin;
+    scrollbar-color: var(--stroke-sub-300) transparent;
+  }
+
+  .vl-sidebar-inset-content:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: calc(-1 * (var(--arena-focus-width) + var(--arena-focus-offset)));
+    box-shadow: inset 0 0 0 var(--arena-focus-offset) var(--arena-focus-contour);
+  }
+}

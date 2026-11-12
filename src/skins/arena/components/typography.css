@@ -1,0 +1,137 @@
+/* typography: вид «арены» поверх corporate/components/typography.css
+   (макет: Main.dc.html, «Шрифты»).
+
+   - title (h1…h6) — Unbounded, 700 (крупные — 800), трекинг слегка отрицательный.
+     Unbounded широкий, поэтому шкала сжата: corporate h1 56px → 40px.
+     Начертания в макете — 500 / 700 / 800: толщины ниже medium сводятся к 500, выше bold — к 800.
+   - subheading (капс) — Unbounded 700, мелкие кегли 10–13px с разрядкой.
+   - label / paragraph / docs — Onest. Подключены 400–700: thin / extralight / light → 400,
+     extrabold / black → 700 (ложный синтез жирного не нужен). Трекинг 0 — у Onest он
+     не требует поджатия, в отличие от Google Sans. */
+:where([data-vl-skin~='arena']) {
+  .vl-typography {
+    letter-spacing: 0;
+  }
+
+  /* ---------- Толщины Onest ---------- */
+
+  :where(.vl-typography)[data-weight='thin'],
+  :where(.vl-typography)[data-weight='extralight'],
+  :where(.vl-typography)[data-weight='light'] {
+    font-weight: 400;
+  }
+  :where(.vl-typography)[data-weight='extrabold'],
+  :where(.vl-typography)[data-weight='black'] {
+    font-weight: 700;
+  }
+
+  /* ---------- Title — Unbounded ---------- */
+
+  :where(.vl-typography)[data-variant='title'] {
+    font-family: var(--font-display);
+    font-weight: 700;
+  }
+
+  /* Явная толщина заголовка — в пределах начертаний Unbounded (вес (0,2,0) бьёт правило выше) */
+  :where(.vl-typography)[data-variant='title']:is(
+      [data-weight='thin'],
+      [data-weight='extralight'],
+      [data-weight='light'],
+      [data-weight='regular']
+    ) {
+    font-weight: 500;
+  }
+  :where(.vl-typography)[data-variant='title']:is(
+      [data-weight='medium'],
+      [data-weight='semibold'],
+      [data-weight='bold']
+    ) {
+    font-weight: 700;
+  }
+  :where(.vl-typography)[data-variant='title']:is(
+      [data-weight='extrabold'],
+      [data-weight='black']
+    ) {
+    font-weight: 800;
+  }
+
+  :where(.vl-typography)[data-variant='title']:where([data-size='h1']) {
+    font-size: 40px;
+    line-height: 44px;
+    letter-spacing: -0.02em;
+  }
+
+  :where(.vl-typography)[data-variant='title']:where([data-size='h2']) {
+    font-size: 32px;
+    line-height: 38px;
+    letter-spacing: -0.02em;
+  }
+
+  :where(.vl-typography)[data-variant='title']:where([data-size='h3']) {
+    font-size: 26px;
+    line-height: 32px;
+    letter-spacing: -0.01em;
+  }
+
+  :where(.vl-typography)[data-variant='title']:where([data-size='h4']) {
+    font-size: 22px;
+    line-height: 28px;
+    letter-spacing: -0.005em;
+  }
+
+  :where(.vl-typography)[data-variant='title']:where([data-size='h5']) {
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: 0;
+  }
+
+  :where(.vl-typography)[data-variant='title']:where([data-size='h6']) {
+    font-size: 15px;
+    line-height: 20px;
+    letter-spacing: 0.01em;
+  }
+
+  /* ---------- Label / Paragraph — Onest, кегли corporate, трекинг 0 ---------- */
+
+  :where(.vl-typography)[data-variant='label']:where([data-size]),
+  :where(.vl-typography)[data-variant='paragraph']:where([data-size]) {
+    letter-spacing: 0;
+  }
+
+  /* ---------- Subheading — Unbounded, капс ---------- */
+
+  :where(.vl-typography)[data-variant='subheading'] {
+    font-family: var(--font-display);
+    font-weight: 700;
+  }
+
+  :where(.vl-typography)[data-variant='subheading']:where([data-size='medium']) {
+    font-size: 13px;
+    line-height: 20px;
+    letter-spacing: 0.08em;
+  }
+
+  :where(.vl-typography)[data-variant='subheading']:where([data-size='small']) {
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.08em;
+  }
+
+  :where(.vl-typography)[data-variant='subheading']:where([data-size='x-small']) {
+    font-size: 11px;
+    line-height: 16px;
+    letter-spacing: 0.12em;
+  }
+
+  :where(.vl-typography)[data-variant='subheading']:where([data-size='2x-small']) {
+    font-size: 10px;
+    line-height: 14px;
+    letter-spacing: 0.12em;
+  }
+
+  /* ---------- Docs — Onest ---------- */
+
+  :where(.vl-typography)[data-variant='docs'] {
+    letter-spacing: 0;
+  }
+}

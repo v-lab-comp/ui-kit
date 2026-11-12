@@ -1,0 +1,84 @@
+/* modal-status: вид arena поверх corporate/components/modal-status.css — раскладка приходит оттуда.
+   Макет: Overlays.dc.html — «Modal / ConfirmModal» (иконка в шапке) и «ModalStatus» (по центру).
+
+   - В шапке: скруглённый квадрат 40×40 с тинтом цвета статуса, тонким кольцом и мягким
+     свечением; знак — читаемым тоном статуса (--<статус>-dark: светлый в тёмной схеме,
+     тёмный в светлой).
+   - По центру: крупный круг 64×64 сплошного цвета статуса с бликом, ореолом 6px и
+     свечением — «экран победы»; знак на заливке тёмный (у синего info — белый).
+   Цвет статуса задаётся один раз через --_arena-status-* на элементе. */
+:where([data-vl-skin~='arena']) {
+  /* Вес (0,2,0) — как у цветовых правил corporate по data-variant; arena идёт позже */
+  .vl-modal-status__status-icon[data-variant] {
+    --_arena-status-base: var(--faded-base);
+    --_arena-status-text: var(--faded-dark);
+    --_arena-status-on: var(--static-black);
+    border-radius: var(--radius-10);
+    background: color-mix(in srgb, var(--_arena-status-base) 16%, transparent);
+    color: var(--_arena-status-text);
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--_arena-status-base) 34%, transparent),
+      0 0 18px color-mix(in srgb, var(--_arena-status-base) 26%, transparent);
+  }
+
+  .vl-modal-status__status-icon[data-variant='error'] {
+    --_arena-status-base: var(--error-base);
+    --_arena-status-text: var(--error-dark);
+  }
+  .vl-modal-status__status-icon[data-variant='warning'] {
+    --_arena-status-base: var(--warning-base);
+    --_arena-status-text: var(--warning-dark);
+  }
+  .vl-modal-status__status-icon[data-variant='success'] {
+    --_arena-status-base: var(--success-base);
+    --_arena-status-text: var(--success-dark);
+  }
+  /* Синий: знак на сплошной заливке — белый */
+  .vl-modal-status__status-icon[data-variant='info'] {
+    --_arena-status-base: var(--information-base);
+    --_arena-status-text: var(--information-dark);
+    --_arena-status-on: var(--static-white);
+  }
+
+  /* ── По центру: крупный сплошной круг ── */
+  .vl-modal-status__status-center {
+    gap: 14px;
+  }
+
+  /* Вес (0,3,0) — выше правил по data-variant (0,2,0) */
+  .vl-modal-status__status-center .vl-modal-status__status-icon[data-variant] {
+    width: 64px;
+    height: 64px;
+    /* Тело модалки прокручивается (overflow) и режет тень: место под ореол и свечение */
+    margin: 14px 0 6px;
+    border-radius: var(--radius-full);
+    background: var(--_arena-status-base);
+    color: var(--_arena-status-on);
+    box-shadow:
+      var(--arena-highlight),
+      0 0 0 6px color-mix(in srgb, var(--_arena-status-base) 14%, transparent),
+      0 0 24px color-mix(in srgb, var(--_arena-status-base) 45%, transparent);
+  }
+
+  .vl-modal-status__status-center .vl-modal-status__status-icon svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .vl-modal-status__status-center .vl-modal-status__status-title-center.vl-typography {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.005em;
+    color: var(--text-strong-950);
+  }
+
+  .vl-modal-status__status-center .vl-modal-status__status-desc-center.vl-typography {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.55;
+    letter-spacing: 0;
+    color: var(--text-sub-600);
+  }
+}

@@ -1,0 +1,276 @@
+/* button: вид «арены» поверх corporate/components/button.css — раскладка (высоты 40 / 36 / 32 / 28)
+   приходит оттуда (макет: Buttons.dc.html, светлая схема — Dark.dc.html).
+
+   Приёмы:
+   - пилюля (--radius-full), Unbounded 700; горизонтальные поля шире, чем у corporate, —
+     иначе текст упирается в скругление пилюли;
+   - filled — заливка палитры, тёмный текст (--pal-on-base; белый только у синих), блик сверху
+     (--arena-highlight-soft), нижняя кромка (--arena-edge-bottom) и волосок по краю (виден
+     только в светлой схеме). primary — лаймовый CTA с бликом поярче и свечением --arena-glow-primary;
+   - наведение filled — заливка --pal-hover (под тёмным текстом светлее, под белым темнее —
+     контраст не падает) + ореол halo.css: кольцо 4px тинтом палитры и свечение --pal-glow;
+   - нажатие filled — --arena-press-transform / --arena-press-filter / --arena-pressed-shadow,
+     кольцо ореола гаснет; у остальных вариантов — только сжатие и плотный тинт;
+   - stroke — рамка --pal-border 1.5px (border 1px + inset 0.5px, чтобы высота не менялась),
+     текст --pal-text; lighter — тинт; ghost — только текст, наведение — тинт без ореола;
+   - disabled — тусклая плашка --arena-field-bg-disabled, текст --text-soft-400 (читаемый).
+
+   Тени собираются из двух слоёв: --_ar-btn-shadow (вид варианта и состояния) и --_ar-btn-focus
+   (кольцо фокуса, последним слоем). Пустой слой — `0 0 transparent`, а не `none`: `none`
+   в списке теней сделал бы значение недействительным.
+
+   customColor ставит инлайн только --pal-base / -hover / -active / -bg-hover / -bg-active —
+   у --pal-text, --pal-on-base, --pal-border, --pal-glow везде запасные значения. */
+:where([data-vl-skin~='arena']) {
+  .vl-button {
+    --_ar-btn-shadow: 0 0 transparent;
+    --_ar-btn-focus: 0 0 transparent;
+    /* Текст цвета палитры. У customColor --pal-text нет: исходный цвет подмешивается к основному
+       тексту схемы — светлеет на тёмной, темнеет на светлой и держит контраст на тинте */
+    --_ar-btn-text: var(
+      --pal-text,
+      color-mix(in srgb, var(--pal-base) 60%, var(--text-strong-950))
+    );
+    /* Текст на заливке. У customColor --pal-on-base нет: белый или чёрный по яркости заливки —
+       относительный цвет в srgb-linear, Y по WCAG; порог 0.179 — там, где контраст белого
+       и чёрного одинаков. Все три канала равны: 1 → белый, 0 → чёрный */
+    --_ar-btn-y: clamp(0, (0.179 - (0.2126 * r + 0.7152 * g + 0.0722 * b)) * 1000, 1);
+    --_ar-btn-on: var(
+      --pal-on-base,
+      color(from var(--pal-base) srgb-linear var(--_ar-btn-y) var(--_ar-btn-y) var(--_ar-btn-y))
+    );
+    /* Ореол по умолчанию выключен: светятся только filled (см. ниже) */
+    --halo-offset: 0px;
+    --halo-ring-size: 4px;
+    --halo-ring-color: transparent;
+    --halo-glow-color: transparent;
+
+    padding: 9px 18px;
+    gap: 8px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    border-radius: var(--btn-radius, var(--radius-full));
+    box-shadow: var(--_ar-btn-shadow), var(--_ar-btn-focus);
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      border-color var(--motion-duration-fast) var(--motion-ease-standard),
+      color var(--motion-duration-fast) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-fast) var(--motion-ease-standard),
+      filter var(--motion-duration-fast) var(--motion-ease-standard),
+      transform var(--motion-duration-halo-press) var(--motion-ease-standard);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vl-button {
+      transition: none;
+    }
+  }
+
+  .vl-button svg {
+    flex-shrink: 0;
+  }
+
+  /* ---------- Форма ---------- */
+
+  :where(.vl-button)[data-shape='circle'] {
+    border-radius: var(--radius-full);
+  }
+
+  /* «Квадрат» в арене — мягкий: острые углы выбиваются из концентрических радиусов */
+  :where(.vl-button)[data-shape='square'] {
+    border-radius: var(--radius-8);
+  }
+
+  /* ---------- Размеры: высоты corporate, кегль и поля — по макету ---------- */
+
+  :where(.vl-button)[data-size='small'] {
+    padding: 7px 16px;
+    gap: 6px;
+    font-size: 13px;
+  }
+
+  :where(.vl-button)[data-size='x-small'] {
+    padding: 5px 12px;
+    gap: 6px;
+    font-size: 12px;
+  }
+
+  :where(.vl-button)[data-size='2x-small'] {
+    padding: 3px 10px;
+    gap: 4px;
+    font-size: 11px;
+  }
+
+  /* Кнопка-иконка: квадратные поля, чтобы пилюля стала кругом. Хука «только иконка» у Button
+     нет — признак: доступное имя атрибутом и единственный дочерний элемент — svg
+     (у кнопки с текстом имя обычно из текста, а не из aria-label). */
+  :where(.vl-button):is([aria-label], [aria-labelledby]):has(> svg:only-child) {
+    padding: 9px;
+  }
+  :where(.vl-button)[data-size='small']:is([aria-label], [aria-labelledby]):has(> svg:only-child) {
+    padding: 7px;
+  }
+  :where(.vl-button)[data-size='x-small']:is([aria-label], [aria-labelledby]):has(
+      > svg:only-child
+    ) {
+    padding: 5px;
+  }
+  :where(.vl-button)[data-size='2x-small']:is([aria-label], [aria-labelledby]):has(
+      > svg:only-child
+    ) {
+    padding: 3px;
+  }
+
+  /* ---------- Filled ---------- */
+
+  :where(.vl-button)[data-variant='filled'] {
+    --_ar-btn-shadow:
+      var(--arena-highlight-soft), var(--arena-edge-bottom), 0 0 0 1px var(--stroke-soft-200),
+      0 6px 16px -8px var(--pal-glow, transparent);
+    --halo-ring-color: var(--pal-bg-hover);
+    --halo-glow-color: var(--pal-glow, var(--pal-bg-active));
+    background-color: var(--pal-base);
+    border-color: transparent;
+    color: var(--_ar-btn-on);
+  }
+
+  /* Лаймовый CTA («Ставка»): блик ярче и постоянное свечение */
+  :where(.vl-button)[data-color='primary'][data-variant='filled'] {
+    --_ar-btn-shadow:
+      var(--arena-highlight), var(--arena-edge-bottom), 0 0 0 1px var(--stroke-soft-200),
+      var(--arena-glow-primary);
+  }
+
+  :where(.vl-button)[data-variant='filled']:hover:not(:disabled) {
+    background-color: var(--pal-hover);
+    border-color: transparent;
+  }
+
+  :where(.vl-button)[data-variant='filled']:active:not(:disabled) {
+    --_ar-btn-shadow: var(--arena-pressed-shadow);
+    --halo-ring-color: transparent;
+    background-color: var(--pal-base);
+    border-color: transparent;
+    filter: var(--arena-press-filter);
+    transform: var(--arena-press-transform);
+  }
+
+  /* ---------- Stroke ---------- */
+
+  :where(.vl-button)[data-variant='stroke'] {
+    --_ar-btn-shadow: inset 0 0 0 0.5px var(--pal-border, var(--pal-base));
+    background-color: transparent;
+    border-color: var(--pal-border, var(--pal-base));
+    color: var(--_ar-btn-text);
+  }
+
+  :where(.vl-button)[data-variant='stroke']:hover:not(:disabled) {
+    background-color: var(--pal-bg-hover);
+    border-color: var(--pal-border, var(--pal-base));
+  }
+
+  :where(.vl-button)[data-variant='stroke']:active:not(:disabled) {
+    background-color: var(--pal-bg-active);
+    border-color: var(--pal-border, var(--pal-base));
+    transform: var(--arena-press-transform);
+  }
+
+  /* ---------- Lighter ---------- */
+
+  :where(.vl-button)[data-variant='lighter'] {
+    --_ar-btn-shadow: inset 0 0 0 1px color-mix(in srgb, var(--pal-base) 16%, transparent);
+    background-color: var(--pal-bg-hover);
+    border-color: transparent;
+    color: var(--_ar-btn-text);
+  }
+
+  :where(.vl-button)[data-variant='lighter']:hover:not(:disabled) {
+    background-color: var(--pal-bg-active);
+    border-color: transparent;
+  }
+
+  :where(.vl-button)[data-variant='lighter']:active:not(:disabled) {
+    background-color: var(--pal-bg-active);
+    border-color: transparent;
+    transform: var(--arena-press-transform);
+  }
+
+  /* ---------- Ghost ---------- */
+
+  :where(.vl-button)[data-variant='ghost'] {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--_ar-btn-text);
+  }
+
+  :where(.vl-button)[data-variant='ghost']:hover:not(:disabled) {
+    background-color: var(--pal-bg-hover);
+  }
+
+  :where(.vl-button)[data-variant='ghost']:active:not(:disabled) {
+    background-color: var(--pal-bg-active);
+    transform: var(--arena-press-transform);
+  }
+
+  /* На плотном тинте --pal-bg-active текст на 15% ближе к основному: в светлой схеме
+     --error-dark на --error-light иначе даёт 4,3:1 */
+  :where(.vl-button):is([data-variant='stroke'], [data-variant='ghost']):active:not(:disabled),
+  :where(.vl-button)[data-variant='lighter']:is(:hover, :active):not(:disabled) {
+    color: color-mix(in srgb, var(--_ar-btn-text) 85%, var(--text-strong-950));
+  }
+
+  /* ---------- Нейтральная палитра ---------- */
+
+  /* corporate ((0,2,0)) даёт нейтральным вариантам кромку --halo-neutral — в арене ореол есть
+     только у filled; тот же селектор, файл идёт позже */
+  .vl-button[data-color='neutral'] {
+    --halo-offset: 0px;
+    --halo-ring-size: 4px;
+    --halo-ring-color: transparent;
+    --halo-glow-color: transparent;
+  }
+
+  :where(.vl-button)[data-color='neutral'][data-variant='filled'] {
+    --halo-ring-color: var(--pal-bg-hover);
+    color: var(--pal-on-base, var(--text-white-0));
+  }
+
+  /* corporate красит neutral + stroke в серый с волоском 1.2:1 — в арене рамка ≥ 3:1
+     и основной текст, как в макете */
+  :where(.vl-button)[data-color='neutral'][data-variant='stroke'] {
+    border-color: var(--stroke-sub-300);
+    color: var(--text-strong-950);
+    --_ar-btn-shadow: inset 0 0 0 0.5px var(--stroke-sub-300);
+  }
+
+  /* ---------- Фокус с клавиатуры ---------- */
+
+  .vl-button:focus-visible {
+    --_ar-btn-focus: var(--arena-focus-ring);
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+  }
+
+  /* ---------- Disabled — в конце: перекрывает варианты того же веса ---------- */
+
+  .vl-button:disabled {
+    --_ar-btn-shadow: inset 0 0 0 1px var(--stroke-soft-200);
+    background-color: var(--arena-field-bg-disabled);
+    border-color: transparent;
+    color: var(--text-soft-400);
+    filter: none;
+    transform: none;
+  }
+
+  :where(.vl-button)[data-variant='stroke']:disabled {
+    --_ar-btn-shadow: inset 0 0 0 0.5px var(--stroke-soft-200);
+    background-color: transparent;
+    border-color: var(--stroke-soft-200);
+  }
+
+  :where(.vl-button)[data-variant='ghost']:disabled {
+    --_ar-btn-shadow: 0 0 transparent;
+    background-color: transparent;
+  }
+}

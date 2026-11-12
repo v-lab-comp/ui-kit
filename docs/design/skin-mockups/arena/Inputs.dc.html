@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Арена — поля ввода</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&amp;family=Onest:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#07090f}
+.r{font-family:'Onest',system-ui,sans-serif;color:#f2f5fb;background:#07090f;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.r *,.r *::before,.r *::after{box-sizing:border-box}
+.r p{margin:0}
+.u{font-family:'Unbounded',system-ui,sans-serif}
+.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.h2{font:700 15px/1.2 'Unbounded',system-ui,sans-serif;letter-spacing:.01em;color:#f2f5fb;margin-bottom:24px}
+.card{background:#11151f;border-radius:20px;border:1px solid rgba(255,255,255,.07);box-shadow:0 8px 24px rgba(0,0,0,.35);padding:28px}
+.f{display:flex;flex-direction:column;min-width:0}
+.lbl{font:600 14px/1.3 'Onest',system-ui,sans-serif;color:#f2f5fb;display:flex;gap:6px;align-items:baseline;margin-bottom:8px}
+.req{color:#ff6b9a}
+.opt{font-weight:400;font-size:13px;color:#a9b3c4}
+.fld{display:flex;align-items:center;gap:10px;height:40px;padding:0 14px;border-radius:14px;background:#0b0e16;color:#a9b3c4;box-shadow:inset 0 0 0 1px var(--b,rgba(255,255,255,.1)),inset 0 2px 4px rgba(0,0,0,.35)}
+.fld input{all:unset;flex:1;min-width:0;font:400 15px/1.2 'Onest',system-ui,sans-serif;color:#f2f5fb}
+.fld input::placeholder{color:#8b95a8;opacity:1}
+.fld.big{height:44px}.fld.small{height:32px;border-radius:12px}.fld.small input{font-size:14px}
+.fld.focus{--b:#c6f432;outline:3px solid #c6f432;outline-offset:3px}
+.fld.err{--b:#ff4d8d;box-shadow:inset 0 0 0 1.5px #ff4d8d,0 0 0 4px rgba(255,77,141,.12)}
+.fld.done{--b:rgba(166,226,58,.6)}
+.fld.off{background:#161b26;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.fld.off input{color:#8b95a8}
+.hint{font-size:13px;line-height:1.4;color:#a9b3c4;margin-top:8px;display:flex;gap:6px;align-items:center}
+.hint.e{color:#ff6b9a}
+.bs{align-self:stretch;display:flex;align-items:center;gap:8px;padding:0 12px;margin-left:-14px;border-radius:14px 0 0 14px;background:#161b26;box-shadow:inset -1px 0 0 rgba(255,255,255,.08);color:#f2f5fb;font-size:15px;flex:none}
+.ib{border:0;background:transparent;color:#a9b3c4;cursor:pointer;width:32px;height:32px;margin-right:-8px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:none}
+.kbd{font:700 10px/1 'Unbounded',system-ui,sans-serif;letter-spacing:.04em;padding:6px 8px;border-radius:8px;background:#1a2030;color:#a9b3c4;box-shadow:inset 0 -1px 0 rgba(0,0,0,.4),inset 0 0 0 1px rgba(255,255,255,.06);flex:none}
+.copy{font:700 11px/1 'Unbounded',system-ui,sans-serif;letter-spacing:.03em;border:0;height:30px;margin-right:-9px;padding:0 14px;border-radius:999px;background:#c6f432;color:#07090f;cursor:pointer;display:flex;gap:6px;align-items:center;flex:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 0 16px rgba(198,244,50,.25)}
+.tag{display:inline-flex;align-items:center;gap:4px;height:28px;font:600 13px/1 'Onest',system-ui,sans-serif;padding:0 4px 0 12px;border-radius:999px;background:var(--tb);color:var(--tc)}
+.tag button{border:0;background:transparent;color:inherit;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.ed{border-radius:14px;background:#0b0e16;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);overflow:hidden}
+.tb{display:flex;gap:4px;padding:8px;background:#0e121b;box-shadow:inset 0 -1px 0 rgba(255,255,255,.07)}
+.tb button{font:700 15px/1 'Onest',system-ui,sans-serif;width:32px;height:32px;border:0;border-radius:10px;background:transparent;cursor:pointer;color:#f2f5fb;display:flex;align-items:center;justify-content:center}
+.tb button.on{background:rgba(198,244,50,.14);color:#c6f432}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 32px}
+.mk{color:#8b95a8}
+.li{color:#c6f432}
+</style>
+</helmet>
+<div class="r" style="width: 1200px; height: 1560px; box-sizing: border-box; padding: 56px; display: flex; flex-direction: column; gap: 32px">
+  <div class="u" style="font-size: 30px; font-weight: 800; line-height: 1.1">Поля ввода</div>
+
+  <div class="card">
+    <div class="h2">TextInput — состояния</div>
+    <div class="grid">
+      <div class="f"><label class="lbl" for="t1">Имя</label><div class="fld"><input id="t1" placeholder="Как вас зовут?"></div><div class="hint">Как в паспорте</div></div>
+      <div class="f"><label class="lbl" for="t2">Логин <span class="req" aria-hidden="true">*</span></label><div class="fld"><input id="t2" value="pixel_hero" aria-required="true"></div></div>
+      <div class="f"><label class="lbl" for="t3">Компания <span class="opt">(Optional)</span></label><div class="fld"><input id="t3" placeholder="ООО «Ромашка»"></div></div>
+      <div class="f"><label class="lbl" for="t4">Фокус</label><div class="fld focus"><input id="t4" value="Печатаю…"></div><div class="hint">Лаймовое кольцо — фокус с клавиатуры</div></div>
+      <div class="f"><label class="lbl" for="t5">Ошибка</label><div class="fld err"><input id="t5" value="12" aria-invalid="true" aria-describedby="t5h"></div><div class="hint e" id="t5h"><svg class="i" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 8v5M12 16h.01"/></svg>Минимум 3 символа</div></div>
+      <div class="f"><label class="lbl" for="t6">Заполнено</label><div class="fld done"><input id="t6" value="Шаг пройден"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="color: #a6e23a"><path d="M5.5 12.5l4 4 9-9"/></svg></div></div>
+      <div class="f"><label class="lbl" for="t7">Отключено</label><div class="fld off"><input id="t7" value="Нельзя изменить" disabled></div></div>
+      <div class="f"><span class="lbl">Размеры</span><div style="display: flex; flex-direction: column; gap: 12px"><div class="fld big"><input aria-label="Big" placeholder="Big · 44"></div><div class="fld"><input aria-label="Medium" placeholder="Medium · 40"></div><div class="fld small"><input aria-label="Small" placeholder="Small · 32"></div></div></div>
+      <div class="f"><label class="lbl" for="t9">Префикс и суффикс</label><div class="fld"><span aria-hidden="true" style="color: #f2f5fb; font-weight: 600">₽</span><input id="t9" value="1 990"><span>/мес</span></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="h2">Специальные поля</div>
+    <div class="grid">
+      <div class="f"><label class="lbl" for="e1">EmailInput</label><div class="fld"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="6" width="17" height="12" rx="3"/><path d="M4.5 7.5l7.5 5.5 7.5-5.5"/></svg><input id="e1" value="hero@pixel.dev"></div></div>
+      <div class="f"><label class="lbl" for="p1">PasswordInput</label><div class="fld"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="9.5" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 017 0v2.5"/></svg><input id="p1" type="password" value="supersecret"><button class="ib" aria-label="Показать пароль"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12c2.2-4 5.4-6 9-6s6.8 2 9 6c-2.2 4-5.4 6-9 6s-6.8-2-9-6z"/><circle cx="12" cy="12" r="2.75"/></svg></button></div></div>
+      <div class="f"><label class="lbl" for="s1">SearchInput</label><div class="fld"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.25"/><path d="M15.75 15.75l3.75 3.75"/></svg><input id="s1" placeholder="Найти проект"><span class="kbd">CTRL K</span></div></div>
+      <div class="f"><label class="lbl" for="l1">ShareLinkInput</label><div class="fld"><input id="l1" value="pixel.dev/i/8bit" readonly><button class="copy"><svg class="i" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6.5a2 2 0 00-2-2h-7a2 2 0 00-2 2v7a2 2 0 002 2h2"/></svg>КОПИРОВАТЬ</button></div></div>
+      <div class="f"><label class="lbl" for="w1">SiteInput</label><div class="fld"><div class="bs"><span>https://</span><svg class="i" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="color: #a9b3c4"><path d="M7 10l5 5 5-5"/></svg></div><input id="w1" value="pixel.dev"></div></div>
+      <div class="f"><label class="lbl" for="ph1">PhoneInput</label><div class="fld"><div class="bs"><svg width="22" height="15" viewBox="0 0 22 15" aria-hidden="true" style="border-radius: 3px; flex: none"><rect width="22" height="15" fill="#fff"/><rect width="22" height="5" fill="#0099b5"/><rect y="10" width="22" height="5" fill="#1eb53a"/><rect y="5" width="22" height=".8" fill="#ce1126"/><rect y="9.2" width="22" height=".8" fill="#ce1126"/></svg><span>+998</span><svg class="i" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="color: #a9b3c4"><path d="M7 10l5 5 5-5"/></svg></div><input id="ph1" value="90 123 45 67"></div></div>
+      <div class="f"><label class="lbl" for="d1">DateInput</label><div class="fld"><input id="d1" value="10.11.2026"><button class="ib" aria-label="Открыть календарь"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14" rx="3.5"/><path d="M4 10h16M8.5 3.5V7M15.5 3.5V7"/></svg></button></div></div>
+      <div class="f" style="grid-column: span 2"><label class="lbl" for="tg1">TagInput</label><div class="fld" style="height: auto; min-height: 40px; padding: 6px 8px; flex-wrap: wrap; gap: 6px"><span class="tag" style="--tb: #1b2447; --tc: #9aabff">React<button aria-label="Удалить React"><svg class="i" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"/></svg></button></span><span class="tag" style="--tb: #261e47; --tc: #b896ff">Pixel art<button aria-label="Удалить Pixel art"><svg class="i" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"/></svg></button></span><span class="tag" style="--tb: #341943; --tc: #ee86f8">8-bit<button aria-label="Удалить 8-bit"><svg class="i" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"/></svg></button></span><input id="tg1" placeholder="Добавить тег…" style="min-width: 140px; padding-left: 6px"></div><div class="hint">Enter или запятая — новый тег</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="h2">RichInput / MarkdownInput</div>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px">
+      <div class="f"><span class="lbl" id="ri-l">Описание проекта</span>
+        <div class="ed">
+          <div class="tb" role="toolbar" aria-label="Форматирование"><button class="on" aria-label="Жирный">B</button><button aria-label="Курсив" style="font-style: italic; font-weight: 500">I</button><button aria-label="Подчёркнутый" style="text-decoration: underline; text-underline-offset: 3px">U</button><button aria-label="Список"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7h10.5M9 12h10.5M9 17h10.5M4.75 7h.01M4.75 12h.01M4.75 17h.01"/></svg></button></div>
+          <div role="textbox" aria-multiline="true" aria-labelledby="ri-l" tabindex="0" style="padding: 14px 16px; min-height: 120px; font-size: 15px; line-height: 1.6"><b style="font-weight: 700">Пиксель</b> — платформер про героя из 8 бит.<br>• уровни из тайлов 16×16<br>• палитра на 8 цветов</div>
+        </div>
+        <div class="hint" style="justify-content: flex-end">96 / 500</div>
+      </div>
+      <div class="f"><span class="lbl" id="md-l">MarkdownInput — превью разметки</span>
+        <div class="ed" style="padding: 16px; font-size: 15px; line-height: 1.7; white-space: pre-line; min-height: 168px" aria-labelledby="md-l"><span class="mk">**</span>Пиксель<span class="mk">**</span> — платформер про героя из 8 бит.
+<span class="li">-</span> уровни из тайлов 16×16
+<span class="li">-</span> палитра на 8 цветов</div>
+        <div class="hint">Markdown хранится как текст; редактор тот же, что у RichInput</div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":1560}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+/*
+ * calendar-grid: вид arena поверх corporate/components/calendar-grid.css — раскладка приходит
+ * оттуда. Дни недели — Unbounded 10px капсом с разрядкой, как подзаголовки-капс макета.
+ */
+:where([data-vl-skin~='arena']) {
+  .vl-calendar-grid__weekday {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-sub-600);
+  }
+}

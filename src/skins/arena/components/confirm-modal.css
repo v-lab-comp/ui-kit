@@ -1,0 +1,11 @@
+/* confirm-modal: вид arena поверх corporate/components/confirm-modal.css.
+   Текст подтверждения — вторичный цвет и чуть крупнее, как абзац в окне макета
+   (Overlays.dc.html: 15px / 1.55, --text-sub-600; на толстом стекле держит ≥ 4,5:1). */
+:where([data-vl-skin~='arena']) {
+  .vl-confirm-modal__content {
+    color: var(--text-sub-600);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+}

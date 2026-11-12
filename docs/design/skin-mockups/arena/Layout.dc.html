@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Арена — экран приложения</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&amp;family=Onest:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.r{font-family:'Onest',system-ui,sans-serif;color:#f2f5fb;background:#07090f;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+.r *,.r *::before,.r *::after{box-sizing:border-box}
+.u{font-family:'Unbounded','Onest',sans-serif}
+.surface{background:#11151f;border-radius:20px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.07),0 1px 0 rgba(0,0,0,.5),0 14px 34px rgba(0,0,0,.38)}
+.glass{position:relative;isolation:isolate;background:rgba(30,34,46,.55);-webkit-backdrop-filter:blur(28px) saturate(160%);backdrop-filter:blur(28px) saturate(160%);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 1px 0 rgba(0,0,0,.45),0 22px 56px rgba(0,0,0,.5)}
+.glass.thick{background:rgba(30,34,46,.82)}
+.glass::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(150deg,rgba(255,255,255,.30),rgba(255,255,255,.07) 34%,rgba(255,255,255,0) 58%,rgba(255,255,255,.16));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;z-index:1}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.glass,.glass.thick{background:rgba(22,26,36,.97)}}
+.ico{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.ico.s{width:16px;height:16px}
+.btn{font:700 13px/1 'Unbounded','Onest',sans-serif;letter-spacing:.01em;height:44px;padding:0 20px;border:0;border-radius:999px;display:inline-flex;align-items:center;gap:8px;cursor:pointer;color:#f2f5fb;background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.10),inset 0 1px 0 rgba(255,255,255,.06)}
+.btn.primary{background:#c6f432;color:#07090f;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 0 rgba(7,9,15,.12),0 0 0 1px rgba(198,244,50,.45),0 8px 24px rgba(198,244,50,.26)}
+.btn.ghost{padding:0 14px 0 16px}
+.r .ring{box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 0 0 3px #c6f432,0 0 18px rgba(198,244,50,.35)}
+
+.side{position:absolute;left:16px;top:16px;bottom:16px;width:264px;border-radius:24px;padding:12px;display:flex;flex-direction:column;z-index:2}
+.sw{all:unset;box-sizing:border-box;width:100%;display:flex;align-items:center;gap:12px;padding:8px 14px 8px 8px;border-radius:16px;background:rgba(255,255,255,.05);cursor:pointer;color:#f2f5fb}
+.sw > .ico{margin-left:auto;color:#a9b3c4;transform:rotate(180deg)}
+.logo{width:40px;height:40px;flex:none;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#07090f;background:#c6f432;box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 -2px 0 rgba(7,9,15,.14),0 0 18px rgba(198,244,50,.35)}
+.sw-t{display:flex;flex-direction:column;gap:4px}
+.sw-t b{font:800 14px/1.1 'Unbounded',sans-serif;letter-spacing:.06em}
+.sw-t span{font-size:13px;color:#a9b3c4}
+.sec{font:700 11px/1 'Unbounded',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#a9b3c4;padding:24px 14px 10px}
+.it{position:relative;display:flex;align-items:center;gap:12px;height:44px;padding:0 10px 0 18px;border-radius:999px;color:#d5dbe6;text-decoration:none;font-size:15px;font-weight:500}
+.it .ico{color:#a9b3c4}
+.it.on{color:#e6ff9a;font-weight:600;background:rgba(198,244,50,.10);box-shadow:inset 0 0 0 1px rgba(198,244,50,.24),inset 0 1px 0 rgba(255,255,255,.08)}
+.it.on .ico{color:#e6ff9a}
+.it.on::before{content:'';position:absolute;left:7px;top:50%;width:3px;height:16px;margin-top:-8px;border-radius:3px;background:#c6f432;box-shadow:0 0 10px rgba(198,244,50,.7)}
+.cnt{margin-left:auto;min-width:26px;height:22px;padding:0 8px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font:700 11px/1 'Unbounded',sans-serif;color:#07090f;background:#ff4d8d;box-shadow:0 0 12px rgba(255,77,141,.35)}
+.cnt.acc{background:#c6f432;box-shadow:0 0 12px rgba(198,244,50,.3)}
+.me{margin-top:auto;display:flex;align-items:center;gap:12px;padding:12px;border-radius:18px;background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)}
+.me-t{display:flex;flex-direction:column;gap:3px;min-width:0}
+.me-t b{font-size:15px;font-weight:600}
+.me-t span{font-size:13px;color:#a9b3c4}
+.av{width:40px;height:40px;flex:none;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font:700 12px/1 'Unbounded',sans-serif;color:#f2f5fb;background:radial-gradient(circle at 32% 26%,rgba(255,255,255,.16),rgba(255,255,255,0) 62%),#1b2130;box-shadow:0 0 0 2px #07090f,0 0 0 4px var(--rc),0 0 16px var(--rg)}
+
+.hdr{position:absolute;left:296px;right:16px;top:16px;height:84px;border-radius:24px;padding:0 16px 0 26px;display:flex;align-items:center;gap:12px;z-index:2}
+.crumbs{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:#a9b3c4}
+.crumbs a{color:#a9b3c4;text-decoration:none}
+.crumbs [aria-current]{color:#f2f5fb}
+.t{margin:7px 0 0;font:800 24px/1.1 'Unbounded',sans-serif;letter-spacing:-.005em}
+.search{display:flex;align-items:center;gap:10px;width:300px;height:44px;padding:0 8px 0 16px;border-radius:999px;background:rgba(7,9,15,.5);box-shadow:inset 0 0 0 1px rgba(255,255,255,.09),inset 0 1px 2px rgba(0,0,0,.35);color:#a9b3c4}
+.search input{all:unset;flex:1;min-width:0;font:400 15px 'Onest',sans-serif;color:#f2f5fb}
+.search input::placeholder{color:#a9b3c4;opacity:1}
+.k{font:700 11px/1 'Unbounded',sans-serif;min-width:28px;height:28px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;color:#a9b3c4;background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.10)}
+
+.m{position:absolute;left:296px;right:16px;top:120px;bottom:16px;display:flex;flex-direction:column;gap:20px}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+.tile{display:block;overflow:hidden;color:inherit;text-decoration:none}
+.media{position:relative;height:196px;overflow:hidden;border-radius:20px 20px 0 0;background:radial-gradient(circle at 50% 64%,var(--g) 0,rgba(0,0,0,0) 60%),linear-gradient(180deg,#171c29,#0b0e16)}
+.media::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--c);box-shadow:0 0 18px 3px var(--g)}
+.media span{position:absolute;display:block}
+.cap{display:flex;flex-direction:column;gap:8px;padding:14px 16px 16px}
+.cap-h{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.cap b{font:700 14px/1.2 'Unbounded',sans-serif}
+.cap small{font-size:13px;color:#a9b3c4}
+.rar{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 9px;border-radius:999px;font:700 10px/1 'Unbounded',sans-serif;letter-spacing:.02em;color:var(--t);background:var(--b);box-shadow:inset 0 0 0 1px var(--l);white-space:nowrap}
+.rar::before{content:'';width:6px;height:6px;border-radius:9px;background:var(--c);box-shadow:0 0 6px var(--c)}
+
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.stat{position:relative;overflow:hidden;padding:20px 22px 22px;display:flex;flex-direction:column;gap:16px}
+.stat::after{content:'';position:absolute;right:-80px;top:-80px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,var(--g),rgba(0,0,0,0) 64%);pointer-events:none}
+.stat-h{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:500;color:#a9b3c4}
+.ci{width:36px;height:36px;flex:none;border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--c);background:var(--b);box-shadow:inset 0 0 0 1px var(--l)}
+.num{font:800 40px/1 'Unbounded',sans-serif;letter-spacing:-.01em}
+.num small{font-size:20px;font-weight:700;color:#a9b3c4}
+.prog{display:flex;align-items:center;gap:12px}
+.track{flex:1;height:8px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
+.track i{display:block;height:100%;border-radius:999px;background:var(--c);box-shadow:0 0 12px var(--g)}
+.pct{font:700 12px/1 'Unbounded',sans-serif;color:#a9b3c4;min-width:36px;text-align:right}
+
+.feed-h{display:flex;align-items:center;justify-content:space-between;padding:18px 22px 14px}
+.feed-h h2{margin:0;font:700 15px/1.2 'Unbounded',sans-serif}
+.lnk{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:#c6f432;text-decoration:none}
+.row{display:flex;align-items:center;gap:14px;height:60px;padding:0 22px;border-top:1px solid rgba(255,255,255,.06);font-size:15px}
+.ri{width:32px;height:32px;flex:none;border-radius:999px;display:flex;align-items:center;justify-content:center;color:var(--c);background:var(--b)}
+.rt{flex:1;min-width:0;color:#e3e8f1}
+.chip{display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:999px;font:700 10px/1 'Unbounded',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--c);background:var(--b);box-shadow:inset 0 0 0 1px var(--l)}
+.tm{width:96px;text-align:right;font-size:13px;color:#a9b3c4}
+.ok{--c:#c6f432;--b:rgba(198,244,50,.12);--l:rgba(198,244,50,.26)}
+.rv{--c:#f5b544;--b:rgba(245,165,36,.14);--l:rgba(245,165,36,.28)}
+.er{--c:#ff6b9a;--b:rgba(255,77,141,.14);--l:rgba(255,77,141,.30)}
+.nw{--c:#9db2ff;--b:rgba(58,99,240,.18);--l:rgba(58,99,240,.36)}
+
+.apps{position:absolute;left:24px;top:96px;width:360px;border-radius:24px;padding:10px;z-index:5}
+.promo{position:relative;overflow:hidden;border-radius:16px;padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;background:#121a3a;box-shadow:inset 0 0 0 1px rgba(58,99,240,.35)}
+.promo::after{content:'';position:absolute;right:-50px;top:-60px;width:190px;height:190px;border-radius:50%;background:radial-gradient(circle,rgba(58,99,240,.55),rgba(58,99,240,0) 64%)}
+.promo > *{position:relative;z-index:1}
+.tag{align-self:flex-start;height:22px;padding:0 9px;border-radius:999px;display:inline-flex;align-items:center;font:700 10px/1 'Unbounded',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#07090f;background:#c6f432}
+.promo b{font:700 15px/1.25 'Unbounded',sans-serif;color:#f2f5fb}
+.promo span.s{font-size:13px;color:#c9d3ff}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:10px 0 0}
+.app{display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 4px 10px;border-radius:16px;font-size:13px;font-weight:500;color:#e3e8f1;text-decoration:none;text-align:center}
+.app.on{color:#e6ff9a;font-weight:600;background:rgba(198,244,50,.10);box-shadow:inset 0 0 0 1px rgba(198,244,50,.28)}
+.ai{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;background:var(--c);box-shadow:inset 0 1px 0 rgba(255,255,255,.32),inset 0 -2px 0 rgba(7,9,15,.18),0 6px 18px var(--g)}
+.app.off{color:#8b95a7}
+.app.off .ai{color:#8b95a7;background:#232937;box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)}
+</style>
+</helmet>
+<div class="r" style="width: 1440px; height: 980px; position: relative; overflow: hidden">
+
+  <nav class="side glass" aria-label="Основное меню">
+    <button class="sw ring" type="button" aria-haspopup="menu" aria-expanded="true">
+      <span class="logo"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10l4 5-9 11L3 9z"/><path d="M3 9h18M10 4 8.5 9 12 20l3.5-11L14 4"/></svg></span>
+      <span class="sw-t"><b>V-LAB</b><span>Студия</span></span>
+      <svg class="ico s" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+
+    <div class="sec">Работа</div>
+    <a class="it" href="#"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11 12 4l8.5 7"/><path d="M6 9.5V20h4.5v-5h3v5H18V9.5"/></svg>Главная</a>
+    <a class="it on" href="#" aria-current="page"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7.5a2 2 0 0 1 2-2h4l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/></svg>Проекты<span class="cnt acc">4</span></a>
+    <a class="it" href="#"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-5M12 16V6M17 16V9"/></svg>Отчёты</a>
+    <a class="it" href="#"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19.5a5.5 5.5 0 0 1 11 0"/><circle cx="17" cy="9" r="2.4"/><path d="M15.6 14.3a4.5 4.5 0 0 1 4.9 5.2"/></svg>Команда</a>
+
+    <div class="sec">Система</div>
+    <a class="it" href="#"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9M18 7h2M4 17h3M12 17h8"/><circle cx="15.5" cy="7" r="2.3"/><circle cx="9.5" cy="17" r="2.3"/></svg>Настройки</a>
+    <a class="it" href="#"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5h4"/></svg>Уведомления<span class="cnt">12</span></a>
+
+    <div class="me">
+      <span class="av" aria-hidden="true" style="--rc: #e4ae39; --rg: rgba(228,174,57,.45)">АП</span>
+      <span class="me-t"><b>Анна Петрова</b><span>anna@pixel.dev</span></span>
+    </div>
+  </nav>
+
+  <header class="hdr glass">
+    <div style="flex: 1; min-width: 0">
+      <nav class="crumbs" aria-label="Навигация"><a href="#">Главная</a><svg class="ico s" viewBox="0 0 24 24" aria-hidden="true" style="width: 14px; height: 14px"><path d="m9 6 6 6-6 6"/></svg><span aria-current="page">Проекты</span></nav>
+      <h1 class="t">Проекты</h1>
+    </div>
+    <label class="search"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><input type="search" placeholder="Найти проект" aria-label="Найти проект"><kbd class="k">/</kbd></label>
+    <button class="btn ghost" type="button" aria-label="Язык интерфейса">RU<svg class="ico s" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+    <button class="btn primary" type="button"><svg class="ico s" viewBox="0 0 24 24" aria-hidden="true" style="stroke-width: 2"><path d="M12 5v14M5 12h14"/></svg>Новый проект</button>
+  </header>
+
+  <main class="m">
+    <section class="tiles" aria-label="Недавние проекты">
+      <a class="tile surface" href="#">
+        <div class="media" aria-hidden="true" style="--c: #eb4b4b; --g: rgba(235,75,75,.42)">
+          <span style="left: 0; right: 0; bottom: 0; height: 26px; background: linear-gradient(180deg, #1d1416, #120c0e)"></span>
+          <span style="left: 50%; bottom: 22px; width: 86px; height: 102px; margin-left: -43px; border-radius: 43px 43px 6px 6px; background: linear-gradient(180deg, #2e1618, #160b0d); box-shadow: inset 0 0 0 2px rgba(235,75,75,.6), 0 0 34px rgba(235,75,75,.4)"></span>
+          <span style="left: 50%; bottom: 66px; width: 16px; height: 16px; margin-left: -8px; border-radius: 999px; background: #ff9a7a; box-shadow: 0 0 14px 3px rgba(255,120,90,.7)"></span>
+          <span style="left: 50%; bottom: 46px; width: 10px; height: 24px; margin-left: -5px; background: #ff9a7a; clip-path: polygon(30% 0, 70% 0, 100% 100%, 0 100%); box-shadow: 0 0 10px rgba(255,120,90,.6)"></span>
+          <span style="left: 38px; top: 78px; width: 10px; height: 16px; border-radius: 50% 50% 40% 40%; background: #ffb547; box-shadow: 0 0 16px 6px rgba(255,150,60,.45)"></span>
+          <span style="right: 38px; top: 78px; width: 10px; height: 16px; border-radius: 50% 50% 40% 40%; background: #ffb547; box-shadow: 0 0 16px 6px rgba(255,150,60,.45)"></span>
+          <span style="left: 41px; top: 94px; width: 4px; height: 26px; border-radius: 2px; background: #4a3a34"></span>
+          <span style="right: 41px; top: 94px; width: 4px; height: 26px; border-radius: 2px; background: #4a3a34"></span>
+        </div>
+        <div class="cap">
+          <div class="cap-h"><b>«Подземелье»</b><span class="rar" style="--c: #eb4b4b; --t: #ff8a8a; --b: rgba(235,75,75,.14); --l: rgba(235,75,75,.34)">Легендарный</span></div>
+          <small>Уровень 3 · собран</small>
+        </div>
+      </a>
+      <a class="tile surface" href="#">
+        <div class="media" aria-hidden="true" style="--c: #8847ff; --g: rgba(136,71,255,.44)">
+          <span style="right: 34px; top: 46px; width: 30px; height: 30px; border-radius: 999px; background: #e3d6ff; box-shadow: 0 0 0 6px rgba(227,214,255,.12), 0 0 30px 8px rgba(160,110,255,.5)"></span>
+          <span style="left: -30px; right: -30px; bottom: -60px; height: 96px; border-radius: 50%; background: #1a1233"></span>
+          <span style="left: 46px; bottom: 26px; width: 58px; height: 92px; background: linear-gradient(180deg, #7a4cf0, #3d2391); clip-path: polygon(50% 0, 100% 100%, 0 100%)"></span>
+          <span style="left: 92px; bottom: 22px; width: 76px; height: 112px; background: linear-gradient(180deg, #9c6dff, #4a2aa8); clip-path: polygon(50% 0, 100% 100%, 0 100%)"></span>
+          <span style="left: 158px; bottom: 24px; width: 50px; height: 76px; background: linear-gradient(180deg, #6a3fe0, #33207a); clip-path: polygon(50% 0, 100% 100%, 0 100%)"></span>
+        </div>
+        <div class="cap">
+          <div class="cap-h"><b>«Лес»</b><span class="rar" style="--c: #8847ff; --t: #b592ff; --b: rgba(136,71,255,.16); --l: rgba(136,71,255,.38)">Редкий</span></div>
+          <small>Тайлсет · на ревью</small>
+        </div>
+      </a>
+      <a class="tile surface" href="#">
+        <div class="media" aria-hidden="true" style="--c: #d32ce6; --g: rgba(211,44,230,.42)">
+          <span style="left: 50%; top: 46px; width: 18px; height: 40px; margin-left: -58px; border-radius: 9px; background: linear-gradient(180deg, #f39bff, #a01fb3); transform: rotate(-24deg)"></span>
+          <span style="left: 50%; top: 46px; width: 18px; height: 40px; margin-left: 40px; border-radius: 9px; background: linear-gradient(180deg, #f39bff, #a01fb3); transform: rotate(24deg)"></span>
+          <span style="left: 50%; top: 62px; width: 104px; height: 92px; margin-left: -52px; border-radius: 34px 34px 40px 40px; background: linear-gradient(180deg, #3a1442, #1c0a22); box-shadow: inset 0 0 0 2px rgba(211,44,230,.65), 0 0 30px rgba(211,44,230,.35)"></span>
+          <span style="left: 50%; top: 94px; width: 20px; height: 12px; margin-left: -32px; border-radius: 12px 12px 4px 12px; background: #ff8af6; box-shadow: 0 0 14px 3px rgba(255,110,245,.65)"></span>
+          <span style="left: 50%; top: 94px; width: 20px; height: 12px; margin-left: 12px; border-radius: 12px 12px 12px 4px; background: #ff8af6; box-shadow: 0 0 14px 3px rgba(255,110,245,.65)"></span>
+          <span style="left: 50%; top: 124px; width: 40px; height: 6px; margin-left: -20px; border-radius: 6px; background: rgba(255,138,246,.55)"></span>
+        </div>
+        <div class="cap">
+          <div class="cap-h"><b>«Босс»</b><span class="rar" style="--c: #d32ce6; --t: #ef7ef9; --b: rgba(211,44,230,.14); --l: rgba(211,44,230,.36)">Эпический</span></div>
+          <small>Спрайты · ошибка сборки</small>
+        </div>
+      </a>
+      <a class="tile surface" href="#">
+        <div class="media" aria-hidden="true" style="--c: #e4ae39; --g: rgba(228,174,57,.42)">
+          <span style="left: 50%; top: 50px; width: 104px; height: 96px; margin-left: -52px; background: linear-gradient(170deg, #ffe58f, #e4ae39 45%, #9a6a0e); clip-path: polygon(26% 0, 74% 0, 100% 34%, 50% 100%, 0 34%); filter: drop-shadow(0 0 16px rgba(228,174,57,.5))"></span>
+          <span style="left: 50%; top: 50px; width: 104px; height: 33px; margin-left: -52px; background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.15)); clip-path: polygon(26% 0, 74% 0, 100% 100%, 0 100%)"></span>
+          <span style="left: 50%; top: 83px; width: 52px; height: 63px; margin-left: -26px; background: rgba(120,76,0,.28); clip-path: polygon(0 0, 100% 0, 50% 100%)"></span>
+          <span style="right: 54px; top: 46px; width: 18px; height: 18px; background: #fff7d6; clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%)"></span>
+          <span style="left: 58px; bottom: 30px; width: 12px; height: 12px; background: #ffe9a8; clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%)"></span>
+        </div>
+        <div class="cap">
+          <div class="cap-h"><b>«Пиксель»</b><span class="rar" style="--c: #e4ae39; --t: #f0c560; --b: rgba(228,174,57,.14); --l: rgba(228,174,57,.34)">Коллекционный</span></div>
+          <small>Палитра · 12 цветов</small>
+        </div>
+      </a>
+    </section>
+
+    <section class="stats" aria-label="Сводка">
+      <div class="stat surface" style="--g: rgba(75,105,255,.30)">
+        <div class="stat-h"><span class="ci" style="--c: #9db2ff; --b: rgba(75,105,255,.16); --l: rgba(75,105,255,.34)"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 4.5-8 4.5-8-4.5z"/><path d="m4 12 8 4.5 8-4.5M4 16.5 12 21l8-4.5"/></svg></span>Активных проектов</div>
+        <div class="num">04</div>
+        <div class="prog"><div class="track" aria-hidden="true"><i style="width: 60%; --c: #4b69ff; --g: rgba(75,105,255,.6)"></i></div><span class="pct">60%</span></div>
+      </div>
+      <div class="stat surface" style="--g: rgba(198,244,50,.20)">
+        <div class="stat-h"><span class="ci ok"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="m8 12.4 2.8 2.8L16 9.6"/></svg></span>Уровней готово</div>
+        <div class="num">23<small> / 32</small></div>
+        <div class="prog"><div class="track" aria-hidden="true"><i style="width: 72%; --c: #c6f432; --g: rgba(198,244,50,.55)"></i></div><span class="pct">72%</span></div>
+      </div>
+      <div class="stat surface" style="--g: rgba(255,77,141,.28)">
+        <div class="stat-h"><span class="ci er"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4 21 19.5H3z"/><path d="M12 10v4M12 17h.01"/></svg></span>Ошибок сборки</div>
+        <div class="num" style="color: #ff6b9a">01</div>
+        <div class="prog"><div class="track" aria-hidden="true"><i style="width: 12%; --c: #ff4d8d; --g: rgba(255,77,141,.6)"></i></div><span class="pct">12%</span></div>
+      </div>
+    </section>
+
+    <section class="surface" aria-labelledby="feed-title">
+      <div class="feed-h"><h2 id="feed-title">Последние изменения</h2><a class="lnk" href="#">Все изменения<svg class="ico s" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+      <div class="row"><span class="ri ok"><svg class="ico s" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span><span class="rt">Уровень 3 «Подземелье» собран</span><span class="chip ok">Готово</span><span class="tm">5 мин назад</span></div>
+      <div class="row"><span class="ri rv"><svg class="ico s" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></span><span class="rt">Тайлсет «Лес» ждёт проверки</span><span class="chip rv">Ревью</span><span class="tm">1 ч назад</span></div>
+      <div class="row"><span class="ri er"><svg class="ico s" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></span><span class="rt">Не собран спрайт босса</span><span class="chip er">Ошибка</span><span class="tm">вчера</span></div>
+      <div class="row"><span class="ri nw"><svg class="ico s" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="8" r="3.5"/><path d="M3.5 20a6.5 6.5 0 0 1 13 0M19 8v6M16 11h6"/></svg></span><span class="rt">Лейла присоединилась к проекту</span><span class="chip nw">Новое</span><span class="tm">вчера</span></div>
+    </section>
+  </main>
+
+  <div class="apps glass thick" role="menu" aria-label="Приложения">
+    <div class="promo">
+      <span class="tag">Новинка</span>
+      <b>Новый редактор карт</b>
+      <span class="s">Рисуйте уровни прямо в браузере</span>
+    </div>
+    <div class="grid">
+      <a class="app on" role="menuitem" href="#" aria-current="true"><span class="ai" style="--c: #c6f432; --g: rgba(198,244,50,.3); color: #07090f"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10l4 5-9 11L3 9z"/><path d="M3 9h18M10 4 8.5 9 12 20l3.5-11L14 4"/></svg></span>Студия</a>
+      <a class="app" role="menuitem" href="#"><span class="ai" style="--c: #3a63f0; --g: rgba(58,99,240,.4)"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-5M12 16V6M17 16V9"/></svg></span>Аналитика</a>
+      <a class="app" role="menuitem" href="#"><span class="ai" style="--c: #b522c7; --g: rgba(211,44,230,.38)"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19.5a5.5 5.5 0 0 1 11 0"/><circle cx="17" cy="9" r="2.4"/><path d="M15.6 14.3a4.5 4.5 0 0 1 4.9 5.2"/></svg></span>Команды</a>
+      <a class="app" role="menuitem" href="#"><span class="ai" style="--c: #f5a524; --g: rgba(245,165,36,.34); color: #07090f"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M8 3.5v4M16 3.5v4"/></svg></span>Календарь</a>
+      <a class="app" role="menuitem" href="#"><span class="ai" style="--c: #8847ff; --g: rgba(136,71,255,.4)"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2.5"/><path d="m4.5 7.5 7.5 6 7.5-6"/></svg></span>Почта</a>
+      <span class="app off" role="menuitem" aria-disabled="true"><span class="ai"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg></span>Скоро</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":980}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

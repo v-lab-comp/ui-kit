@@ -1,0 +1,107 @@
+/*
+ * tag-input: вид arena поверх corporate/components/tag-input.css — раскладка приходит оттуда,
+ * здесь только оформление.
+ *
+ * Оболочка — то же «утопленное» поле InputField (input-field.css), вид самих тегов — tag.css.
+ * Здесь: прокрутка, счётчик «+N» (лаймовая пилюля-тинт, как чипы множественного выбора в макете
+ * «Выбор») и список подсказок. Панель подсказок — Popover (стекло рисует popover.css); подсвеченная
+ * подсказка — лаймовый тинт, как опция SelectInput.
+ */
+:where([data-vl-skin~='arena']) {
+  /* ── Прокрутка: тонкий ползунок-пилюля ─────────────────────────────────── */
+
+  .vl-tag-input__tags-scroll-area,
+  .vl-tag-input__suggestions-list {
+    scrollbar-color: var(--arena-control-bg-hover) transparent;
+  }
+
+  .vl-tag-input__tags-scroll-area::-webkit-scrollbar-thumb,
+  .vl-tag-input__suggestions-list::-webkit-scrollbar-thumb {
+    background-color: var(--arena-control-bg-hover);
+  }
+
+  .vl-tag-input__tags-scroll-area::-webkit-scrollbar-thumb:hover,
+  .vl-tag-input__suggestions-list::-webkit-scrollbar-thumb:hover {
+    background-color: var(--stroke-sub-300);
+  }
+
+  /* ── Счётчик скрытых тегов «+N» ────────────────────────────────────────── */
+
+  .vl-tag-input__more-tags {
+    padding: 2px 10px;
+    border-radius: var(--radius-full);
+    background-color: var(--primary-alpha-16);
+    box-shadow: inset 0 0 0 1px var(--primary-alpha-16);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--arena-accent-text);
+  }
+
+  .vl-input-field__wrapper[data-disabled] .vl-tag-input__more-tags {
+    background-color: var(--arena-control-bg);
+    box-shadow: none;
+    color: var(--text-soft-400);
+  }
+
+  /* ── Подсказки ─────────────────────────────────────────────────────────── */
+
+  .vl-tag-input__suggestions-popover {
+    padding: 6px;
+  }
+
+  .vl-tag-input__suggestions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .vl-tag-input__suggestion-btn {
+    padding: 10px 12px;
+    border-radius: var(--radius-8);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    letter-spacing: 0;
+    color: var(--text-strong-950);
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-tag-input__suggestion-btn:hover {
+    background-color: var(--arena-control-bg-hover);
+  }
+
+  /* Подсвеченная (стрелками) — лаймовый тинт, текст акцентом, блик сверху */
+  .vl-tag-input__suggestion-btn[data-active='true'] {
+    background-color: var(--primary-alpha-16);
+    color: var(--arena-accent-text);
+    box-shadow: inset 0 1px 0 var(--stroke-soft-200);
+  }
+
+  .vl-tag-input__suggestion-check-icon {
+    color: var(--primary-dark);
+  }
+
+  .vl-tag-input__suggestion-btn[data-active='true'] .vl-tag-input__suggestion-check-icon {
+    color: inherit;
+  }
+
+  .vl-tag-input__suggestion-btn:focus-visible {
+    outline: var(--arena-focus-width) solid var(--arena-focus-color);
+    outline-offset: calc(-1 * var(--arena-focus-width));
+  }
+
+  /* Отключённая подсказка — приглушённый текст, без полупрозрачности */
+  :where(.vl-tag-input__suggestion-btn)[data-disabled],
+  .vl-tag-input__suggestion-btn:disabled {
+    color: var(--text-soft-400);
+    opacity: 1;
+  }
+
+  .vl-tag-input__suggestions-message {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--text-sub-600);
+  }
+}

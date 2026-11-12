@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Арена — обзор</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&amp;family=Onest:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#07090f}
+.r{font-family:'Onest',system-ui,sans-serif;color:#f2f5fb;background:#07090f;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.r *,.r *::before,.r *::after{box-sizing:border-box}
+.r p{margin:0}
+.u{font-family:'Unbounded',system-ui,sans-serif}
+.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.h2{font:700 15px/1.2 'Unbounded',system-ui,sans-serif;letter-spacing:.01em;color:#f2f5fb}
+.cap{font-size:13px;line-height:1.4;color:#a9b3c4}
+.card{position:relative;background:#11151f;border-radius:20px;border:1px solid rgba(255,255,255,.07);box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.glass{position:relative;background:rgba(30,34,46,.55);-webkit-backdrop-filter:blur(28px) saturate(160%);backdrop-filter:blur(28px) saturate(160%);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 18px 44px rgba(0,0,0,.45)}
+.glass::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(150deg,rgba(255,255,255,.42),rgba(255,255,255,.08) 34%,rgba(255,255,255,0) 58%,rgba(255,255,255,.2));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;pointer-events:none}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.glass{background:rgba(30,34,46,.94)}}
+.gl{position:absolute;border-radius:50%;background:radial-gradient(closest-side,var(--g),rgba(0,0,0,0));pointer-events:none}
+.bar{position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--rc)}
+.btn{font:700 14px/1 'Unbounded',system-ui,sans-serif;letter-spacing:.01em;height:44px;padding:0 22px;border:0;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;white-space:nowrap;color:#07090f;background:#c6f432;box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
+.btn.cta{box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 0 24px rgba(198,244,50,.25)}
+.btn.sec{background:#3a63f0;color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.22)}
+.btn.stroke{background:transparent;color:#f2f5fb;box-shadow:inset 0 0 0 1.5px rgba(242,245,251,.3)}
+.btn.sm{height:36px;padding:0 16px;font-size:13px}
+.btn.pressed{transform:scale(.98);filter:brightness(.9);box-shadow:inset 0 2px 5px rgba(0,0,0,.28)}
+.btn.focus{outline:3px solid #c6f432;outline-offset:3px}
+.badge{font:700 11px/1 'Unbounded',system-ui,sans-serif;letter-spacing:.04em;height:30px;padding:0 14px;border-radius:999px;display:inline-flex;align-items:center;gap:8px;color:#f2f5fb;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+.pill{font:700 11px/1 'Unbounded',system-ui,sans-serif;letter-spacing:.02em;height:24px;padding:0 10px;border-radius:999px;display:inline-flex;align-items:center;white-space:nowrap}
+.sw{display:flex;flex-direction:column;gap:8px}
+.chip{height:80px;border-radius:14px;padding:10px 12px;display:flex;align-items:flex-end;font:700 11px/1 'Unbounded',system-ui,sans-serif;letter-spacing:.03em;border:1px solid rgba(255,255,255,.08)}
+.tile{position:relative;height:64px;border-radius:14px;overflow:hidden;background:#0b0e16;border:1px solid rgba(255,255,255,.07)}
+.ic{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;color:#a9b3c4}
+.ic span{width:52px;height:52px;border-radius:14px;background:#11151f;border:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;color:#f2f5fb}
+.ts{display:flex;align-items:baseline;gap:16px}
+.ts .cap{width:132px;flex:none;font-size:12px}
+.lfld{display:flex;align-items:center;height:44px;padding:0 14px;border-radius:14px;background:#f3f4f8;box-shadow:inset 0 0 0 1px rgba(11,18,32,.12)}
+.lfld input{all:unset;flex:1;min-width:0;font:500 15px/1 'Onest',system-ui,sans-serif;color:#0b1220}
+</style>
+</helmet>
+<div class="r" style="width: 1200px; height: 1980px; box-sizing: border-box; padding: 56px; display: flex; flex-direction: column; gap: 44px">
+
+  <div style="display: flex; gap: 48px; align-items: center">
+    <div style="width: 440px; flex: none; display: flex; flex-direction: column; gap: 18px">
+      <div class="u" style="font-size: 13px; font-weight: 700; color: #c6f432; letter-spacing: .06em">СКИН ДЛЯ V-LAB UI KIT</div>
+      <div class="u" style="font-size: 60px; font-weight: 800; line-height: 1; letter-spacing: -.01em">Арена</div>
+      <p style="font-size: 17px; line-height: 1.55; color: #a9b3c4">Тёмная арена для молодёжных live-аукционов: плавающие слои из стекла, лаймовый призыв к ставке, шкала редкости как цвета данных и мягкое свечение за предметами. Компоненты те же — меняется только CSS скина.</p>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap">
+        <span class="badge"><svg class="i" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="color: #c6f432"><path d="M5.5 12.5l4 4 9-9"/></svg>DARK + LIGHT</span>
+        <span class="badge"><svg class="i" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="color: #c6f432"><path d="M5.5 12.5l4 4 9-9"/></svg>КОНТРАСТ ≥ 4,5:1</span>
+        <span class="badge"><svg class="i" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="color: #c6f432"><path d="M5.5 12.5l4 4 9-9"/></svg>КИРИЛЛИЦА</span>
+      </div>
+    </div>
+
+    <div style="position: relative; width: 600px; height: 430px; flex: none">
+      <div class="card" style="position: absolute; left: 440px; top: 92px; width: 160px; height: 300px; overflow: hidden; background: #0b0e16" aria-hidden="true">
+        <div class="gl" style="--g: rgba(211,44,230,.45); width: 240px; height: 240px; left: -40px; top: 20px"></div>
+        <svg width="70" height="70" viewBox="0 0 64 64" style="position: absolute; left: 45px; top: 100px; color: #d32ce6" aria-hidden="true"><path d="M32 6L54 26L32 58L10 26Z" fill="currentColor"/><path d="M32 6L54 26H10Z" fill="#fff" fill-opacity=".38"/><path d="M32 26H54L32 58Z" fill="#000" fill-opacity=".22"/><path d="M10 26H54M32 6L22 26L32 58L42 26Z" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="1" stroke-linejoin="round"/></svg>
+        <span class="pill" style="position: absolute; left: 14px; bottom: 18px; background: #341943; color: #ee86f8">Эпический</span>
+        <div class="bar" style="--rc: #d32ce6"></div>
+      </div>
+
+      <article class="card" style="position: absolute; left: 0; top: 0; width: 320px; overflow: hidden" aria-label="Лот #2048">
+        <div style="position: relative; height: 200px; background: #0b0e16; display: flex; align-items: center; justify-content: center; overflow: hidden">
+          <div class="gl" style="--g: rgba(235,75,75,.5); width: 300px; height: 300px; left: 10px; top: -40px"></div>
+          <svg width="128" height="128" viewBox="0 0 64 64" aria-hidden="true" style="position: relative; color: #eb4b4b"><path d="M32 6L54 26L32 58L10 26Z" fill="currentColor"/><path d="M32 6L54 26H10Z" fill="#fff" fill-opacity=".38"/><path d="M32 26H54L32 58Z" fill="#000" fill-opacity=".22"/><path d="M10 26H54M32 6L22 26L32 58L42 26Z" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width=".8" stroke-linejoin="round"/><path d="M54 6v6M51 9h6M8 44v4M6 46h4" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width=".8" stroke-linecap="round"/></svg>
+          <span class="pill" style="position: absolute; left: 14px; top: 14px; background: #eb4b4b; color: #07090f">Легендарный</span>
+          <span class="glass u" style="position: absolute; right: 14px; top: 12px; height: 30px; padding: 0 12px; border-radius: 999px; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: #f5b84a"><svg class="i" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="7"/><path d="M12 13V9.5M10 3.5h4"/></svg>00:42</span>
+          <div class="bar" style="--rc: #eb4b4b"></div>
+        </div>
+        <div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 14px">
+          <div>
+            <div class="u" style="font-size: 16px; font-weight: 700; line-height: 1.3">Кристалл «Сверхновая»</div>
+            <div class="cap" style="margin-top: 4px">Лот #2048 · 14 ставок</div>
+          </div>
+          <div>
+            <div class="cap">Текущая ставка</div>
+            <div class="u" style="font-size: 26px; font-weight: 800; line-height: 1.2; margin-top: 4px">12 450 ₽</div>
+          </div>
+          <div style="display: flex; gap: 10px">
+            <button class="btn stroke" style="padding: 0 16px">+500 ₽</button>
+            <button class="btn cta" style="flex: 1"><svg class="i" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3.5L6 13.5h5l-1 7 7-10h-5z"/></svg>Ставка</button>
+          </div>
+        </div>
+      </article>
+
+      <div class="glass" role="status" style="position: absolute; left: 336px; top: 30px; height: 48px; padding: 0 18px 0 16px; border-radius: 999px; display: flex; align-items: center; gap: 10px">
+        <span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 50%; background: #ff4d8d; box-shadow: 0 0 12px rgba(255,77,141,.5)"></span>
+        <span style="font-size: 14px; font-weight: 600">Ставку перебили</span>
+        <span class="u" style="font-size: 13px; font-weight: 700; color: #ff6b9a">12 450 ₽</span>
+      </div>
+
+      <div class="glass" role="dialog" aria-labelledby="dlg-t" style="position: absolute; left: 280px; top: 138px; width: 320px; border-radius: 20px">
+        <div style="padding: 14px 14px 0 20px; display: flex; justify-content: space-between; align-items: center">
+          <span class="u" id="dlg-t" style="font-size: 14px; font-weight: 700">Новый проект</span>
+          <button aria-label="Закрыть" style="width: 32px; height: 32px; border: 0; border-radius: 50%; background: rgba(255,255,255,.08); color: #f2f5fb; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg class="i" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"/></svg></button>
+        </div>
+        <div style="padding: 12px 20px 20px; display: flex; flex-direction: column; gap: 18px">
+          <p style="font-size: 15px; line-height: 1.5">Создать проект «Пиксель» и пригласить команду?</p>
+          <div style="display: flex; gap: 10px; justify-content: flex-end">
+            <button class="btn stroke sm">Отмена</button>
+            <button class="btn sm">Создать</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 16px">
+    <div class="h2">Палитра · тёмная арена</div>
+    <div style="display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 16px">
+      <div class="sw"><div class="chip" style="background: #07090f; color: #f2f5fb; border-color: rgba(255,255,255,.14)">PAGE</div><span class="cap">#07090f · фон</span></div>
+      <div class="sw"><div class="chip" style="background: #11151f; color: #f2f5fb">SURFACE</div><span class="cap">#11151f · карточки, r 20</span></div>
+      <div class="sw"><div class="chip glass" style="color: #f2f5fb; box-shadow: inset 0 1px 0 rgba(255,255,255,.12)">GLASS</div><span class="cap">55 % · blur 28 · слои</span></div>
+      <div class="sw"><div class="chip" style="background: #f2f5fb; color: #07090f">TEXT</div><span class="cap">#f2f5fb · 16,7:1; вторичный #a9b3c4 · 8,6:1</span></div>
+      <div class="sw"><div class="chip" style="background: #c6f432; color: #07090f; box-shadow: 0 0 24px rgba(198,244,50,.25)">PRIMARY</div><span class="cap">#c6f432 · с #07090f 15,5:1</span></div>
+      <div class="sw"><div class="chip" style="background: #3a63f0; color: #fff">SECONDARY</div><span class="cap">#3a63f0 · с белым 5,0:1</span></div>
+      <div class="sw"><div class="chip" style="background: #ff4d8d; color: #07090f">DANGER</div><span class="cap">#ff4d8d · 6,4:1; текст #ff6b9a · 6,8:1</span></div>
+      <div class="sw"><div class="chip" style="background: #f5a524; color: #07090f">WARNING</div><span class="cap">#f5a524 · с #07090f 9,8:1</span></div>
+    </div>
+  </div>
+
+  <div style="background: #f3f4f8; border-radius: 20px; padding: 28px; display: grid; grid-template-columns: 420px minmax(0, 1fr); gap: 32px; color: #0b1220">
+    <div style="display: flex; flex-direction: column; gap: 16px">
+      <div>
+        <div class="u" style="font-size: 16px; font-weight: 700">Дневная арена</div>
+        <p style="font-size: 13px; line-height: 1.45; color: #4a5568; margin-top: 6px">Светлая схема: те же компоненты, лайм остаётся с тёмным текстом, стекло — только у плавающих слоёв.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px">
+        <div class="sw"><div class="chip" style="height: 56px; background: #f3f4f8; color: #0b1220; border-color: rgba(11,18,32,.12)">PAGE</div><span class="cap" style="color: #4a5568; font-size: 12px">#f3f4f8</span></div>
+        <div class="sw"><div class="chip" style="height: 56px; background: #fff; color: #0b1220; border-color: rgba(11,18,32,.12)">SURF</div><span class="cap" style="color: #4a5568; font-size: 12px">#ffffff</span></div>
+        <div class="sw"><div class="chip" style="height: 56px; background: #0b1220; color: #fff; border-color: #0b1220">TEXT</div><span class="cap" style="color: #4a5568; font-size: 12px">#0b1220 · 18,7:1</span></div>
+        <div class="sw"><div class="chip" style="height: 56px; background: #c6f432; color: #0b1220; border-color: rgba(11,18,32,.12)">LIME</div><span class="cap" style="color: #4a5568; font-size: 12px">#c6f432 · 14,6:1</span></div>
+        <div class="sw"><div class="chip" style="height: 56px; background: #fff; color: #0b1220; border: 0; box-shadow: inset 0 0 0 2px rgba(11,18,32,.12)">LINE</div><span class="cap" style="color: #4a5568; font-size: 12px">rgba(11,18,32,.12)</span></div>
+      </div>
+    </div>
+    <div style="background: #fff; border-radius: 20px; border: 1px solid rgba(11,18,32,.12); box-shadow: 0 8px 24px rgba(11,18,32,.08); padding: 20px 22px; display: flex; flex-direction: column; gap: 16px">
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center">
+        <span class="pill" style="background: #e6eaff; color: #2f4fd0">Обычный</span>
+        <span class="pill" style="background: #eee5ff; color: #6a2fd6">Редкий</span>
+        <span class="pill" style="background: #f9e1fc; color: #9a1aa8">Эпический</span>
+        <span class="pill" style="background: #fce6e6; color: #b42323">Легендарный</span>
+        <span class="pill" style="background: #faf0db; color: #7a5300">Коллекционный</span>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: flex-end">
+        <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+          <label for="lt-bid" style="font-size: 13px; font-weight: 600">Ставка, ₽</label>
+          <div class="lfld"><input id="lt-bid" value="12 950"><span style="font-size: 13px; color: #4a5568">шаг 500</span></div>
+        </div>
+        <button class="btn cta">Ставка</button>
+        <button class="btn sec">Подробнее</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 16px">
+    <div style="display: flex; justify-content: space-between; align-items: baseline">
+      <div class="h2">Шкала редкости — цвета данных</div>
+      <span class="cap">Badge, Tag, Avatar, карточки предметов: свечение за предметом, полоса снизу, тинт-пилюля</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 20px">
+      <div class="sw" style="gap: 10px">
+        <div class="card" style="height: 150px; overflow: hidden; background: #0b0e16" aria-hidden="true"><div class="gl" style="--g: rgba(75,105,255,.45); width: 200px; height: 200px; left: 0; top: -25px"></div><svg width="56" height="56" viewBox="0 0 64 64" style="position: absolute; left: 50%; top: 47px; margin-left: -28px; color: #4b69ff" aria-hidden="true"><path d="M32 6L54 26L32 58L10 26Z" fill="currentColor"/><path d="M32 6L54 26H10Z" fill="#fff" fill-opacity=".38"/><path d="M32 26H54L32 58Z" fill="#000" fill-opacity=".22"/><path d="M10 26H54M32 6L22 26L32 58L42 26Z" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="1" stroke-linejoin="round"/></svg><div class="bar" style="--rc: #4b69ff"></div></div>
+        <div style="display: flex; gap: 6px"><span class="pill" style="background: #1b2447; color: #9aabff">Обычный</span><span class="pill" style="background: #4b69ff; color: #07090f">Aa</span></div>
+        <span class="cap">#4b69ff · тинт 6,9:1</span>
+      </div>
+      <div class="sw" style="gap: 10px">
+        <div class="card" style="height: 150px; overflow: hidden; background: #0b0e16" aria-hidden="true"><div class="gl" style="--g: rgba(136,71,255,.45); width: 200px; height: 200px; left: 0; top: -25px"></div><svg width="56" height="56" viewBox="0 0 64 64" style="position: absolute; left: 50%; top: 47px; margin-left: -28px; color: #8847ff" aria-hidden="true"><path d="M32 6L54 26L32 58L10 26Z" fill="currentColor"/><path d="M32 6L54 26H10Z" fill="#fff" fill-opacity=".38"/><path d="M32 26H54L32 58Z" fill="#000" fill-opacity=".22"/><path d="M10 26H54M32 6L22 26L32 58L42 26Z" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="1" stroke-linejoin="round"/></svg><div class="bar" style="--rc: #8847ff"></div></div>
+        <div style="display: flex; gap: 6px"><span class="pill" style="background: #261e47; color: #b896ff">Редкий</span><span class="pill" style="background: #8847ff; color: #fff">Aa</span></div>
+        <span class="cap">#8847ff · тинт 6,5:1</span>
+      </div>
+      <div class="sw" style="gap: 10px">
+        <div class="card" style="height: 150px; overflow: hidden; background: #0b0e16" aria-hidden="true"><div class="gl" style="--g: rgba(211,44,230,.4); width: 200px; height: 200px; left: 0; top: -25px"></div><svg width="56" height="56" viewBox="0 0 64 64" style="position: absolute; left: 50%; top: 47px; margin-left: -28px; color: #d32ce6" aria-hidden="true"><path d="M32 6L54 26L32 58L10 26Z" fill="currentColor"/><path d="M32 6L54 26H10Z" fill="#fff" fill-opacity=".38"/><path d="M32 26H54L32 58Z" fill="#000" fill-opacity=".22"/><path d="M10 26H54M32 6L22 26L32 58L42 26Z" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="1" stroke-linejoin="round"/></svg><div class="bar" style="--rc: #d32ce6"></div></div>
+        <div style="display: flex; gap: 6px"><span class="pill" style="background: #341943; color: #ee86f8">Эпический</span><span class="pill" style="background: #d32ce6; color: #07090f">Aa</span></div>
+        <span class="cap">#d32ce6 · тинт 6,9:1</span>
+      </div>
+      <div class="sw" style="gap: 10px">
+        <div class="card" style="height: 150px; overflow: hidden; background: #0b0e16" aria-hidden="true"><div class="gl" style="--g: rgba(235,75,75,.45); width: 200px; height: 200px; left: 0; top: -25px"></div><svg width="56" height="56" viewBox="0 0 64 64" style="position: absolute; left: 50%; top: 47px; margin-left: -28px; color: #eb4b4b" aria-hidden="true"><path d="M32 6L54 26L32 58L10 26Z" fill="currentColor"/><path d="M32 6L54 26H10Z" fill="#fff" fill-opacity=".38"/><path d="M32 26H54L32 58Z" fill="#000" fill-opacity=".22"/><path d="M10 26H54M32 6L22 26L32 58L42 26Z" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="1" stroke-linejoin="round"/></svg><div class="bar" style="--rc: #eb4b4b"></div></div>
+        <div style="display: flex; gap: 6px"><span class="pill" style="background: #381f27; color: #ff8c8c">Легендарный</span><span class="pill" style="background: #eb4b4b; color: #07090f">Aa</span></div>
+        <span class="cap">#eb4b4b · тинт 6,7:1</span>
+      </div>
+      <div class="sw" style="gap: 10px">
+        <div class="card" style="height: 150px; overflow: hidden; background: #0b0e16" aria-hidden="true"><div class="gl" style="--g: rgba(228,174,57,.4); width: 200px; height: 200px; left: 0; top: -25px"></div><svg width="56" height="56" viewBox="0 0 64 64" style="position: absolute; left: 50%; top: 47px; margin-left: -28px; color: #e4ae39" aria-hidden="true"><path d="M32 6L54 26L32 58L10 26Z" fill="currentColor"/><path d="M32 6L54 26H10Z" fill="#fff" fill-opacity=".38"/><path d="M32 26H54L32 58Z" fill="#000" fill-opacity=".22"/><path d="M10 26H54M32 6L22 26L32 58L42 26Z" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="1" stroke-linejoin="round"/></svg><div class="bar" style="--rc: #e4ae39"></div></div>
+        <div style="display: flex; gap: 6px"><span class="pill" style="background: #373124; color: #f0c45e">Коллекционный</span><span class="pill" style="background: #e4ae39; color: #07090f">Aa</span></div>
+        <span class="cap">#e4ae39 · тинт 7,8:1</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px">
+    <div style="display: flex; flex-direction: column; gap: 14px">
+      <div class="h2">Шрифты</div>
+      <div class="u" style="font-size: 28px; font-weight: 800; line-height: 1.2">Unbounded</div>
+      <div class="ts"><span class="cap">Display · 36 / 800</span><span class="u" style="font-size: 36px; font-weight: 800; line-height: 1.1">12 450 ₽</span></div>
+      <div class="ts"><span class="cap">H1 · 26 / 700</span><span class="u" style="font-size: 26px; font-weight: 700; line-height: 1.2">Лот дня</span></div>
+      <div class="ts"><span class="cap">H2 · 18 / 700</span><span class="u" style="font-size: 18px; font-weight: 700; line-height: 1.3">Текущая ставка</span></div>
+      <div class="ts"><span class="cap">Кнопка · 14 / 700</span><span class="u" style="font-size: 14px; font-weight: 700">Ставка</span></div>
+      <div class="ts"><span class="cap">Бейдж · 11 / 700</span><span class="u" style="font-size: 11px; font-weight: 700; letter-spacing: .04em">ЛЕГЕНДАРНЫЙ</span></div>
+      <div style="font-size: 26px; font-weight: 600; line-height: 1.2; margin-top: 8px">Onest</div>
+      <div class="ts"><span class="cap">Текст · 16 / 400</span><span style="font-size: 16px; line-height: 1.5">Съешь же ещё этих мягких французских булок.</span></div>
+      <div class="ts"><span class="cap">Подсказка · 13 / 500</span><span style="font-size: 13px; font-weight: 500; color: #a9b3c4">Шаг ставки 500 ₽ · цифры табличные: 0123456789</span></div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 14px">
+      <div class="h2">Приёмы</div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 20px; align-items: end">
+        <div class="sw"><div class="tile" aria-hidden="true"><div class="gl" style="--g: rgba(58,99,240,.6); width: 120px; height: 120px; left: -10px; top: -30px"></div><div class="gl" style="--g: rgba(211,44,230,.5); width: 90px; height: 90px; left: 80px; top: 0"></div><div class="glass" style="position: absolute; left: 14px; right: 14px; top: 12px; bottom: 12px; border-radius: 12px"></div></div><span class="cap">Стекло: блик по кромке, blur 28</span></div>
+        <div class="sw"><div class="tile" aria-hidden="true"><div class="gl" style="--g: rgba(228,174,57,.5); width: 110px; height: 110px; left: 25px; top: -23px"></div><svg width="34" height="34" viewBox="0 0 64 64" style="position: absolute; left: 50%; top: 15px; margin-left: -17px; color: #e4ae39" aria-hidden="true"><path d="M32 6L54 26L32 58L10 26Z" fill="currentColor"/><path d="M32 6L54 26H10Z" fill="#fff" fill-opacity=".38"/><path d="M32 26H54L32 58Z" fill="#000" fill-opacity=".22"/></svg><div class="bar" style="--rc: #e4ae39"></div></div><span class="cap">Свечение редкости + полоса</span></div>
+        <div class="sw"><div class="card" style="height: 64px; border-radius: 14px" aria-hidden="true"></div><span class="cap">Поверхность: волосок + тень</span></div>
+        <div class="sw" style="align-items: flex-start"><button class="btn cta">Ставка</button><span class="cap">Ставка: лаймовое свечение</span></div>
+        <div class="sw" style="align-items: flex-start"><button class="btn pressed">Нажата</button><span class="cap">Нажатие: сжатие 2 %</span></div>
+        <div class="sw" style="align-items: flex-start"><button class="btn focus">Фокус</button><span class="cap">Фокус: кольцо 3 px, отступ 3</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 18px">
+    <div class="h2">Иконки — линия 1,6 px, скруглённые концы, сетка 24</div>
+    <div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px">
+      <div class="ic"><span><svg class="i" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"/></svg></span>close</div>
+      <div class="ic"><span><svg class="i" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg></span>chevron</div>
+      <div class="ic"><span><svg class="i" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 12.5l4 4 9-9"/></svg></span>check</div>
+      <div class="ic"><span><svg class="i" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.75v12.5M5.75 12h12.5"/></svg></span>plus</div>
+      <div class="ic"><span><svg class="i" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.25"/><path d="M15.75 15.75l3.75 3.75"/></svg></span>search</div>
+      <div class="ic"><span><svg class="i" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12c2.2-4 5.4-6 9-6s6.8 2 9 6c-2.2 4-5.4 6-9 6s-6.8-2-9-6z"/><circle cx="12" cy="12" r="2.75"/></svg></span>eye</div>
+      <div class="ic"><span><svg class="i" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14" rx="3.5"/><path d="M4 10h16M8.5 3.5V7M15.5 3.5V7"/></svg></span>calendar</div>
+      <div class="ic"><span><svg class="i" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8h.01"/></svg></span>info</div>
+      <div class="ic"><span><svg class="i" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V5M8 9l4-4 4 4M5 15v1.5A2.5 2.5 0 007.5 19h9a2.5 2.5 0 002.5-2.5V15"/></svg></span>upload</div>
+      <div class="ic"><span><svg class="i" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 10.5L12 4.5l7.5 6V18a1.5 1.5 0 01-1.5 1.5h-3.5v-5h-5v5H6A1.5 1.5 0 014.5 18z"/></svg></span>home</div>
+      <div class="ic"><span><svg class="i" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.5l2.3 4.7 5.2.75-3.75 3.65.9 5.15L12 16.3l-4.65 2.45.9-5.15L4.5 9.95l5.2-.75z"/></svg></span>star</div>
+      <div class="ic"><span><svg class="i" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h8M17 8h2M5 16h2M11 16h8"/><circle cx="15" cy="8" r="2"/><circle cx="9" cy="16" r="2"/></svg></span>settings</div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":1980}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

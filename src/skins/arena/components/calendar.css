@@ -1,0 +1,54 @@
+/*
+ * calendar: вид arena поверх corporate/components/calendar.css — раскладка приходит оттуда,
+ * здесь только оформление (макет «Данные», Data.dc.html).
+ *
+ * Календарь на странице — сплошная поверхность контента (волосок, мягкая глубокая тень, 20px).
+ * В поповере DateInput он стеклянный — это задаёт date-input.css.
+ * Сетка месяцев / лет — как дни: выбранный — лайм с тёмным текстом и свечением.
+ */
+:where([data-vl-skin~='arena']) {
+  .vl-calendar {
+    background-color: var(--bg-white-0);
+    border-color: var(--stroke-soft-200);
+    border-radius: var(--radius-20);
+    box-shadow: var(--arena-shadow-surface);
+  }
+
+  .vl-calendar__option {
+    border-radius: var(--radius-8);
+    font-family: var(--font-sans);
+    font-weight: 500;
+    letter-spacing: 0;
+    color: var(--text-strong-950);
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      transform var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-calendar__option:hover {
+    background-color: var(--arena-control-bg-hover);
+    color: var(--text-strong-950);
+  }
+
+  .vl-calendar__option:active {
+    transform: var(--arena-press-transform);
+  }
+
+  .vl-calendar__option:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+    box-shadow: var(--arena-focus-ring);
+  }
+
+  /* Текст на лайме — всегда тёмный */
+  .vl-calendar__option[data-active] {
+    background-color: var(--primary-base);
+    color: var(--static-black);
+    font-weight: 700;
+    box-shadow: var(--arena-highlight), var(--arena-glow-primary);
+  }
+
+  .vl-calendar__option[data-active]:focus-visible {
+    box-shadow: var(--arena-highlight), var(--arena-focus-ring);
+  }
+}

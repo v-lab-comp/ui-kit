@@ -1,0 +1,61 @@
+/* checkbox-field: вид «арены» поверх corporate/components/checkbox-field.css — раскладка приходит
+   оттуда (макет: Selection.dc.html, «CheckboxField»).
+
+   - Между чекбоксом и подписью 12px, как в макете.
+   - Отключённая подпись — --text-soft-400: тише основного, но читаемая (corporate — disabled-300).
+   - Подсказка — вторичным текстом, ошибка — --error-dark (розовый, читаемый в обеих схемах),
+     рамка чекбокса при ошибке — розовая (data-error ставит CheckboxField).
+   - Ссылка — лаймом (в светлой схеме оливой) с тонким подчёркиванием. */
+:where([data-vl-skin~='arena']) {
+  .vl-checkbox-field__label {
+    gap: 12px;
+  }
+
+  .vl-checkbox-field__label:has(input:disabled) {
+    --_checkbox-disabled-color: var(--text-soft-400);
+  }
+
+  .vl-checkbox-field__description,
+  .vl-checkbox-field__hint,
+  .vl-checkbox-field__error,
+  .vl-checkbox-field__link {
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .vl-checkbox-field__hint {
+    color: var(--_checkbox-disabled-color, var(--text-sub-600));
+  }
+
+  .vl-checkbox-field__error {
+    color: var(--error-dark);
+  }
+
+  .vl-checkbox-field__link {
+    font-weight: 600;
+  }
+
+  .vl-checkbox-field__link a {
+    color: var(--primary-dark);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    border-radius: var(--radius-2);
+  }
+
+  .vl-checkbox-field__link a:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  .vl-checkbox-field__link a:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+    box-shadow: var(--arena-focus-ring);
+  }
+
+  /* Ошибка — розовая рамка со свечением, пока чекбокс не отмечен */
+  .vl-checkbox-field[data-error] .vl-base-checkbox:not(:disabled):not(:checked) {
+    --_ar-cb-shadow: 0 0 12px var(--error-lighter);
+    border-color: var(--error-base);
+  }
+}

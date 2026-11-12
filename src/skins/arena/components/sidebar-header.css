@@ -1,0 +1,25 @@
+/* sidebar-header: вид arena поверх corporate/components/sidebar-header.css
+   (макет: Layout.dc.html, переключатель «V-LAB / Студия» вверху панели).
+
+   Фон — от стеклянной панели (sidebar.css), своего нет. corporate фиксирует ширину колонки
+   (272 / 80px), а плавающая панель arena уже колонки на два зазора — шапка тянется на ширину
+   панели. Кнопка сворачивания (right: -12px у corporate) так и остаётся по центру кромки. */
+:where([data-vl-skin~='arena']) {
+  .vl-sidebar-header {
+    width: 100%;
+    background: transparent;
+  }
+
+  /* Свёрнутая панель — 56px: поля 4px по бокам, чтобы влезла карточка 48px (sidebar-card.css) */
+  :where(.vl-sidebar-header)[data-collapsed] {
+    width: 100%;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
+  .vl-sidebar-header__divider {
+    left: 16px;
+    right: 16px;
+    border-top-color: var(--stroke-soft-200);
+  }
+}

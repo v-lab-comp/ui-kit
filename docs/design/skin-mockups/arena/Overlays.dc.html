@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Арена — оверлеи</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&amp;family=Onest:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#07090f}
+.r{font-family:'Onest',system-ui,sans-serif;color:#f2f5fb;background:#07090f;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+.d{font-family:'Unbounded',system-ui,sans-serif;font-weight:700;letter-spacing:-.01em}
+.hd{display:flex;align-items:center;gap:16px}
+.ttl{margin:0;font-family:'Unbounded',system-ui,sans-serif;font-size:30px;line-height:1.15;font-weight:800;letter-spacing:-.02em}
+.mark{width:14px;height:14px;border-radius:4px;background:#c6f432;transform:rotate(45deg);box-shadow:0 0 18px rgba(198,244,50,.45);flex:none}
+.sec{display:flex;align-items:center;gap:10px;font-family:'Unbounded',system-ui,sans-serif;font-size:13px;font-weight:700;line-height:1.3;color:#f2f5fb}
+.sec::before{content:'';width:6px;height:6px;border-radius:2px;background:#c6f432;transform:rotate(45deg);box-shadow:0 0 8px rgba(198,244,50,.5)}
+.ic{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none;display:block}
+.ic *{vector-effect:non-scaling-stroke}
+.focus{outline:3px solid #c6f432;outline-offset:2px}
+.h{display:flex;flex-direction:column;gap:16px}
+.row{display:grid;grid-template-columns:640px minmax(0,1fr);gap:40px}
+
+.glass{position:relative;isolation:isolate;background:rgba(30,34,46,.55);-webkit-backdrop-filter:blur(28px) saturate(160%);backdrop-filter:blur(28px) saturate(160%);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 18px 44px rgba(0,0,0,.5)}
+.glass.thick{background:rgba(30,34,46,.82)}
+.glass::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(150deg,rgba(255,255,255,.3),rgba(255,255,255,.07) 35%,rgba(255,255,255,0) 60%,rgba(255,255,255,.16));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;z-index:1}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.glass,.glass.thick{background:rgba(24,28,39,.97)}}
+
+.btn{font-family:'Unbounded',system-ui,sans-serif;font-weight:700;font-size:13px;line-height:1;height:44px;padding:0 20px;border:0;border-radius:999px;display:inline-flex;align-items:center;gap:8px;cursor:pointer;color:#f2f5fb;background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.btn .ic{color:#a9b3c4}
+.btn.lime{background:#c6f432;color:#07090f;box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 6px 20px rgba(198,244,50,.3)}
+.btn.pink{background:#ff4d8d;color:#07090f;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 6px 20px rgba(255,77,141,.3)}
+.xb{width:34px;height:34px;border:0;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,.08);color:#a9b3c4;cursor:pointer;padding:0;flex:none}
+
+.stage{position:relative;overflow:hidden;border-radius:20px;background:#0c0f17;box-shadow:0 0 0 1px rgba(255,255,255,.07),0 8px 24px rgba(0,0,0,.35)}
+.lots{position:absolute;inset:0;display:grid;gap:12px;padding:16px;box-sizing:border-box}
+.lot{position:relative;overflow:hidden;border-radius:16px;background:#161b27;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.lot::before{content:'';position:absolute;left:-10%;right:-10%;top:10%;height:80%;background:radial-gradient(closest-side,var(--g),transparent)}
+.gem{position:absolute;left:50%;top:40%;width:52px;height:52px;margin:-26px 0 0 -26px;border-radius:14px;transform:rotate(45deg);background:linear-gradient(135deg,#ffffff -20%,var(--c) 45%,#07090f 140%);box-shadow:0 0 28px var(--g)}
+.ln{position:absolute;left:14px;height:8px;border-radius:99px;background:rgba(255,255,255,.2)}
+.rb{position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--c)}
+.scrim{position:absolute;inset:0;background:rgba(0,0,0,.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+
+.modal{position:absolute;border-radius:24px;box-sizing:border-box;padding:24px}
+.mh{display:flex;align-items:center;gap:14px}
+.mt{margin:0;flex:1;font-family:'Unbounded',system-ui,sans-serif;font-size:18px;font-weight:700;line-height:1.3}
+.mp{margin:0;font-size:15px;line-height:1.55;color:#a9b3c4}
+.ib{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex:none;background:var(--t);color:var(--x);box-shadow:inset 0 0 0 1px var(--b),0 0 18px var(--g)}
+
+.fl{display:flex;flex-direction:column;gap:8px}
+.fl label{font-family:'Unbounded',system-ui,sans-serif;font-size:11px;font-weight:500;letter-spacing:.08em;color:#a9b3c4}
+.fld{all:unset;box-sizing:border-box;width:100%;height:46px;padding:0 14px;border-radius:14px;background:rgba(7,9,15,.55);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);font-family:'Onest',system-ui,sans-serif;font-size:15px;color:#f2f5fb}
+.fld.on{box-shadow:inset 0 0 0 1px rgba(198,244,50,.6)}
+.av{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;border-radius:50%;flex:none;font-family:'Unbounded',system-ui,sans-serif;font-weight:700;color:var(--x);border:2px solid #0b0e15;background:radial-gradient(circle at 35% 30%,var(--t),transparent 80%),#141926;box-shadow:0 0 0 2px var(--c),0 0 12px var(--g)}
+
+.menu{list-style:none;margin:0;padding:6px;font-size:15px}
+.menu li{display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:12px;box-sizing:border-box;color:#f2f5fb}
+.menu li .ic{color:#a9b3c4}
+.menu li.hl{background:rgba(198,244,50,.16);color:#e6ff9a;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+.menu li.hl .ic{color:#c6f432}
+.menu li.danger,.menu li.danger .ic{color:#ff6b9a}
+.menu li.sp{height:1px;padding:0;margin:6px 8px;border-radius:0;background:rgba(255,255,255,.08)}
+
+.tip{border-radius:12px;padding:10px 14px;font-size:13px;line-height:1.3;font-weight:500;color:#f2f5fb;white-space:nowrap}
+.tip::after{content:'';position:absolute;left:50%;bottom:-5px;margin-left:-5px;width:10px;height:10px;border-radius:2px;background:rgba(36,40,52,.95);transform:rotate(45deg)}
+
+.toast{display:flex;gap:14px;align-items:flex-start;padding:16px;border-radius:20px;box-sizing:border-box}
+.tic{width:36px;height:36px;border-radius:12px;flex:none;display:flex;align-items:center;justify-content:center;background:var(--t);color:var(--x);box-shadow:inset 0 0 0 1px var(--b),0 0 18px var(--g)}
+.tx{flex:1;display:flex;flex-direction:column;gap:4px;font-size:14px;line-height:1.45;color:#a9b3c4;min-width:0}
+.tx b{font-family:'Unbounded',system-ui,sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;line-height:1.4;color:#f2f5fb}
+.act{display:flex;gap:18px;margin-top:6px}
+.act button{all:unset;cursor:pointer;font-family:'Unbounded',system-ui,sans-serif;font-size:12px;font-weight:700;color:#c6f432}
+.act button.mut{color:#a9b3c4}
+.prog{height:4px;border-radius:99px;background:rgba(255,255,255,.08);margin-top:8px;overflow:hidden}
+.prog span{display:block;height:100%;width:70%;border-radius:99px;background:#c6f432;box-shadow:0 0 10px rgba(198,244,50,.5)}
+.cl{border:0;background:transparent;width:28px;height:28px;border-radius:999px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#a9b3c4;padding:0;flex:none}
+
+.t-lime{--t:rgba(198,244,50,.14);--x:#c6f432;--b:rgba(198,244,50,.3);--g:rgba(198,244,50,.25)}
+.t-pink{--t:rgba(255,77,141,.14);--x:#ff7aa6;--b:rgba(255,77,141,.32);--g:rgba(255,77,141,.25)}
+.t-blue{--t:rgba(58,99,240,.18);--x:#a3b6ff;--b:rgba(58,99,240,.38);--g:rgba(58,99,240,.28)}
+.t-amber{--t:rgba(245,165,36,.14);--x:#f8c062;--b:rgba(245,165,36,.32);--g:rgba(245,165,36,.25)}
+.t-r1{--c:#4b69ff;--t:rgba(75,105,255,.24);--x:#9aabff;--b:rgba(75,105,255,.4);--g:rgba(75,105,255,.35)}
+</style>
+</helmet>
+<div class="r" style="width: 1200px; height: 1480px; box-sizing: border-box; padding: 56px; display: flex; flex-direction: column; gap: 40px">
+  <div class="hd"><span class="mark" aria-hidden="true"></span><div class="ttl">Оверлеи</div></div>
+
+  <div class="row">
+    <div class="h">
+      <div class="sec">Modal / ConfirmModal</div>
+      <div class="stage" style="height: 400px">
+        <div class="lots" aria-hidden="true" style="grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr))">
+          <div class="lot" style="--c: #eb4b4b; --g: rgba(235,75,75,.5)"><span class="gem"></span><span class="ln" style="bottom: 34px; width: 55%"></span><span class="ln" style="bottom: 18px; width: 30%; opacity: .6"></span><span class="rb"></span></div>
+          <div class="lot" style="--c: #8847ff; --g: rgba(136,71,255,.5)"><span class="gem"></span><span class="ln" style="bottom: 34px; width: 62%"></span><span class="ln" style="bottom: 18px; width: 36%; opacity: .6"></span><span class="rb"></span></div>
+          <div class="lot" style="--c: #e4ae39; --g: rgba(228,174,57,.5)"><span class="gem"></span><span class="ln" style="bottom: 34px; width: 48%"></span><span class="ln" style="bottom: 18px; width: 28%; opacity: .6"></span><span class="rb"></span></div>
+          <div class="lot" style="--c: #4b69ff; --g: rgba(75,105,255,.5)"><span class="gem"></span><span class="ln" style="bottom: 34px; width: 58%"></span><span class="ln" style="bottom: 18px; width: 34%; opacity: .6"></span><span class="rb"></span></div>
+          <div class="lot" style="--c: #d32ce6; --g: rgba(211,44,230,.5)"><span class="gem"></span><span class="ln" style="bottom: 34px; width: 50%"></span><span class="ln" style="bottom: 18px; width: 40%; opacity: .6"></span><span class="rb"></span></div>
+          <div class="lot" style="--c: #c6f432; --g: rgba(198,244,50,.42)"><span class="gem"></span><span class="ln" style="bottom: 34px; width: 64%"></span><span class="ln" style="bottom: 18px; width: 30%; opacity: .6"></span><span class="rb"></span></div>
+        </div>
+        <div class="scrim"></div>
+        <div class="modal glass thick" role="alertdialog" aria-modal="true" aria-labelledby="m1t" aria-describedby="m1d" style="left: 100px; top: 86px; width: 440px; display: flex; flex-direction: column; gap: 18px">
+          <div class="mh">
+            <span class="ib t-pink" aria-hidden="true"><svg class="ic" width="22" height="22" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M10 4h4"/><path d="M6 7l1 12.5a1.5 1.5 0 0 0 1.5 1.5h7a1.5 1.5 0 0 0 1.5-1.5L18 7"/><path d="M10 11v6M14 11v6"/></svg></span>
+            <h2 class="mt" id="m1t">Удалить проект?</h2>
+            <button class="xb" aria-label="Закрыть"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+          </div>
+          <p class="mp" id="m1d">Проект «Пиксель» и все его уровни будут удалены. Это действие нельзя отменить.</p>
+          <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 4px"><button class="btn">Отмена</button><button class="btn pink">Удалить</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="h">
+      <div class="sec">ModalStatus</div>
+      <div class="stage" style="height: 400px">
+        <div class="lots" aria-hidden="true" style="grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr))">
+          <div class="lot" style="--c: #e4ae39; --g: rgba(228,174,57,.5)"><span class="gem"></span><span class="ln" style="bottom: 34px; width: 55%"></span><span class="ln" style="bottom: 18px; width: 30%; opacity: .6"></span><span class="rb"></span></div>
+          <div class="lot" style="--c: #d32ce6; --g: rgba(211,44,230,.5)"><span class="gem"></span><span class="ln" style="bottom: 34px; width: 60%"></span><span class="ln" style="bottom: 18px; width: 34%; opacity: .6"></span><span class="rb"></span></div>
+          <div class="lot" style="--c: #4b69ff; --g: rgba(75,105,255,.5)"><span class="gem"></span><span class="ln" style="bottom: 34px; width: 50%"></span><span class="ln" style="bottom: 18px; width: 38%; opacity: .6"></span><span class="rb"></span></div>
+          <div class="lot" style="--c: #eb4b4b; --g: rgba(235,75,75,.5)"><span class="gem"></span><span class="ln" style="bottom: 34px; width: 62%"></span><span class="ln" style="bottom: 18px; width: 28%; opacity: .6"></span><span class="rb"></span></div>
+        </div>
+        <div class="scrim"></div>
+        <div class="modal glass thick" role="dialog" aria-modal="true" aria-labelledby="m2t" aria-describedby="m2d" style="left: 28px; right: 28px; top: 52px; padding: 28px 24px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center">
+          <span aria-hidden="true" style="width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #c6f432; color: #07090f; box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 0 0 6px rgba(198,244,50,.14), 0 0 32px rgba(198,244,50,.45)"><svg class="ic" width="30" height="30" viewBox="0 0 24 24" style="stroke-width: 2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+          <h2 class="mt" id="m2t" style="flex: none; margin-top: 6px">Уровень пройден!</h2>
+          <p class="mp" id="m2d">Проект сохранён. Команда получит приглашения.</p>
+          <button class="btn lime" style="margin-top: 6px">Продолжить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="h">
+      <div class="sec">Drawer</div>
+      <div class="stage" style="height: 420px">
+        <div class="lots" aria-hidden="true" style="grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr))">
+          <div class="lot" style="--c: #8847ff; --g: rgba(136,71,255,.5)"><span class="gem"></span><span class="ln" style="bottom: 34px; width: 55%"></span><span class="ln" style="bottom: 18px; width: 30%; opacity: .6"></span><span class="rb"></span></div>
+          <div class="lot" style="--c: #c6f432; --g: rgba(198,244,50,.42)"><span class="gem"></span><span class="ln" style="bottom: 34px; width: 60%"></span><span class="ln" style="bottom: 18px; width: 34%; opacity: .6"></span><span class="rb"></span></div>
+          <div class="lot" style="--c: #eb4b4b; --g: rgba(235,75,75,.5)"><span class="gem"></span><span class="ln" style="bottom: 34px; width: 50%"></span><span class="ln" style="bottom: 18px; width: 38%; opacity: .6"></span><span class="rb"></span></div>
+          <div class="lot" style="--c: #e4ae39; --g: rgba(228,174,57,.5)"><span class="gem"></span><span class="ln" style="bottom: 34px; width: 62%"></span><span class="ln" style="bottom: 18px; width: 28%; opacity: .6"></span><span class="rb"></span></div>
+          <div class="lot" style="--c: #4b69ff; --g: rgba(75,105,255,.5)"><span class="gem"></span><span class="ln" style="bottom: 34px; width: 48%"></span><span class="ln" style="bottom: 18px; width: 36%; opacity: .6"></span><span class="rb"></span></div>
+          <div class="lot" style="--c: #d32ce6; --g: rgba(211,44,230,.5)"><span class="gem"></span><span class="ln" style="bottom: 34px; width: 58%"></span><span class="ln" style="bottom: 18px; width: 32%; opacity: .6"></span><span class="rb"></span></div>
+        </div>
+        <div class="scrim"></div>
+        <div class="glass thick" role="dialog" aria-modal="true" aria-labelledby="dr1" style="position: absolute; top: 0; right: 0; bottom: 0; width: 340px; border-radius: 20px 0 0 20px; display: flex; flex-direction: column">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 20px 18px 24px; border-bottom: 1px solid rgba(255,255,255,.08)"><h2 class="mt" id="dr1" style="font-size: 16px">Настройки</h2><button class="xb" aria-label="Закрыть"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+          <div style="padding: 22px 24px; display: flex; flex-direction: column; gap: 20px; flex: 1">
+            <div class="fl"><label for="drn">НАЗВАНИЕ</label><input class="fld on focus" id="drn" type="text" value="Пиксель"></div>
+            <div class="fl"><label for="dro">ВЛАДЕЛЕЦ</label><div style="position: relative"><span class="av t-r1" aria-hidden="true" style="position: absolute; left: 12px; top: 11px; width: 24px; height: 24px; font-size: 8px; border-width: 1.5px">АП</span><input class="fld" id="dro" type="text" value="Анна Петрова" style="padding-left: 46px"></div></div>
+          </div>
+          <div style="padding: 16px 24px; border-top: 1px solid rgba(255,255,255,.08); display: flex; gap: 12px; justify-content: flex-end"><button class="btn">Отмена</button><button class="btn lime">Сохранить</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="h">
+      <div class="sec">Popover</div>
+      <button class="btn" aria-expanded="true" aria-haspopup="menu" aria-controls="pm1" style="align-self: flex-start">Действия<svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="color: #c6f432"><path d="M6 15l6-6 6 6"/></svg></button>
+      <div class="glass thick" style="width: 260px; border-radius: 18px; margin-top: -6px">
+        <ul class="menu" role="menu" id="pm1" aria-label="Действия">
+          <li role="menuitem" class="hl"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>Переименовать</li>
+          <li role="menuitem"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6.5A2.5 2.5 0 0 0 13.5 4h-7A2.5 2.5 0 0 0 4 6.5v7A2.5 2.5 0 0 0 6.5 16H8"/></svg>Дублировать</li>
+          <li role="menuitem"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>Скачать</li>
+          <li role="separator" class="sp"></li>
+          <li role="menuitem" class="danger"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 4h4"/><path d="M6 7l1 12.5a1.5 1.5 0 0 0 1.5 1.5h7a1.5 1.5 0 0 0 1.5-1.5L18 7"/><path d="M10 11v6M14 11v6"/></svg>Удалить</li>
+        </ul>
+      </div>
+      <div class="sec" style="margin-top: 18px">Tooltip</div>
+      <div style="display: inline-flex; flex-direction: column; align-items: center; gap: 14px; align-self: flex-start">
+        <div class="tip glass thick" role="tooltip" id="tt1">Сохраняется автоматически</div>
+        <button class="btn" aria-describedby="tt1"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h7V4"/><path d="M8 20v-6h8v6"/></svg>Автосохранение</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="h">
+    <div class="sec">Toast</div>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 40px; align-items: start">
+      <div class="toast glass" role="status"><span class="tic t-lime" aria-hidden="true"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" style="stroke-width: 2"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><div class="tx"><b>СОХРАНЕНО</b>Изменения в проекте «Пиксель» сохранены.<div class="prog" aria-hidden="true"><span></span></div></div><button class="cl" aria-label="Закрыть уведомление"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+      <div class="toast glass" role="status"><span class="tic t-pink" aria-hidden="true"><svg class="ic" width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg></span><div class="tx"><b>ОШИБКА</b>Не удалось загрузить файл level-3.png<div class="act"><button>Повторить</button><button class="mut">Подробнее</button></div></div><button class="cl" aria-label="Закрыть уведомление"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+      <div class="toast glass" role="status"><span class="tic t-blue" aria-hidden="true"><svg class="ic" width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><path d="M12 7.6v.01"/></svg></span><div class="tx"><b>НОВОЕ</b>Анна пригласила вас в проект «Пиксель».</div><button class="cl" aria-label="Закрыть уведомление"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+      <div class="toast glass" role="status"><span class="tic t-amber" aria-hidden="true"><svg class="ic" width="18" height="18" viewBox="0 0 24 24"><path d="M12 4l9 16H3z"/><path d="M12 10v4.5"/><path d="M12 17.3v.01"/></svg></span><div class="tx"><b>ВНИМАНИЕ</b>Осталось 2 из 3 свободных проектов.</div><button class="cl" aria-label="Закрыть уведомление"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":1480}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

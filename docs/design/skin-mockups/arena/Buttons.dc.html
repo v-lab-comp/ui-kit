@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Арена — кнопки</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&amp;family=Onest:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#07090f}
+.r{font-family:'Onest',system-ui,sans-serif;color:#f2f5fb;background:#07090f;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.r *,.r *::before,.r *::after{box-sizing:border-box}
+.r p{margin:0}
+.u{font-family:'Unbounded',system-ui,sans-serif}
+.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.h2{font:700 15px/1.2 'Unbounded',system-ui,sans-serif;letter-spacing:.01em;color:#f2f5fb}
+.card{background:#11151f;border-radius:20px;border:1px solid rgba(255,255,255,.07);box-shadow:0 8px 24px rgba(0,0,0,.35);padding:28px}
+.btn{--c:#c6f432;--on:#07090f;--t:#c6f432;--b:rgba(198,244,50,.55);--l:rgba(198,244,50,.14);font:700 14px/1 'Unbounded',system-ui,sans-serif;letter-spacing:.01em;height:44px;padding:0 22px;border:0;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;white-space:nowrap;color:var(--on);background:var(--c);box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
+.c-pri{--c:#c6f432;--on:#07090f;--t:#c6f432;--b:rgba(198,244,50,.55);--l:rgba(198,244,50,.14)}
+.c-neu{--c:#f2f5fb;--on:#07090f;--t:#f2f5fb;--b:rgba(242,245,251,.3);--l:rgba(255,255,255,.08)}
+.c-err{--c:#ff4d8d;--on:#07090f;--t:#ff6b9a;--b:rgba(255,77,141,.55);--l:rgba(255,77,141,.14)}
+.c-suc{--c:#9bd41c;--on:#07090f;--t:#a6e23a;--b:rgba(155,212,28,.5);--l:rgba(143,209,31,.14)}
+.c-war{--c:#f5a524;--on:#07090f;--t:#f5b84a;--b:rgba(245,165,36,.55);--l:rgba(245,165,36,.14)}
+.c-fea{--c:#3a63f0;--on:#fff;--t:#8ea8ff;--b:rgba(91,128,255,.7);--l:rgba(58,99,240,.14)}
+.btn.cta{box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 0 24px rgba(198,244,50,.25)}
+.btn.stroke{background:transparent;color:var(--t);box-shadow:inset 0 0 0 1.5px var(--b)}
+.btn.lite{background:var(--l);color:var(--t);box-shadow:none}
+.btn.ghost{background:transparent;color:var(--t);box-shadow:none}
+.btn.hover{filter:brightness(1.06);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 0 0 4px rgba(198,244,50,.14),0 0 36px rgba(198,244,50,.4)}
+.btn.ghost.hover{filter:none;background:rgba(255,255,255,.07);box-shadow:none}
+.btn.pressed{transform:scale(.98);filter:brightness(.9);box-shadow:inset 0 2px 5px rgba(0,0,0,.28)}
+.btn.focus{outline:3px solid #c6f432;outline-offset:3px}
+.btn[disabled]{background:#161b26;color:#8b95a8;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);cursor:not-allowed;filter:none}
+.btn.stroke[disabled]{background:transparent;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.12)}
+.sm{height:36px;padding:0 16px;font-size:13px}
+.xs{height:30px;padding:0 13px;font-size:12px}
+.xxs{height:24px;padding:0 10px;font-size:11px}
+.ico{width:44px;padding:0}
+.row{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.lab{font-size:14px;color:#a9b3c4;width:96px;flex:none}
+.h{display:flex;flex-direction:column;gap:20px}
+.spin{width:16px;height:16px;border-radius:50%;border:2px solid rgba(7,9,15,.25);border-top-color:#07090f;flex:none}
+.grp{display:inline-flex;align-self:flex-start;border-radius:999px;background:#1a2030;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),inset 0 1px 0 rgba(255,255,255,.06);overflow:hidden}
+.grp button{font:700 13px/1 'Unbounded',system-ui,sans-serif;height:44px;padding:0 18px;border:0;background:transparent;color:#f2f5fb;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.grp button + button{box-shadow:inset 1px 0 0 rgba(255,255,255,.08)}
+.grp button.on{background:rgba(198,244,50,.14);color:#c6f432;box-shadow:inset 0 0 0 1.5px rgba(198,244,50,.55);border-radius:999px}
+.grp.fmt button{font:700 16px/1 'Onest',system-ui,sans-serif;width:48px;padding:0}
+.tgl{font:700 14px/1 'Unbounded',system-ui,sans-serif;height:44px;padding:0 20px;border:0;border-radius:999px;display:inline-flex;align-items:center;gap:8px;cursor:pointer;background:transparent;color:#f2f5fb;box-shadow:inset 0 0 0 1.5px rgba(242,245,251,.3)}
+.tgl[aria-pressed="true"]{background:rgba(198,244,50,.14);color:#c6f432;box-shadow:inset 0 0 0 1.5px rgba(198,244,50,.55)}
+.seg{display:inline-flex;align-self:flex-start;gap:4px;padding:4px;border-radius:999px;background:#0b0e16;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),inset 0 2px 4px rgba(0,0,0,.35)}
+.seg button{font:600 14px/1 'Onest',system-ui,sans-serif;height:36px;padding:0 18px;border:0;border-radius:999px;background:transparent;color:#a9b3c4;cursor:pointer;display:inline-flex;gap:8px;align-items:center;justify-content:center}
+.seg.icons button{width:44px;padding:0}
+.seg button.on{background:#232a3a;color:#f2f5fb;box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 0 0 1px rgba(255,255,255,.06),0 4px 12px rgba(0,0,0,.35)}
+</style>
+</helmet>
+<div class="r" style="width: 1200px; height: 1360px; box-sizing: border-box; padding: 56px; display: flex; flex-direction: column; gap: 32px">
+  <div class="u" style="font-size: 30px; font-weight: 800; line-height: 1.1">Кнопки</div>
+
+  <div class="card h">
+    <div class="h2">Button — варианты × цвета</div>
+    <div class="row"><span class="lab">filled</span>
+      <button class="btn cta">Primary</button>
+      <button class="btn c-neu">Neutral</button>
+      <button class="btn c-err">Error</button>
+      <button class="btn c-suc">Success</button>
+      <button class="btn c-war">Warning</button>
+      <button class="btn c-fea">Feature</button>
+    </div>
+    <div class="row"><span class="lab">stroke</span>
+      <button class="btn stroke c-pri">Primary</button>
+      <button class="btn stroke c-neu">Neutral</button>
+      <button class="btn stroke c-err">Error</button>
+      <button class="btn stroke c-suc">Success</button>
+      <button class="btn stroke c-war">Warning</button>
+      <button class="btn stroke c-fea">Feature</button>
+    </div>
+    <div class="row"><span class="lab">lighter</span>
+      <button class="btn lite c-pri">Primary</button>
+      <button class="btn lite c-neu">Neutral</button>
+      <button class="btn lite c-err">Error</button>
+      <button class="btn lite c-suc">Success</button>
+      <button class="btn lite c-war">Warning</button>
+      <button class="btn lite c-fea">Feature</button>
+    </div>
+    <div class="row"><span class="lab">ghost</span>
+      <button class="btn ghost c-pri">Primary</button>
+      <button class="btn ghost c-neu">Neutral</button>
+      <button class="btn ghost c-err">Error</button>
+      <button class="btn ghost c-suc">Success</button>
+      <button class="btn ghost c-war">Warning</button>
+      <button class="btn ghost c-fea">Feature</button>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px">
+    <div class="card h">
+      <div class="h2">Размеры</div>
+      <div class="row">
+        <button class="btn">Medium</button>
+        <button class="btn sm">Small</button>
+        <button class="btn xs">X-Small</button>
+        <button class="btn xxs">2X-Small</button>
+      </div>
+      <div class="h2" style="margin-top: 8px">С иконками</div>
+      <div class="row" style="gap: 12px">
+        <button class="btn"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.75v12.5M5.75 12h12.5"/></svg>Добавить</button>
+        <button class="btn stroke c-neu">Далее<svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 6l6 6-6 6"/></svg></button>
+        <button class="btn ico" aria-label="Добавить"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.75v12.5M5.75 12h12.5"/></svg></button>
+        <button class="btn stroke c-neu ico" aria-label="Поиск"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.25"/><path d="M15.75 15.75l3.75 3.75"/></svg></button>
+        <button class="btn ghost c-neu ico" aria-label="Настройки"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h8M17 8h2M5 16h2M11 16h8"/><circle cx="15" cy="8" r="2"/><circle cx="9" cy="16" r="2"/></svg></button>
+      </div>
+    </div>
+    <div class="card h">
+      <div class="h2">Состояния</div>
+      <div class="row">
+        <button class="btn cta">Default</button>
+        <button class="btn hover">Hover</button>
+        <button class="btn pressed">Pressed</button>
+      </div>
+      <div class="row">
+        <button class="btn cta focus">Focus</button>
+        <button class="btn" disabled>Disabled</button>
+        <button class="btn" aria-busy="true"><span class="spin" aria-hidden="true"></span>Загрузка</button>
+      </div>
+      <div class="row">
+        <button class="btn ghost c-neu hover">Ghost hover</button>
+        <button class="btn stroke c-err" disabled>Stroke disabled</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px">
+    <div class="card h">
+      <div class="h2">ButtonGroup</div>
+      <div class="grp" role="group" aria-label="Период">
+        <button>День</button><button class="on" aria-pressed="true">Неделя</button><button>Месяц</button><button>Год</button>
+      </div>
+      <div class="h2" style="margin-top: 8px">ToggleButton</div>
+      <div class="row">
+        <button class="tgl" aria-pressed="false"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6h15l-5.75 7v5l-3.5 1.5V13z"/></svg>Фильтр</button>
+        <button class="tgl" aria-pressed="true"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6h15l-5.75 7v5l-3.5 1.5V13z"/></svg>Фильтр</button>
+      </div>
+      <div class="h2" style="margin-top: 8px">ToggleGroup — multiple</div>
+      <div class="grp fmt" role="group" aria-label="Форматирование">
+        <button class="on" aria-pressed="true" aria-label="Жирный">B</button><button aria-pressed="false" aria-label="Курсив" style="font-style: italic; font-weight: 500">I</button><button class="on" aria-pressed="true" aria-label="Подчёркнутый" style="text-decoration: underline; text-underline-offset: 3px">U</button>
+      </div>
+    </div>
+    <div class="card h">
+      <div class="h2">SegmentedControl</div>
+      <div class="seg" role="radiogroup" aria-label="Вид">
+        <button role="radio" aria-checked="true" class="on">Таблица</button>
+        <button role="radio" aria-checked="false">Дерево</button>
+        <button role="radio" aria-checked="false">Канбан</button>
+      </div>
+      <div class="seg icons" role="radiogroup" aria-label="Раскладка">
+        <button role="radio" aria-checked="false" aria-label="Сетка"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="4.5" width="6" height="6" rx="1.5"/><rect x="13.5" y="4.5" width="6" height="6" rx="1.5"/><rect x="4.5" y="13.5" width="6" height="6" rx="1.5"/><rect x="13.5" y="13.5" width="6" height="6" rx="1.5"/></svg></button>
+        <button role="radio" aria-checked="true" class="on" aria-label="Список"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7h10.5M9 12h10.5M9 17h10.5M4.75 7h.01M4.75 12h.01M4.75 17h.01"/></svg></button>
+        <button role="radio" aria-checked="false" aria-label="График"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19.5h14M7.5 16v-4M12 16V7M16.5 16v-6"/></svg></button>
+      </div>
+      <p style="padding: 16px 18px; border-radius: 14px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07); font-size: 14px; line-height: 1.55; color: #a9b3c4; margin-top: 8px">Активный сегмент — приподнятая плашка с бликом по верхней кромке и мягкой тенью. Нажатые ToggleButton и выбранные пункты ButtonGroup подсвечены лаймом: тинт 14 % и текст #c6f432.</p>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":1360}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

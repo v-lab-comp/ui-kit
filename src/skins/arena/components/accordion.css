@@ -1,0 +1,89 @@
+/* accordion: вид «арены» поверх corporate/components/accordion.css (макет: Data.dc.html, «Accordion»).
+
+   Пункт — сплошная поверхность контента (--bg-white-0, радиус 18, волосок, мягкая глубокая тень
+   --arena-shadow-surface), не стекло. Заголовок — Onest 600 15px, иконки — тихие; у раскрытого
+   пункта иконка лаймовая (в светлой схеме олива), содержимое отделено волоском.
+   Фокус — кольцо внутри пункта: снаружи его срезал бы overflow: hidden. */
+:where([data-vl-skin~='arena']) {
+  .vl-accordion {
+    border-color: var(--stroke-soft-200);
+    border-radius: var(--radius-16);
+    background: var(--bg-white-0);
+    box-shadow: var(--arena-shadow-surface);
+    transition: box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vl-accordion {
+      transition: none;
+    }
+  }
+
+  /* corporate снимает тень на наведении и у раскрытого — в арене поверхность остаётся объёмной */
+  .vl-accordion:hover,
+  .vl-accordion[data-open] {
+    box-shadow: var(--arena-shadow-surface);
+  }
+
+  .vl-accordion[data-disabled] {
+    opacity: 1;
+    background: var(--arena-field-bg-disabled);
+    box-shadow: none;
+  }
+
+  .vl-accordion[data-disabled] .vl-accordion__trigger {
+    color: var(--text-soft-400);
+  }
+
+  .vl-accordion__trigger {
+    gap: 14px;
+    min-height: 56px;
+    padding: 16px 20px;
+    border-radius: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0;
+    transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-accordion:not([data-disabled]) .vl-accordion__trigger:hover {
+    background-color: var(--arena-control-bg);
+  }
+
+  .vl-accordion__trigger:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: calc(-1 * var(--arena-focus-width));
+    /* Кольцо внутри: в светлой схеме чернильный контур — с внутренней стороны лайма */
+    box-shadow: inset 0 0 0 calc(var(--arena-focus-width) + var(--arena-focus-offset))
+      var(--arena-focus-contour);
+  }
+
+  .vl-accordion__left-icon,
+  :where(.vl-accordion__left-icon)[data-toggle],
+  :where(.vl-accordion__right-icon)[data-toggle],
+  .vl-accordion__right-icon,
+  .vl-accordion__toggle-icon {
+    color: var(--icon-sub-600);
+    transition: color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-accordion[data-open] :is(.vl-accordion__left-icon, .vl-accordion__right-icon) {
+    color: var(--primary-dark);
+  }
+
+  .vl-accordion[data-open] .vl-accordion__toggle-icon {
+    color: var(--primary-dark);
+  }
+
+  .vl-accordion__content-inner {
+    padding: 0 20px 18px;
+    font-size: 14px;
+    line-height: 1.55;
+    letter-spacing: 0;
+  }
+
+  /* Отступ слева — под текст заголовка: поле 20 + иконка 20 + зазор 14 */
+  .vl-accordion[data-has-left-icon] .vl-accordion__content-inner {
+    padding-left: 54px;
+  }
+}

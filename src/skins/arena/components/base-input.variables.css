@@ -1,0 +1,78 @@
+/**
+ * Переменные поля ввода (--base-input-*) для arena — поверх corporate/components/base-input.variables.css.
+ * Файл токенов: явные селекторы, как в tokens.css (вес (0,1,0), файл идёт после corporate).
+ *
+ * Размеры и отступы (высоты 40/36/32, padding, gap) приходят из corporate как есть — раскладка
+ * общая. Здесь меняется только вид (макет Inputs.dc.html): «утопленное» поле темнее поверхности
+ * (#0b0e16), тонкое кольцо 10% и внутренняя тень, радиус 14px (small — 12px), Onest 15px.
+ *
+ * Значения со ссылками на токены объявлены на каждой ветке схемы (корень, вложенный светлый
+ * и тёмный контейнер): var() вычисляется там, где объявлен, иначе во вложенном
+ * [data-theme='dark'] остались бы светлые цвета.
+ */
+
+/* ── Общие значения (не зависят от схемы) ─────────────────────────────────── */
+[data-vl-skin~='arena'] {
+  /* Onest 15px — основной кегль полей; у small — 14px (это задаёт input-field.css) */
+  --base-input-font-weight: 400;
+  --base-input-font-size: 15px;
+  --base-input-line-height: 20px;
+  --base-input-letter-spacing: 0;
+
+  --base-input-transition:
+    border-color var(--motion-duration-fast) var(--motion-ease-standard),
+    box-shadow var(--motion-duration-fast) var(--motion-ease-standard),
+    outline-color var(--motion-duration-fast) var(--motion-ease-standard);
+}
+
+/* ── Цвета и составные значения — на всех ветках схемы ─────────────────────── */
+[data-vl-skin~='arena'],
+:where([data-vl-skin~='arena']) [data-theme='light'],
+:where([data-vl-skin~='arena']) [data-theme='dark'] {
+  --base-input-font-family: var(--font-sans);
+  --base-input-color: var(--text-strong-950);
+
+  /* Концентрические радиусы: поле 14px внутри карточки 20px, small — 12px */
+  --base-input-radius-big: var(--radius-10);
+  --base-input-radius-medium: var(--radius-10);
+  --base-input-radius-small: var(--radius-8);
+
+  /* Кольцо поля — декоративный волосок (поле отличает фон и внутренняя тень, см. README) */
+  --base-input-border: 1px solid var(--arena-field-border);
+  --base-input-border-filled: var(--arena-field-border);
+  --base-input-shadow: var(--arena-field-inset);
+
+  /* Фокус — лаймовое кольцо arena (outline), а не мягкая тень corporate */
+  --base-input-focus-shadow: var(--arena-focus-ring);
+  --base-input-focus-shadow-error: var(--arena-focus-ring);
+
+  /* Неактивное: свой фон, текст приглушённый, но читаемый (как в макете: #8b95a8, 5,7:1) */
+  --base-input-bg-disabled: var(--arena-field-bg-disabled);
+  --base-input-border-disabled: var(--stroke-soft-200);
+  --base-input-color-disabled: var(--text-soft-400);
+
+  /* Свои переменные arena для полей ввода (читают input-field.css / base-input.css arena):
+     bg — фон поля; accent — рамка фокуса и открытого списка; error — рамка и свечение ошибки;
+     done — заполнено (data-completed); border-hover — кольцо при наведении. */
+  --arena-input-bg: var(--arena-field-bg);
+  --arena-input-accent: var(--primary-dark);
+  --arena-input-error: var(--error-base);
+  --arena-input-error-glow: var(--error-lighter);
+  --arena-input-done: color-mix(in srgb, var(--success-dark) 60%, transparent);
+  --arena-input-border-hover: var(--arena-field-border-hover);
+  --base-input-border-error: var(--arena-input-error);
+  --base-input-outline-error: var(--arena-input-error);
+}
+
+/* ── Светлая схема: рамка ошибки — тёмно-розовая (#c2185b, 5,9:1), как в макете «Дневная арена» ── */
+[data-vl-skin~='arena'],
+:where([data-vl-skin~='arena']) [data-theme='light'] {
+  --arena-input-error: var(--error-dark);
+}
+
+/* ── Тёмная схема: те же ветки, что у tokens.css; блок идёт позже и перекрывает светлый ── */
+:where([data-vl-skin~='arena'])[data-vl-scheme='dark'],
+:where([data-vl-skin~='arena'])[data-theme='dark'],
+:where([data-vl-skin~='arena']) [data-theme='dark'] {
+  --arena-input-error: var(--error-base);
+}

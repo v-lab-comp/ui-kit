@@ -1,0 +1,136 @@
+/* page-header-demo: вид arena поверх corporate/components/page-header-demo.css — демо-содержимое
+   шапки для сторис и доков (макет: Layout.dc.html, правая часть шапки).
+
+   Заголовок — Unbounded. Иконочные кнопки — круглые, прозрачные, наведение — тинт контрола.
+   «Вторичная» — мягкая нейтральная пилюля (тинт + волосок, как .btn в макете), «главная» —
+   лаймовая CTA: тёмный текст, блик сверху, свечение; наведение — ярче, нажатие — сжатие 2%.
+   Высота кнопок — 40px corporate; шрифт кнопок — Unbounded 700. */
+:where([data-vl-skin~='arena']) {
+  .vl-page-header-demo__title {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    letter-spacing: 0;
+    color: var(--text-strong-950);
+  }
+
+  /* ---------- Иконочные кнопки ---------- */
+
+  .vl-page-header-demo__topbar-btn {
+    border-radius: var(--radius-full);
+    background: transparent;
+    color: var(--icon-sub-600);
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-page-header-demo__topbar-btn:hover {
+    background: var(--arena-control-bg-hover);
+    color: var(--icon-strong-950);
+  }
+
+  .vl-page-header-demo__topbar-btn:active {
+    transform: var(--arena-press-transform);
+  }
+
+  .vl-page-header-demo__notification-dot {
+    right: 11px;
+    top: 10px;
+    width: 7px;
+    height: 7px;
+    background: var(--error-base);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--error-base) 60%, transparent);
+  }
+
+  /* ---------- Пилюли ---------- */
+
+  .vl-page-header-demo__secondary-btn,
+  .vl-page-header-demo__primary-btn {
+    height: 40px;
+    gap: 8px;
+    padding: 0 18px 0 14px;
+    border: 0;
+    border-radius: var(--radius-full);
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-fast) var(--motion-ease-standard),
+      filter var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-page-header-demo__secondary-btn svg,
+  .vl-page-header-demo__primary-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .vl-page-header-demo__secondary-btn {
+    background: var(--arena-control-bg);
+    color: var(--text-strong-950);
+    box-shadow:
+      inset 0 0 0 1px var(--stroke-soft-200),
+      var(--arena-highlight-soft);
+  }
+
+  .vl-page-header-demo__secondary-btn:hover {
+    background: var(--arena-control-bg-hover);
+    box-shadow:
+      inset 0 0 0 1px var(--stroke-sub-300),
+      var(--arena-highlight-soft);
+  }
+
+  .vl-page-header-demo__secondary-btn:active {
+    transform: var(--arena-press-transform);
+    box-shadow:
+      inset 0 0 0 1px var(--stroke-sub-300),
+      var(--arena-pressed-shadow);
+  }
+
+  /* Главная — лайм, текст на лайме всегда тёмный */
+  .vl-page-header-demo__primary-btn {
+    background: var(--primary-base);
+    color: var(--static-black);
+    box-shadow: var(--arena-highlight), var(--arena-edge-bottom), var(--arena-glow-primary);
+  }
+
+  .vl-page-header-demo__primary-btn:hover {
+    background: var(--primary-base);
+    filter: var(--arena-hover-filter);
+    box-shadow: var(--arena-highlight), var(--arena-edge-bottom), var(--arena-glow-primary-hover);
+  }
+
+  .vl-page-header-demo__primary-btn:active {
+    transform: var(--arena-press-transform);
+    filter: var(--arena-press-filter);
+    box-shadow: var(--arena-pressed-shadow);
+  }
+
+  /* ---------- Фокус ---------- */
+
+  .vl-page-header-demo__topbar-btn:focus-visible,
+  .vl-page-header-demo__secondary-btn:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+    box-shadow: var(--arena-focus-ring);
+  }
+
+  .vl-page-header-demo__primary-btn:focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+    box-shadow: var(--arena-highlight), var(--arena-focus-ring);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vl-page-header-demo__topbar-btn:active,
+    .vl-page-header-demo__secondary-btn:active,
+    .vl-page-header-demo__primary-btn:active {
+      transform: none;
+    }
+  }
+}

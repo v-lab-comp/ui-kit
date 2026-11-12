@@ -1,0 +1,9 @@
+/* ui-kit-root: база arena под .vl-ui-kit-root поверх сброса corporate/components/ui-kit-root.css.
+   Сглаживание antialiased corporate оставляет — оно и в макете. Арена добавляет табличные цифры
+   (ставки, таймеры, суммы не «прыгают» при обновлении) и лаймовый акцент нативных контролов. */
+:where([data-vl-skin~='arena']) {
+  .vl-ui-kit-root {
+    font-variant-numeric: tabular-nums;
+    accent-color: var(--primary-base);
+  }
+}

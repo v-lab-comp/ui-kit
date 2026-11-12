@@ -1,0 +1,18 @@
+/* modal-body: вид arena поверх corporate/components/modal-body.css — раскладка приходит оттуда.
+   Тело лежит прямо на стекле окна: свой фон не нужен. Текст — Onest; полоса прокрутки —
+   тонкая пилюля полупрозрачного нейтрального тона, заметнее при наведении. */
+:where([data-vl-skin~='arena']) {
+  .vl-modal-body {
+    font-family: var(--font-sans);
+    scrollbar-color: var(--faded-light) transparent;
+  }
+
+  .vl-modal-body::-webkit-scrollbar-thumb {
+    background-color: var(--faded-light);
+  }
+
+  .vl-modal-body::-webkit-scrollbar-thumb:hover,
+  .vl-modal-body::-webkit-scrollbar-thumb:active {
+    background-color: var(--stroke-sub-300);
+  }
+}

@@ -1,0 +1,167 @@
+/* ============================================================
+   Палитры скина arena — поверх corporate/palettes.css (тот же вес (0,1,0), файл идёт позже).
+   Все значения — семантические токены arena, поэтому вложенная схема подхватывается сама:
+   переменные объявлены на самом элементе с [data-color].
+
+   Переменные corporate (их читают Button, Badge, Tag, Toast):
+   --pal-base        заливка filled
+   --pal-hover       заливка filled при наведении (чуть светлее; у синих — чуть темнее)
+   --pal-active      заливка filled при нажатии (темнее)
+   --pal-bg-hover    тинт: фон lighter, hover у stroke / ghost
+   --pal-bg-active   тинт плотнее: active у stroke / ghost / lighter
+
+   ВАЖНО: --pal-hover / --pal-active — только ЗАЛИВКИ под --pal-on-base. Как цвет текста
+   их не использовать (corporate местами так делает — файлы компонентов arena перекрывают
+   это на --pal-text). Направление смешивания выбрано так, чтобы контраст с --pal-on-base
+   не падал: под тёмным текстом заливка светлеет, под белым — темнеет.
+
+   Свои переменные arena (corporate их не знает, читают файлы components/*.css этого скина):
+   --pal-text        читаемый текст цвета палитры на поверхности и на --pal-bg-hover (≥ 4,5:1):
+                     текст stroke / lighter / ghost, текст тинт-бейджа и тега
+   --pal-on-base     текст на заливке filled: тёмный (лайм, розовый, янтарь…), белый у синих
+   --pal-border      рамка stroke-варианта (≥ 3:1 к поверхности)
+   --pal-glow        цвет свечения (тень CTA, бейджа, точки статуса): box-shadow: 0 0 14px var(--pal-glow)
+
+   color-mix(in srgb, …) — Chrome 111+, Safari 16.2+, Firefox 113+.
+   ============================================================ */
+
+:where([data-vl-skin~='arena']) {
+  /* Лайм — призыв к ставке. Текст на заливке тёмный */
+  [data-color='primary'] {
+    --pal-base: var(--primary-base);
+    --pal-hover: color-mix(in srgb, var(--primary-base) 88%, var(--static-white));
+    --pal-active: color-mix(in srgb, var(--primary-base) 88%, var(--static-black));
+    --pal-bg-hover: var(--primary-alpha-10);
+    --pal-bg-active: var(--primary-alpha-16);
+    --pal-text: var(--primary-dark);
+    --pal-on-base: var(--static-black);
+    --pal-border: color-mix(in srgb, var(--primary-dark) 70%, transparent);
+    --pal-glow: color-mix(in srgb, var(--primary-base) var(--arena-glow-strength), transparent);
+  }
+
+  /* Нейтральная заливка — светлая в тёмной схеме (#f2f5fb), чернильная в светлой */
+  [data-color='neutral'] {
+    --pal-base: var(--bg-strong-950);
+    --pal-hover: color-mix(in srgb, var(--bg-strong-950) 90%, var(--text-white-0));
+    --pal-active: color-mix(in srgb, var(--bg-strong-950) 82%, var(--text-white-0));
+    --pal-bg-hover: var(--arena-control-bg);
+    --pal-bg-active: var(--arena-control-bg-hover);
+    --pal-text: var(--text-strong-950);
+    --pal-on-base: var(--text-white-0);
+    --pal-border: var(--stroke-sub-300);
+    --pal-glow: transparent;
+  }
+
+  /* Розовый — «ставку перебили», ошибка, удаление */
+  [data-color='error'] {
+    --pal-base: var(--error-base);
+    --pal-hover: color-mix(in srgb, var(--error-base) 90%, var(--static-white));
+    --pal-active: color-mix(in srgb, var(--error-base) 88%, var(--static-black));
+    --pal-bg-hover: var(--error-lighter);
+    --pal-bg-active: var(--error-light);
+    --pal-text: var(--error-dark);
+    --pal-on-base: var(--static-black);
+    --pal-border: color-mix(in srgb, var(--error-dark) 70%, transparent);
+    --pal-glow: color-mix(in srgb, var(--error-base) var(--arena-glow-strength), transparent);
+  }
+
+  /* Синий: текст на заливке белый, поэтому hover темнеет */
+  [data-color='information'] {
+    --pal-base: var(--information-base);
+    --pal-hover: color-mix(in srgb, var(--information-base) 92%, var(--static-black));
+    --pal-active: color-mix(in srgb, var(--information-base) 84%, var(--static-black));
+    --pal-bg-hover: var(--information-lighter);
+    --pal-bg-active: var(--information-light);
+    --pal-text: var(--information-dark);
+    --pal-on-base: var(--static-white);
+    --pal-border: color-mix(in srgb, var(--information-dark) 70%, transparent);
+    --pal-glow: color-mix(in srgb, var(--information-base) var(--arena-glow-strength), transparent);
+  }
+
+  /* Янтарь — таймер, предупреждение */
+  [data-color='warning'] {
+    --pal-base: var(--warning-base);
+    --pal-hover: color-mix(in srgb, var(--warning-base) 90%, var(--static-white));
+    --pal-active: color-mix(in srgb, var(--warning-base) 88%, var(--static-black));
+    --pal-bg-hover: var(--warning-lighter);
+    --pal-bg-active: var(--warning-light);
+    --pal-text: var(--warning-dark);
+    --pal-on-base: var(--static-black);
+    --pal-border: color-mix(in srgb, var(--warning-dark) 70%, transparent);
+    --pal-glow: color-mix(in srgb, var(--warning-base) var(--arena-glow-strength), transparent);
+  }
+
+  [data-color='success'] {
+    --pal-base: var(--success-base);
+    --pal-hover: color-mix(in srgb, var(--success-base) 90%, var(--static-white));
+    --pal-active: color-mix(in srgb, var(--success-base) 88%, var(--static-black));
+    --pal-bg-hover: var(--success-lighter);
+    --pal-bg-active: var(--success-light);
+    --pal-text: var(--success-dark);
+    --pal-on-base: var(--static-black);
+    --pal-border: color-mix(in srgb, var(--success-dark) 70%, transparent);
+    --pal-glow: color-mix(in srgb, var(--success-base) var(--arena-glow-strength), transparent);
+  }
+
+  [data-color='away'] {
+    --pal-base: var(--away-base);
+    --pal-hover: color-mix(in srgb, var(--away-base) 90%, var(--static-white));
+    --pal-active: color-mix(in srgb, var(--away-base) 88%, var(--static-black));
+    --pal-bg-hover: var(--away-lighter);
+    --pal-bg-active: var(--away-light);
+    --pal-text: var(--away-dark);
+    --pal-on-base: var(--static-black);
+    --pal-border: color-mix(in srgb, var(--away-dark) 70%, transparent);
+    --pal-glow: color-mix(in srgb, var(--away-base) var(--arena-glow-strength), transparent);
+  }
+
+  /* Синий второстепенный акцент («Подробнее»): текст на заливке белый */
+  [data-color='feature'] {
+    --pal-base: var(--feature-base);
+    --pal-hover: color-mix(in srgb, var(--feature-base) 92%, var(--static-black));
+    --pal-active: color-mix(in srgb, var(--feature-base) 84%, var(--static-black));
+    --pal-bg-hover: var(--feature-lighter);
+    --pal-bg-active: var(--feature-light);
+    --pal-text: var(--feature-dark);
+    --pal-on-base: var(--static-white);
+    --pal-border: color-mix(in srgb, var(--feature-dark) 70%, transparent);
+    --pal-glow: color-mix(in srgb, var(--feature-base) var(--arena-glow-strength), transparent);
+  }
+
+  [data-color='verified'] {
+    --pal-base: var(--verified-base);
+    --pal-hover: color-mix(in srgb, var(--verified-base) 90%, var(--static-white));
+    --pal-active: color-mix(in srgb, var(--verified-base) 88%, var(--static-black));
+    --pal-bg-hover: var(--verified-lighter);
+    --pal-bg-active: var(--verified-light);
+    --pal-text: var(--verified-dark);
+    --pal-on-base: var(--static-black);
+    --pal-border: color-mix(in srgb, var(--verified-dark) 70%, transparent);
+    --pal-glow: color-mix(in srgb, var(--verified-base) var(--arena-glow-strength), transparent);
+  }
+
+  /* Фуксия «Эпического»: текст на заливке тёмный (5:1) */
+  [data-color='highlighted'] {
+    --pal-base: var(--highlighted-base);
+    --pal-hover: color-mix(in srgb, var(--highlighted-base) 90%, var(--static-white));
+    --pal-active: color-mix(in srgb, var(--highlighted-base) 94%, var(--static-white));
+    --pal-bg-hover: var(--highlighted-lighter);
+    --pal-bg-active: var(--highlighted-light);
+    --pal-text: var(--highlighted-dark);
+    --pal-on-base: var(--static-black);
+    --pal-border: color-mix(in srgb, var(--highlighted-dark) 70%, transparent);
+    --pal-glow: color-mix(in srgb, var(--highlighted-base) var(--arena-glow-strength), transparent);
+  }
+
+  [data-color='stable'] {
+    --pal-base: var(--stable-base);
+    --pal-hover: color-mix(in srgb, var(--stable-base) 90%, var(--static-white));
+    --pal-active: color-mix(in srgb, var(--stable-base) 88%, var(--static-black));
+    --pal-bg-hover: var(--stable-lighter);
+    --pal-bg-active: var(--stable-light);
+    --pal-text: var(--stable-dark);
+    --pal-on-base: var(--static-black);
+    --pal-border: color-mix(in srgb, var(--stable-dark) 70%, transparent);
+    --pal-glow: color-mix(in srgb, var(--stable-base) var(--arena-glow-strength), transparent);
+  }
+}

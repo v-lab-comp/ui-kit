@@ -1,0 +1,201 @@
+/*
+ * file-upload: вид arena поверх corporate/components/file-upload.css — раскладка приходит оттуда,
+ * здесь только оформление (макет «Контент», Content.dc.html).
+ *
+ * - Зона сброса — «утопленная» площадка (фон поля) с пунктирной рамкой 1.5px; при перетаскивании —
+ *   лаймовая рамка, тинт, ореол и свечение. Кнопка «Выбрать файл» — лаймовая пилюля CTA.
+ * - Файл — сплошная карточка с волоском; ярлык расширения — тинт-пилюля Unbounded со свечением
+ *   (красная шкала: ярлык у компонента один на все типы).
+ * - Прогресс — дорожка-тинт и лаймовая заливка со свечением.
+ */
+:where([data-vl-skin~='arena']) {
+  /* ── Иконка файла и ярлык расширения ───────────────────────────────────── */
+
+  /* Контур листа: компонент красит его волоском --stroke-soft-200 (атрибутом fill) — в тёмной
+     схеме это 7% белого, почти не виден. CSS-свойство fill перекрывает атрибут. */
+  .vl-file-upload__file-icon > svg {
+    fill: var(--icon-disabled-300);
+  }
+
+  .vl-file-upload__file-icon-ext {
+    left: -4px;
+    padding: 3px 5px;
+    border-radius: var(--radius-4);
+    background-color: var(--arena-rarity-legendary-tint);
+    color: var(--arena-rarity-legendary-text);
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--arena-rarity-legendary) 55%, transparent),
+      0 0 10px var(--arena-rarity-legendary-glow);
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── Карточка файла ────────────────────────────────────────────────────── */
+
+  .vl-file-upload__file-item {
+    background-color: var(--bg-white-0);
+    border-color: var(--stroke-soft-200);
+    border-radius: var(--radius-16);
+    box-shadow: var(--arena-shadow-surface);
+  }
+
+  .vl-file-upload__file-item-name {
+    font-size: 15px;
+    letter-spacing: 0;
+    color: var(--text-strong-950);
+    transition: color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-file-upload__file-item-size,
+  .vl-file-upload__file-item-dot,
+  .vl-file-upload__file-item-status {
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .vl-file-upload__file-item-size,
+  .vl-file-upload__file-item-dot {
+    color: var(--text-sub-600);
+  }
+
+  .vl-file-upload__file-item-download-btn {
+    border-radius: var(--radius-6);
+  }
+
+  .vl-file-upload__file-item-download-btn:hover .vl-file-upload__file-item-name {
+    color: var(--primary-dark);
+  }
+
+  .vl-file-upload__file-item-action {
+    padding: 4px;
+    margin: -2px;
+    border-radius: var(--radius-full);
+    color: var(--icon-sub-600);
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-file-upload__file-item-action:hover {
+    background-color: var(--arena-control-bg-hover);
+    color: var(--icon-strong-950);
+  }
+
+  .vl-file-upload__file-item-action:active {
+    transform: var(--arena-press-transform);
+  }
+
+  :where(
+    .vl-file-upload__file-item-action,
+    .vl-file-upload__file-item-download-btn,
+    .vl-file-upload__drop-zone-btn,
+    .vl-file-upload__drop-zone,
+    .vl-file-upload__drop-zone-compact
+  ):focus-visible {
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+  }
+
+  /* ── Прогресс ──────────────────────────────────────────────────────────── */
+
+  .vl-file-upload__progress-track {
+    background-color: var(--arena-control-bg-hover);
+  }
+
+  .vl-file-upload__progress-fill {
+    background-color: var(--primary-base);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--primary-base) 60%, transparent);
+  }
+
+  /* ── Зона сброса ───────────────────────────────────────────────────────── */
+
+  .vl-file-upload__drop-zone-label {
+    gap: 6px;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .vl-file-upload__drop-zone-required {
+    color: var(--input-required-color, var(--error-dark));
+  }
+
+  .vl-file-upload__drop-zone,
+  .vl-file-upload__drop-zone-compact {
+    background-color: var(--arena-field-bg);
+    border: 1.5px dashed var(--arena-field-border-hover);
+    border-radius: var(--radius-20);
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      border-color var(--motion-duration-fast) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-file-upload__drop-zone-compact {
+    border-radius: var(--radius-12);
+  }
+
+  .vl-file-upload__drop-zone:hover,
+  .vl-file-upload__drop-zone-compact:hover {
+    border-color: var(--stroke-sub-300);
+  }
+
+  :where(.vl-file-upload__drop-zone, .vl-file-upload__drop-zone-compact)[data-dragging] {
+    border-color: var(--arena-input-accent);
+    background-color: var(--primary-alpha-10);
+    box-shadow:
+      0 0 0 4px var(--primary-alpha-10),
+      var(--arena-glow-primary);
+  }
+
+  /* Иконка загрузки — акцентом, как в макете (цвет компонент задаёт атрибутом fill) */
+  :is(.vl-file-upload__drop-zone, .vl-file-upload__drop-zone-compact) > svg {
+    fill: var(--primary-dark);
+  }
+
+  .vl-file-upload__drop-zone-title {
+    font-size: 15px;
+    letter-spacing: 0;
+  }
+
+  .vl-file-upload__drop-zone-subtitle {
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  /* Кнопка «Выбрать файл» — лаймовая пилюля CTA: тёмный текст, блик, свечение */
+  .vl-file-upload__drop-zone-btn {
+    padding: 8px 16px;
+    border: 0;
+    border-radius: var(--radius-full);
+    background-color: var(--primary-base);
+    box-shadow: var(--arena-highlight), var(--arena-edge-bottom), var(--arena-glow-primary);
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 16px;
+    letter-spacing: 0.01em;
+    color: var(--static-black);
+    transition:
+      filter var(--motion-duration-fast) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-fast) var(--motion-ease-standard),
+      transform var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-file-upload__drop-zone-btn:hover {
+    background-color: var(--primary-base);
+    filter: var(--arena-hover-filter);
+    box-shadow: var(--arena-highlight), var(--arena-edge-bottom), var(--arena-glow-primary-hover);
+  }
+
+  .vl-file-upload__drop-zone-btn:active {
+    transform: var(--arena-press-transform);
+    filter: var(--arena-press-filter);
+    box-shadow: var(--arena-pressed-shadow);
+  }
+
+  .vl-file-upload__drop-zone-btn:focus-visible {
+    box-shadow: var(--arena-highlight), var(--arena-focus-ring);
+  }
+}

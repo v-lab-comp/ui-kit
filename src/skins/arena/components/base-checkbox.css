@@ -1,0 +1,104 @@
+/* base-checkbox: вид «арены» поверх corporate/components/base-checkbox.css — размеры (20 / 16)
+   приходят оттуда (макет: Selection.dc.html, «Checkbox»; светлая схема — Dark.dc.html).
+
+   - Не отмечен — приподнятая плашка --arena-raised-bg с рамкой 1.5px --stroke-sub-300 (≥ 3:1);
+     наведение — рамка лаймом (в светлой схеме оливой).
+   - Отмечен / частично — лаймовая заливка с бликом сверху, тёмной галочкой и мягким лаймовым
+     свечением; кромка — лайм, притемнённый на 18% (в светлой схеме отделяет лайм от белого).
+   - Отключён — тусклая плашка --arena-field-bg-disabled с волоском, отмеченный — серая галочка.
+   - Ошибка (aria-invalid, data-error у CheckboxField) — розовая рамка со свечением.
+
+   Галочка и штрих — SVG в data-URI, как у corporate: цвет внутри data-URI токеном не задать,
+   поэтому он записан литералом — чернила #07090f (на лайме ≥ 14:1 в обеих схемах) и серый
+   #7c869a для отключённого (читается и на #161b26, и на #e7e9ef). */
+:where([data-vl-skin~='arena']) {
+  .vl-base-checkbox {
+    --_ar-cb-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 10' fill='none'%3E%3Cpath d='M1.25 5.25l3.25 3.25 6.25-7' stroke='%2307090f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    --_ar-cb-dash: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 2' fill='none'%3E%3Cpath d='M1 1h10' stroke='%2307090f' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+    --_ar-cb-check-off: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 10' fill='none'%3E%3Cpath d='M1.25 5.25l3.25 3.25 6.25-7' stroke='%237c869a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    --_ar-cb-dash-off: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 2' fill='none'%3E%3Cpath d='M1 1h10' stroke='%237c869a' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+    --_ar-cb-shadow: 0 0 transparent;
+    --_ar-cb-focus: 0 0 transparent;
+
+    border-radius: var(--radius-4);
+    border-color: var(--stroke-sub-300);
+    background-color: var(--arena-raised-bg);
+    box-shadow: var(--_ar-cb-shadow), var(--_ar-cb-focus);
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      border-color var(--motion-duration-fast) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vl-base-checkbox {
+      transition: none;
+    }
+  }
+
+  :where(.vl-base-checkbox)[data-size='small'] {
+    border-radius: var(--radius-2);
+  }
+
+  .vl-base-checkbox:hover:not(:disabled) {
+    border-color: var(--primary-dark);
+  }
+
+  /* corporate рисует фокус полупрозрачным outline — в арене общий фокус скина */
+  .vl-base-checkbox:focus-visible {
+    --_ar-cb-focus: var(--arena-focus-ring);
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+  }
+
+  .vl-base-checkbox:checked,
+  .vl-base-checkbox:indeterminate {
+    --_ar-cb-shadow: var(--arena-highlight), 0 0 12px var(--shadow-primary-4);
+    background-color: var(--primary-base);
+    border-color: color-mix(in srgb, var(--primary-base) 82%, var(--static-black));
+  }
+
+  .vl-base-checkbox:checked:hover:not(:disabled),
+  .vl-base-checkbox:indeterminate:hover:not(:disabled) {
+    --_ar-cb-shadow: var(--arena-highlight), 0 0 16px var(--shadow-primary-6);
+    border-color: color-mix(in srgb, var(--primary-base) 82%, var(--static-black));
+  }
+
+  .vl-base-checkbox:checked {
+    background-image: var(--_ar-cb-check);
+  }
+
+  .vl-base-checkbox:indeterminate {
+    background-image: var(--_ar-cb-dash);
+  }
+
+  /* Ошибка — у самого чекбокса атрибута нет: aria-invalid при отдельном использовании,
+     data-error ставит CheckboxField (checkbox-field.css) */
+  .vl-base-checkbox[aria-invalid='true']:not(:disabled):not(:checked) {
+    --_ar-cb-shadow: 0 0 12px var(--error-lighter);
+    border-color: var(--error-base);
+  }
+
+  /* ---------- Disabled — в конце ---------- */
+
+  .vl-base-checkbox:disabled {
+    --_ar-cb-shadow: 0 0 transparent;
+    background-color: var(--arena-field-bg-disabled);
+    border-color: var(--stroke-soft-200);
+  }
+
+  .vl-base-checkbox:checked:disabled,
+  .vl-base-checkbox:indeterminate:disabled {
+    --_ar-cb-shadow: 0 0 transparent;
+    background-color: var(--arena-field-bg-disabled);
+    border-color: var(--stroke-soft-200);
+  }
+
+  .vl-base-checkbox:checked:disabled {
+    background-image: var(--_ar-cb-check-off);
+  }
+
+  .vl-base-checkbox:indeterminate:disabled {
+    background-image: var(--_ar-cb-dash-off);
+  }
+}

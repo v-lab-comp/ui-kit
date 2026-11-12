@@ -1,0 +1,220 @@
+/*
+ * input-field: вид arena поверх corporate/components/input-field.css — раскладка (высоты 40/36/32,
+ * отступы, gap) приходит оттуда, здесь только оформление по макету «Поля ввода» (Inputs.dc.html).
+ *
+ * Оболочка — «утопленное» сплошное поле: фон темнее поверхности (--arena-input-bg), волосок
+ * --arena-field-border и внутренняя тень (--base-input-shadow), радиус 14px (small — 12px).
+ * Фон и внутренняя тень вынесены в переменные оболочки --_arena-field-bg / --_arena-field-inset:
+ * их перекрашивает select-input.css (триггер селекта — приподнятый, --arena-raised-bg) и редактор.
+ *
+ * Состояния (порядок правил важен — позднее правило побеждает при равном весе):
+ *   наведение → фокус (мышь: лаймовая рамка + мягкий ореол) → заполнено (data-completed) →
+ *   ошибка (розовая рамка + розовый ореол) → отключено → фокус с клавиатуры (:focus-visible
+ *   внутри: лаймовый outline + --arena-focus-ring, в светлой схеме — с чернильным контуром).
+ */
+:where([data-vl-skin~='arena']) {
+  /* ── Подпись ───────────────────────────────────────────────────────────── */
+
+  /* Макет: 8px от подписи до поля (4px gap поля + 4px) */
+  .vl-input-field__label-row {
+    margin-bottom: 4px;
+  }
+
+  .vl-input-field__label {
+    gap: 6px;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .vl-input-field__label[data-disabled] {
+    color: var(--text-soft-400);
+  }
+
+  /* Звёздочка — на строке подписи, читаемым розовым (#ff6b9a / #c2185b) */
+  .vl-input-field__required {
+    margin-left: 0;
+    color: var(--input-required-color, var(--error-dark));
+    vertical-align: baseline;
+  }
+
+  .vl-input-field__optional {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-sub-600);
+  }
+
+  .vl-input-field__label-tooltip {
+    color: var(--icon-sub-600);
+  }
+
+  /* ── Оболочка ──────────────────────────────────────────────────────────── */
+
+  .vl-input-field__wrapper {
+    --_arena-field-bg: var(--arena-input-bg);
+    --_arena-field-inset: var(--base-input-shadow);
+
+    background-color: var(--_arena-field-bg);
+    border: var(--base-input-border);
+    box-shadow: var(--_arena-field-inset);
+    transition:
+      var(--base-input-transition),
+      background-color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  /* Наведение: фон тот же, кольцо ярче */
+  .vl-input-field__wrapper:hover:not([data-disabled]):not(:focus-within) {
+    background-color: var(--_arena-field-bg);
+    border-color: var(--arena-input-border-hover);
+  }
+
+  /* Фокус (в т.ч. мышью у селекта) и открытый список — рамка-акцент и мягкий лаймовый ореол */
+  .vl-input-field__wrapper:focus-within:not([data-disabled]),
+  .vl-input-field__wrapper:has([aria-expanded='true']):not([data-disabled]) {
+    border-color: var(--input-focus-border-color, var(--arena-input-accent));
+    background-color: var(--_arena-field-bg);
+    box-shadow:
+      var(--_arena-field-inset),
+      0 0 0 4px var(--primary-alpha-10);
+  }
+
+  /* ── Заполнено (data-completed): зелёная рамка или свой цвет из пропа completedColor ── */
+
+  .vl-input-field__wrapper[data-completed]:not([data-error]):not([data-disabled]) {
+    border-color: var(--input-completed-border, var(--arena-input-done));
+  }
+
+  .vl-input-field__wrapper[data-completed]:not([data-custom-completed-border]):not(
+      [data-error]
+    ):not([data-disabled]):hover:not(:focus-within) {
+    background-color: var(--_arena-field-bg);
+    border-color: var(--success-dark);
+  }
+
+  .vl-input-field__wrapper[data-completed][data-custom-completed-border]:not([data-error]):not(
+      [data-disabled]
+    ):hover:not(:focus-within) {
+    background-color: var(--_arena-field-bg);
+  }
+
+  .vl-input-field__wrapper[data-completed]:not([data-error]):not([data-disabled]):focus-within {
+    background-color: var(--_arena-field-bg);
+    box-shadow:
+      var(--_arena-field-inset),
+      0 0 0 4px var(--primary-alpha-10);
+  }
+
+  /* ── Ошибка: розовая рамка 1.5px и розовый ореол 4px ───────────────────── */
+
+  .vl-input-field__wrapper[data-error],
+  .vl-input-field__wrapper[data-error]:hover,
+  .vl-input-field__wrapper[data-error]:focus-within,
+  .vl-input-field__wrapper[data-error]:hover:not([data-disabled]):not(:focus-within) {
+    border-color: var(--arena-input-error);
+    background-color: var(--_arena-field-bg);
+    box-shadow:
+      var(--_arena-field-inset),
+      inset 0 0 0 0.5px var(--arena-input-error),
+      0 0 0 4px var(--arena-input-error-glow);
+  }
+
+  /* ── Отключено: свой плоский фон, без внутренней тени ──────────────────── */
+
+  .vl-input-field__wrapper[data-disabled] {
+    background-color: var(--base-input-bg-disabled);
+    border-color: var(--base-input-border-disabled);
+    box-shadow: none;
+  }
+
+  /* ── Фокус с клавиатуры: лаймовое кольцо arena вокруг всей оболочки ───────
+     Текстовые поля получают :focus-visible и при клике — это штатное поведение браузера
+     (в макете «Фокус» кольцо есть у поля, в которое печатают). */
+
+  .vl-input-field__wrapper:has(:focus-visible):not([data-disabled]) {
+    outline: var(--arena-focus-outline);
+    outline-offset: var(--arena-focus-offset);
+    box-shadow: var(--_arena-field-inset), var(--arena-focus-ring);
+  }
+
+  .vl-input-field__wrapper[data-error]:has(:focus-visible):not([data-disabled]) {
+    box-shadow:
+      var(--_arena-field-inset),
+      inset 0 0 0 0.5px var(--arena-input-error),
+      var(--arena-focus-ring);
+  }
+
+  /* small — кегль 14px, как в макете; переменную наследуют поле, триггер списка и телефон */
+  .vl-input-field__wrapper[data-size='small'] {
+    --base-input-font-size: 14px;
+  }
+
+  /* ── Блоки startBlock / endBlock: тинт поверх фона поля и волосок-разделитель ── */
+
+  .vl-input-field__block-start,
+  .vl-input-field__block-end {
+    background-color: var(--arena-control-bg);
+    color: var(--text-strong-950);
+    transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .vl-input-field__block-start {
+    border-right-color: var(--stroke-soft-200);
+  }
+
+  .vl-input-field__block-end {
+    border-left-color: var(--stroke-soft-200);
+  }
+
+  /* corporate красит наведение примитивом --neutral-100 (светлый и в тёмной схеме) */
+  .vl-input-field__wrapper:not([data-disabled]) .vl-input-field__block-start:hover,
+  .vl-input-field__wrapper:not([data-disabled]) .vl-input-field__block-end:hover {
+    background-color: var(--arena-control-bg);
+  }
+
+  /* Интерактивный блок (протокол у SiteInput, страна у PhoneInput) — светлеет при наведении
+     и пока открыт его список */
+  .vl-input-field__wrapper:not([data-disabled]) .vl-input-field__block-start:has(button):hover,
+  .vl-input-field__wrapper:not([data-disabled]) .vl-input-field__block-end:has(button):hover,
+  .vl-input-field__wrapper:not([data-disabled]) .vl-input-field__block-start:has([data-open]) {
+    background-color: var(--arena-control-bg-hover);
+  }
+
+  .vl-input-field__wrapper[data-disabled] .vl-input-field__block-start,
+  .vl-input-field__wrapper[data-disabled] .vl-input-field__block-end {
+    background-color: transparent;
+    color: var(--text-soft-400);
+  }
+
+  /* ── Префикс / суффикс ─────────────────────────────────────────────────── */
+
+  .vl-input-field__addon-start,
+  .vl-input-field__addon-end {
+    color: var(--icon-sub-600);
+  }
+
+  .vl-input-field__wrapper[data-disabled] .vl-input-field__addon-start,
+  .vl-input-field__wrapper[data-disabled] .vl-input-field__addon-end {
+    color: var(--icon-soft-400);
+  }
+
+  /* ── Подсказка / ошибка: Onest 13px, ошибка — читаемым розовым ─────────── */
+
+  .vl-input-field__hint-row {
+    gap: 6px;
+    margin-top: 2px;
+  }
+
+  .vl-input-field__hint-icon {
+    color: var(--icon-sub-600);
+  }
+
+  .vl-input-field__hint-text {
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .vl-input-field__hint-row[data-error] .vl-input-field__hint-icon,
+  .vl-input-field__hint-row[data-error] .vl-input-field__hint-text {
+    color: var(--error-dark);
+  }
+}

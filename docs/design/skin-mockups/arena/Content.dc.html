@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Арена — контент</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&amp;family=Onest:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.r{font-family:'Onest',system-ui,sans-serif;color:#f2f5fb;background:#07090f;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+.r *,.r *::before,.r *::after{box-sizing:border-box}
+.u{font-family:'Unbounded','Onest',sans-serif}
+.surface{background:#11151f;border-radius:20px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.07),0 1px 0 rgba(0,0,0,.5),0 14px 34px rgba(0,0,0,.38)}
+.glass{position:relative;isolation:isolate;background:rgba(30,34,46,.55);-webkit-backdrop-filter:blur(28px) saturate(160%);backdrop-filter:blur(28px) saturate(160%);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 1px 0 rgba(0,0,0,.45),0 18px 48px rgba(0,0,0,.5)}
+.glass.thick{background:rgba(30,34,46,.82)}
+.glass::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(150deg,rgba(255,255,255,.30),rgba(255,255,255,.07) 34%,rgba(255,255,255,0) 58%,rgba(255,255,255,.16));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;z-index:1}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.glass,.glass.thick{background:rgba(22,26,36,.97)}}
+.ico{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.ico.s{width:16px;height:16px}
+.btn{font:700 13px/1 'Unbounded','Onest',sans-serif;letter-spacing:.01em;height:44px;padding:0 20px;border:0;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;color:#f2f5fb;background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.10),inset 0 1px 0 rgba(255,255,255,.06)}
+.btn.primary{background:#c6f432;color:#07090f;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 0 rgba(7,9,15,.12),0 0 0 1px rgba(198,244,50,.45),0 8px 24px rgba(198,244,50,.26)}
+.btn.sm{padding:0 14px 0 16px}
+.lbl{font:700 13px/1 'Unbounded',sans-serif;color:#a9b3c4;letter-spacing:.01em;display:flex;align-items:center;gap:10px}
+.lbl::before{content:'';width:8px;height:8px;border-radius:3px;background:#c6f432;box-shadow:0 0 10px rgba(198,244,50,.6)}
+.h{display:flex;flex-direction:column;gap:16px}
+.av{width:40px;height:40px;flex:none;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font:700 12px/1 'Unbounded',sans-serif;color:#f2f5fb;background:radial-gradient(circle at 32% 26%,rgba(255,255,255,.16),rgba(255,255,255,0) 62%),#1b2130;box-shadow:0 0 0 2px #11151f,0 0 0 4px var(--rc),0 0 16px var(--rg)}
+
+.cs-h{display:flex;align-items:center;justify-content:space-between;padding:12px 14px 12px 22px;border-bottom:1px solid rgba(255,255,255,.07)}
+.cs-h h2{margin:0;font:700 15px/1 'Unbounded',sans-serif;display:flex;align-items:center;gap:10px}
+.n{min-width:26px;height:22px;padding:0 8px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font:700 11px/1 'Unbounded',sans-serif;color:#07090f;background:#c6f432}
+.daydiv{display:flex;align-items:center;gap:12px;padding:14px 22px 4px;font:700 10px/1 'Unbounded',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#a9b3c4}
+.daydiv::before,.daydiv::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08)}
+.cm{display:flex;gap:16px;padding:14px 14px 14px 22px;position:relative}
+.cm .meta{display:flex;align-items:baseline;gap:10px;font-size:15px}
+.cm .meta b{font-weight:600}
+.cm .meta span{color:#a9b3c4;font-size:13px}
+.cm p{margin:6px 0 0;font-size:15px;line-height:1.55;color:#d5dbe6}
+.cm p b{color:#f2f5fb;font-weight:600;box-shadow:inset 0 -2px 0 rgba(198,244,50,.6)}
+.more{border:0;flex:none;width:44px;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;background:transparent;color:#a9b3c4;cursor:pointer}
+.more.on{color:#f2f5fb;background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.menu{position:absolute;right:14px;top:62px;width:220px;border-radius:18px;padding:5px;margin:0;list-style:none;z-index:4;font-size:14px;font-weight:500}
+.menu li{display:flex;align-items:center;gap:10px;height:38px;padding:0 12px;border-radius:13px;color:#e3e8f1}
+.menu li .ico{color:#a9b3c4}
+.menu li.hl{color:#e6ff9a;background:rgba(198,244,50,.12);box-shadow:inset 0 0 0 1px rgba(198,244,50,.26)}
+.menu li.hl .ico{color:#e6ff9a}
+.menu li.danger,.menu li.danger .ico{color:#ff6b9a}
+.comp{border-radius:20px}
+.comp-t{padding:14px 18px;min-height:64px;font-size:15px;color:#a9b3c4;outline:none}
+.comp-b{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 12px;border-top:1px solid rgba(255,255,255,.08)}
+.tb{display:flex;gap:2px;align-items:center;padding:3px;border-radius:999px;background:rgba(7,9,15,.4);box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)}
+.tb button{border:0;width:36px;height:36px;border-radius:999px;background:transparent;color:#d5dbe6;cursor:pointer;display:flex;align-items:center;justify-content:center;font:700 14px/1 'Onest',sans-serif}
+.cnt{margin-left:auto;font:500 12px/1 'Unbounded',sans-serif;color:#a9b3c4}
+.send{border:0;width:44px;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#07090f;background:#c6f432;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 0 0 1px rgba(198,244,50,.45),0 6px 18px rgba(198,244,50,.28)}
+
+.drop{display:flex;flex-direction:column;align-items:center;gap:12px;padding:28px 20px;text-align:center;border-radius:20px;background:#0d1018;border:1.5px dashed rgba(255,255,255,.20)}
+.drop .di{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;color:#c6f432;background:rgba(198,244,50,.10);box-shadow:inset 0 0 0 1px rgba(198,244,50,.24)}
+.drop.over{padding:24px 20px;background:rgba(198,244,50,.07);border-color:#c6f432;box-shadow:0 0 0 4px rgba(198,244,50,.12),0 0 28px rgba(198,244,50,.16)}
+.file{display:flex;gap:14px;align-items:center;padding:14px 12px 14px 18px}
+.file + .file{border-top:1px solid rgba(255,255,255,.06)}
+.fi{width:40px;height:48px;flex:none;position:relative}
+.fi::before{content:'';position:absolute;inset:0;border-radius:10px;background:#1d2332;clip-path:polygon(0 0,66% 0,100% 28%,100% 100%,0 100%)}
+.fi::after{content:'';position:absolute;right:0;top:0;width:34%;height:28%;border-radius:0 0 0 5px;background:#2c3446}
+.fi span{position:absolute;left:-6px;bottom:7px;z-index:1;font:700 9px/1 'Unbounded',sans-serif;letter-spacing:.04em;padding:4px 5px;border-radius:6px;color:var(--t);background:var(--b);box-shadow:inset 0 0 0 1px var(--l),0 0 10px var(--g)}
+.fname{font-size:15px;font-weight:500}
+.prog{height:6px;margin-top:10px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
+.prog i{display:block;height:100%;border-radius:999px;background:#c6f432;box-shadow:0 0 10px rgba(198,244,50,.6)}
+.pct{font:700 11px/1 'Unbounded',sans-serif;color:#a9b3c4}
+.ib{border:0;flex:none;width:44px;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#a9b3c4;background:transparent}
+.pdf{position:relative;overflow:hidden}
+.stage{background:#0b0e15;padding:48px 18px 22px;display:flex;justify-content:center}
+.pdfbar{position:absolute;left:12px;right:12px;top:12px;height:56px;border-radius:999px;padding:0 6px;display:flex;align-items:center;gap:4px;z-index:2}
+.pdfbar button{border:0;width:44px;height:44px;border-radius:999px;background:transparent;color:#f2f5fb;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.pdfbar .v{font:700 12px/1 'Unbounded',sans-serif;color:#f2f5fb;padding:0 6px}
+.page{width:250px;height:316px;border-radius:6px;background:#fbfbfd;padding:40px 24px 22px;box-shadow:0 18px 40px rgba(0,0,0,.55)}
+.ln{height:7px;border-radius:7px;background:#dde1ea;margin:9px 0}
+</style>
+</helmet>
+<div class="r" style="width: 1200px; height: 1360px; box-sizing: border-box; padding: 56px; display: flex; flex-direction: column; gap: 44px">
+  <div style="display: flex; align-items: baseline; gap: 18px"><div class="u" style="font-size: 30px; font-weight: 800">Контент</div><span style="font-size: 15px; color: #a9b3c4">скин «Арена» · тёмная схема</span></div>
+
+  <div style="display: grid; grid-template-columns: 600px minmax(0, 1fr); gap: 48px; align-items: start">
+    <div class="h">
+      <div class="lbl">CommentsSection</div>
+      <section class="surface" aria-label="Комментарии">
+        <div class="cs-h"><h2>Комментарии <span class="n">3</span></h2><button class="btn sm" type="button" aria-haspopup="listbox">Новые<svg class="ico s" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+
+        <div class="daydiv">Вчера</div>
+        <article class="cm"><span class="av" aria-hidden="true" style="--rc: #8847ff; --rg: rgba(136,71,255,.45)">ИС</span><div style="flex: 1; min-width: 0"><div class="meta"><b>Иван Смирнов</b><span>18:42</span></div><p>Залил тайлсет «Лес», гляньте углы у травы — кажется, стыкуются неровно.</p></div><button class="more" type="button" aria-label="Действия с комментарием"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="18.5" cy="12" r="1.2"/></svg></button></article>
+
+        <div class="daydiv">Сегодня</div>
+        <article class="cm"><span class="av" aria-hidden="true" style="--rc: #e4ae39; --rg: rgba(228,174,57,.45)">АП</span><div style="flex: 1; min-width: 0"><div class="meta"><b>Анна Петрова</b><span>09:15 · изменено</span></div><p>Поправила стыки, теперь <b>ровно</b>. Можно собирать уровень 3.</p></div><button class="more on" type="button" aria-label="Действия с комментарием" aria-haspopup="menu" aria-expanded="true"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="18.5" cy="12" r="1.2"/></svg></button>
+          <ul class="menu glass thick" role="menu" aria-label="Действия">
+            <li role="menuitem" class="hl"><svg class="ico s" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg>Изменить</li>
+            <li role="menuitem"><svg class="ico s" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>Копировать ссылку</li>
+            <li role="menuitem" class="danger"><svg class="ico s" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13"/></svg>Удалить</li>
+          </ul>
+        </article>
+        <article class="cm"><span class="av" aria-hidden="true" style="--rc: #4b69ff; --rg: rgba(75,105,255,.45)">ДН</span><div style="flex: 1; min-width: 0"><div class="meta"><b>Дилшод Назаров</b><span>10:03</span></div><p>Собрал, всё ок. Закрываю задачу.</p></div><button class="more" type="button" aria-label="Действия с комментарием"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="18.5" cy="12" r="1.2"/></svg></button></article>
+
+        <div style="padding: 18px 16px 16px; border-top: 1px solid rgba(255,255,255,.07); display: flex; flex-direction: column; gap: 12px">
+          <span class="lbl" id="cri" style="font-size: 11px">CommentRichInput</span>
+          <div class="comp glass">
+            <div class="comp-t" role="textbox" aria-multiline="true" aria-labelledby="cri" tabindex="0">Оставьте комментарий…</div>
+            <div class="comp-b">
+              <span class="av" aria-hidden="true" style="width: 28px; height: 28px; font-size: 9px; --rc: #e4ae39; --rg: rgba(228,174,57,.4); box-shadow: 0 0 0 2px #1a1e28, 0 0 0 3.5px #e4ae39">АП</span>
+              <div class="tb" role="toolbar" aria-label="Форматирование"><button type="button" aria-label="Жирный">B</button><button type="button" aria-label="Курсив" style="font-style: italic; font-weight: 500">I</button><button type="button" aria-label="Подчёркнутый" style="text-decoration: underline; font-weight: 500">U</button><button type="button" aria-label="Список"><svg class="ico s" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></svg></button></div>
+              <span class="cnt">0 / 1000</span>
+              <button class="send" type="button" aria-label="Отправить"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" style="stroke-width: 1.8"><path d="M4 12 20 4l-4 16-4-7z"/><path d="m12 13 8-9"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="h">
+      <div class="lbl">FileDropZone</div>
+      <div class="drop">
+        <span class="di"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" style="width: 24px; height: 24px"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v2.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V16"/></svg></span>
+        <span style="font-size: 16px; font-weight: 500">Перетащите файлы сюда</span>
+        <button class="btn primary" type="button">Выбрать файлы</button>
+        <span style="font-size: 13px; color: #a9b3c4">PNG, PDF до 10 МБ</span>
+      </div>
+      <div class="drop over"><span class="u" style="font-size: 13px; font-weight: 700; color: #e6ff9a; display: flex; align-items: center; gap: 10px"><svg class="ico s" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5"/></svg>Отпустите, чтобы загрузить</span></div>
+
+      <div class="lbl" style="margin-top: 8px">FileUploadItem</div>
+      <div class="surface">
+        <div class="file"><span class="fi" aria-hidden="true" style="--t: #ff8a8a; --b: #2a1820; --l: rgba(235,75,75,.55); --g: rgba(235,75,75,.3)"><span>PDF</span></span><div style="flex: 1; min-width: 0"><div style="display: flex; justify-content: space-between; align-items: baseline"><span class="fname">Дизайн-док.pdf</span><span class="pct">60%</span></div><div class="prog" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" aria-label="Загрузка Дизайн-док.pdf"><i style="width: 60%"></i></div></div><button class="ib" type="button" aria-label="Отменить загрузку Дизайн-док.pdf"><svg class="ico s" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+        <div class="file"><span class="fi" aria-hidden="true" style="--t: #9db2ff; --b: #18203a; --l: rgba(75,105,255,.6); --g: rgba(75,105,255,.3)"><span>PNG</span></span><div style="flex: 1; min-width: 0"><div class="fname">hero-sprite.png</div><div style="font-size: 13px; color: #c6f432; display: flex; gap: 6px; align-items: center; margin-top: 5px"><svg class="ico s" viewBox="0 0 24 24" aria-hidden="true" style="width: 14px; height: 14px; stroke-width: 2"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Загружено · 248 КБ</div></div><button class="ib" type="button" aria-label="Удалить hero-sprite.png"><svg class="ico s" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13"/></svg></button></div>
+        <div class="file"><span class="fi" aria-hidden="true" style="--t: #f0c560; --b: #2a2214; --l: rgba(228,174,57,.55); --g: rgba(228,174,57,.3)"><span>ZIP</span></span><div style="flex: 1; min-width: 0"><div class="fname">levels.zip</div><div style="font-size: 13px; color: #ff6b9a; display: flex; gap: 6px; align-items: center; margin-top: 5px"><svg class="ico s" viewBox="0 0 24 24" aria-hidden="true" style="width: 14px; height: 14px"><circle cx="12" cy="12" r="8.5"/><path d="M12 8v4.5M12 16h.01"/></svg>Файл больше 10 МБ</div></div><button class="btn sm" type="button"><svg class="ico s" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4.5 4.5v3.8h3.8"/></svg>Повторить</button></div>
+      </div>
+
+      <div class="lbl" style="margin-top: 8px">PdfPreview</div>
+      <div class="surface pdf">
+        <div class="pdfbar glass thick" role="toolbar" aria-label="Просмотр PDF">
+          <button type="button" aria-label="Предыдущая страница"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg></button>
+          <span class="v" aria-live="polite">2 / 12</span>
+          <button type="button" aria-label="Следующая страница"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
+          <span style="flex: 1"></span>
+          <button type="button" aria-label="Уменьшить"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12"/></svg></button>
+          <span class="v">100%</span>
+          <button type="button" aria-label="Увеличить"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg></button>
+          <button type="button" aria-label="Скачать"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M4.5 20h15"/></svg></button>
+        </div>
+        <div class="stage">
+          <div class="page" role="img" aria-label="Страница 2 из 12: Дизайн-док.pdf">
+            <div class="ln" style="width: 62%; height: 11px; background: #0b1220"></div>
+            <div class="ln"></div>
+            <div class="ln" style="width: 90%"></div>
+            <div class="ln" style="width: 74%"></div>
+            <div style="position: relative; height: 82px; margin: 14px 0; border-radius: 10px; overflow: hidden; background: radial-gradient(circle at 50% 70%, rgba(136,71,255,.75), rgba(136,71,255,0) 62%), linear-gradient(180deg, #1a1430, #0d0a1a)">
+              <span style="position: absolute; left: 50%; top: 14px; width: 44px; height: 42px; margin-left: -22px; background: linear-gradient(170deg, #ffe58f, #e4ae39 45%, #9a6a0e); clip-path: polygon(26% 0, 74% 0, 100% 34%, 50% 100%, 0 34%)"></span>
+              <span style="position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: #8847ff"></span>
+            </div>
+            <div class="ln"></div>
+            <div class="ln" style="width: 82%"></div>
+            <div class="ln" style="width: 50%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":1360}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
